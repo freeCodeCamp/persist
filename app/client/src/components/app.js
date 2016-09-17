@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import Dashboard from './adminlte/Dashboard';
 
+require('../../public/style/main2.scss');
+
 export default class App extends Component {
   render() {
     let currentPage;

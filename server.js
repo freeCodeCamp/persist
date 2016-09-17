@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import express from 'express';
+import http from 'http';
+import reload from 'reload';
 
 // import mongoose from 'mongoose';
 // import passport from 'passport';
@@ -24,6 +26,8 @@ app.use(express.static(path.join(__dirname, '/app/client/public')));
 // app.use(flash()); // use connect-flash for flash messages stored in session
 // using webpack-dev-server and middleware in development environment
 
+var server = http.createServer(app);
+
 if (process.env.NODE_ENV !== 'production') {
     var webpackDevMiddleware = require('webpack-dev-middleware');
     var webpackHotMiddleware = require('webpack-hot-middleware');
@@ -40,11 +44,12 @@ if (process.env.NODE_ENV !== 'production') {
         publicPath: config.output.publicPath
     }));
     app.use(webpackHotMiddleware(compiler));
+    reload(server, app);
 }
 
 serverRoutes(app);
 
-app.listen(PORT, (error) => {
+server.listen(PORT, (error) => {
     if (error) {
         console.error(error);
     } else {

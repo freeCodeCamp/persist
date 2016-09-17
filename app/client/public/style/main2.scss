@@ -1,101 +1,144 @@
-@import 'https://fonts.googleapis.com/css?family=Kalam:400,700';
+// @import 'https://fonts.googleapis.com/css?family=Kalam:400,700';
 $tablet-width: 768px;
 $desktop-width: 1024px;
+
 @mixin tablet {
-    @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
-        @content;
-    }
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
 }
 
 @mixin desktop {
-    @media (min-width: #{$desktop-width}) {
-        @content;
-    }
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
 }
 
 @mixin mobile {
-    @media (max-width: 768px) {
-        @content;
-    }
+  @media (max-width: 768px) {
+    @content;
+  }
 }
 
-$first: #FCFFF5;
-$second: #D1DBBD;
-$mid: #91AA9D;
-$slast: #3E606F;
-$last: #193441;
+$first: #2C3E50;
+$second: #E74C3C;
+$mid: #ECF0F1;
+$slast: #3498DB;
+$last: #2980B9;
 
 .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .icon {
-    @extend .center;
-    padding: 15px;
+  @extend .center;
+
+  padding: 15px;
+  width: 50px;
+}
+
+.padding {
+  padding: 15px;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
 }
 
 div#app {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 div#header {
+  display: flex;
+
+  div#logo {
+    @extend .center;
+
+    min-width: 50px;
+    background-color: $last;
+  }
+
+  div#nav_bar {
     display: flex;
-    height: 50px;
+    background-color: $slast;
+    justify-content: space-between;
+    flex: 16;
+
+    div#switch, div#nav_links, div.nav_link {
+      display: flex;
+      cursor: pointer;
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+
     div#logo {
-        @extend .center;
+      padding: 15px;
     }
-    div#nav_bar {
-        display: flex;
-        justify-content: space-between;
-        flex: 16;
-        div#switch, div#nav_links, div.nav_link {
-            display: flex;
-            cursor: pointer;   
-        }
-    }
+  }
 }
 
 .large_nav {
-    flex: 4;
+  flex: 4;
+  max-width: 200px;
+
+  @include mobile {
+    max-width: 100%;
+  }
 }
-.small_nav {
-    flex: 1;
-}
+
+.small_nav {}
 
 div#content {
-    display: flex;
-    div#main_sidebar {
+  display: flex;
+  position: relative;
 
-        div#sidebar_navigation {
-            display: flex;
-            flex-direction: column;
-            
-            div.side_nav {
-                display: flex;
-                span.icon {
-                    flex: 1;
-                }
-                span.desc {
-                    @extend .center;
-                    flex: 4;
-                }
-            }
+  div#main_sidebar {
+    div#sidebar_navigation {
+      display: flex;
+      flex-direction: column;
+      background-color: $first;
+      color: $mid;
 
+      div.side_nav {
+        display: flex;
+
+        span.icon {}
+
+        span.desc {
+          @extend .center;
+
+          justify-content: flex-start;
+          flex: 4;
+
+          a {
+            color: $mid;
+            text-decoration: none;
+          }
         }
+      }
+
+      @include mobile {
+        width: 200px;
+      }
     }
 
-    div#main_content {
-        flex: 16;
+    @include mobile {
+      position: absolute;
+      width: 200px;
     }
+  }
+
+  div#main_content {
+    flex: 16;
+  }
 }
