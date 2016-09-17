@@ -1,22 +1,23 @@
 import path from 'path';
+import multer from 'multer';
 
-//import multer
-var multer  = require('multer');
+var upload = multer({ dest: 'uploads/' });
 
-//set disk storage
+// set disk storage
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+  destination(req, file, cb) {
+    cb(null, 'uploads/');
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname + '-' + Date.now())
+
+  filename(req, file, cb) {
+    cb(null, file.originalname + '-' + Date.now());
   }
 });
 
-//configure multer middleware
-var fileUpload = upload.fields([{ name: 'file', maxCount: 1 }])
+// configure multer middleware
+var fileUpload = upload.fields([{ name: 'file', maxCount: 1 }]);
 
-module.exports = function(app) {
+export default (app) => {
 
 	app.get('/*', (req, res) => {
 		res.sendFile(path.join(__dirname, '../../client/public/index.html'));
@@ -24,7 +25,7 @@ module.exports = function(app) {
 
 	app.post('/upload', fileUpload, function(req, res) {
 			console.log(req.files);
-			//req.files.file[0]
-			res.send("working");	
+			// req.files.file[0]
+			res.send('working');
 	});
-}
+};

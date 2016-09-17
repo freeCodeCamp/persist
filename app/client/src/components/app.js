@@ -4,16 +4,14 @@ import Dashboard from './adminlte/Dashboard';
 
 export default class App extends Component {
   render() {
-
-  	let currentPage;
-
-  	if (this.props.children) {
-  		currentPage = React.cloneElement(this.props.children, ...this.props)
-  	}
+    let currentPage;
+    if (this.props.children) {
+      currentPage = React.cloneElement(this.props.children, ...this.props);
+    }
 
     return (
       <div>
-      	<Dashboard currentPage={currentPage}/>
+        <Dashboard currentPage={currentPage}/>
       </div>
     );
   }

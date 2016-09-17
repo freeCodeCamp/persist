@@ -18,16 +18,17 @@ class CommentBox extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 		this.props.saveComment(this.state.comment);
-		this.setState({comment: ''})
+		this.setState({comment: ''});
 	}
 
 	render() {
-		return (	
+		return (
 			<form onSubmit={this.handleSubmit.bind(this)} className='comment-box'>
 				<h4> Add a Comment </h4>
-				<textarea 
-					value={this.state.comment} 
-					onChange={this.handleChange.bind(this)} /> 
+				<textarea
+					value={this.state.comment}
+					onChange={this.handleChange.bind(this)}
+				/>
 				<div>
 					<button action='submit'>Submit Comment</button>
 				</div>
@@ -38,7 +39,7 @@ class CommentBox extends Component {
 }
 
 
-//1st arg = state - map state to props
-//2nd arg = actions (usually mapDispatchToProps)
+// 1st arg = state - map state to props
+// 2nd arg = actions (usually mapDispatchToProps)
 
-export default connect(null, actions)(CommentBox)
+export default connect(null, actions)(CommentBox);

@@ -1,23 +1,37 @@
-import dotenv from 'dotenv';
-import path from 'path';
-import express from 'express';
+'use strict';
+
+var _dotenv = require('dotenv');
+
+var _dotenv2 = _interopRequireDefault(_dotenv);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _express = require('express');
+
+var _express2 = _interopRequireDefault(_express);
+
+var _index = require('./app/server/routes/index');
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_dotenv2.default.config();
 
 // import mongoose from 'mongoose';
 // import passport from 'passport';
 // import flash from 'connect-flash';
 // import bodyParser from 'body-parser';
 
-import serverRoutes from './app/server/routes/index';
-
-dotenv.config();
-
-var app = express();
+var app = (0, _express2.default)();
 
 // mongoose.connect(process.env.MONGODB_URI);
 
 var PORT = process.env.PORT || 8080;
 
-app.use(express.static(path.join(__dirname, '/app/client/public')));
+app.use(_express2.default.static(_path2.default.join(__dirname, '/app/client/public')));
 
 // app.use(passport.initialize());
 
@@ -42,9 +56,9 @@ if (process.env.NODE_ENV !== 'production') {
     app.use(webpackHotMiddleware(compiler));
 }
 
-serverRoutes(app);
+(0, _index2.default)(app);
 
-app.listen(PORT, (error) => {
+app.listen(PORT, function (error) {
     if (error) {
         console.error(error);
     } else {

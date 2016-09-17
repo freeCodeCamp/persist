@@ -7,7 +7,7 @@ class Upload extends React.Component {
 
     addFile(e) {
     	const files = e.target.files;
-    	this.setState({files: files})
+    	this.setState({files: files});
   	}
 
   	addItem() {
@@ -16,7 +16,7 @@ class Upload extends React.Component {
     data.append('file', this.state.files[0]);
 
     $.ajax({
-          url: "/upload",
+          url: '/upload',
           type: 'POST',
           data: data,
           cache: false,
@@ -37,13 +37,13 @@ class Upload extends React.Component {
         	<div className='upload'>
         		<h1> Upload </h1>
         		<form>
-        			<input type="file" name="photo" onChange={this.addFile.bind(this)}/> 
-        			<button onClick={this.addItem.bind(this)} className="btn btn-primary">Submit</button>
+        			<input type='file' name='photo' onChange={this.addFile.bind(this)}/> 
+        			<button onClick={this.addItem.bind(this)} className='btn btn-primary'>Submit</button>
         		</form>
         	</div>
 
 
-        	)
+        	);
     }
 }
 

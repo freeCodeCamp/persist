@@ -6,8 +6,8 @@ const CommentList = (props) => {
 		<ul className='comment-list'>
 			{props.comments.map(comment => <li key={comment}>{comment}</li>)}
 		</ul>
-	)
-}
+	);
+};
 
 function mapStateToProps(state) {
 	return { comments: state.comments };

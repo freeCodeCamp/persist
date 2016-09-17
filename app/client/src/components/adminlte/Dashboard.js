@@ -10,16 +10,16 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-            <div id="app">
+            <div id='app'>
 	           <Header />
-               <div id="content">
+               <div id='content'>
                     <Sidebar />
-                    <div id="main_content">
+                    <div id='main_content'>
                         {this.props.currentPage}
                     </div>
                </div>
             </div>
-        )
+        );
     }
 }
 
