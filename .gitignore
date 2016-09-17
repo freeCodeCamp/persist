@@ -1,0 +1,11 @@
+/node_modules
+/archived
+bundle.js
+npm-debug.log
+
+# IntelliJ
+*.iml
+/.idea
+
+/.floo
+/.flooignore

@@ -1,0 +1,4 @@
+{
+  "verbose": true,
+  "ignore": ["/app/client/src/components", "/app/client/src/reducers"]
+}
