@@ -6,6 +6,6 @@ npm-debug.log
 # IntelliJ
 *.iml
 /.idea
-
+/.env
 /.floo
 /.flooignore
