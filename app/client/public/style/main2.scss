@@ -2,6 +2,21 @@
 $tablet-width: 768px;
 $desktop-width: 1024px;
 
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+// Font Variables
+$open-sans: 'Open Sans', sans-serif;
+
+
+body {
+  font-family: $open-sans;
+}
+
+
+
 @mixin tablet {
   @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
     @content;
