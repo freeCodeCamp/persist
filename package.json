@@ -11,7 +11,8 @@
     "watch": "nodemon --config nodemon.json --exec babel-node server.js",
     "debug": "node-inspector --web-port=8888 & nodemon --config nodemon.json --exec babel-node --debug server.js",
     "build": "babel server.js --out-file serverProd.js",
-    "start": "node serverProd.js"
+    "start": "node serverProd.js",
+    "babel": "./node_modules/.bin/babel-node"
   },
   "repository": {
     "type": "git",

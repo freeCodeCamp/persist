@@ -24,7 +24,7 @@ const Student = new Schema({
 	enrollmentStatus: String,
 	termName: String,
 	termStartDate: Date,
-	termEndDate: Date,
+	termEndDate: Date, 
 	termGPA: Number,
 	cumulativeGPA: Number,
 	creditHoursAttempted: Number,

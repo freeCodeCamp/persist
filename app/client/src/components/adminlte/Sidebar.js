@@ -39,7 +39,7 @@ class Sidebar extends React.Component {
                             <i className='fa fa-list' aria-hidden='true'></i>
                         </span>
                         <span className='desc'>
-                            List
+                             <Link to='/student/003F000001GFnnnIAD'>Single Student Example</Link>
                         </span>
                     </div>
                     <div className='side_nav'>
