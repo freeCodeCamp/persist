@@ -3,7 +3,8 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 // middleware
 import logger from 'redux-logger';
-const middleware = applyMiddleware(logger());
+import reduxThunk from 'redux-thunk';
+const middleware = applyMiddleware(logger(), reduxThunk);
 
 // import the root reducer
 import rootReducer from './reducers/index';

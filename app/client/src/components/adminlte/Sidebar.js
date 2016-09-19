@@ -15,23 +15,23 @@ class Sidebar extends React.Component {
                             <i className='fa fa-dashboard' aria-hidden='true'></i>
                         </span>
                         <span className='desc'>
-                            <Link to='/page1'>Dashboard</Link>
+                            <Link to='/'>Dashboard</Link>
                         </span>
                     </div>
                     <div className='side_nav'>
                         <span className='icon'>
-                            <i className='fa fa-pie-chart' aria-hidden='true'></i>
+                            <i className='fa fa-child' aria-hidden='true'></i>
                         </span>
                         <span className='desc'>
-                            Chart
+                            <Link to='/students'>Students</Link>
                         </span>
                     </div>
                     <div className='side_nav'>
                         <span className='icon'>
-                            <i className='fa fa-filter' aria-hidden='true'></i>
+                            <i className='fa fa-building' aria-hidden='true'></i>
                         </span>
                         <span className='desc'>
-                            Options
+                            <Link to='/schools'>Schools</Link>
                         </span>
                     </div>
                     <div className='side_nav'>
@@ -44,7 +44,7 @@ class Sidebar extends React.Component {
                     </div>
                     <div className='side_nav'>
                         <span className='icon'>
-                            <i className='fa fa-history' aria-hidden='true'></i>
+                            <i className='fa fa-file-excel-o' aria-hidden='true'></i>
                         </span>
                         <span className='desc'>
                             <Link to='/upload'>Upload</Link>

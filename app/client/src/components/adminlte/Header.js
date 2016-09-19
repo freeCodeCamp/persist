@@ -9,7 +9,7 @@ class Header extends React.Component {
     	return (
     		<div id='header'>
             <div id='logo' className='large_nav'>
-                <span id='large'>AdminLTE</span>
+                <span id='large'>NYC Outward Bound</span>
                 <span id='small' style={{display: 'none'}}>ALT</span>
             </div>
             <div id='nav_bar'>

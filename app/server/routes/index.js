@@ -26,6 +26,7 @@ export default (app) => {
 	app.post('/upload', fileUpload, function(req, res) {
 			console.log(req.files);
 			// req.files.file[0]
-			res.send('working');
+			setTimeout(function() {
+				res.send('working')}, 5000);
 	});
 };
