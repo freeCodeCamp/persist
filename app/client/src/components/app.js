@@ -12,7 +12,7 @@ export default class App extends Component {
     }
 
     return (
-      <div>
+      <div id='application-holder'>
         <Dashboard currentPage={currentPage}/>
       </div>
     );

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as actions from '../../../actions';
 import { connect } from 'react-redux';
+import { Button, Input, InputGroup } from 'reactstrap';
 
 class Upload extends React.Component {
     constructor(props) {
@@ -23,8 +24,10 @@ class Upload extends React.Component {
         return (
         	<div className='upload'>
         		<h1> Upload </h1>
-        			<input type='file' name='photo' onChange={this.addFile.bind(this)}/> 
-        			<button onClick={this.addItem.bind(this)} className='btn btn-primary'>Submit</button>
+            <InputGroup>
+        			<Input className='btn' type='file' name='photo' onChange={this.addFile.bind(this)} />
+            </InputGroup> 
+        			<Button onClick={this.addItem.bind(this)}>Submit</Button>
 
               {this.props.upload.pending ? <div><p>Loading</p><i style={{fontSize: '50px', textAlign: 'center'}} className="fa fa-spinner fa-spin fa-3x fa-fw"></i></div> : null}
               {this.props.upload.error ? <p> Error Found </p> : null}

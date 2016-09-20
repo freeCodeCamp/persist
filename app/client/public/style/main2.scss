@@ -2,9 +2,6 @@
 $tablet-width: 768px;
 $desktop-width: 1024px;
 
-
-
-
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 // Font Variables
@@ -15,6 +12,9 @@ body {
   font-family: $open-sans;
 }
 
+h1 {
+  text-align: center;
+}
 
 
 @mixin tablet {
@@ -70,6 +70,8 @@ div#app {
   display: flex;
   flex-direction: column;
 }
+
+
 
 div#header {
   display: flex;

@@ -4,34 +4,25 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../../actions';
 
+import SingleStudentForm from '../SingleStudentForm';
 
 class SingleStudent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            student: null
-        };
     }
 
     componentDidMount() {
-
-        const _this = this;
-
        this.props.getStudent(this.props.params.contactID);
-
     }
     
     render() {
         const { singleStudent } = this.props;
+        const student = singleStudent.student;
         return (
         	<div>
-        		<h1>Single Student Page</h1>
-                
                 {singleStudent.pending ? <div><p>Loading</p><i style={{fontSize: '50px', textAlign: 'center'}} className="fa fa-spinner fa-spin fa-3x fa-fw"></i></div> : null}
                 {singleStudent.error ? <p> Error Found </p> : null}
-                {singleStudent.success ? <p> {JSON.stringify(singleStudent.student)} </p> : null}
-
-
+                {singleStudent.success ? <div><h1>{`${student.firstName} ${student.lastName}`}</h1><SingleStudentForm initialValues={student} student={student}/></div> : null}
         	</div>
         	);
     }

@@ -19,9 +19,7 @@ var storage = multer.diskStorage({
 // configure multer middleware
 var fileUpload = upload.fields([{ name: 'file', maxCount: 1 }]);
 
-export default (app) => {
-
-	
+export default (app) => {	
 
 	app.post('/upload', fileUpload, function(req, res) {
 			console.log(req.files);
@@ -52,7 +50,7 @@ export default (app) => {
 			});
 		})
 		.post((req, res) => {
-			res.send("working on it");
+			res.send('working on it');
 		})
 		.put((req, res) => {
 			res.send("working on it");
@@ -64,7 +62,7 @@ export default (app) => {
 	// main routes for queries to students db - e.g. get per school, get certain category e.t.c.
 	app.get('/api/students', (req, res) => {
 
-		console.log(req.query)
+		console.log(req.query);
 		student.find({}, (err, students) => {
 			if (err) {
 				res.status(500).send(err);
