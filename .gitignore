@@ -9,3 +9,8 @@ npm-debug.log
 /.env
 /.floo
 /.flooignore
+/adminlte
+/uploads
+/data
+/data2.csv
+/data.csv

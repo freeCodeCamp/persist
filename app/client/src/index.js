@@ -12,11 +12,10 @@ import DashboardMain from './components/adminlte/pages/DashboardMain';
 import Upload from './components/adminlte/pages/Upload';
 import Schools from './components/adminlte/pages/Schools';
 import Students from './components/adminlte/pages/Students';
-
+import SingleStudent from './components/adminlte/pages/SingleStudent';
 
 //redux store
 import store, { history } from './store';
-
 
 ReactDOM.render(
   <Provider store={store}>
@@ -26,6 +25,7 @@ ReactDOM.render(
     		<Route path='upload' component={Upload} />
     		<Route path='schools' component={Schools} />
     		<Route path='students' component={Students} />
+        <Route path='student/:contactID' component={SingleStudent} />
     	</Route>
     </Router>
   </Provider>

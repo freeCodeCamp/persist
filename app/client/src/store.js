@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 // middleware
 import logger from 'redux-logger';
 import reduxThunk from 'redux-thunk';
-const middleware = applyMiddleware(logger(), reduxThunk);
+const middleware = applyMiddleware(/*logger(),*/ reduxThunk);
 
 // import the root reducer
 import rootReducer from './reducers/index';

@@ -6,6 +6,7 @@ class Schools extends React.Component {
     }
     
     render() {
+
         return (
         	<div>
         		<h1>Schools</h1>

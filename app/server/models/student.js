@@ -11,10 +11,20 @@ const Parent = {
 	OtherPhone: [Number]
 };
 
+var termSchema = {
+    name: String,
+    status: String,
+    college: String,
+    recordType: String
+};
+
 const Student = new Schema({
 
 	firstName: String,
 	lastName: String,
+	middleName: String,
+	suffix: String,
+	altName: String,
 	hsGradYear: Number,
 	tags: [String],
 	edHistNo: String,
@@ -37,11 +47,35 @@ const Student = new Schema({
 	mobile: Number,
 	textable: Boolean,
 	homePhone: Number,
-	otherPhone: [Number],
+	otherPhone: String,
 	email: String,
 	lastModifiedDate: Date,
 	lastModifiedBy: String,
-	parentGuardian: [Parent]
+	parentGuardian: [Parent],
+	hsID: Number,
+	hsAttended: String,
+	cellPhone: String,
+	email1: String,
+	email2: String,
+	parentName: String,
+	parentContact: String,
+	majorMinor: String,
+	mostRecentColEmp: String,
+	tranferStatus: String,
+	studentSupportOrgName: String,
+	notes: String,
+	cohort: String,
+	hsGradDate: Date,
+	iniEnrollDate: Date,
+	ethnicity: String,
+	gender: String,
+	intendedCollege: String,
+	SAT: {math: Number, cr: Number},
+	actEquiv: Number,
+	hsGPA: Number,
+	terms: { type : Array , default : [termSchema] }
 });
+
+
 
 module.exports = mongoose.model('Student', Student);

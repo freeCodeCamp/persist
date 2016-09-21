@@ -3,9 +3,9 @@ import parse from 'csv-parse';
 import transform from 'stream-transform';
 import async from 'async';
 import mongoose from 'mongoose';
-import Student from './app/server/models/student';
+import Student from '../models/student';
 
-mongoose.connect('mongodb://localhost:27017/nyc_outward');
+//mongoose.connect('mongodb://localhost:27017/nyc_outward');
 
 
 export default function() {
@@ -28,8 +28,6 @@ export default function() {
 				console.log(err);
 				return;
 			}
-
-			data = data.splice(0, 50);
 
 			async.eachLimit(data, 10, (record, callback) => {
 
@@ -55,13 +53,11 @@ export default function() {
 
 		});
 
-		fs.createReadStream('NSC_file_download.csv').pipe(parser).pipe(transformer);
+		fs.createReadStream('data2.csv').pipe(parser).pipe(transformer);
 
 	});
 
 }
-
-
 
 function mapValues(line) {
 

@@ -1,3 +1,4 @@
+import fs from 'fs';
 
 
 const fs = require('fs');
@@ -116,7 +117,9 @@ function mapValues(object) {
 		'Educational History ID': 'educationalHistory',
 		'Contact Id (18 Char)': 'contactID',
 		'Last Modified By: Full Name': 'lastModifiedBy',
-		'Last Modified Date': 'lastModifiedDate'
+		'Last Modified Date': 'lastModifiedDate',
+		'High School Student ID': 'hsID',
+		'Middle Name': 'middleName'
 	}
 
 	let obj = {};
