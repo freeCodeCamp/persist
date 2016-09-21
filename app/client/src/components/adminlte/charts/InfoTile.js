@@ -15,7 +15,7 @@ var InfoTile = React.createClass({
                 
                 if(this.props.children){
                     return (
-                        <div className = {"col-md-4 col-sm-6 col-xs-12"}>
+                        <div className = {"col-md-"+this.props.width+" col-sm-6 col-xs-12"}>
                             <div className={"info-box "+this.props.theme}>
                                 <span className="info-box-icon">
                                     <i className={"fa "+this.props.icon}></i>
@@ -33,7 +33,7 @@ var InfoTile = React.createClass({
                     )       
                 }else{
                     return (
-                        <div className = "col-md-4 col-sm-6 col-xs-12">
+                        <div className = {"col-md-"+this.props.width+" col-sm-6 col-xs-12"}>
                             <div className="info-box">
                                 <span className={"info-box-icon " + this.props.theme}>
                                     <i className={"fa "+this.props.icon}></i>
