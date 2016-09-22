@@ -3,9 +3,13 @@ import { Field, reduxForm } from 'redux-form';
 import  { connect } from 'react-redux';
 
 import { Button, Form, Label, Input, Container, InputGroup, Row } from 'reactstrap';
-import * as actions from '../../actions';
+
 import FormGroup from './ReduxFormGroup';
-import keys from './helpers/key';
+import CollegeSummary from './CollegeSummary';
+import CollegeTermRecords from './CollegeTermRecords';
+
+import * as actions from '../../../actions';
+import keys from '../helpers/key';
 
 class SingleStudentForm extends React.Component {
     constructor(props) {
@@ -27,7 +31,7 @@ class SingleStudentForm extends React.Component {
     }
     
     render() {
-        const { firstName, lastName, hsGradYear, schoolAccName } = this.props.student;
+       
         const { handleSubmit, reset } = this.props;
 
         const exceptions=[]
@@ -43,20 +47,35 @@ class SingleStudentForm extends React.Component {
             )
         });
 
+        const { hsGPA, majorMinor, transferStatus } = this.props.student;
+
+        const collegeSummary = {
+            recentCollege: 'TEST DATA',
+            hsGPA: hsGPA,
+            studentSupport:'TEST DATA',
+            majorMinor: majorMinor,
+            remediation: 'TEST DATA',
+            transferStatus: transferStatus
+        }
+
         
         return (
-            <Form className='single-student-form' onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-                <Row>
-                    {inputHTML}
-                </Row>
-                { this.state.editable ? <div>
-                                            <Button type="submit">Submit</Button>
-                                            <Button type="button" onClick={reset}>Undo Changes</Button>
-                                        </div> : <Button type="button" onClick={() => this.toggleEdit()}>Edit</Button>
-                }
-                
-                
-            </Form>
+            <div id="single-student-page">
+                <CollegeSummary summary={collegeSummary} />
+                <Form className='single-student-form' onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+                    <Row>
+                        {inputHTML}
+                    </Row>
+                    { this.state.editable ? <div>
+                                                <Button type="submit">Submit</Button>
+                                                <Button type="button" onClick={reset}>Undo Changes</Button>
+                                            </div> : <Button type="button" onClick={() => this.toggleEdit()}>Edit</Button>
+                    }
+                    
+                    
+                </Form>
+                <CollegeTermRecords terms={this.props.student.terms}/>
+            </div> 
 
         	);
     }

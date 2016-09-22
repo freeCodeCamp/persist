@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../../actions';
 
-import SingleStudentForm from '../SingleStudentForm';
+import SingleStudentForm from '../singlestudent/SingleStudentForm';
 
 class SingleStudent extends React.Component {
     constructor(props) {

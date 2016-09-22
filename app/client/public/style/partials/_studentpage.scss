@@ -1,0 +1,27 @@
+// Single Student Page Styling
+
+#college-summary {
+	max-width: 400px;
+	float: right;
+	margin: 20px;
+	font-size: 0.9em;
+
+	th {
+		text-align: center;
+	}
+
+	.key {
+		font-weight: bolder;
+	}
+
+	.value {
+
+	}
+}
+
+#college-term-records {
+	max-width: 700px;
+	max-height: 200px;
+    overflow: scroll;
+    font-size: 0.9em;
+}

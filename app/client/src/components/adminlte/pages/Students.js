@@ -40,7 +40,7 @@ class Students extends React.Component {
         return (
         	<div>
                 <h1> Students </h1>
-                <Table striped>
+                <Table striped border hover>
                     <thead>
                       <tr>
                         <th>#</th>
