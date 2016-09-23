@@ -11,7 +11,7 @@ const Parent = {
 	OtherPhone: [Number]
 };
 
-var termSchema = {
+const termSchema = {
     name: String,
     status: String,
     college: String,

@@ -10,3 +10,9 @@ export const GET_STUDENT_SUCCESS = 'get_student_success';
 export const GET_STUDENT_ERROR = 'get_student_error';
 export const GET_STUDENT_PENDING = 'get_student_pending';
 export const GET_STUDENT_RESET = 'get_student_reset';
+
+// filter students
+export const FILTER_STUDENT_SUCCESS = 'filter_student_success';
+export const FILTER_STUDENT_ERROR = 'filter_student_error';
+export const FILTER_STUDENT_PENDING = 'filter_student_pending';
+export const FILTER_STUDENT_RESET = 'filter_student_reset';

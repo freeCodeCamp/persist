@@ -1,47 +1,61 @@
 import React from 'react';
-import * as actions from '../../../actions';
+import * as uploadFile from '../../../actions/uploadFile';
 import { connect } from 'react-redux';
-import { Button, Input, InputGroup } from 'reactstrap';
+import { FormGroup, Label, Button, Input, InputGroup } from 'reactstrap';
 
-class Upload extends React.Component {
+import FullScreenLoader from '../loadingScreen/FullScreenLoader';
+import UploadUI from '../uploadUI/UploadUI';
+
+export default class Upload extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+          type: 'Student Data',
+          chosen: false,
+        }
+        
     }   
 
-    addFile(e) {
-    	const files = e.target.files;
-    	this.setState({files: files});
-  	}
+    chooseData(e) {
+      this.setState({type: e.target.value, chosen: true})
+    }
 
-  	addItem() {
+    getUrl(fileTypes, name) {
 
-        this.props.uploadFile(this.state.files[0]);
+        let typeToReturn;
 
-  	}
+        fileTypes.forEach((type) => {
+          if (type.name === name) {
+            typeToReturn = type.url;
+            return;
+          }
+        });
 
+        return typeToReturn;
+     
+    }
 
     render() {
+
+      const fileTypes = [{name: 'Student Data', url: '/upload/studentdata'},
+                         {name: 'College Data', url: '/upload/collegedata'}
+                        ];
+
         return (
         	<div className='upload'>
-        		<h1> Upload </h1>
-            <InputGroup>
-        			<Input className='btn' type='file' name='photo' onChange={this.addFile.bind(this)} />
-            </InputGroup> 
-        			<Button onClick={this.addItem.bind(this)}>Submit</Button>
+            <h1> Upload </h1>
+            <p> Which data would you like to upload? </p>
 
-              {this.props.upload.pending ? <div><p>Loading</p><i style={{fontSize: '50px', textAlign: 'center'}} className="fa fa-spinner fa-spin fa-3x fa-fw"></i></div> : null}
-              {this.props.upload.error ? <p> Error Found </p> : null}
-              {this.props.upload.success ? <p> {this.props.upload.message} </p> : null}
-
+            <FormGroup>
+              <Label for="fileType">Select</Label>
+              <Input type="select" name="fileType" onChange={this.chooseData.bind(this)}>
+                {fileTypes.map((type, i) => <option key={i}>{type.name}</option>)}
+              </Input>
+            </FormGroup>
+            
+            {this.state.chosen ? <UploadUI type={this.state.type} url={this.getUrl(fileTypes, this.state.type)} /> : null}
         	</div>
-
-
         	);
     }
 }
 
-function mapStateToProps(state) {
-  return { upload: state.upload };
-}
-
-export default connect(mapStateToProps, actions)(Upload);

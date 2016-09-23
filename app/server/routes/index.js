@@ -21,14 +21,11 @@ var fileUpload = upload.fields([{ name: 'file', maxCount: 1 }]);
 
 export default (app) => {	
 
-	app.post('/upload', fileUpload, function(req, res) {
-			console.log(req.files);
-			console.log(req.files.file[0])
-
+	app.post('/upload/studentdata', fileUpload, function(req, res) {
+			
 			const fileData = req.files.file[0];
 
 			const filePath = path.join(fileData.destination, fileData.filename);
-			console.log(filePath);
 
 			saveCSV(filePath).then((data) => {
 				res.status(200).send(data);
@@ -63,7 +60,9 @@ export default (app) => {
 	app.get('/api/students', (req, res) => {
 
 		console.log(req.query);
-		let query = student.find({}).limit(20);
+
+		let queryObject = req.query;
+		let query = student.find(queryObject).limit(20);
 		query.exec((err, students) => {
 			if (err) {
 				res.status(500).send(err);

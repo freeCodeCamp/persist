@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-import * as actions from '../../../actions';
+import * as getStudent from '../../../actions/getStudent';
 
 import SingleStudentForm from '../singlestudent/SingleStudentForm';
 
@@ -32,5 +32,5 @@ function mapStateToProps(state) {
   return { singleStudent: state.singleStudent };
 }
 
-export default connect(mapStateToProps, actions)(SingleStudent);
+export default connect(mapStateToProps, getStudent)(SingleStudent);
 

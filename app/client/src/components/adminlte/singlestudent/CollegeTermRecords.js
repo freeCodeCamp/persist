@@ -20,7 +20,7 @@ export default class CollegeTermRecords extends Component {
 
 		return (
 				<div id='college-term-records'>
-					<Table border style={{maxHeight: '200px'}}>
+					<Table bordered style={{maxHeight: '200px'}}>
                     <thead>
                       <tr>
                         <th colSpan='5'><h4 style={{textAlign: 'center'}}>College Term Records</h4></th>

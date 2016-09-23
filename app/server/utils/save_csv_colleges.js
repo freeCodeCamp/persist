@@ -3,7 +3,7 @@ import parse from 'csv-parse';
 import transform from 'stream-transform';
 import async from 'async';
 import mongoose from 'mongoose';
-import Student from '../models/student';
+import College from '../models/college';
 import collegeKeys from '../helpers/collegeKeys';
 
 export default function(fileName) {
@@ -43,7 +43,7 @@ export default function(fileName) {
 
       async.eachLimit(data, 10, (record, callback) => {
 
-        Student.update({
+        College.update({
           fullName: record.fullName
         }, record, {
           upsert: true,
