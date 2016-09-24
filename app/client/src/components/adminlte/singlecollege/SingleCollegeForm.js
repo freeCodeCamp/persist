@@ -4,13 +4,13 @@ import  { connect } from 'react-redux';
 
 import { Button, Form, Label, Input, Container, InputGroup, Row } from 'reactstrap';
 
-import FormGroup from './ReduxFormGroup';
-import CollegeSummary from './CollegeSummary';
-import CollegeTermRecords from './CollegeTermRecords';
 
-import keys from '../../../../../server/helpers/key';
 
-class SingleStudentForm extends React.Component {
+import FormGroup from '../singlestudent/ReduxFormGroup';
+
+import keys from '../../../../../server/helpers/collegeKeys';
+
+class SingleCollegeForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +22,7 @@ class SingleStudentForm extends React.Component {
     handleFormSubmit(object) {
         //this will handle updates
         console.log('this is our form object', object);
-        this.setState({editable: !this.state.editable})
+        this.setState({editable: !this.state.editable});
     }
 
     toggleEdit() {
@@ -33,12 +33,7 @@ class SingleStudentForm extends React.Component {
        
         const { handleSubmit, reset } = this.props;
 
-        const exceptions=[]
-
         var inputHTML = Object.keys(keys).map((key, i) => {
-            // if (exceptions.include(key)) {
-            //     return null;
-            // }
             return (
                 <div className="col-md-6 col-sm-4 col-lg-4" key={i}>
                     <FormGroup  disabled={this.state.editable} name={keys[key]}>{key}</FormGroup>
@@ -46,21 +41,8 @@ class SingleStudentForm extends React.Component {
             )
         });
 
-        const { hsGPA, majorMinor, transferStatus } = this.props.student;
-
-        const collegeSummary = {
-            recentCollege: 'TEST DATA',
-            hsGPA: hsGPA,
-            studentSupport:'TEST DATA',
-            majorMinor: majorMinor,
-            remediation: 'TEST DATA',
-            transferStatus: transferStatus
-        }
-
-        
         return (
             <div id="single-student-page">
-                <CollegeSummary summary={collegeSummary} />
                 <Form className='single-student-form' onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                     <Row>
                         {inputHTML}
@@ -72,26 +54,25 @@ class SingleStudentForm extends React.Component {
                     }
                     
                     
-                </Form>
-                <CollegeTermRecords terms={this.props.student.terms}/>
+                </Form> 
             </div> 
 
         	);
     }
 }
 
-SingleStudentForm = reduxForm({
-  form: 'SingleStudent' // a unique name for this form
-})(SingleStudentForm);
+SingleCollegeForm = reduxForm({
+  form: 'SingleCollege' // a unique name for this form
+})(SingleCollegeForm);
 
 function mapStateToProps(state) {
-  return { studentForm: state.form };
+  return { collegeForm: state.form };
 }
 
 // You have to connect() to any reducers that you wish to connect to yourself
 export default connect(
   mapStateToProps
-)(SingleStudentForm)
+)(SingleCollegeForm)
 
 
 

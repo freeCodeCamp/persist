@@ -30,4 +30,4 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps
-)(Students)
+)(Students);

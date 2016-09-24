@@ -2,6 +2,8 @@ import path from 'path';
 import multer from 'multer';
 import saveCSV from '../utils/save_csv';
 import student from '../models/student';
+import college from '../models/college';
+import saveCollegeData from '../utils/save_csv_colleges';
 
 var upload = multer({ dest: 'uploads/' });
 
@@ -21,13 +23,27 @@ var fileUpload = upload.fields([{ name: 'file', maxCount: 1 }]);
 
 export default (app) => {	
 
-	app.post('/upload/studentdata', fileUpload, function(req, res) {
+	app.post('/upload/studentData', fileUpload, function(req, res) {
 			
 			const fileData = req.files.file[0];
 
 			const filePath = path.join(fileData.destination, fileData.filename);
 
 			saveCSV(filePath).then((data) => {
+				res.status(200).send(data);
+			}).catch((err) => {
+				console.log(err);
+				res.status(500).send(err);
+			});
+	});
+
+	app.post('/upload/collegeData', fileUpload, function(req, res) {
+			
+			const fileData = req.files.file[0];
+
+			const filePath = path.join(fileData.destination, fileData.filename);
+
+			saveCollegeData(filePath).then((data) => {
 				res.status(200).send(data);
 			}).catch((err) => {
 				console.log(err);
@@ -56,7 +72,27 @@ export default (app) => {
 			res.send("working on it");
 		});
 
-	// main routes for queries to students db - e.g. get per school, get certain category e.t.c.
+	app.route('/api/college/:fullName')
+		.get((req, res) => {
+			console.log(req.params.fullName);
+			college.find({fullName: req.params.fullName }, (err, college) => {
+				if (err) {
+					res.status(500).send(err);
+				}
+				res.status(200).json(college);
+			});
+		})
+		.post((req, res) => {
+			res.send('working on it');
+		})
+		.put((req, res) => {
+			res.send("working on it");
+		})
+		.delete((req, res) => {
+			res.send("working on it");
+		});
+
+	// main routes for queries to students db 
 	app.get('/api/students', (req, res) => {
 
 		console.log(req.query);
@@ -68,6 +104,21 @@ export default (app) => {
 				res.status(500).send(err);
 			}
 			res.status(200).json(students);
+		});
+	});
+
+	// main routes for queries to colleges db 
+	app.get('/api/colleges', (req, res) => {
+
+		console.log(req.query);
+
+		let queryObject = req.query;
+		let query = college.find(queryObject).limit(20);
+		query.exec((err, colleges) => {
+			if (err) {
+				res.status(500).send(err);
+			}
+			res.status(200).json(colleges);
 		});
 	});
 

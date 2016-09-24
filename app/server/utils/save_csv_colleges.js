@@ -25,7 +25,6 @@ export default function(fileName) {
       years[2014] = record['2014 Enrolled Fall 1'];
       years[2015] = record['2015 Enrolled Fall 1 '];
       
-
       record.enrollmentYears = years;
 
       return record;

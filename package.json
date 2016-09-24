@@ -52,6 +52,7 @@
     "reactstrap": "^3.2.2",
     "redux": "^3.6.0",
     "redux-form": "^6.0.5",
+    "redux-form-material-ui": "^4.0.1",
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {

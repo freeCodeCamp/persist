@@ -12,6 +12,7 @@ import Upload from './components/adminlte/pages/Upload';
 import Schools from './components/adminlte/pages/Schools';
 import Students from './components/adminlte/pages/Students';
 import SingleStudent from './components/adminlte/pages/SingleStudent';
+import SingleCollege from './components/adminlte/pages/SingleCollege';
 import Colleges from './components/adminlte/pages/Colleges';
 
 //redux store
@@ -27,6 +28,7 @@ ReactDOM.render(
     		<Route path='students' component={Students} />
         <Route path='colleges' component={Colleges} />
         <Route path='student/:contactID' component={SingleStudent} />
+        <Route path='college/:fullName' component={SingleCollege} />
     	</Route>
     </Router>
   </Provider>

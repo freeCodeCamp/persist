@@ -16,3 +16,13 @@ export const FILTER_STUDENT_SUCCESS = 'filter_student_success';
 export const FILTER_STUDENT_ERROR = 'filter_student_error';
 export const FILTER_STUDENT_PENDING = 'filter_student_pending';
 export const FILTER_STUDENT_RESET = 'filter_student_reset';
+
+// filter colleges
+export const FILTER_COLLEGE_SUCCESS = 'filter_college_success';
+export const FILTER_COLLEGE_ERROR = 'filter_college_error';
+export const FILTER_COLLEGE_PENDING = 'filter_college_pending';
+
+// single colege
+export const GET_COLLEGE_SUCCESS = 'get_college_success';
+export const GET_COLLEGE_ERROR = 'get_college_error';
+export const GET_COLLEGE_PENDING = 'get_college_pending';

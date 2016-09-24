@@ -37,8 +37,8 @@ export default class Upload extends React.Component {
 
     render() {
 
-      const fileTypes = [{name: 'Student Data', url: '/upload/studentdata'},
-                         {name: 'College Data', url: '/upload/collegedata'}
+      const fileTypes = [{name: 'Student Data', url: '/upload/studentData'},
+                         {name: 'College Data', url: '/upload/collegeData'}
                         ];
 
         return (
@@ -49,6 +49,7 @@ export default class Upload extends React.Component {
             <FormGroup>
               <Label for="fileType">Select</Label>
               <Input type="select" name="fileType" onChange={this.chooseData.bind(this)}>
+                <option></option>
                 {fileTypes.map((type, i) => <option key={i}>{type.name}</option>)}
               </Input>
             </FormGroup>
