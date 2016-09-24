@@ -1,7 +1,11 @@
 import React from 'react';
 import { Container } from 'reactstrap';
-import Header from './Header';
-import Sidebar from './Sidebar';
+import Header from '../lteintegrate/Header';
+import SideBar from '../lteintegrate/SideBar';
+import SideBarBackGround from '../lteintegrate/SideBar';
+import Content from '../lteintegrate/Content';
+import Settings from '../lteintegrate/Settings';
+import Footer from '../lteintegrate/Footer';
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -10,16 +14,13 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-            <div id='app'>
-	           <Header />
-               <div id='content'>
-                    <Sidebar />
-                    <div id='main_content'>
-                        <Container>
-                            {this.props.currentPage}
-                        </Container>
-                    </div>
-               </div>
+            <div>
+    	        <Header />
+                <SideBar />
+                <Content currentPage={this.props.currentPage}/>
+                <Settings />
+                <Footer />
+                <SideBarBackGround />
             </div>
         );
     }

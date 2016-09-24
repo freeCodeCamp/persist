@@ -7,7 +7,6 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 //components
 import App from './components/app';
-import CommentBox from './components/comment_box';
 import DashboardMain from './components/adminlte/pages/DashboardMain';
 import Upload from './components/adminlte/pages/Upload';
 import Schools from './components/adminlte/pages/Schools';

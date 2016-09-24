@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-import StudentFilter from '../studentfilter/StudentFilter'
-import StudentTable from '../studentfilter/StudentTable'
+import StudentFilter from '../studentfilter/StudentFilter';
+import StudentTable from '../studentfilter/StudentTable';
+
 
 class Students extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class Students extends Component {
 
         return (
         	<div>
-                <h1> Students </h1>
+                <h1>Students</h1>
                 <StudentFilter />
                 <StudentTable students={this.props.studentFilter.students} />
         	</div>
