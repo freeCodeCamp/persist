@@ -26,3 +26,6 @@ export const FILTER_COLLEGE_PENDING = 'filter_college_pending';
 export const GET_COLLEGE_SUCCESS = 'get_college_success';
 export const GET_COLLEGE_ERROR = 'get_college_error';
 export const GET_COLLEGE_PENDING = 'get_college_pending';
+
+// spinner
+export const SPINNER = 'spinner';

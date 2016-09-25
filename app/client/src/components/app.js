@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-
-import Dashboard from './adminlte/Dashboard';
-
-require('../../public/style/main2.scss');
+import Dashboard from './DashBoard';
 
 export default class App extends Component {
   render() {
@@ -12,9 +9,7 @@ export default class App extends Component {
     }
 
     return (
-      <div id='application-holder'>
-        <Dashboard currentPage={currentPage}/>
-      </div>
-    );
+      <Dashboard currentPage={ currentPage } />
+      );
   }
 }

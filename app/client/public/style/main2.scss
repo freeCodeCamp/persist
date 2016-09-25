@@ -1,21 +1,15 @@
-// @import 'https://fonts.googleapis.com/css?family=Kalam:400,700';
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
+
 $tablet-width: 768px;
 $desktop-width: 1024px;
 
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-@import './partials/studentpage';
-// Font Variables
-$open-sans: 'Open Sans', sans-serif;
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
-
-body {
-  font-family: $open-sans;
-}
+// @import "./partials/studentpage";
 
 h1 {
   text-align: center;
 }
-
 
 @mixin tablet {
   @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
@@ -51,112 +45,6 @@ $last: #2980B9;
   box-sizing: border-box;
 }
 
-.icon {
-  @extend .center;
-
-  padding: 15px;
-  width: 50px;
-}
-
-.padding {
-  padding: 15px;
-}
-
-.hidden {
-  display: none !important;
-}
-
-div#app {
-  display: flex;
-  flex-direction: column;
-}
-
-
-
-div#header {
-  display: flex;
-
-  div#logo {
-    @extend .center;
-
-    min-width: 50px;
-    background-color: $last;
-  }
-
-  div#nav_bar {
-    display: flex;
-    background-color: $slast;
-    justify-content: space-between;
-    flex: 16;
-
-    div#switch, div#nav_links, div.nav_link {
-      display: flex;
-      cursor: pointer;
-    }
-  }
-
-  @include mobile {
-    flex-direction: column;
-
-    div#logo {
-      padding: 15px;
-    }
-  }
-}
-
-.large_nav {
-  flex: 4;
-  max-width: 200px;
-
-  @include mobile {
-    max-width: 100%;
-  }
-}
-
-.small_nav {}
-
-div#content {
-  display: flex;
-  position: relative;
-
-  div#main_sidebar {
-    div#sidebar_navigation {
-      display: flex;
-      flex-direction: column;
-      background-color: $first;
-      color: $mid;
-
-      div.side_nav {
-        display: flex;
-
-        span.icon {}
-
-        span.desc {
-          @extend .center;
-
-          justify-content: flex-start;
-          flex: 4;
-
-          a {
-            color: $mid;
-            text-decoration: none;
-          }
-        }
-      }
-
-      @include mobile {
-        width: 200px;
-      }
-    }
-
-    @include mobile {
-      position: absolute;
-      width: 200px;
-    }
-  }
-
-  div#main_content {
-    flex: 16;
-    padding: 30px;
-  }
+label {
+  font-weight: 400 !important;
 }

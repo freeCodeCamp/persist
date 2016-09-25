@@ -17,16 +17,10 @@
 //     });
 // }
 
-$('#switch').on('click', function(event) {
-    event.preventDefault();
-    
-    var logoLarger = $('#logo #large');
-    var logoSmaller = $('#logo #small');
+$('ul.sidebar-menu li').on('click', function(e) {
 
-    $('#logo #large').toggle();
-    $('#logo #small').toggle();
-
-    $('#main_sidebar, #logo').toggleClass('large_nav small_nav', 200, 'linear');
-    $('span.desc').toggle(200, 'linear');
+  var $this = $(e.target).closest('li');
+  $this.siblings().removeClass('active');
+  $this.addClass('active');
 
 });
