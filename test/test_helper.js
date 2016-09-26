@@ -7,7 +7,7 @@ import chai, { expect } from 'chai';
 import chaiJquery from 'chai-jquery';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import reducers from '../src/reducers';
+import reducers from '../app/client/src/reducers';
 
 //sets up jsdom
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
@@ -44,5 +44,15 @@ $.fn.simulate = function(eventName, value) {
   //this just gets first element in array in case of selecting multiople
   TestUtils.Simulate[eventName](this[0]);
 };
+
+// ignore css/sass files
+
+function donothing() {
+  return null;
+}
+
+require.extensions['.css'] = donothing;
+require.extensions['.less'] = donothing;
+require.extensions['.scss'] = donothing;
 
 export {renderComponent, expect};

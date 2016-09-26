@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
+    "test:watch": "npm run test -- --watch",
     "watch": "nodemon --config nodemon.json --exec babel-node server.js",
     "debug": "node-inspector --web-port=8888 & nodemon --config nodemon.json --exec babel-node --debug server.js",
     "build": "babel server.js --out-file serverProd.js",
@@ -72,12 +73,18 @@
     "react-hot-loader": "^3.0.0-beta.4",
     "redux-logger": "^2.6.1",
     "reload": "^1.0.1",
+    "react-addons-test-utils": "^15.3.2",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1",
-    "webpack-hot-middleware": "^2.10.0"
+    "webpack-hot-middleware": "^2.10.0",
+    "jsdom": "^9.5.0",
+    "mocha": "^3.0.2",
+    "jquery": "^3.1.1",
+    "chai": "^3.5.0",
+    "chai-jquery": "^2.0.0"
   },
   "engines": {
     "node": "4.2.4"

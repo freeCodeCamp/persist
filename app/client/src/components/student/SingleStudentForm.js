@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { Button, Form, Row } from 'react-bootstrap';
 
 import FormGroup from '../helpers/ReduxFormGroup';
-import CollegeSummary from '../college/CollegeSummary';
-import CollegeTermRecords from '../college/CollegeTermRecords';
+import CollegeSummary from './CollegeSummary';
+import CollegeTermRecords from './CollegeTermRecords';
 
 import keys from '../../../../server/helpers/key';
 

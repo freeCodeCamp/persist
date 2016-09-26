@@ -1,4 +1,4 @@
-import { expect } from "../test_helper";
+/*import { expect } from "../test_helper";
 import { SAVE_COMMENT } from '../../src/actions/types';
 import { saveComment } from '../../src/actions'; //will import index.js
 
@@ -16,4 +16,4 @@ describe('actions', () => {
 		});
 	});
 
-});
+});*/
