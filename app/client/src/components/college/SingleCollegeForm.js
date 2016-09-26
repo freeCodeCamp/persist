@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 
 import { Button, Form, Label, Input, Container, InputGroup, Row } from 'react-bootstrap';
 
-
-
 import FormGroup from '../helpers/ReduxFormGroup';
 
 import keys from '../../../../server/helpers/collegeKeys';

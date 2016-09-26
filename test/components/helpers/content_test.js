@@ -8,10 +8,9 @@ describe('Content', () => {
 	beforeEach(() => {
 		const props = {
 			children: 'test'
-		}
+		};
 
 		component = renderComponent(Content, props);
-		console.log(component);
 	});
 	
 	it('has correct class', () => {
