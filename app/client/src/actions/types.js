@@ -29,3 +29,8 @@ export const GET_COLLEGE_PENDING = 'get_college_pending';
 
 // spinner
 export const SPINNER = 'spinner';
+
+// schools
+export const GET_SCHOOLS_SUCCESS = 'get_schools_success';
+export const GET_SCHOOLS_ERROR = 'get_schools_error';
+export const GET_SCHOOLS_PENDING = 'GET_SCHOOLS_pending';

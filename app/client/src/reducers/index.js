@@ -8,6 +8,7 @@ import singleCollegeReducer from './singleCollege';
 import studentFilterReducer from './studentFilter';
 import collegeFilterReducer from './collegeFilter';
 import spinnerReducer from './spinner';
+import schoolReducer from './schools';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   form: formReducer,
   studentFilter: studentFilterReducer,
   collegeFilter: collegeFilterReducer,
-  spinner: spinnerReducer
+  spinner: spinnerReducer,
+  schools: schoolReducer
 });
 
 export default rootReducer;

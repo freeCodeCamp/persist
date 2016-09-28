@@ -3,6 +3,7 @@ import multer from 'multer';
 import saveCSV from '../utils/save_csv';
 import student from '../models/student';
 import college from '../models/college';
+import school from '../models/school';
 import saveCollegeData from '../utils/save_csv_colleges';
 
 var upload = multer({ dest: 'uploads/' });
@@ -119,6 +120,17 @@ export default (app) => {
 				res.status(500).send(err);
 			}
 			res.status(200).json(colleges);
+		});
+	});
+
+	app.get('/api/schools', (req, res) => {
+
+		let query = school.find({});
+		query.exec((err, schools) => {
+			if (err) {
+				res.status(500).send(err);
+			}
+			res.status(200).json(schools);
 		});
 	});
 
