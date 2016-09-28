@@ -9,7 +9,7 @@ export function filterStudents(queryObject) {
     dispatch({
       type: FILTER_STUDENT_PENDING
     });
-    axios.get('/api/students', {
+    return axios.get('/api/students', {
       params: queryObject
     })
       .then((response) => {

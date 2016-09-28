@@ -15,7 +15,7 @@ export function uploadFile(url, file) {
     var data = new FormData();
     data.append('file', file);
 
-    axios.post(url, data)
+    return axios.post(url, data)
       .then((response) => {
         const message = 'You added ' + response.data.addedCount + ' and modified ' + response.data.modifiedCount;
         dispatch({

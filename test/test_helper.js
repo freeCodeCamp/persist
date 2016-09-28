@@ -13,6 +13,8 @@ import reducers from '../app/client/src/reducers';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+//injectTapEventPlugin();
+
 //sets up jsdom
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.window = global.document.defaultView;

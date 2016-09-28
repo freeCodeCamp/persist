@@ -8,12 +8,12 @@ describe('CollegeTable', () => {
 
 	beforeEach(() => {
 		const props = {colleges: [{
-						fullName: "College 1",
-						shortName: "Col1"
+						fullName: 'College 1',
+						shortName: 'Col1'
 						},
 						{
-						fullName: "College 2",
-						shortName: "Col2"
+						fullName: 'College 2',
+						shortName: 'Col2'
 						}]
 						};
 
