@@ -10,8 +10,6 @@ import thunk from 'redux-thunk'
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
 
-
-
 describe('Set Spinner Action', (done) => {
 
 	describe('setSpinner', () => {

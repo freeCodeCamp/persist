@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
   entry: [
     'webpack-hot-middleware/client',
     './app/client/src/index.js'
