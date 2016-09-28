@@ -53,11 +53,11 @@ export default class HeaderBar extends Component {
               <HeaderTasks />
               { /* User Account: style can be found in dropdown.less */ }
               <li className='dropdown user user-menu'>
-                <a href='#' className='dropdown-toggle' data-toggle='dropdown'><img src='/molly.PNG' className='user-image' alt='User Image' /> <span className='hidden-xs'>Alexander Pierce</span></a>
+                <a href='#' className='dropdown-toggle' data-toggle='dropdown'><img src='/molly.PNG' className='user-image' alt='User Image' /> <span className='hidden-xs'>Molly Dunbar</span></a>
                 <ul className='dropdown-menu'>
                   { /* User image */ }
                   <li className='user-header'>
-                    <img src='dist/img/user2-160x160.jpg' className='img-circle' alt='User Image' />
+                    <img src='/molly.PNG' className='img-circle' alt='User Image' />
                     <p>
                       Molly Dunbar - The Boss
                       <small>Member since Forever</small>
