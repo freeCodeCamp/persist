@@ -26,25 +26,6 @@ describe('Set Spinner Action', (done) => {
 		  expect(actions).to.deep.equal([setSpinner]);
 		});
 
-
-
-
-		/*
-		 it('should create a set spinner function', () => {
-    		expect(setSpinner()).to.be.a.function;
-  		});
-		
-		it('has the correct type', () => {
-			const action = setSpinner()(); //this returns object from action
-			
-			expect(action.type).to.equal(SPINNER);
-		});
-	
-		it('has the correct payload', () => {
-			const action = setSpinner(true);
-			expect(action.payload).to.equal(true);
-		});
-		*/
 	});
 
 });
