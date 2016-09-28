@@ -9,7 +9,7 @@ export default class Content extends Component {
 
   render() {
     return (
-      <div>
+      <div className='content-provider'>
         <ContentHeader title={ this.props.title } desc={ this.props.desc } componentName={ this.props.componentName } />
         <section className='content'>
           { this.props.children }

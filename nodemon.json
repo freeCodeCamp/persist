@@ -5,6 +5,7 @@
   	"/app/client/src/reducers",
 	"/app/client/src/actions",
   	"/adminlte",
-  	"/uploads"
+  	"/uploads",
+  	"/test"
   ]
 }

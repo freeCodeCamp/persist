@@ -6,7 +6,7 @@ export function getCollege(fullName) {
 		return function(dispatch) {
 
 			dispatch({type: GET_COLLEGE_PENDING});
-			axios.get('/api/college/' + fullName)
+			return axios.get('/api/college/' + fullName)
 	            .then((response) => {
 	                console.log(response.data);
 	                dispatch({type: GET_COLLEGE_SUCCESS, payload: response.data[0]});

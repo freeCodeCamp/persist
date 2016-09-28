@@ -13,24 +13,24 @@ class CollegeTable extends React.Component {
     const collegesHTML = this.props.colleges.map((college, i) => {
       return (
         <tr key={ i }>
-          <th>
+          <td>
             { i }
-          </th>
-          <th>
+          </td>
+          <td>
             <Link to={ `/college/${college.fullName}` }>
             { college.shortName }
             </Link>
-          </th>
-          <th>
+          </td>
+          <td>
             { college.fullName }
-          </th>
+          </td>
         </tr>
         );
     });
 
 
     return (
-      <Table striped bordered hover>
+      <Table striped bordered hover className='college-table'>
         <thead>
           <tr>
             <th>
