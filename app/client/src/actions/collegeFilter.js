@@ -9,11 +9,9 @@ export function filterColleges(queryObject) {
 			dispatch({type: FILTER_COLLEGE_PENDING});
 			return axios.get('/api/colleges', {params: queryObject})
 	            .then((response) => {
-	              
 	                dispatch({type: FILTER_COLLEGE_SUCCESS, payload: response.data});
 	            }).catch((err) => {
-	            	
-	                 dispatch({type: FILTER_COLLEGE_ERROR, payload: err});
+	                dispatch({type: FILTER_COLLEGE_ERROR, payload: err});
 	            });
 		};
 }
