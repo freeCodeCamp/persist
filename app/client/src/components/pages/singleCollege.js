@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import * as getCollege from '../../actions/getCollege';
 
-import SingleCollegeForm from '../singlecollege/SingleCollegeForm';
+import SingleCollegeForm from '../college/SingleCollegeForm';
 import Content from '../helpers/content';
 
 class SingleCollege extends React.Component {
@@ -44,5 +44,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, getStudent)(SingleCollege);
+export default connect(mapStateToProps, getCollege)(SingleCollege);
 

@@ -20,7 +20,7 @@ const termSchema = {
 
 const Student = new Schema({
 
-	firstName: String,
+	firstName: { type: String, index: true },
 	lastName: String,
 	middleName: String,
 	suffix: String,
