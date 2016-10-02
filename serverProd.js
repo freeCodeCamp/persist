@@ -40,8 +40,10 @@ function _interopRequireDefault(obj) {
 
 // import passport from 'passport';
 // import flash from 'connect-flash';
-// get environment variables
-_dotenv2.default.config();
+if (process.env.NODE_ENV !== 'production') {
+  // get environment variables
+  _dotenv2.default.config();
+}
 
 // connect to mongoDB database
 _mongoose2.default.connect(process.env.MONGODB_URI);
