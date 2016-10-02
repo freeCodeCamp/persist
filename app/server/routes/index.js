@@ -6,7 +6,9 @@ import college from '../models/college';
 import school from '../models/school';
 import saveCollegeData from '../utils/save_csv_colleges';
 
-var upload = multer({ dest: 'uploads/' });
+var upload = multer({
+  dest: 'uploads/'
+});
 
 // set disk storage
 var storage = multer.diskStorage({
@@ -20,121 +22,145 @@ var storage = multer.diskStorage({
 });
 
 // configure multer middleware
-var fileUpload = upload.fields([{ name: 'file', maxCount: 1 }]);
+var fileUpload = upload.fields([{
+  name: 'file',
+  maxCount: 1
+}]);
 
-export default (app) => {	
+export default (app) => {
 
-	app.post('/upload/studentData', fileUpload, function(req, res) {
-			
-			const fileData = req.files.file[0];
+  app.post('/upload/studentData', fileUpload, function(req, res) {
 
-			const filePath = path.join(fileData.destination, fileData.filename);
+    const fileData = req.files.file[0];
 
-			saveCSV(filePath).then((data) => {
-				res.status(200).send(data);
-			}).catch((err) => {
-				console.log(err);
-				res.status(500).send(err);
-			});
-	});
+    const filePath = path.join(fileData.destination, fileData.filename);
 
-	app.post('/upload/collegeData', fileUpload, function(req, res) {
-			
-			const fileData = req.files.file[0];
+    saveCSV(filePath).then((data) => {
+      res.status(200).send(data);
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
+  });
 
-			const filePath = path.join(fileData.destination, fileData.filename);
+  app.post('/upload/collegeData', fileUpload, function(req, res) {
 
-			saveCollegeData(filePath).then((data) => {
-				res.status(200).send(data);
-			}).catch((err) => {
-				console.log(err);
-				res.status(500).send(err);
-			});
-	});
+    const fileData = req.files.file[0];
 
-	// main REST API for getting/adding/deleting/modifying student data
-	app.route('/api/student/:contactID')
-		.get((req, res) => {
-			console.log(req.params.contactID);
-			student.find({contactID: req.params.contactID }, (err, student) => {
-				if (err) {
-					res.status(500).send(err);
-				}
-				res.status(200).json(student);
-			});
-		})
-		.post((req, res) => {
-			res.send('working on it');
-		})
-		.put((req, res) => {
-			res.send("working on it");
-		})
-		.delete((req, res) => {
-			res.send("working on it");
-		});
+    const filePath = path.join(fileData.destination, fileData.filename);
 
-	app.route('/api/college/:fullName')
-		.get((req, res) => {
-			console.log(req.params.fullName);
-			college.find({fullName: req.params.fullName }, (err, college) => {
-				if (err) {
-					res.status(500).send(err);
-				}
-				res.status(200).json(college);
-			});
-		})
-		.post((req, res) => {
-			res.send('working on it');
-		})
-		.put((req, res) => {
-			res.send("working on it");
-		})
-		.delete((req, res) => {
-			res.send("working on it");
-		});
+    saveCollegeData(filePath).then((data) => {
+      res.status(200).send(data);
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
+  });
 
-	// main routes for queries to students db 
-	app.get('/api/students', (req, res) => {
+  // handle autocomplete
+  app.post('/suggestions', (req, res) => {
+    let columnName = req.body.columnName;
+    let value = new RegExp('.*' + req.body.value + '.*', 'i');
+    let find = {};
+    find[columnName] = value;
+    student
+      .distinct(columnName, find)
+      .exec((err, data) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        res.send(data.splice(0, 5));
+      });
+  });
 
-		console.log(req.query);
+  // main REST API for getting/adding/deleting/modifying student data
+  app.route('/api/student/:contactID')
+    .get((req, res) => {
+      console.log(req.params.contactID);
+      student.find({
+        contactID: req.params.contactID
+      }, (err, student) => {
+        if (err) {
+          res.status(500).send(err);
+        }
+        res.status(200).json(student);
+      });
+    })
+    .post((req, res) => {
+      res.send('working on it');
+    })
+    .put((req, res) => {
+      res.send('working on it');
+    })
+    .delete((req, res) => {
+      res.send('working on it');
+    });
 
-		let queryObject = req.query;
-		let query = student.find(queryObject).limit(20);
-		query.exec((err, students) => {
-			if (err) {
-				res.status(500).send(err);
-			}
-			res.status(200).json(students);
-		});
-	});
+  app.route('/api/college/:fullName')
+    .get((req, res) => {
+      console.log(req.params.fullName);
+      college.find({
+        fullName: req.params.fullName
+      }, (err, college) => {
+        if (err) {
+          res.status(500).send(err);
+        }
+        res.status(200).json(college);
+      });
+    })
+    .post((req, res) => {
+      res.send('working on it');
+    })
+    .put((req, res) => {
+      res.send('working on it');
+    })
+    .delete((req, res) => {
+      res.send('working on it');
+    });
 
-	// main routes for queries to colleges db 
-	app.get('/api/colleges', (req, res) => {
+  // main routes for queries to students db 
+  app.get('/api/students', (req, res) => {
 
-		console.log(req.query);
+    console.log(req.query);
 
-		let queryObject = req.query;
-		let query = college.find(queryObject).limit(20);
-		query.exec((err, colleges) => {
-			if (err) {
-				res.status(500).send(err);
-			}
-			res.status(200).json(colleges);
-		});
-	});
+    let queryObject = req.query;
+    let query = student.find(queryObject).limit(20);
+    query.exec((err, students) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(students);
+    });
+  });
 
-	app.get('/api/schools', (req, res) => {
+  // main routes for queries to colleges db 
+  app.get('/api/colleges', (req, res) => {
 
-		let query = school.find({});
-		query.exec((err, schools) => {
-			if (err) {
-				res.status(500).send(err);
-			}
-			res.status(200).json(schools);
-		});
-	});
+    console.log(req.query);
 
-	app.get('/*', (req, res) => {
-		res.sendFile(path.join(__dirname, '../../client/public/index.html'));
-	});	
+    let queryObject = req.query;
+    let query = college.find(queryObject).limit(20);
+    query.exec((err, colleges) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(colleges);
+    });
+  });
+
+  app.get('/api/schools', (req, res) => {
+
+    let query = school.find({});
+    query.exec((err, schools) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(schools);
+    });
+  });
+
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/public/index.html'));
+  });
 };

@@ -1,4 +1,3 @@
-
 // uploads
 export const UPLOAD_FILE_SUCCESS = 'upload_file_success';
 export const UPLOAD_FILE_ERROR = 'upload_file_error';
@@ -34,3 +33,6 @@ export const SPINNER = 'spinner';
 export const GET_SCHOOLS_SUCCESS = 'get_schools_success';
 export const GET_SCHOOLS_ERROR = 'get_schools_error';
 export const GET_SCHOOLS_PENDING = 'GET_SCHOOLS_pending';
+
+// suggestions
+export const GET_SUGGESTIONS = 'get_suggestions';

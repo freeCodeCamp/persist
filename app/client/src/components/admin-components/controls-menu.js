@@ -6,7 +6,7 @@ export default class ControlsMenu extends Component {
     return (
       <aside className='control-sidebar control-sidebar-dark'>
         <ul className='nav nav-tabs nav-justified control-sidebar-tabs'>
-          <li className='active'>
+          <li>
             <a href='#control-sidebar-home-tab' data-toggle='tab'><i className='fa fa-home' /></a>
           </li>
           <li>
@@ -14,7 +14,7 @@ export default class ControlsMenu extends Component {
           </li>
         </ul>
         <div className='tab-content'>
-          <div className='tab-pane' id='control-sidebar-home-tab' className='tab-pane active'>
+          <div className='tab-pane' id='control-sidebar-home-tab' className='tab-pane'>
             <h3 className='control-sidebar-heading'>Recent Activity</h3>
             <ul className='control-sidebar-menu'>
               <li>
