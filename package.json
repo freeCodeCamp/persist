@@ -59,7 +59,8 @@
     "redux": "^3.6.0",
     "redux-form": "^6.0.5",
     "redux-form-material-ui": "^4.0.1",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "reload": "^1.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",
