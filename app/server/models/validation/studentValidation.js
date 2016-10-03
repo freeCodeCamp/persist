@@ -1,4 +1,3 @@
-
 import validator, { messages, enums } from './validator';
 
 const Parent = {
@@ -96,7 +95,9 @@ export default {
   iniEnrollDate: Date,
   ethnicity: {
     type: Number,
-    min: [1, 'Ethnicity must be between 1 and 7'],
+    min: [
+      1, 'Ethnicity must be between 1 and 7'
+    ],
     max: [7, 'Ethnicity must be between 1 and 7']
   },
   gender: {
@@ -126,4 +127,3 @@ export default {
     }
   }
 };
-

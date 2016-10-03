@@ -1,28 +1,41 @@
-
 export const messages = {
   default: 'You tried to add `{VALUE}` to `{PATH}` which is forbidden'
 };
 
 export const enums = {
   hsAttended: {
-    values: ['Baldwin', 'Brooklyn Collaborative', 'Channel View', 'Kurt Hahn', 'Leaders', 'MELS', 'McCown', 'WHEELS'],
+    values: [
+      'Baldwin',
+      'Brooklyn Collaborative',
+      'Channel View',
+      'Kurt Hahn',
+      'Leaders',
+      'MELS',
+      'McCown',
+      'WHEELS'
+    ],
     message: messages.default
   },
   gender: {
-    values: ['M', 'F'],
+    values: [
+      'M', 'F'
+    ],
     message: messages.default
   },
   ferpa: {
-    values: ['Yes', 'No'],
+    values: [
+      'Yes', 'No'
+    ],
     message: messages.default
   },
   cohort: {
-    values: ['P (2010)',
-      'Q (2011)',
+    values: [
+      'M (2007)',
       'N (2008)',
       'O (2009)',
+      'P (2010)',
+      'Q (2011)',
       'R (2012)',
-      'M (2007)',
       'S (2013)',
       'T (2014)',
       'U (2015)',
@@ -30,11 +43,11 @@ export const enums = {
       'W (2017)',
       'X (2018)',
       'Y (2019)',
-      'Z (2020)]'],
+      'Z (2020)]'
+    ],
     message: messages.default
   }
 };
-
 
 export default {
 
@@ -55,15 +68,19 @@ export default {
   },
 
   types: {
-    tags: ['SPED', 'Free Lunch Eligible', 'ELL'],
-    transferStatus: ['2 Year to 4 Year',
+    tags: [
+      'SPED', 'Free Lunch Eligible', 'ELL'
+    ],
+    transferStatus: [
+      '2 Year to 4 Year',
       '2 Year to 2 Year',
       '4 Year to 4 Year',
       '4 Year to 2 Year',
       'Planning to Transfer',
       'Needs Transfer Support'
     ],
-    studentSupportOrgName: ['Other',
+    studentSupportOrgName: [
+      'Other',
       'SEEK',
       'CUNY ASAP',
       'CUNY Clip',
@@ -83,7 +100,8 @@ export default {
       'TRIO',
       'Apple Corps',
       'Red Hook Initiative Young Adult program',
-      'John Jay ACE'],
+      'John Jay ACE'
+    ],
     remediationStatus: [
       'Needs Math Remediation',
       'Needs Reading Remediation',
@@ -92,12 +110,12 @@ export default {
       'Never Needed Remediation',
       'Attempted Math Remediation (Failed)',
       'Attempted Reading Remediation (Failed)',
-      'Attempted Writing Remediation (Failed)']
+      'Attempted Writing Remediation (Failed)'
+    ]
   },
 
   helpers: {
     validateArray: function(inputArray, optionsArray) {
-
 
       if (inputArray.constructor !== Array) {
         return false;
@@ -116,4 +134,3 @@ export default {
   }
 
 };
-
