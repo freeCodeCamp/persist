@@ -8,11 +8,26 @@ import '../../public/style/main2.scss';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import studentValidation from '../../../server/models/validation/studentValidation';
+
 injectTapEventPlugin();
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    const mongoose = window.mongoose;
+    const Student = new mongoose.Schema(studentValidation);
+
+    var doc = new mongoose.Document({}, Student);
+
+    doc.tags = ['bloody hell it works man!']
+
+    doc.validate(function(error) {
+      console.log(error);
+    });
   }
 
   render() {
