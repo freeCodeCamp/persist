@@ -50,6 +50,10 @@ export default {
     return this.helpers.validateArray(v, this.types.studentSupportOrgName);
   },
 
+  remediationStatus(v) {
+    return this.helpers.validateArray(v, this.types.remediationStatus);
+  },
+
   types: {
     tags: ['SPED', 'Free Lunch Eligible', 'ELL'],
     transferStatus: ['2 Year to 4 Year',
@@ -79,8 +83,16 @@ export default {
       'TRIO',
       'Apple Corps',
       'Red Hook Initiative Young Adult program',
-      'John Jay ACE']
-
+      'John Jay ACE'],
+    remediationStatus: [
+      'Needs Math Remediation',
+      'Needs Reading Remediation',
+      'Needs Writing Remediation',
+      'Has Completed All Remediation Requirements',
+      'Never Needed Remediation',
+      'Attempted Math Remediation (Failed)',
+      'Attempted Reading Remediation (Failed)',
+      'Attempted Writing Remediation (Failed)']
   },
 
   helpers: {

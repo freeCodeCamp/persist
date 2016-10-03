@@ -23,6 +23,8 @@ newStudent.transferStatus = ['2 Year to 4 Year',
 newStudent.studentSupportOrgName = ['Other',
       'SEEK'];
 
+newStudent.remediationStatus = ['Has Completed All Remediation Requirements']
+
 console.log(newStudent)
 newStudent.save((err) => {
 

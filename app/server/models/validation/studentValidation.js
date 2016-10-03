@@ -117,6 +117,13 @@ export default {
   ferpa: {
     type: String,
     enum: enums.ferpa
+  },
+  remediationStatus: {
+    type: [String],
+    validate: {
+      validator: validator.remediationStatus.bind(validator),
+      message: messages.default
+    }
   }
 };
 
