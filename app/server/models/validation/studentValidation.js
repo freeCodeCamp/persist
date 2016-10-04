@@ -199,7 +199,7 @@ export default {
   }
 
   // TO FINISH
-   // Graduation Date, Intended College, College Name, Term, Status
+  // Graduation Date, Intended College, College Name, Term, Status
 
 
 };
