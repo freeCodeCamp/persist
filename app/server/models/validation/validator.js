@@ -32,7 +32,123 @@ export const enums = {
       'Y (2019)',
       'Z (2020)]'],
     message: messages.default
+  },
+  residency: {
+    values: ['Lives with Family',
+          'Lives independently',
+          'Lives on Campus',
+          'Displaced',
+          'Lives on Campus, displaced during breaks'],
+    message: messages.default
+  },
+  progressToGradAss: {
+    values: [
+    'Confirmed Graduate',
+    'Likely Graduate',
+    'Short 12 credits or less to graduation',
+    'Stopped Enrolling',
+    'Transfered to BA program,unknown if earned AA/AS'
+    ],
+    message: messages.default
+  },
+  progressToGradBa: {
+    values: [
+      'Confirmed Graduate',
+      'Likely Graduate',
+      'Short 12 credits or less to graduation',
+      'Stopped Enrolling' 
+    ],
+    message: messages.default
+  },
+  tshirtSize: {
+    values: [
+      'S',
+      'M',
+      'L',
+      'XL',
+      'XXL',
+      'XXXL'
+    ],
+    message: messages.default
+  },
+  sweatshirtSize: {
+    values: [
+     'S',
+      'M',
+      'L',
+      'XL',
+      'XXL',
+      'XXXL'
+    ],
+    message: messages.default
+  },
+  commonApp: {
+    values: [
+      'Not started',
+      'Not planning to apply via Common App',
+      'Started, did not finish',
+      'Completed'
+      ],
+    message: messages.default
+  },
+  sunyApp: {
+    values: [
+      'Not started',
+      'Not applying to SUNY',
+      'Started, did not finish',
+      'Completed'
+      ],
+    message: messages.default
+  },
+  cunyApp: {
+    values: [
+      'Not started',
+      'Not applying to CUNY',
+      'Started, did not finish',
+      'Completed'
+      ],
+    message: messages.default
+  },
+  housingStatus: {
+    values: [
+      'Housing form completed and deposit submitted',
+      'Housing form not completed',
+      'N/A: Student not planning to live on campus'
+    ],
+    message: messages.default
+  },
+  physImmunRecords: {
+    values: [
+      'Sent to School',
+      'Not Sent to School',
+      'Still needs to get immunizations'
+    ],
+    message: messages.default
+  },
+
+  registeredForClasses: {
+    values: [
+        'Yes',
+        'Not yet registered',
+        'N/A'
+    ],
+    message: messages.default
+  },
+
+  postSecondaryPlan: {
+    values: [
+      'Planning to Enroll in the Fall',
+      'Planning to Enroll in Spring',
+      'Has not decided',
+      'Planning to wait a year and enroll next Fall',
+      'Interested in working or Vocational training only',
+      'Planning to enlist in military',
+      'Not planning to attend college- other'
+    ],
+    message: messages.default
   }
+
+
 };
 
 
@@ -53,6 +169,18 @@ export default {
   remediationStatus(v) {
     return this.helpers.validateArray(v, this.types.remediationStatus);
   },
+
+  riskFactors(v) {
+    return this.helpers.validateArray(v, this.types.riskFactors);
+  },
+
+  employmentStatus(v) {
+    return this.helpers.validateArray(v, this.types.employmentStatus);
+  },
+
+  commsType(v) {
+    return this.helpers.validateArray(v, this.types.commsType)
+  }
 
   types: {
     tags: ['SPED', 'Free Lunch Eligible', 'ELL'],
@@ -92,7 +220,38 @@ export default {
       'Never Needed Remediation',
       'Attempted Math Remediation (Failed)',
       'Attempted Reading Remediation (Failed)',
-      'Attempted Writing Remediation (Failed)']
+      'Attempted Writing Remediation (Failed)'],
+    riskFactors: [
+        'Academic Probation',
+        'Enrolled in Less than 15 Credits',
+        'In Danger of Losing Financial Aid',
+        'Declining GPA',
+        'Mental Health Counseling Needs',
+        'Familial Stressors',
+        'Displaced',
+        'Has a child',
+        'Other',
+        'Taking time off',
+        'Shifting from Full-time to Part-time'
+    ],
+    employmentStatus: [
+        'Working Less than 12 hours',
+        'Working 12-25 hours',
+        'Working more than 25 hours',
+        'Seeking Employment'
+    ],
+    commsType: [
+      'In person',
+      'Text',
+      'Facebook',
+      'Phone call',
+      'Email',
+      'Other'
+    ]
+
+
+
+     
   },
 
   helpers: {
