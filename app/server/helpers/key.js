@@ -1,4 +1,4 @@
-const reference = [{
+export const reference = [{
   fieldName: 'First Name',
   displayName: 'First Name',
   dbName: 'firstName',

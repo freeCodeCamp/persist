@@ -24,7 +24,12 @@ newStudent.studentSupportOrgName = ['Other',
   'SEEK'];
 
 newStudent.remediationStatus = ['Has Completed All Remediation Requirements']
-
+newStudent.residency = 'Lives independently'
+newStudent.riskFactors = ['Taking time off',
+        'Shifting from Full-time to Part-time']
+newStudent.employmentStatus = ['Seeking Employment']
+newStudent.progressToGradAss = 'Short 12 credits or less to graduation'
+newStudent.progressToGradBa = 'Confirmed Graduate'
 console.log(newStudent)
 newStudent.save((err) => {
 

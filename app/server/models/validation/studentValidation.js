@@ -34,7 +34,6 @@ export default {
       message: messages.default
     }
   },
-
   edHistNo: String,
   recType: String,
   schoolAccName: String,
@@ -104,7 +103,6 @@ export default {
     type: String,
     enum: enums.gender
   },
-  intendedCollege: String,
   SAT: {
     math: Number,
     cr: Number
@@ -125,5 +123,84 @@ export default {
       validator: validator.remediationStatus.bind(validator),
       message: messages.default
     }
+  },
+  residency: {
+    type: String,
+    enum: enums.residency
+  },
+  riskFactors: {
+    type: [String],
+    validate: {
+      validator: validator.riskFactors.bind(validator),
+      message: messages.default
+    }
+  },
+  employmentStatus: {
+    type: [String],
+    validate: {
+      validator: validator.employmentStatus.bind(validator),
+      message: messages.default
+    }
+  },
+  progressToGradAss: {
+    type: String,
+    enum: enums.progressToGradAss
+  },
+  progressToGradBa: {
+    type: String,
+    enum: enums.progressToGradBa
+  },
+  tshirtSize: {
+    type: String,
+    enum: enums.tshirtSize
+  },
+  sweatshirtSize: {
+    type: String,
+    enum: enums.sweatshirtSize
+  },
+  applicationWave: {
+    type: Number,
+    min: [1, 'Application Wave must be between 1 and 3'],
+    max: [3, 'Application Wave must be between 1 and 3']
+  },
+  commonApp: {
+    type: String,
+    enum: enums.commonApp
+  },
+  cunyApp: {
+    type: String,
+    enum: enums.cunyApp
+  },
+  sunyApp: {
+    type: String,
+    enum: enums.sunyApp
+  },
+  housingStatus: {
+    type: String,
+    enum: enums.housingStatus
+  },
+  physImmunRecords: {
+    type: String,
+    enum: enums.physImmunRecords
+  },
+  registeredForClasses: {
+    type: String,
+    enum: enums.registeredForClasses
+  },
+  postSecondaryPlan: {
+    type: String,
+    enum: enums.postSecondaryPlan
+  },
+  commsType: {
+    type: [String],
+    validate: {
+      validator: validator.commsType.bind(validator),
+      message: messages.default
+    }
   }
+
+  // TO FINISH
+  // Graduation Date, Intended College, College Name, Term, Status
+
+
 };
