@@ -13,6 +13,7 @@ class SingleStudent extends React.Component {
   }
 
   componentDidMount() {
+    console.log('params to component', this.props.params);
     this.props.getStudent(this.props.params.osis);
   }
 

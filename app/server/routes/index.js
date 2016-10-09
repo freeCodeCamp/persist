@@ -77,6 +77,7 @@ export default (app) => {
   // main REST API for getting/adding/deleting/modifying student data
   app.route('/api/student/:osis')
     .get((req, res) => {
+      console.log(req.params);
       console.log(req.params.osis);
       student.find({
         osis: req.params.osis

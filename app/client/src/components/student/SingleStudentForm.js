@@ -8,7 +8,8 @@ import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
 import CollegeTermRecords from './CollegeTermRecords';
 
-import keys from '../../../../server/helpers/key';
+import { reference } from '../../../../server/helpers/key';
+import asyncValidate from '../helpers/asyncValidate';
 
 class SingleStudentForm extends React.Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class SingleStudentForm extends React.Component {
     this.state = {
       editable: false
     };
-
   }
 
   handleFormSubmit(object) {
@@ -24,49 +24,56 @@ class SingleStudentForm extends React.Component {
     console.log('this is our form object', object);
     this.setState({
       editable: !this.state.editable
-    })
+    });
   }
 
   toggleEdit() {
     this.setState({
       editable: !this.state.editable
-    })
+    });
   }
 
   render() {
 
     const {handleSubmit, reset} = this.props;
 
-    const exceptions = []
+    const exceptions = [];
 
-    var inputHTML = Object.keys(keys).map((key, i) => {
-      // if (exceptions.include(key)) {
-      //     return null;
-      // }
+    const bioFields = ['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags'];
+    const contactFields = [];
+    const academicFields = []
+    const financialFieds = [];
+    const notesFields = [];
+    const caseNotes = [];
+    const enrollmentFields = [];
+    console.log(this.props);
+
+    var inputHTML = reference.map((field, i) => {
       return (
-        <div className="col-md-6 col-sm-4 col-lg-4" key={ i }>
-          <FormGroup disabled={ this.state.editable } name={ keys[key] }>
-            { key }
+        <div className='col-lg-3 col-md-4 col-sm-6 col-xs-12' key={ i }>
+          <FormGroup initValue={ this.props.initialValues[field.dbName] } disabled={ this.state.editable } field={ field }>
+            { field.dbName }
           </FormGroup>
         </div>
-      )
+        );
     });
 
-    const {hsGPA, majorMinor, transferStatus} = this.props.student;
 
-    const collegeSummary = {
-      recentCollege: 'TEST DATA',
-      hsGPA: hsGPA,
-      studentSupport: 'TEST DATA',
-      majorMinor: majorMinor,
-      remediation: 'TEST DATA',
-      transferStatus: transferStatus
-    }
-
+    // var inputHTML = Object.keys(keys).map((key, i) => {
+    //   // if (exceptions.include(key)) {
+    //   //     return null;
+    //   // }
+    //   return (
+    //     <div className='col-md-6' key={ i }>
+    //       <FormGroup disabled={ this.state.editable } name={ keys[key] }>
+    //         { key }
+    //       </FormGroup>
+    //     </div>
+    //   )
+    // });
 
     return (
       <div id="single-student-page">
-        <CollegeSummary summary={ collegeSummary } />
         <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
           <Row>
             { inputHTML }
@@ -82,7 +89,6 @@ class SingleStudentForm extends React.Component {
                                              Edit
                                            </Button> }
         </Form>
-        <CollegeTermRecords terms={ this.props.student.terms } />
       </div>
 
       );
@@ -90,7 +96,8 @@ class SingleStudentForm extends React.Component {
 }
 
 SingleStudentForm = reduxForm({
-  form: 'SingleStudent' // a unique name for this form
+  form: 'SingleStudent',
+  asyncValidate
 })(SingleStudentForm);
 
 function mapStateToProps(state) {

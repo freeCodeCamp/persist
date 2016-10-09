@@ -9,9 +9,6 @@ class StudentTable extends React.Component {
   }
 
   render() {
-
-    console.log(this.props.students);
-
     const studentsHTML = this.props.students.map((student, i) => {
       return (
         <tr key={ i }>

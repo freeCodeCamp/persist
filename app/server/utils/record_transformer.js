@@ -1,4 +1,3 @@
-import colors from 'colors';
 import studentValidation from '../models/validation/studentValidation';
 
 export default function formatRecord(record) {

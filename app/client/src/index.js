@@ -26,7 +26,7 @@ ReactDOM.render(
         <Route path='schools' component={ Schools } />
         <Route path='students' component={ Students } />
         <Route path='colleges' component={ Colleges } />
-        <Route path='student/:contactID' component={ SingleStudent } />
+        <Route path='student/:osis' component={ SingleStudent } />
         <Route path='college/:fullName' component={ SingleCollege } />
       </Route>
     </Router>
