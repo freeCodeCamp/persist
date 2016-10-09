@@ -20,15 +20,15 @@ class Students extends Component {
         <StudentTable students={ this.props.studentFilter.students } />
       </Content>
       );
-  };
+  }
 }
 
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     studentFilter: state.studentFilter
   };
-}
+};
 
 export default connect(
   mapStateToProps

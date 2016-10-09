@@ -10,6 +10,8 @@ class StudentTable extends React.Component {
 
   render() {
 
+    console.log(this.props.students);
+
     const studentsHTML = this.props.students.map((student, i) => {
       return (
         <tr key={ i }>
@@ -17,7 +19,7 @@ class StudentTable extends React.Component {
             { i }
           </th>
           <th>
-            <Link to={ `/student/${student.contactID}` }>
+            <Link to={ `/student/${student.osis}` }>
             { student.firstName }
             </Link>
           </th>

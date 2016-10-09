@@ -80,7 +80,7 @@ export const reference = [{
 }, {
   fieldName: 'Ethnicity',
   displayName: 'Ethnicity',
-  dbName: 'raceEthnicity',
+  dbName: 'ethnicity',
   hidden: true
 }, {
   fieldName: 'Student Tags',
@@ -146,11 +146,11 @@ export const reference = [{
 }, {
   fieldName: 'Progress to Graduation (Associate\'s)',
   displayName: 'Progress to Graduation (Associate\'s)',
-  dbName: 'progressToAssociate'
+  dbName: 'progressToGradAss'
 }, {
   fieldName: 'Progress to Graduation (Bachelor\'s)',
   displayName: 'Progress to Graduation (Bachelor\'s)',
-  dbName: 'progressToBachelors'
+  dbName: 'progressToGradBa'
 }, {
   fieldName: 'Master\'s Degree Progress',
   displayName: 'Master\'s Degree Progress',
@@ -166,11 +166,11 @@ export const reference = [{
 }, {
   fieldName: 'T-shirt size',
   displayName: 'T-shirt size',
-  dbName: 'tShirtSize'
+  dbName: 'tshirtSize'
 }, {
   fieldName: 'Sweatshirt Size',
   displayName: 'Sweatshirt Size',
-  dbName: 'sweatShirtSize'
+  dbName: 'sweatshirtSize'
 }, {
   fieldName: 'Photo Release Form',
   displayName: 'Photo Release Form',
@@ -298,7 +298,7 @@ export const reference = [{
 }, {
   fieldName: 'Physical and Immunization Records Status',
   displayName: 'Physical and Immunization Records Status',
-  dbName: 'physicalAndImmunizationRecordStatus'
+  dbName: 'physImmunRecords'
 }, {
   fieldName: 'Registered for Classes?',
   displayName: 'Registered for Classes?',
@@ -316,6 +316,8 @@ export const reference = [{
   displayName: 'Graduation Date',
   dbName: 'gradDate'
 }];
+
+
 
 export default {
 

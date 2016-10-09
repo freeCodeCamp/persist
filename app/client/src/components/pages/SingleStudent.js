@@ -13,7 +13,7 @@ class SingleStudent extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getStudent(this.props.params.contactID);
+    this.props.getStudent(this.props.params.osis);
   }
 
   render() {

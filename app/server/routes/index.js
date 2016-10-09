@@ -75,11 +75,11 @@ export default (app) => {
   });
 
   // main REST API for getting/adding/deleting/modifying student data
-  app.route('/api/student/:contactID')
+  app.route('/api/student/:osis')
     .get((req, res) => {
-      console.log(req.params.contactID);
+      console.log(req.params.osis);
       student.find({
-        contactID: req.params.contactID
+        osis: req.params.osis
       }, (err, student) => {
         if (err) {
           res.status(500).send(err);

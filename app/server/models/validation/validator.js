@@ -58,10 +58,13 @@ export const enums = {
   progressToGradAss: {
     values: [
       'Confirmed Graduate',
+      'Confirmed Graduated',
       'Likely Graduate',
       'Short 12 credits or less to graduation',
       'Stopped Enrolling',
-      'Transfered to BA program,unknown if earned AA/AS'
+      'Transfered to BA program,unknown if earned AA/AS',
+      'Unclear if Graduated or Dropped Out',
+      'Dropped Out'
     ],
     message: messages.default
   },
@@ -70,7 +73,9 @@ export const enums = {
       'Confirmed Graduate',
       'Likely Graduate',
       'Short 12 credits or less to graduation',
-      'Stopped Enrolling'
+      'Stopped Enrolling',
+      'Unclear if Graduated or Dropped Out',
+      'Dropped Out'
     ],
     message: messages.default
   },
@@ -149,7 +154,7 @@ export const enums = {
     message: messages.default
   },
 
-  postSecondaryPlan: {
+  postSecPlan: {
     values: [
       'Planning to Enroll in the Fall',
       'Planning to Enroll in Spring',
@@ -158,6 +163,20 @@ export const enums = {
       'Interested in working or Vocational training only',
       'Planning to enlist in military',
       'Not planning to attend college- other'
+    ],
+    message: messages.default
+  },
+
+  hs: {
+    values: [
+      'Hahn',
+      'Baldwin',
+      'Channel View',
+      'McCown',
+      'WHEELS',
+      'Leaders',
+      'BCS',
+      'MELS'
     ],
     message: messages.default
   }
@@ -197,7 +216,7 @@ export default {
 
   types: {
     tags: [
-      'SPED', 'Free Lunch Eligible', 'ELL'
+      'SPED', 'Free Lunch Eligible', 'ELL', ' ELL', 'FRL', 'IEP', ' FRL'
     ],
     transferStatus: [
       '2 Year to 4 Year',
@@ -205,7 +224,8 @@ export default {
       '4 Year to 4 Year',
       '4 Year to 2 Year',
       'Planning to Transfer',
-      'Needs Transfer Support'
+      'Needs Transfer Support',
+      'Multiple transfers'
     ],
     studentSupportOrgName: [
       'Other',
@@ -271,6 +291,7 @@ export default {
 
   helpers: {
     validateArray: function(inputArray, optionsArray) {
+      // takes an array of values, and an array of possible values, and makes sure they exist
 
       if (inputArray.constructor !== Array) {
         return false;

@@ -18,6 +18,7 @@ const termSchema = {
 
 export default {
 
+
   firstName: {
     type: String,
     index: true
@@ -29,10 +30,10 @@ export default {
   hsGradYear: Number,
   tags: {
     type: [String],
-    validate: {
-      validator: validator.tags.bind(validator),
-      message: messages.default
-    }
+  // validate: {
+  //   validator: validator.tags.bind(validator),
+  //   message: messages.default
+  // }
   },
   edHistNo: String,
   recType: String,
@@ -53,7 +54,9 @@ export default {
     type: String,
     index: true
   },
-  dob: Date,
+  dob: {
+    type: Date
+  },
   mobile: Number,
   textable: Boolean,
   homePhone: Number,
@@ -187,9 +190,9 @@ export default {
     type: String,
     enum: enums.registeredForClasses
   },
-  postSecondaryPlan: {
+  postSecPlan: {
     type: String,
-    enum: enums.postSecondaryPlan
+    enum: enums.postSecPlan
   },
   commsType: {
     type: [String],
@@ -197,8 +200,16 @@ export default {
       validator: validator.commsType.bind(validator),
       message: messages.default
     }
-  }
-
+  },
+  hs: {
+    type: String,
+    enum: enums.hs
+  },
+  intendedCollege: {
+    type: String
+  },
+  act: Number,
+  osis: Number
   // TO FINISH
   // Graduation Date, Intended College, College Name, Term, Status
 

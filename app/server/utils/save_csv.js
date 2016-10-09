@@ -5,225 +5,127 @@ import async from 'async';
 import mongoose from 'mongoose';
 import Student from '../models/student';
 
-function checkDate(date) {
-			if (date.toString() == 'Invalid Date') {
-				return false;
-			}
-			else {
-				return true;
-			}
-		}
+// this is the 
+import { reference } from '../helpers/key';
+import formatRecord from './record_transformer';
+
 
 export default function(fileName) {
 
-	return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
-		var parser = parse({delimiter: ',', columns: mapValues, auto_parse: true });
+    var parser = parse({
+      delimiter: ',',
+      columns: mapValues,
+      auto_parse: true
+    });
 
-		var transformer = transform(function(record) {
+    var transformer = transform(function(record) {
 
+      return formatRecord(record);
 
-				// if (record.contactID && record.contactID.length < 10) {
-				// 	return;
-				// }
+    }, (err, data) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
 
+      // reduce data size for testing
+      // data = data.splice(0, 10);
+      let addedCount = 0;
+      let modifiedCount = 0;
 
-				// record.lastModifiedDate = new Date(record.lastModifiedDate);
-				// record.termStartDate = new Date(record.termStartDate);
-				// record.termEndDate = new Date(record.termEndDate);
+      console.time('dbSave');
 
-				// if (record.tags) {
-				// 	record.tags = record.tags.split(/\s+/);
-				// }
-				
+      async.eachLimit(data, 10, (record, callback) => {
 
-				// if (!checkDate(record.lastModifiedDate) && !checkDate(record.termStartDate) && !checkDate(record.termEndDate)) {
-				// 	console.log(record);
-				// 	return;
-				// }
-				
-				console.log(record);
-				let terms = [];
-
-				for (let i = 1; i <= 8; i++) {
-					terms[i-1] = {};
-					terms[i-1].name = record['Term' + i];
-					terms[i-1].status = record['Status' + i];
-					terms[i-1].college = record['College' + i];
-					terms[i-1].recordType = record['Record Type' + i];
-				}
+        // find student record 
 
 
-				record.terms = terms;
-				
-				// record.terms = [];
 
-				// for (var i = 0; i < 8; i++) {
-				// 	record.terms.push({});
-				// }
+        // if exists - modify values in a set way for each value
 
-				return record;
+        Student.findOne({
+          osis: record.osis
+        }, (err, doc) => {
 
-		}, (err, data) => {
-			if (err) {
-				console.log(err);
-				return;
-			}
+          // if doesnt exist - create new record  
+          if (!doc) {
+            var student = new Student(record);
+            student.save((err, doc) => {
+              if (err) {
+                callback(err);
+                return;
+              }
+              addedCount++;
+              callback(null);
+            });
+          } else {
+            modifiedCount++;
+            console.log('the record exists already mate!'.red)
+            
+            // run some logic of updating
 
-			// reduce data size for testing
-			// data = data.splice(0, 10);
-			let addedCount = 0;
-			let modifiedCount = 0;
+            // update document with rules from Molly
+            // options: overwrite / add
+            
+            
+            
 
-			async.eachLimit(data, 10, (record, callback) => {
+            callback(null);
+          }
 
-					Student.update({contactID: record.contactID}, record, { upsert: true, setDefaultsOnInsert: true }, (err, rawResponse) => {
-						if (err) {
-							callback(err);
-							return;
-						}
+        });
 
-						if (rawResponse.upserted) {
-							addedCount += 1;
-						} else {
-							modifiedCount += 1;
-						}
+        // Student.update({
+        //   osis: record.osis
+        // }, record, {
+        //   upsert: true,
+        //   setDefaultsOnInsert: true
+        // }, (err, rawResponse) => {
+        //   if (err) {
+        //     callback(err);
+        //     return;
+        //   }
 
-						console.log(rawResponse);
-						callback(null);
+        //   if (rawResponse.upserted) {
+        //     addedCount += 1;
+        //   } else {
+        //     modifiedCount += 1;
+        //   }
+        //   callback(null);
 
-					});
+        // });
 
-			}, (err) => {
+      }, (err) => {
+        console.log('getting through to here'.blue)
+        if (err) {
+          reject(err);
+          return;
+        }
+        console.timeEnd('dbSave');
+        resolve({
+          modifiedCount,
+          addedCount
+        });
+      });
+    });
 
-				if (err) {
-					reject(err);
-					return;
-				}
-				resolve({ modifiedCount, addedCount });
-			});
-		});
+    fs.createReadStream(fileName).pipe(parser).pipe(transformer);
 
-		fs.createReadStream(fileName).pipe(parser).pipe(transformer);
-
-	});
+  });
 }
+
 
 function mapValues(line) {
 
-			const convert = {
-
-				'First Name': 'firstName',
-
-				'Last Name': 'lastName',
-
-				'High School Graduation Year': 'hsGradYear',
-
-				'Student Tags': 'tags',
-
-				EducationalHistoryNumber: 'edHistNo',
-
-				'Record Type (h)': 'recType',
-
-				'School: Account Name': 'schoolAccName',
-
-				'School Type': 'schoolType',
-
-				'Term Enrollment Status': 'enrollmentStatus',
-
-				'Term Name (h)': 'termName',
-
-				'Term Start Date': 'termStartDate',
-
-				'Term End Date': 'termEndDate',
-
-				'Term GPA': 'termGPA',
-
-				'Cumulative GPA': 'cumulativeGPA',
-
-				'Total Credit Hours Attempted': 'creditHoursAttempted',
-
-				'Total Credit Hours towards Grad Earned': 'creditHoursGradEarned',
-
-				'Total Remedial Credit Hours Earned': 'remedialHoursEarned',
-
-				'Term ID': 'termID',
-
-				'Educational History ID': 'educationalHistory',
-
-				'Contact Id (18 Char)': 'contactID',
-
-				'Contact ID': 'contactID',
-
-				'Last Modified By: Full Name': 'lastModifiedBy',
-
-				'Last Modified Date': 'lastModifiedDate',
-
-				'High School Student ID': 'hsID',
-
-				'Middle Name': 'middleName',
-
-				'Suffix': 'suffix',
-
-				'Alternative Name/ Spelling': 'altName',
-
-				'Birthdate': 'dob',
-
-				'High School Attended': 'hsAttended',
-
-				'Cellphone': 'cellPhone',
-
-				'Other Phone': 'otherPhone',
-
-				'Email 1': 'email1',
-
-				'Email2': 'email2',
-
-				'Parent Name': 'parentName',
-
-				'Parent Contact': 'parentContact',
-
-				'Most Recent College or Employer': 'mostRecentColEmp',
-
-				'Major/Minor': 'majorMinor',
- 
-				'Transfer Status': 'transferStatus',
-
-				'Name of Student Support Org': 'studentSupportOrgName',
-
-				'Notes': 'notes',
-
-				'Needs Followup?': 'needsFollowup',
-
-				'Cohort': 'cohort',	 
-
-				'HS Grad Date': 'hsGradDate',
-
-				'Initial Enrollment Date': 'initEnrollmentDate',	
-
-				'Race/Ethnicity': 'raceEthnicity',	
-
-				'Gender': 'gender',
-
-				'Student Tags': 'tags',
-
-				'Intended College': 'intendedCollege',
-
-				'SAT Math': 'SAT.math',
-
-				'SAT CR': 'SAT.cr',	
-
-				'ACT Equiv': 'ACTEquiv',
-
-				'HS GPA': 'hsGPA'
-		
-			};
-
-			return line.map((key) => {
-				if (key in convert) {
-					return convert[key];
-				}
-				return key;
-			});
-
-		};
+  return line.map((key) => {
+    var obj = reference.find((field) => {
+      return field.fieldName === key;
+    });
+    if (obj) {
+      return obj.dbName;
+    }
+    return key;
+  });
+}
