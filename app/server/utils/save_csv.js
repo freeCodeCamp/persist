@@ -34,6 +34,8 @@ export default function(fileName) {
       // data = data.splice(0, 10);
       let addedCount = 0;
       let modifiedCount = 0;
+      let newStudents = [];
+      let updatedStudents = [];
 
       console.time('dbSave');
 
@@ -58,12 +60,13 @@ export default function(fileName) {
                 return;
               }
               addedCount++;
+              newStudents.push({osis: doc.osis, firstName: doc.firstName, lastName: doc.lastName});
               callback(null);
             });
           } else {
             modifiedCount++;
             console.log('the record exists already mate!'.red)
-            
+            updatedStudents.push({osis: record.osis, firstName: record.firstName, lastName: record.lastName})
             // run some logic of updating
 
             // update document with rules from Molly
@@ -106,7 +109,9 @@ export default function(fileName) {
         console.timeEnd('dbSave');
         resolve({
           modifiedCount,
-          addedCount
+          addedCount,
+          newStudents,
+          updatedStudents
         });
       });
     });

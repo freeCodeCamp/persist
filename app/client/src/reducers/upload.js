@@ -10,7 +10,9 @@ export default function(state = defaultState, action) {
     case UPLOAD_FILE_SUCCESS:
       return {
         ...state,
-        message: action.payload
+        message: action.payload.message,
+        updatedStudents: action.payload.updatedStudents,
+        newStudents: action.payload.newStudents
       };
     case UPLOAD_FILE_ERROR:
       return {

@@ -18,13 +18,16 @@ export function uploadFile(url, file) {
     return axios.post(url, data)
       .then((response) => {
         const message = 'You added ' + response.data.addedCount + ' and modified ' + response.data.modifiedCount;
+        const newStudents = response.data.newStudents;
+        const updatedStudents = response.data.updatedStudents;
+
         dispatch({
           type: SPINNER,
           payload: false
         });
         dispatch({
           type: UPLOAD_FILE_SUCCESS,
-          payload: message
+          payload: {message, newStudents, updatedStudents}
         });
       })
       .catch((err) => {
