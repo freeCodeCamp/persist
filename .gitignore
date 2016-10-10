@@ -13,4 +13,5 @@ npm-debug.log
 /data
 /data2.csv
 /data.csv
+/smalldata.csv
 /.DS_Store
