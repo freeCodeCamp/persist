@@ -36,7 +36,6 @@ export default (app) => {
     const filePath = path.join(fileData.destination, fileData.filename);
 
     saveCSV(filePath).then((data) => {
-      console.log(data);
       res.status(200).send(data);
     }).catch((err) => {
       console.log(err);
