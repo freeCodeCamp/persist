@@ -37,46 +37,49 @@ class SingleStudentForm extends React.Component {
 
     const {handleSubmit, reset} = this.props;
 
-    const exceptions = [];
+    const returnFormGroups = (reference) => {
+        return reference.map((field, i) => {
+            return (
+              <div className='col-lg-3 col-md-4 col-sm-6 col-xs-12' key={ i }>
+                <FormGroup initValue={ this.props.initialValues[field.dbName] } disabled={ this.state.editable } field={ field }>
+                  { field.dbName }
+                </FormGroup>
+              </div>
+              );
+            });
+    };
 
-    const bioFields = ['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags'];
-    const contactFields = [];
-    const academicFields = []
-    const financialFieds = [];
-    const notesFields = [];
-    const caseNotes = [];
-    const enrollmentFields = [];
-    console.log(this.props);
+    const filterRef = (dbNames) => {
+        return reference.filter((field) => dbNames.includes(field.dbName))
+    };
 
-    var inputHTML = reference.map((field, i) => {
-      return (
-        <div className='col-lg-3 col-md-4 col-sm-6 col-xs-12' key={ i }>
-          <FormGroup initValue={ this.props.initialValues[field.dbName] } disabled={ this.state.editable } field={ field }>
-            { field.dbName }
-          </FormGroup>
-        </div>
-        );
-    });
-
-
-    // var inputHTML = Object.keys(keys).map((key, i) => {
-    //   // if (exceptions.include(key)) {
-    //   //     return null;
-    //   // }
-    //   return (
-    //     <div className='col-md-6' key={ i }>
-    //       <FormGroup disabled={ this.state.editable } name={ keys[key] }>
-    //         { key }
-    //       </FormGroup>
-    //     </div>
-    //   )
-    // });
+    const bioHTML = returnFormGroups(filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags']));
+    const contactHTML = returnFormGroups(filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency' ]));
+    const academicHTML = returnFormGroups(filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'progressToGradAss', 'degreeTitle', 'intendedCollege', 'remediationStatus', 'progressToGradBa', 'gradDate', 'hsGPA', 'transferStatus', 'progressToMasters']));
+    const financialHTML = returnFormGroups(filterRef(['mostRecentEmp', 'employmentStatus', 'startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap']));
+    const notesHTML = returnFormGroups(filterRef(['riskFactors', 'needsFollowup']));
 
     return (
       <div id="single-student-page">
         <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
           <Row>
-            { inputHTML }
+          <br/>
+          <h2> Biographical Information </h2>
+          {bioHTML}
+          <br/>
+          <h2 style={{clear: 'both', textAlign: 'center'}}> Student Contact </h2>
+          {contactHTML}
+          <br/>
+          <h2> Academic Profile </h2>
+          {academicHTML}
+          <br/>
+          <h2> Financial Profile </h2>
+          {financialHTML}
+          <br/>
+          <h2> Student Notes </h2>
+          {notesHTML}
+          <br/>
+        
           </Row>
           { this.state.editable ? <div>
                                     <Button type="submit">
@@ -106,7 +109,6 @@ function mapStateToProps(state) {
   };
 }
 
-// You have to connect() to any reducers that you wish to connect to yourself
 export default connect(
   mapStateToProps
 )(SingleStudentForm)

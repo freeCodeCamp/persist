@@ -32,14 +32,17 @@ class ReduxFormGroup extends React.Component {
 
       case 'DatePicker':
         return (
-          <Field name={ this.props.field.dbName }
+          <Field disabled={ !this.props.disabled }
+
+            name={ this.props.field.dbName }
             hintText={ this.props.field.displayName }
             container='inline'
             component={ DatePicker } />
           );
       case 'Checkbox':
         return (
-          <Field name={ this.props.field.dbName }
+          <Field disabled={ !this.props.disabled }
+          name={ this.props.field.dbName }
             initValue={ this.props.initValue }
             component={ Chips }
             field={ this.props.field } />
@@ -60,7 +63,7 @@ class ReduxFormGroup extends React.Component {
           });
         }
         return (
-          <Field name={ this.props.field.dbName } component={ SelectField } floatingLabelText={ this.props.field.displayName }>
+          <Field disabled={ !this.props.disabled } name={ this.props.field.dbName } component={ SelectField } floatingLabelText={ this.props.field.displayName }>
             { options }
           </Field>
         )

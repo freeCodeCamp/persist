@@ -17,6 +17,8 @@ import Colleges from './components/pages/Colleges';
 // redux store
 import store, { history } from './store';
 
+require('../public/style/main2.scss')
+
 ReactDOM.render(
   <Provider store={ store }>
     <Router history={ history }>
