@@ -29,6 +29,20 @@ var fileUpload = upload.fields([{
 
 export default (app) => {
 
+  app.post('/studentPaginate', (req, res) => {
+    const offset = req.body.offset;
+    student.paginate({}, {
+      offset: offset,
+      limit: 20
+    }, function(err, result) {
+      if (err) {
+        res.status(500).send(err);
+        return;
+      }
+      res.status(200).send(result.docs);
+    });
+  });
+
   app.post('/upload/studentData', fileUpload, function(req, res) {
 
     const fileData = req.files.file[0];

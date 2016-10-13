@@ -92,7 +92,10 @@ export default class Chips extends React.Component {
           floatingLabelText={ this.props.field.displayName }
           onBlur={ this.updateChips.bind(this, this) }
           onChange={ this.handleChange.bind(this) } />
-        <Field name={ this.props.field.dbName.toString() } component={ TextField } floatingLabelText={ this.props.field.displayName } />
+        <Field name={ this.props.field.dbName.toString() }
+          component={ TextField }
+          floatingLabelText={ this.props.field.displayName }
+          style={ { display: 'none' } } />
       </div>
       );
   }
