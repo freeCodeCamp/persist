@@ -136,7 +136,7 @@ export const reference = [{
   fieldName: 'Student Support Program',
   displayName: 'Student Support Program',
   dbName: 'studentSupportOrgName',
-  fieldType: 'SelectField'
+  fieldType: 'Checkbox'
 }, {
   fieldName: 'Major/Minor',
   displayName: 'Major/Minor',

@@ -61,10 +61,16 @@ class ReduxFormGroup extends React.Component {
           options = options.map((option, i) => {
             return <MenuItem value={ option } key={ option } primaryText={ option } />
           });
+          options.push(<MenuItem value={''} primaryText='None' key='none' />)
         }
+
+
+        
+
         return (
           <Field disabled={ !this.props.disabled } name={ this.props.field.dbName } component={ SelectField } floatingLabelText={ this.props.field.displayName }>
             { options }
+
           </Field>
         )
         // case 'RadioButtonGroup':
