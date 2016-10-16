@@ -43,7 +43,7 @@ export const reference = [{
   fieldName: 'HS Grad Year',
   displayName: 'HS Grad Year',
   dbName: 'hsGradYear',
-  fieldType: 'DatePicker'
+  fieldType: 'TextField'
 }, {
   fieldName: 'HS Graduation Date',
   displayName: 'HS Graduation Date',

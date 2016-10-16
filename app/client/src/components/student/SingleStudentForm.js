@@ -35,13 +35,37 @@ class SingleStudentForm extends React.Component {
 
   render() {
 
+    console.log('rendering')
+
     const {handleSubmit, reset} = this.props;
 
     const returnFormGroups = (reference) => {
+
+        let editable = this.state.editable;
+        
+        const fixed = ['hs', 'hsGradYear', 'hsAttended'];
+
+        let initialValue;
+
         return reference.map((field, i) => {
+            
+            if (fixed.includes(field.dbName)) {
+              editable = false;
+            };
+
+            initialValue =  this.props.initialValues[field.dbName]
+            if (field.dbName === 'hsGradYear') {
+              console.log(this.props.initialValues['hsGradDate'])
+              if (this.props.initialValues['hsGradDate']) {
+                const date = new Date(this.props.initialValues['hsGradDate'])
+                initialValue = date.getFullYear();
+              }
+              
+            }
+
             return (
               <div className='col-lg-3 col-md-4 col-sm-6 col-xs-12' key={ i }>
-                <FormGroup initValue={ this.props.initialValues[field.dbName] } disabled={ this.state.editable } field={ field }>
+                <FormGroup initValue={ initialValue } disabled={ editable } field={ field }>
                   { field.dbName }
                 </FormGroup>
               </div>
