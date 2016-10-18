@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
+import moment from 'moment';
 
 import MenuItem from 'material-ui/MenuItem';
 import { RadioButton } from 'material-ui/RadioButton';
@@ -33,16 +34,22 @@ class ReduxFormGroup extends React.Component {
       case 'DatePicker':
         return (
           <Field disabled={ !this.props.disabled }
-
             name={ this.props.field.dbName }
             hintText={ this.props.field.displayName }
             container='inline'
+            format={ (dateString) => {
+                       if (dateString.length > 0) {
+                         console.log(moment(new Date(dateString)).format('LL'));
+                         return moment(new Date(dateString)).format('LL');
+                       }
+                       return '';
+                     } }
             component={ DatePicker } />
           );
       case 'Checkbox':
         return (
           <Field disabled={ !this.props.disabled }
-          name={ this.props.field.dbName }
+            name={ this.props.field.dbName }
             initValue={ this.props.initValue }
             component={ Chips }
             field={ this.props.field } />
@@ -61,16 +68,18 @@ class ReduxFormGroup extends React.Component {
           options = options.map((option, i) => {
             return <MenuItem value={ option } key={ option } primaryText={ option } />
           });
-          options.push(<MenuItem value={''} primaryText='None' key='none' />)
+          options.push(<MenuItem value={ '' } primaryText='None' key='none' />)
         }
 
 
-        
+
 
         return (
-          <Field disabled={ !this.props.disabled } name={ this.props.field.dbName } component={ SelectField } floatingLabelText={ this.props.field.displayName }>
+          <Field disabled={ !this.props.disabled }
+            name={ this.props.field.dbName }
+            component={ SelectField }
+            floatingLabelText={ this.props.field.displayName }>
             { options }
-
           </Field>
         )
         // case 'RadioButtonGroup':
@@ -85,13 +94,6 @@ class ReduxFormGroup extends React.Component {
           );
 
     }
-
-
-
-
-
-
-
   }
 }
 

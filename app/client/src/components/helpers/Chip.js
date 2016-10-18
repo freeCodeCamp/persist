@@ -88,7 +88,6 @@ export default class Chips extends React.Component {
         { this.state.chipData.map(this.renderChip, this) }
         <TextField name='chips'
           value={ this.state.newValue }
-          component={ TextField }
           floatingLabelText={ this.props.field.displayName }
           onBlur={ this.updateChips.bind(this, this) }
           onChange={ this.handleChange.bind(this) } />
