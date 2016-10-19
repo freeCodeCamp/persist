@@ -209,7 +209,11 @@ export default {
     type: String
   },
   act: Number,
-  osis: Number
+  osis: Number,
+  startedFafsa: Boolean,
+  needsFollowup: Boolean,
+  completedFafsa: Boolean,
+  completedTap: Boolean
   // TO FINISH
   // Graduation Date, Intended College, College Name, Term, Status
 

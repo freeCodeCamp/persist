@@ -10,6 +10,7 @@ import collegeFilterReducer from './collegeFilter';
 import spinnerReducer from './spinner';
 import schoolReducer from './schools';
 import suggestionsReducer from './suggestions';
+import updateStudentReducer from './updateStudent';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   collegeFilter: collegeFilterReducer,
   spinner: spinnerReducer,
   schools: schoolReducer,
-  suggestions: suggestionsReducer
+  suggestions: suggestionsReducer,
+  updateStudent: updateStudentReducer
 });
 
 export default rootReducer;

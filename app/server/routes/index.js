@@ -105,7 +105,26 @@ export default (app) => {
       res.send('working on it');
     })
     .put((req, res) => {
-      res.send('working on it');
+
+
+
+      console.log(req.body);
+      const data = req.body;
+
+      student.findOneAndUpdate({osis: data.osis}, {$set: data}, {new: true}, function(err, doc){
+      if(err){
+          console.log("Something wrong when updating data!");
+      }
+
+      console.log(doc);
+      res.send(doc);
+    });
+
+
+
+
+
+      
     })
     .delete((req, res) => {
       res.send('working on it');

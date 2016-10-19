@@ -2,11 +2,13 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { Button, Form, Row } from 'react-bootstrap';
+import { Button, Form, Row, Alert } from 'react-bootstrap';
 
 import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
 import CollegeTermRecords from './CollegeTermRecords';
+
+import * as updateStudent from '../../actions/updateStudent';
 
 import { reference } from '../../../../server/helpers/key';
 import asyncValidate from '../helpers/asyncValidate';
@@ -19,9 +21,13 @@ class SingleStudentForm extends React.Component {
     };
   }
 
-  handleFormSubmit(object) {
+  handleFormSubmit(studentRecord) {
     //this will handle updates
-    console.log('this is our form object', object);
+    console.log('this is our form object', studentRecord);
+
+    // lets find the changed data
+
+    this.props.updateStudent(studentRecord);
     this.setState({
       editable: !this.state.editable
     });
@@ -34,8 +40,6 @@ class SingleStudentForm extends React.Component {
   }
 
   render() {
-
-    console.log('rendering')
 
     const {handleSubmit, reset} = this.props;
 
@@ -115,6 +119,30 @@ class SingleStudentForm extends React.Component {
                                   </div> : <Button type="button" onClick={ () => this.toggleEdit() }>
                                              Edit
                                            </Button> }
+
+
+         { this.props.updateStudentStatus.pending ? <div>
+                                    <br/>
+                                    <p>
+                                      Loading
+                                    </p><i style={ { fontSize: '50px', textAlign: 'center' } } className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                                  </div> : null }
+        { this.props.updateStudentStatus.error ? 
+                                  <div>
+                                  <br/>
+                                  <Alert bsStyle="warning">
+                                    <strong>Sorry!</strong> We encountered an error, please check the student form for any errors.
+                                  </Alert>
+                                  </div>
+                                : null }
+        { this.props.updateStudentStatus.success ? <div>
+                                    <br/>
+                                    <Alert bsStyle="success">
+                                      <strong>Success!</strong> We updated the student record and everything went swimmingly.
+                                    </Alert>
+                                    
+                                  </div> : null }
+
         </Form>
       </div>
 
@@ -129,12 +157,13 @@ SingleStudentForm = reduxForm({
 
 function mapStateToProps(state) {
   return {
-    studentForm: state.form
+    studentForm: state.form,
+    updateStudentStatus: state.updateStudent
   };
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps, updateStudent
 )(SingleStudentForm)
 
 

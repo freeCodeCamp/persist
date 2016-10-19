@@ -1,21 +1,21 @@
-import { GET_STUDENT_SUCCESS, GET_STUDENT_ERROR, GET_STUDENT_PENDING } from '../actions/types';
+import { UPDATE_STUDENT_SUCCESS, UPDATE_STUDENT_ERROR, UPDATE_STUDENT_PENDING} from '../actions/types';
 
 export default function(state={ pending: false, success: false, error: false, student: null }, action) {
 
 	switch (action.type) {
-		case GET_STUDENT_PENDING: 
+		case UPDATE_STUDENT_PENDING: 
 			return { 
 				...state, 
 				pending: true 
 			};
-		case GET_STUDENT_SUCCESS: 
+		case UPDATE_STUDENT_SUCCESS: 
 			return { 
 				...state, 
 				pending: false,
 				success: true,
 				student: action.payload
 			};
-		case GET_STUDENT_ERROR: 
+		case UPDATE_STUDENT_ERROR: 
 			return { 
 				...state, 
 				pending: false,

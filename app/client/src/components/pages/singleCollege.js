@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import Content from '../helpers/content';
 
 import * as getCollege from '../../actions/getCollege';
 
 import SingleCollegeForm from '../college/SingleCollegeForm';
-import Content from '../helpers/content';
 
 class SingleCollege extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class SingleCollege extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     const {singleCollege} = this.props;
     const college = singleCollege.college;
     return (
@@ -30,7 +31,7 @@ class SingleCollege extends React.Component {
                                   Error Found
                                 </p> : null }
         { singleCollege.success ? <div>
-                                    <h1 style={ { margin: '20px' } }>{ `${college.firstName} ${college.lastName}` }</h1>
+                                    <h1 style={ { margin: '20px' } }>{ `${college.fullName}` }</h1>
                                     <SingleCollegeForm initialValues={ college } college={ college } />
                                   </div> : null }
       </Content>

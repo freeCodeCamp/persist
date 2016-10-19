@@ -8,7 +8,11 @@ export const UPLOAD_FILE_RESET = 'upload_file_reset';
 export const GET_STUDENT_SUCCESS = 'get_student_success';
 export const GET_STUDENT_ERROR = 'get_student_error';
 export const GET_STUDENT_PENDING = 'get_student_pending';
-export const GET_STUDENT_RESET = 'get_student_reset';
+
+// single student update
+export const UPDATE_STUDENT_SUCCESS = 'update_student_success';
+export const UPDATE_STUDENT_ERROR = 'update_student_error';
+export const UPDATE_STUDENT_PENDING = 'update_student_pending';
 
 // filter students
 export const FILTER_STUDENT_SUCCESS = 'filter_student_success';
