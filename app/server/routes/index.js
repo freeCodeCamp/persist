@@ -91,14 +91,13 @@ export default (app) => {
   // main REST API for getting/adding/deleting/modifying student data
   app.route('/api/student/:osis')
     .get((req, res) => {
-      console.log(req.params);
-      console.log(req.params.osis);
-      student.find({
+      student.findOne({
         osis: req.params.osis
       }, (err, student) => {
         if (err) {
           res.status(500).send(err);
         }
+        console.log(student);
         res.status(200).json(student);
       });
     })

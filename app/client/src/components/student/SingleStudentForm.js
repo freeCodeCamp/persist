@@ -41,45 +41,45 @@ class SingleStudentForm extends React.Component {
 
     const returnFormGroups = (reference) => {
 
-        // vars for editing
+      // vars for editing
+      const fixed = ['hs', 'hsGradYear', 'hsAttended'];
+
+      // initial value var
+      let initialValue;
+
+      return reference.map((field, i) => {
+
+        // get fixed non-editable fields
         let editable = this.state.editable;
-        const fixed = ['hs', 'hsGradYear', 'hsAttended'];
+        if (fixed.includes(field.dbName)) {
+          editable = false;
+        }
 
-        // initial value var
-        let initialValue;
+        initialValue = this.props.initialValues[field.dbName];
 
-        return reference.map((field, i) => {
-            
-            // get fixed non-editable fields
-            if (fixed.includes(field.dbName)) {
-              editable = false;
-            };
+        if (field.dbName === 'hsGradYear') {
+          if (this.props.initialValues['hsGradDate']) {
+            const date = new Date(this.props.initialValues['hsGradDate'])
+            initialValue = date.getFullYear();
+          }
+        }
 
-            initialValue =  this.props.initialValues[field.dbName];
-
-            if (field.dbName === 'hsGradYear') {
-              if (this.props.initialValues['hsGradDate']) {
-                const date = new Date(this.props.initialValues['hsGradDate'])
-                initialValue = date.getFullYear();
-              }
-            }
-
-            return (
-              <div className='col-lg-3 col-md-4 col-sm-6 col-xs-12' key={ i }>
-                <FormGroup initValue={ initialValue } disabled={ editable } field={ field }>
-                  { field.dbName }
-                </FormGroup>
-              </div>
-              );
-            });
+        return (
+          <div className='col-lg-3 col-md-4 col-sm-6 col-xs-12' key={ i }>
+            <FormGroup initValue={ initialValue } disabled={ editable } field={ field }>
+              { field.dbName }
+            </FormGroup>
+          </div>
+          );
+      });
     };
 
     const filterRef = (dbNames) => {
-        return reference.filter((field) => dbNames.includes(field.dbName))
+      return reference.filter((field) => dbNames.includes(field.dbName))
     };
 
     const bioHTML = returnFormGroups(filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags']));
-    const contactHTML = returnFormGroups(filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency' ]));
+    const contactHTML = returnFormGroups(filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency']));
     const academicHTML = returnFormGroups(filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'progressToGradAss', 'degreeTitle', 'intendedCollege', 'remediationStatus', 'progressToGradBa', 'gradDate', 'hsGPA', 'transferStatus', 'progressToMasters']));
     const financialHTML = returnFormGroups(filterRef(['mostRecentEmp', 'employmentStatus', 'startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap']));
     const notesHTML = returnFormGroups(filterRef(['riskFactors', 'needsFollowup']));
@@ -88,23 +88,22 @@ class SingleStudentForm extends React.Component {
       <div id="single-student-page">
         <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
           <Row>
-          <br/>
-          <h2> Biographical Information </h2>
-          {bioHTML}
-          <br/>
-          <h2 style={{clear: 'both', textAlign: 'center'}}> Student Contact </h2>
-          {contactHTML}
-          <br/>
-          <h2> Academic Profile </h2>
-          {academicHTML}
-          <br/>
-          <h2> Financial Profile </h2>
-          {financialHTML}
-          <br/>
-          <h2> Student Notes </h2>
-          {notesHTML}
-          <br/>
-        
+            <br/>
+            <h2>Biographical Information</h2>
+            { bioHTML }
+            <br/>
+            <h2 style={ { clear: 'both', textAlign: 'center' } }>Student Contact</h2>
+            { contactHTML }
+            <br/>
+            <h2>Academic Profile</h2>
+            { academicHTML }
+            <br/>
+            <h2>Financial Profile</h2>
+            { financialHTML }
+            <br/>
+            <h2>Student Notes</h2>
+            { notesHTML }
+            <br/>
           </Row>
           { this.state.editable ? <div>
                                     <Button type="submit">

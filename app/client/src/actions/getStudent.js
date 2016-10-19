@@ -3,15 +3,22 @@ import axios from 'axios';
 
 export function getStudent(osis) {
 
-		return function(dispatch) {
+  return function(dispatch) {
 
-			dispatch({type: GET_STUDENT_PENDING});
-			return axios.get('/api/student/' + osis)
-	            .then((response) => {
-	                dispatch({type: GET_STUDENT_SUCCESS, payload: response.data[0]});
-	            }).catch((err) => {
-	                 dispatch({type: GET_STUDENT_ERROR, payload: err});
-	            });
-		};
+    dispatch({
+      type: GET_STUDENT_PENDING
+    });
+    return axios.get('/api/student/' + osis)
+      .then((response) => {
+        dispatch({
+          type: GET_STUDENT_SUCCESS,
+          payload: response.data
+        });
+      }).catch((err) => {
+      dispatch({
+        type: GET_STUDENT_ERROR,
+        payload: err
+      });
+    });
+  };
 }
-	

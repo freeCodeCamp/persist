@@ -12,27 +12,20 @@ const asyncValidate = (values) => {
 
   const errors = {};
 
-  const isomorphicValidate = new Promise((resolve) => {
-
+  const isomorphicValidate = new Promise((resolve, reject) => {
     student.validate(function(mongooseError) {
-
       if (!mongooseError) {
-        resolve(errors);
+        resolve();
+        return;
       }
-
       Object.keys(mongooseError.errors).map((key) => {
         errors[key] = mongooseError['errors'][key]['message'];
       });
-
-      resolve(errors);
+      reject(errors);
     });
-
   });
 
-  return isomorphicValidate.then((errors) => {
-    console.log(errors);
-    throw errors;
-  });
+  return isomorphicValidate;
 
 };
 

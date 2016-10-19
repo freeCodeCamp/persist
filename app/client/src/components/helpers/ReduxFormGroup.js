@@ -5,8 +5,9 @@ import moment from 'moment';
 import MenuItem from 'material-ui/MenuItem';
 import { RadioButton } from 'material-ui/RadioButton';
 
-import { AutoComplete, Checkbox, DatePicker, RadioButtonGroup, SelectField, Slider, TextField, Toggle } from 'redux-form-material-ui';
+import { AutoComplete, Checkbox, RadioButtonGroup, SelectField, Slider, TextField, Toggle } from 'redux-form-material-ui';
 import Chips from './Chip';
+import DatePicker from './DatePicker';
 
 import { types } from '../../../../server/models/validation/validator';
 
@@ -37,13 +38,6 @@ class ReduxFormGroup extends React.Component {
             name={ this.props.field.dbName }
             hintText={ this.props.field.displayName }
             container='inline'
-            format={ (dateString) => {
-                       if (dateString.length > 0) {
-                         console.log(moment(new Date(dateString)).format('LL'));
-                         return moment(new Date(dateString)).format('LL');
-                       }
-                       return '';
-                     } }
             component={ DatePicker } />
           );
       case 'Checkbox':

@@ -13,6 +13,7 @@ export default class Paginate extends Component {
   }
 
   componentDidMount() {
+    this.mounted = true;
     window.addEventListener('scroll', this.handleScroll.bind(this));
     this.getNewStudents();
   }
@@ -31,7 +32,8 @@ export default class Paginate extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll.bind(this));
+    this.mounted = false;
   }
 
   handleScroll() {
@@ -44,6 +46,9 @@ export default class Paginate extends Component {
     const _this = this;
     let students = this.state.students;
     students = [...students, ...newStudents];
+    if (!this.mounted) {
+      return;
+    }
     this.setState({
       students: students,
       offset: _this.state.offset + 20
