@@ -158,10 +158,12 @@ export default (app) => {
     console.log(req.query);
 
     let queryObject = req.query;
-    let query = student.find(queryObject).limit(20);
+    let query = student.find(queryObject);
+
     query.exec((err, students) => {
       if (err) {
         res.status(500).send(err);
+        return;
       }
       res.status(200).json(students);
     });

@@ -1,6 +1,7 @@
 import React from 'react';
 import InfoTile from '../charts/InfoTile';
 import Content from '../helpers/content';
+import ChartFilter from '../charts/Filter';
 
 class DashboardMain extends React.Component {
   constructor(props) {
@@ -10,6 +11,9 @@ class DashboardMain extends React.Component {
   render() {
     return (
       <Content title='Welcome'>
+
+        <ChartFilter />
+
         <div className='row' style={ { marginTop: '30px' } }>
           <InfoTile icon='fa-envelope-o'
             subject='Users'
@@ -27,6 +31,11 @@ class DashboardMain extends React.Component {
             theme='bg-yellow'
             width={ 4 } />
         </div>
+
+      <h1> Charts Will Go Here </h1>
+
+      
+
       </Content>
       );
   }

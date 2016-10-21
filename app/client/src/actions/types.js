@@ -40,3 +40,8 @@ export const GET_SCHOOLS_PENDING = 'GET_SCHOOLS_pending';
 
 // suggestions
 export const GET_SUGGESTIONS = 'get_suggestions';
+
+// charts
+export const CHART_FILTER_SUCCESS = 'chart_filter_success';
+export const CHART_FILTER_ERROR = 'chart_filter_error';
+export const CHART_FILTER_PENDING = 'chart_filter_pending';
