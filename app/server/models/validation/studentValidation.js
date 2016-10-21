@@ -91,6 +91,7 @@ export default {
       message: messages.default
     }
   },
+  studentSupportOrgNameOther: String,
   notes: String,
   cohort: String,
   hsGradDate: Date,
@@ -170,14 +171,7 @@ export default {
     type: String,
     enum: enums.commonApp
   },
-  cunyApp: {
-    type: String,
-    enum: enums.cunyApp
-  },
-  sunyApp: {
-    type: String,
-    enum: enums.sunyApp
-  },
+  
   housingStatus: {
     type: String,
     enum: enums.housingStatus
@@ -213,7 +207,49 @@ export default {
   startedFafsa: Boolean,
   needsFollowup: Boolean,
   completedFafsa: Boolean,
-  completedTap: Boolean
+  completedTap: Boolean,
+  needGap: Boolean,
+  amountOfNeedGap: Number,
+
+
+  facebookName: String,
+  parentPhone: String,
+
+ 
+// TO ADD IN
+  attendingMeetupDay: Boolean,
+  expectedGrad: Number,
+  photoReleaseForm: Boolean,
+  psat: Number,
+  eaEdApplications: Boolean,
+  lettersOfRecommendation: Boolean,
+  taxDocumentsSubmitted: Boolean,
+  opportunityProgramEligible: Boolean,
+  studentAidReportReceived: Boolean,
+ 
+  fsaid: Number,
+  cssProfileCreated: Boolean,
+  awardLetterReceived: Boolean,
+  scholarshipAmount: Number,
+  cunyApp: {
+    type: String,
+    enum: enums.cunyApp
+  },
+  sunyApp: {
+    type: String,
+    enum: enums.sunyApp
+  },
+  desiredFieldOfStudy: String,
+  completedEssay: Boolean,
+  crewAdvisor: String,
+  satSubjectTests: String,
+ 
+  appliedToOtherSupportProgram: Boolean,
+
+
+
+
+
   // TO FINISH
   // Graduation Date, Intended College, College Name, Term, Status
 

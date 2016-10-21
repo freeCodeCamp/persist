@@ -137,7 +137,13 @@ export const reference = [{
   displayName: 'Student Support Program',
   dbName: 'studentSupportOrgName',
   fieldType: 'Checkbox'
-}, {
+},{
+  fieldName: 'Student Support Program: Other',
+  displayName: 'Student Support Program: Other',
+  dbName: 'studentSupportOrgNameOther',
+  fieldType: 'TextField'
+},
+ {
   fieldName: 'Major/Minor',
   displayName: 'Major/Minor',
   dbName: 'majorMinor',
@@ -201,7 +207,8 @@ export const reference = [{
 }, {
   fieldName: 'Expected Graduation',
   displayName: 'Expected Graduation',
-  dbName: 'expectedGrad'
+  dbName: 'expectedGrad',
+  fieldType: 'SelectField'
 }, {
   fieldName: 'T-shirt size',
   displayName: 'T-shirt size',

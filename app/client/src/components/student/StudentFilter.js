@@ -39,7 +39,7 @@ class FilterStudentForm extends React.Component {
 
 
     const hsOptions = types.hs;
-    const hsDropDowns = hsOptions.map((hs, i) =>  <MenuItem value={hs} key={i} primaryText={hs} />)
+    const hsDropDowns = hsOptions.map((hs, i) =>  <MenuItem value={hs} key={i} primaryText={hs} />);
     const gradYearDropDowns = [];
     const currYear = new Date().getFullYear();
     console.log(currYear);
@@ -48,7 +48,8 @@ class FilterStudentForm extends React.Component {
     }
 
     return (
-      <form onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
+      <form  onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
+        <div style={{display: 'flex', flexWrap: 'wrap'}}>
         <div>
           <Field name='firstName'
             component={ AutoComplete }
@@ -82,7 +83,7 @@ class FilterStudentForm extends React.Component {
             component={ SelectField }
             hintText='Grad Year'
             floatingLabelText='Grad Year'>
-           {gradYearDropDowns}
+           { gradYearDropDowns }
           </Field>
         </div>
         <div>
@@ -92,6 +93,7 @@ class FilterStudentForm extends React.Component {
             floatingLabelText='HighSchool'>
               {hsDropDowns}
           </Field>
+        </div>
         </div>
         <div>
           <RaisedButton type='submit' label='Filter' primary={ true } />
