@@ -14,6 +14,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { SelectField, TextField, AutoComplete } from 'redux-form-material-ui';
 import { AutoComplete as MUIAutoComplete } from 'material-ui'
 
+import { types } from '../../../../server/models/validation/validator';
+
+
+
 class FilterStudentForm extends React.Component {
 
   constructor(props) {
@@ -32,6 +36,17 @@ class FilterStudentForm extends React.Component {
 
   render() {
     const {handleSubmit, suggestions} = this.props;
+
+
+    const hsOptions = types.hs;
+    const hsDropDowns = hsOptions.map((hs, i) =>  <MenuItem value={hs} key={i} primaryText={hs} />)
+    const gradYearDropDowns = [];
+    const currYear = new Date().getFullYear();
+    console.log(currYear);
+    for (let i = 2011; i <= currYear; i++) {
+      gradYearDropDowns.push(<MenuItem value={i} key={i} primaryText={i} />)
+    }
+
     return (
       <form onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
         <div>
@@ -46,12 +61,36 @@ class FilterStudentForm extends React.Component {
           <Field name='lastName' component={ TextField } floatingLabelText='Last Name' />
         </div>
         <div>
+          <Field name='intendedCollege'
+            component={ AutoComplete }
+            filter={ MUIAutoComplete.caseInsensitiveFilter }
+            dataSource={ suggestions }
+            input={ { onUpdateInput: this.handleUpdateInput.bind(this, 'intendedCollege', this), onChange: this.handleUpdateInput.bind(this, 'intendedCollege', this) } }
+            floatingLabelText='Intended College' />
+        </div>
+        <div>
           <Field name='gender'
             component={ SelectField }
             hintText='Gender'
             floatingLabelText='Gender'>
             <MenuItem value='M' primaryText='Male' />
             <MenuItem value='F' primaryText='Female' />
+          </Field>
+        </div>
+         <div>
+          <Field name='hsGradYear'
+            component={ SelectField }
+            hintText='Grad Year'
+            floatingLabelText='Grad Year'>
+           {gradYearDropDowns}
+          </Field>
+        </div>
+        <div>
+          <Field name='hs'
+            component={ SelectField }
+            hintText='High School'
+            floatingLabelText='HighSchool'>
+              {hsDropDowns}
           </Field>
         </div>
         <div>
