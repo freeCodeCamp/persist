@@ -32,6 +32,7 @@ class NavigationMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     if (nextProps.suggestions.length > 0) {
       this.setState({
         listItems: nextProps.suggestions,

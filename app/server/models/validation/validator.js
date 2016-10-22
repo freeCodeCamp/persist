@@ -4,7 +4,7 @@ export const messages = {
 
 export const types = {
   tags: [
-    'SPED', 'Free Lunch Eligible', 'ELL', ' ELL', 'FRL', 'IEP', ' FRL'
+    'SPED', 'Free Lunch Eligible', 'ELL', 'IEP', 'FRL'
   ],
   transferStatus: [
     '2 Year to 4 Year',

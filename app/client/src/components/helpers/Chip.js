@@ -1,6 +1,9 @@
 import React from 'react';
 import Chip from 'material-ui/Chip';
-import { TextField } from 'redux-form-material-ui';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+
 import { Field } from 'redux-form';
 
 export default class Chips extends React.Component {
@@ -9,8 +12,7 @@ export default class Chips extends React.Component {
     super(props);
     this.state = {
       chipData: [],
-      chipValue: '',
-      newValue: ''
+      options: []
     };
     this.styles = {
       chip: {
@@ -21,28 +23,56 @@ export default class Chips extends React.Component {
         flexWrap: 'wrap'
       }
     };
+    this.key = 0;
+    this.fieldName = this.props.field.dbName.toString();
   }
 
-  handleRequestDelete = (key) => {
-    this.chipData = this.state.chipData;
-    const newChipData = this.state.chipData.filter((chip) => {
-      return chip.key !== key;
+  componentWillMount() {
+    let options = this.props.options;
+    let initValue = this.props.input.value;
+    options = options.filter((el) => {
+      return !initValue.includes(el);
     });
-    let chips = Array.from(newChipData, data => data.label);
-    this.dispatchChange(this.props.meta.dispatch, chips);
+
+    let chipData = initValue.map((ele, i) => {
+      return {
+        key: i,
+        label: ele
+      };
+    });
+    this.key = chipData.length;
     this.setState({
-      chipData: newChipData
+      chipData: chipData,
+      options: options
     });
-  };
+  }
+
+  handleRequestDelete(key) {
+    let chipData = this.state.chipData;
+    const chipToDelete = Array.from(chipData, chip => chip.key).indexOf(key);
+
+    let options = this.state.options;
+    options.push(chipData[chipToDelete].label);
+
+    chipData.splice(chipToDelete, 1);
+
+    let chips = Array.from(chipData, data => data.label);
+    this.dispatchChange(this.props.meta.dispatch, chips);
+
+    this.setState({
+      chipData: chipData,
+      options: options
+    });
+  }
 
   dispatchChange(dispatch, chips) {
     dispatch({
       type: 'redux-form/CHANGE',
       meta: {
         form: 'SingleStudent',
-        field: 'tags'
+        field: this.fieldName
       },
-      payload: chips.join(',')
+      payload: chips
     });
   }
 
@@ -54,47 +84,48 @@ export default class Chips extends React.Component {
       );
   }
 
-  updateChips(form, event) {
-    let chips = event.target.value.toString();
-    chips = chips.trim().split(/\s*,\s*/);
+  handleChange(event, index, value) {
+    var _this = this;
+    let options = this.state.options;
+    options.splice(options.indexOf(value), 1);
 
     let chipData = this.state.chipData;
-    let length = this.state.chipData.length;
-    chips.map((chip, i) => {
-      if (chip.length > 0) {
-        chipData.push({
-          key: i + length,
-          label: chip
-        });
-      }
-    });
-    chips = Array.from(chipData, data => data.label);
+
+    if (value.length > 1) {
+      chipData.push({
+        key: _this.key,
+        label: value
+      });
+      _this.key += 1;
+    }
+
+    let chips = Array.from(chipData, data => data.label);
     this.dispatchChange(this.props.meta.dispatch, chips);
+
     this.setState({
       chipData: chipData,
-      newValue: ''
-    });
-  }
-
-  handleChange(event) {
-    this.setState({
-      newValue: event.target.value
+      options: options
     });
   }
 
   render() {
+    let optionsHTML = this.state.options.map((elem) => {
+      return <MenuItem key={ elem } value={ elem } primaryText={ elem } />;
+    });
+    optionsHTML.unshift(<MenuItem key='None' value={ null } primaryText='None' />);
     return (
       <div style={ this.styles.wrapper }>
-        { this.state.chipData.map(this.renderChip, this) }
-        <TextField name='chips'
-          value={ this.state.newValue }
-          floatingLabelText={ this.props.field.displayName }
-          onBlur={ this.updateChips.bind(this, this) }
-          onChange={ this.handleChange.bind(this) } />
-        <Field name={ this.props.field.dbName.toString() }
-          component={ TextField }
-          floatingLabelText={ this.props.field.displayName }
-          style={ { /*display: 'none'*/ } } />
+        <div className="chips">
+          { this.state.chipData.map(this.renderChip, this) }
+        </div>
+        <div className="selectField">
+          <SelectField name='chips'
+            disabled={ this.props.disabled }
+            floatingLabelText={ this.props.field.displayName }
+            onChange={ this.handleChange.bind(this) }>
+            { optionsHTML }
+          </SelectField>
+        </div>
       </div>
       );
   }

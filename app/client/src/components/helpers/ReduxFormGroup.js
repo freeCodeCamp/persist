@@ -26,15 +26,14 @@ class ReduxFormGroup extends React.Component {
 
       case 'TextField':
         return (
-          <Field disabled={ !this.props.disabled }
+          <Field disabled={ this.props.disabled }
             name={ this.props.field.dbName.toString() }
             component={ TextField }
             floatingLabelText={ this.props.field.displayName } />
           );
-
       case 'DatePicker':
         return (
-          <Field disabled={ !this.props.disabled }
+          <Field disabled={ this.props.disabled }
             name={ this.props.field.dbName }
             hintText={ this.props.field.displayName }
             container='inline'
@@ -42,15 +41,17 @@ class ReduxFormGroup extends React.Component {
           );
       case 'Checkbox':
         return (
-          <Field disabled={ !this.props.disabled }
+          <Field disabled={ this.props.disabled }
             name={ this.props.field.dbName }
+            options={ types[this.props.field.dbName] }
             initValue={ this.props.initValue }
             component={ Chips }
             field={ this.props.field } />
           );
       case 'Toggle':
         return (
-          <Field style={{width: 'auto', margin: '20px'}}disabled={ !this.props.disabled }
+          <Field style={ { width: 'auto', margin: '20px' } }
+            disabled={ this.props.disabled }
             name={ this.props.field.dbName.toString() }
             component={ Toggle }
             label={ this.props.field.displayName } />
@@ -66,7 +67,7 @@ class ReduxFormGroup extends React.Component {
         }
 
         return (
-          <Field disabled={ !this.props.disabled }
+          <Field disabled={ this.props.disabled }
             name={ this.props.field.dbName }
             component={ SelectField }
             floatingLabelText={ this.props.field.displayName }>
@@ -78,7 +79,7 @@ class ReduxFormGroup extends React.Component {
       // case 'AutoComplete':
       default:
         return (
-          <Field disabled={ !this.props.disabled }
+          <Field disabled={ this.props.disabled }
             name={ this.props.field.dbName.toString() }
             component={ TextField }
             floatingLabelText={ this.props.field.displayName } />

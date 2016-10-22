@@ -43,8 +43,6 @@ class SingleStudentForm extends React.Component {
 
     const {handleSubmit, reset} = this.props;
 
-
-
     const returnFormGroups = (reference) => {
 
       // vars for editing
@@ -71,9 +69,13 @@ class SingleStudentForm extends React.Component {
         }
 
         return (
-            <FormGroup style={{margin: '50px', textAlign: 'center'}} initValue={ initialValue } key={i} disabled={ editable } field={ field }>
-              { field.dbName }
-            </FormGroup>
+          <FormGroup style={ { margin: '50px', textAlign: 'center' } }
+            initValue={ initialValue }
+            key={ i }
+            disabled={ !editable }
+            field={ field }>
+            { field.dbName }
+          </FormGroup>
           );
       });
     };
@@ -95,36 +97,35 @@ class SingleStudentForm extends React.Component {
           <Row>
             <br/>
             <h2>Biographical Information</h2>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-            { bioHTML }
+            <div style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' } }>
+              { bioHTML }
             </div>
             <br/>
             <h2 style={ { clear: 'both', textAlign: 'center' } }>Student Contact</h2>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-            { contactHTML }
+            <div style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' } }>
+              { contactHTML }
             </div>
             <br/>
             <h2>Academic Profile</h2>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-            { academicHTML }
+            <div style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' } }>
+              { academicHTML }
             </div>
             <br/>
             <h2>Financial Profile</h2>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-            { financialHTML }
+            <div style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' } }>
+              { financialHTML }
             </div>
             <br/>
-             <h2> College Applications </h2>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-          
+            <h2>College Applications</h2>
+            <div style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' } }>
             </div>
-            <h2> Other </h2>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-            { otherHTML }
+            <h2>Other</h2>
+            <div style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' } }>
+              { otherHTML }
             </div>
             <h2>Student Notes</h2>
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-            { notesHTML }
+            <div style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' } }>
+              { notesHTML }
             </div>
             <br/>
           </Row>
@@ -138,30 +139,26 @@ class SingleStudentForm extends React.Component {
                                   </div> : <Button type="button" onClick={ () => this.toggleEdit() }>
                                              Edit
                                            </Button> }
-
-
-         { this.props.updateStudentStatus.pending ? <div>
-                                    <br/>
-                                    <p>
-                                      Loading
-                                    </p><i style={ { fontSize: '50px', textAlign: 'center' } } className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                                  </div> : null }
-        { this.props.updateStudentStatus.error ? 
-                                  <div>
-                                  <br/>
-                                  <Alert bsStyle="warning">
-                                    <strong>Sorry!</strong> We encountered an error, please check the student form for any errors.
-                                  </Alert>
-                                  </div>
-                                : null }
-        { this.props.updateStudentStatus.success ? <div>
-                                    <br/>
-                                    <Alert bsStyle="success">
-                                      <strong>Success!</strong> We updated the student record and everything went swimmingly.
-                                    </Alert>
-                                    
-                                  </div> : null }
-
+          { this.props.updateStudentStatus.pending ? <div>
+                                                       <br/>
+                                                       <p>
+                                                         Loading
+                                                       </p><i style={ { fontSize: '50px', textAlign: 'center' } } className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                                                     </div> : null }
+          { this.props.updateStudentStatus.error ?
+            <div>
+              <br/>
+              <Alert bsStyle="warning">
+                <strong>Sorry!</strong> We encountered an error, please check the student form for any errors.
+              </Alert>
+            </div>
+            : null }
+          { this.props.updateStudentStatus.success ? <div>
+                                                       <br/>
+                                                       <Alert bsStyle="success">
+                                                         <strong>Success!</strong> We updated the student record and everything went swimmingly.
+                                                       </Alert>
+                                                     </div> : null }
         </Form>
       </div>
 
