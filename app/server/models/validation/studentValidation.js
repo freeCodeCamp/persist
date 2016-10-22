@@ -16,6 +16,15 @@ const termSchema = {
   recordType: String
 };
 
+const applicationsSchema = {
+  collAppName: String,
+  collAppType: String,
+  collAppResult: String,
+  collAppHEOP: String,
+  collAppAttending: Boolean,
+  collAppNotes: String
+};
+
 export default {
 
 
@@ -245,6 +254,10 @@ export default {
   satSubjectTests: String,
  
   appliedToOtherSupportProgram: Boolean,
+  collApplications: {
+    type: Array,
+    default: [applicationsSchema]
+  }
 
 
 
