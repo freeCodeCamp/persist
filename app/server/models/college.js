@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const College = new Schema({
 
-	officialCollegeName: String,
+	fullName: String,
 	shortName: String,
 	navianceName: String,
 	collegeScorecardName: String,

@@ -4,9 +4,8 @@ import transform from 'stream-transform';
 import async from 'async';
 import mongoose from 'mongoose';
 
-
 import College from '../models/college';
-import collegeKeys from '../helpers/collegeKeys';
+import { reference } from '../helpers/collegeKeys';
 
 export default function(fileName) {
 
@@ -20,14 +19,16 @@ export default function(fileName) {
 
     var transformer = transform(function(record) {
 
-      console.log(record);
-      let years =  {};
-      years[2012] = record['2012 Enrolled Fall1'];
-      years[2013] = record['2013 Enrolled Fall 1'];
-      years[2014] = record['2014 Enrolled Fall 1'];
-      years[2015] = record['2015 Enrolled Fall 1 '];
+      // console.log(record);
+      // let years =  {};
+      // years[2012] = record['2012 Enrolled Fall1'];
+      // years[2013] = record['2013 Enrolled Fall 1'];
+      // years[2014] = record['2014 Enrolled Fall 1'];
+      // years[2015] = record['2015 Enrolled Fall 1 '];
       
-      record.enrollmentYears = years;
+      // record.enrollmentYears = years;
+
+      console.log(record);
 
       return record;
 
@@ -61,7 +62,7 @@ export default function(fileName) {
             modifiedCount += 1;
           }
 
-          console.log(rawResponse);
+          // console.log(rawResponse);
           callback(null);
 
         });
@@ -87,10 +88,12 @@ export default function(fileName) {
 function mapValues(line) {
 
   return line.map((key) => {
-    if (key in collegeKeys) {
-      return collegeKeys[key];
+    var obj = reference.find((field) => {
+      return field.fieldName === key;
+    });
+    if (obj) {
+      return obj.dbName;
     }
     return key;
   });
-
 }

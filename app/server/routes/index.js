@@ -1,10 +1,14 @@
 import path from 'path';
 import multer from 'multer';
-import saveCSV from '../utils/save_csv';
+
 import student from '../models/student';
 import college from '../models/college';
 import school from '../models/school';
+
+
+import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges';
+import saveApplicationData from '../utils/save_csv_applications';
 
 var upload = multer({
   dest: 'uploads/'
@@ -70,6 +74,23 @@ export default (app) => {
       res.status(500).send(err);
     });
   });
+
+  app.post('/upload/applicationData', fileUpload, function(req, res) {
+
+    const fileData = req.files.file[0];
+
+    const filePath = path.join(fileData.destination, fileData.filename);
+
+    res.send('getting through ok')
+
+    // saveApplicationData(filePath).then((data) => {
+    //   res.status(200).send(data);
+    // }).catch((err) => {
+    //   console.log(err);
+    //   res.status(500).send(err);
+    // });
+  });
+
 
   // handle autocomplete
   app.post('/suggestions', (req, res) => {
