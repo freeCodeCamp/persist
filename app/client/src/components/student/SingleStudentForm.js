@@ -43,6 +43,8 @@ class SingleStudentForm extends React.Component {
 
     const {handleSubmit, reset} = this.props;
 
+
+
     const returnFormGroups = (reference) => {
 
       // vars for editing
@@ -69,11 +71,9 @@ class SingleStudentForm extends React.Component {
         }
 
         return (
-          <div className='col-lg-3 col-md-4 col-sm-6 col-xs-12' key={ i }>
-            <FormGroup initValue={ initialValue } disabled={ editable } field={ field }>
+            <FormGroup style={{margin: '50px', textAlign: 'center'}} initValue={ initialValue } key={i} disabled={ editable } field={ field }>
               { field.dbName }
             </FormGroup>
-          </div>
           );
       });
     };
@@ -83,9 +83,10 @@ class SingleStudentForm extends React.Component {
     };
 
     const bioHTML = returnFormGroups(filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags']));
-    const contactHTML = returnFormGroups(filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency']));
-    const academicHTML = returnFormGroups(filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'progressToGradAss', 'degreeTitle', 'intendedCollege', 'remediationStatus', 'progressToGradBa', 'gradDate', 'hsGPA', 'transferStatus', 'progressToMasters']));
-    const financialHTML = returnFormGroups(filterRef(['mostRecentEmp', 'employmentStatus', 'startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap']));
+    const contactHTML = returnFormGroups(filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency', 'facebookName', 'parentPhone']));
+    const academicHTML = returnFormGroups(filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'intendedCollege', 'remediationStatus', 'hsGPA', 'attendingMeetupDay', 'appliedToOtherSupportProgram', 'completedEssay', 'desiredFieldOfStudy', 'satSubjectTests', 'expectedGrad', 'psat', 'lettersOfRecommendation', 'eaEdApplications', 'taxDocumentsSubmitted']));
+    const financialHTML = returnFormGroups(filterRef(['startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap', 'opportunityProgramEligible', 'studentAidReportReceived', 'fsaid', 'scholarshipAmount', 'awardLetterReceived', 'cssProfileCreated']));
+    const otherHTML = returnFormGroups(filterRef(['photoReleaseForm', 'cunyApp', 'sunyApp', 'crewAdvisor']));
     const notesHTML = returnFormGroups(filterRef(['riskFactors', 'needsFollowup']));
 
     return (
@@ -94,19 +95,37 @@ class SingleStudentForm extends React.Component {
           <Row>
             <br/>
             <h2>Biographical Information</h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             { bioHTML }
+            </div>
             <br/>
             <h2 style={ { clear: 'both', textAlign: 'center' } }>Student Contact</h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             { contactHTML }
+            </div>
             <br/>
             <h2>Academic Profile</h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             { academicHTML }
+            </div>
             <br/>
             <h2>Financial Profile</h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             { financialHTML }
+            </div>
             <br/>
+             <h2> College Applications </h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+          
+            </div>
+            <h2> Other </h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+            { otherHTML }
+            </div>
             <h2>Student Notes</h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             { notesHTML }
+            </div>
             <br/>
           </Row>
           { this.state.editable ? <div>
@@ -157,7 +176,7 @@ SingleStudentForm = reduxForm({
 
 function mapStateToProps(state) {
   return {
-    studentForm: state.form,
+    studentForm: state.form.SingleStudent,
     updateStudentStatus: state.updateStudent
   };
 }

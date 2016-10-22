@@ -212,7 +212,8 @@ export const types = {
     'BCS',
     'MELS'
   ],
-  ethnicity: [1, 2, 3, 4, 5, 6, 7]
+  ethnicity: [1, 2, 3, 4, 5, 6, 7],
+  expectedGrad: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 };
 
 export const enums = {

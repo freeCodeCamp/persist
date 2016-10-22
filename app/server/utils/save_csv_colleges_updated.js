@@ -4,11 +4,8 @@ import transform from 'stream-transform';
 import async from 'async';
 import mongoose from 'mongoose';
 
-// this is the data we need for validation and transforming
-import Student from '../models/student';
-import { reference } from '../helpers/key';
-import formatRecord from './student_record_transformer';
-
+import College from '../models/college';
+import { reference } from '../helpers/collegeKeys';
 
 export default function(fileName) {
 
@@ -22,7 +19,18 @@ export default function(fileName) {
 
     var transformer = transform(function(record) {
 
-      return formatRecord(record);
+      // console.log(record);
+      // let years =  {};
+      // years[2012] = record['2012 Enrolled Fall1'];
+      // years[2013] = record['2013 Enrolled Fall 1'];
+      // years[2014] = record['2014 Enrolled Fall 1'];
+      // years[2015] = record['2015 Enrolled Fall 1 '];
+      
+      // record.enrollmentYears = years;
+
+      console.log(record);
+
+      return record;
 
     }, (err, data) => {
       if (err) {
@@ -34,54 +42,13 @@ export default function(fileName) {
       // data = data.splice(0, 10);
       let addedCount = 0;
       let modifiedCount = 0;
-      let newStudents = [];
-      let updatedStudents = [];
-
-      console.time('dbSave');
+      let newColleges = [];
+      let updatedColleges = [];
 
       async.eachLimit(data, 10, (record, callback) => {
 
-        // find student record 
-
-
-
-        // if exists - modify values in a set way for each value
-
-        Student.findOne({
-          osis: record.osis
-        }, (err, doc) => {
-
-          // if doesnt exist - create new record  
-          if (!doc) {
-            var student = new Student(record);
-            student.save((err, doc) => {
-              if (err) {
-                callback(err);
-                return;
-              }
-              addedCount++;
-              newStudents.push({osis: doc.osis, firstName: doc.firstName, lastName: doc.lastName});
-              callback(null);
-            });
-          } else {
-            modifiedCount++;
-            console.log('the record exists already mate!'.red)
-            updatedStudents.push({osis: record.osis, firstName: record.firstName, lastName: record.lastName})
-            // run some logic of updating
-
-            // update document with rules from Molly
-            // options: overwrite / add
-            
-            
-            
-
-            callback(null);
-          }
-
-        });
-
-        // Student.update({
-        //   osis: record.osis
+        // college.update({
+        //   fullName: record.fullName
         // }, record, {
         //   upsert: true,
         //   setDefaultsOnInsert: true
@@ -96,22 +63,57 @@ export default function(fileName) {
         //   } else {
         //     modifiedCount += 1;
         //   }
+
+        //   // console.log(rawResponse);
         //   callback(null);
 
         // });
 
+        College.findOne({
+          fullName: record.fullName
+        }, (err, doc) => {
+
+          // if doesnt exist - create new record  
+          if (!doc) {
+            var college = new College(record);
+            college.save((err, doc) => {
+              if (err) {
+                callback(err);
+                return;
+              }
+              addedCount++;
+              newColleges.push({fullName: record.fullName});
+              callback(null);
+            });
+          } else {
+            modifiedCount++;
+            console.log('the record exists already mate!'.red)
+            updatedColleges.push({fullName: record.fullName})
+            // run some logic of updating
+
+            // update document with rules from Molly
+            // options: overwrite / add
+            
+            
+            
+
+            callback(null);
+          }
+
+        });
+
+
+
+
       }, (err) => {
-        console.log('getting through to here'.blue)
+
         if (err) {
           reject(err);
           return;
         }
-        console.timeEnd('dbSave');
         resolve({
           modifiedCount,
-          addedCount,
-          newStudents,
-          updatedStudents
+          addedCount
         });
       });
     });
@@ -120,7 +122,6 @@ export default function(fileName) {
 
   });
 }
-
 
 function mapValues(line) {
 

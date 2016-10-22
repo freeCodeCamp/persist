@@ -6,6 +6,7 @@ export default function(state={ pending: false, success: false, error: false, co
 		case GET_COLLEGE_PENDING: 
 			return { 
 				...state, 
+				college: null,
 				pending: true 
 			};
 		case GET_COLLEGE_SUCCESS: 

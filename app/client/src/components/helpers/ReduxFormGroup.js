@@ -50,7 +50,7 @@ class ReduxFormGroup extends React.Component {
           );
       case 'Toggle':
         return (
-          <Field disabled={ !this.props.disabled }
+          <Field style={{width: 'auto', margin: '20px'}}disabled={ !this.props.disabled }
             name={ this.props.field.dbName.toString() }
             component={ Toggle }
             label={ this.props.field.displayName } />

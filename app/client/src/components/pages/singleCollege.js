@@ -30,9 +30,9 @@ class SingleCollege extends React.Component {
         { singleCollege.error ? <p>
                                   Error Found
                                 </p> : null }
-        { singleCollege.success ? <div>
+        { singleCollege.success && singleCollege.college ? <div>
                                     <h1 style={ { margin: '20px' } }>{ `${college.fullName}` }</h1>
-                                    <SingleCollegeForm initialValues={ college } college={ college } />
+                                    <SingleCollegeForm enableReinitialize={true} initialValues={ college } college={ college } />
                                   </div> : null }
       </Content>
       );

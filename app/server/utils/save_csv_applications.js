@@ -3,11 +3,10 @@ import parse from 'csv-parse';
 import transform from 'stream-transform';
 import async from 'async';
 import mongoose from 'mongoose';
-
-// this is the data we need for validation and transforming
 import Student from '../models/student';
-import { reference } from '../helpers/key';
-import formatRecord from './student_record_transformer';
+
+// this is the 
+import { reference } from '../helpers/applicationKeys';
 
 
 export default function(fileName) {
@@ -22,7 +21,7 @@ export default function(fileName) {
 
     var transformer = transform(function(record) {
 
-      return formatRecord(record);
+      console.log(record);
 
     }, (err, data) => {
       if (err) {

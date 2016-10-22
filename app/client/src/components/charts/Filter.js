@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import axios from 'axios';
-
-import { filterStudents } from '../../actions/studentFilter';
+import { chartFilter } from '../../actions/chart';
 import { getSuggestions } from '../../actions/getSuggestions';
 
 import { reduxForm, Field } from 'redux-form';
@@ -12,13 +10,13 @@ import MenuItem from 'material-ui/MenuItem';
 import { RadioButton } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import { SelectField, TextField, AutoComplete } from 'redux-form-material-ui';
-import { AutoComplete as MUIAutoComplete } from 'material-ui';
+import { AutoComplete as MUIAutoComplete } from 'material-ui'
 
 import { types } from '../../../../server/models/validation/validator';
 
 
 
-class FilterStudentForm extends React.Component {
+class ChartFilter extends React.Component {
 
   constructor(props) {
     super(props);
@@ -26,7 +24,8 @@ class FilterStudentForm extends React.Component {
 
   handleFormSubmit(object) {
     console.log(object);
-    this.props.filterStudents(object);
+    console.log(this.props)
+    this.props.chartFilter(object);
   }
 
   handleUpdateInput(columnName, form, value) {
@@ -102,10 +101,10 @@ class FilterStudentForm extends React.Component {
       );
   }
 }
-
-FilterStudentForm = reduxForm({
-  form: 'FilterStudent' // a unique name for this form
-})(FilterStudentForm);
+// a unique name for this form
+ChartFilter = reduxForm({
+  form: 'chartFilter' 
+})(ChartFilter);
 
 const mapStateToProps = (state) => {
   return {
@@ -115,10 +114,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    filterStudents,
+    chartFilter,
     getSuggestions
   }, dispatch);
 };
 
 // You have to connect() to any reducers that you wish to connect to yourself
-export default connect(mapStateToProps, mapDispatchToProps)(FilterStudentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ChartFilter);

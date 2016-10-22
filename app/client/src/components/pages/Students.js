@@ -6,6 +6,8 @@ import Content from '../helpers/content';
 import StudentFilter from '../student/StudentFilter';
 import StudentTable from '../student/StudentTable';
 
+import * as getStudent from '../../actions/getStudent';
+
 
 class Students extends Component {
   constructor(props) {
@@ -16,8 +18,8 @@ class Students extends Component {
 
     return (
       <Content title='Students'>
-        <StudentFilter />
-        <StudentTable students={ this.props.studentFilter.students } />
+        <StudentFilter/>
+        <StudentTable  {...this.props} students={ this.props.studentFilter.students } />
       </Content>
       );
   }
@@ -31,5 +33,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(
-  mapStateToProps
+  mapStateToProps, getStudent
 )(Students);

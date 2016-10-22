@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Table } from 'react-bootstrap';
 
+
 class StudentTable extends React.Component {
   constructor(props) {
     super(props);
   }
+
 
   render() {
     const studentsHTML = this.props.students.map((student, i) => {
