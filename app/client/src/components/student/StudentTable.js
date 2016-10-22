@@ -3,9 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Table } from 'react-bootstrap';
 
+
 class StudentTable extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  populateStudent(osis) {
+    this.props.getStudent(osis);
   }
 
   render() {
@@ -16,7 +21,7 @@ class StudentTable extends React.Component {
             { i }
           </th>
           <th>
-            <Link to={ `/student/${student.osis}` }>
+            <Link onClick={this.populateStudent.bind(this, student.osis)} to={ `/student/${student.osis}` }>
             { student.firstName }
             </Link>
           </th>

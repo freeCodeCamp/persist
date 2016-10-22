@@ -1,4 +1,4 @@
-import { GET_STUDENT_SUCCESS, GET_STUDENT_ERROR, GET_STUDENT_PENDING } from './types';
+import { GET_STUDENT_SUCCESS, GET_STUDENT_ERROR, GET_STUDENT_PENDING} from './types';
 import axios from 'axios';
 
 export function getStudent(osis) {

@@ -43,6 +43,8 @@ class SingleStudentForm extends React.Component {
 
     const {handleSubmit, reset} = this.props;
 
+
+
     const returnFormGroups = (reference) => {
 
       // vars for editing
@@ -92,7 +94,6 @@ class SingleStudentForm extends React.Component {
         <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
           <Row>
             <br/>
-
             <h2>Biographical Information</h2>
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             { bioHTML }
@@ -171,7 +172,7 @@ SingleStudentForm = reduxForm({
 
 function mapStateToProps(state) {
   return {
-    studentForm: state.form,
+    studentForm: state.form.SingleStudent,
     updateStudentStatus: state.updateStudent
   };
 }

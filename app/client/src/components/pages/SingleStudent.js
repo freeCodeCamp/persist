@@ -11,14 +11,12 @@ class SingleStudent extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log('params to component', this.props.params);
-    this.props.getStudent(this.props.params.osis);
-  }
 
   render() {
     const {singleStudent} = this.props;
     const student = singleStudent.student;
+
+    console.log('THIS IS WHAT WE ARE HANDING TO REDUX FORM', singleStudent);
     return (
       <Content>
         { singleStudent.pending ? <div>
@@ -29,9 +27,9 @@ class SingleStudent extends React.Component {
         { singleStudent.error ? <p>
                                   Error Found
                                 </p> : null }
-        { singleStudent.success ? <div>
+        { singleStudent.student && singleStudent.success ? <div>
                                     <h1 style={ { margin: '20px' } }>{ `${student.firstName} ${student.lastName}` }</h1>
-                                    <SingleStudentForm initialValues={ student } student={ student } />
+                                    <SingleStudentForm enableReinitialize={true} initialValues={ student } student={ student } />
                                   </div> : null }
 
 
