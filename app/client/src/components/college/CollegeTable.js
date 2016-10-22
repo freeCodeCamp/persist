@@ -18,11 +18,8 @@ class CollegeTable extends React.Component {
           </td>
           <td>
             <Link to={ `/college/${college.fullName}` }>
-            { college.shortName }
-            </Link>
-          </td>
-          <td>
             { college.fullName }
+            </Link>
           </td>
         </tr>
         );

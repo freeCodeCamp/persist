@@ -1,6 +1,8 @@
-import { UPDATE_STUDENT_SUCCESS, UPDATE_STUDENT_ERROR, UPDATE_STUDENT_PENDING} from '../actions/types';
+import { UPDATE_STUDENT_SUCCESS, UPDATE_STUDENT_ERROR, UPDATE_STUDENT_PENDING, UPDATE_STUDENT_RESET } from '../actions/types';
 
-export default function(state={ pending: false, success: false, error: false, student: null }, action) {
+const initialState = { pending: false, success: false, error: false, student: null }
+
+export default function(state=initialState, action) {
 
 	switch (action.type) {
 		case UPDATE_STUDENT_PENDING: 
@@ -21,6 +23,8 @@ export default function(state={ pending: false, success: false, error: false, st
 				pending: false,
 				error: action.payload 
 			};
+		case UPDATE_STUDENT_RESET: 
+			return initialState;
 		default: 
 			return state;
 	}

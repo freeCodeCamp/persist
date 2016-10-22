@@ -2,11 +2,13 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { Button, Form, Label, Input, Container, InputGroup, Row } from 'react-bootstrap';
+import { Button, Form, Label, Input, Container, InputGroup, Row, Alert } from 'react-bootstrap';
 
 import FormGroup from '../helpers/ReduxFormGroup';
 
-import keys from '../../../../server/helpers/collegeKeys';
+import * as updateCollege from '../../actions/updateCollege';
+
+import { reference } from '../../../../server/helpers/collegeKeys';
 
 class SingleCollegeForm extends React.Component {
   constructor(props) {
@@ -17,9 +19,10 @@ class SingleCollegeForm extends React.Component {
 
   }
 
-  handleFormSubmit(object) {
+  handleFormSubmit(collegeRecord) {
     //this will handle updates
-    console.log('this is our form object', object);
+    console.log('this is our form object', collegeRecord);
+    this.props.updateCollege(collegeRecord);
     this.setState({
       editable: !this.state.editable
     });
@@ -35,22 +38,37 @@ class SingleCollegeForm extends React.Component {
 
     const {handleSubmit, reset} = this.props;
 
-    var inputHTML = Object.keys(keys).map((key, i) => {
-      return (
-        <div className="col-md-6 col-sm-4 col-lg-4" key={ i }>
-          <FormGroup disabled={ this.state.editable } name={ keys[key] }>
-            { key }
-          </FormGroup>
-        </div>
-      )
-    });
+    const returnFormGroups = (reference) => {
+
+      // initial value var
+      let initialValue;
+
+      return reference.map((field, i) => {
+
+
+        let editable = this.state.editable;
+
+        initialValue = this.props.initialValues[field.dbName];
+        if (!field.hidden) {
+           return (
+            <FormGroup style={{margin: '50px', textAlign: 'center'}} initValue={ initialValue } key={i} disabled={ editable } field={ field }>
+              { field.dbName }
+            </FormGroup>
+          );
+
+        }
+       
+      });
+    };
+
+    const allFields = returnFormGroups(reference);
 
     return (
-      <div id="single-student-page">
+      <div id="single-college-page">
         <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
-          <Row>
-            { inputHTML }
-          </Row>
+          <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+            { allFields }
+            </div>
           { this.state.editable ? <div>
                                     <Button type="submit">
                                       Submit
@@ -61,6 +79,28 @@ class SingleCollegeForm extends React.Component {
                                   </div> : <Button type="button" onClick={ () => this.toggleEdit() }>
                                              Edit
                                            </Button> }
+
+           { this.props.updateCollegeStatus.pending ? <div>
+                                    <br/>
+                                    <p>
+                                      Loading
+                                    </p><i style={ { fontSize: '50px', textAlign: 'center' } } className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                                  </div> : null }
+        { this.props.updateCollegeStatus.error ? 
+                                  <div>
+                                  <br/>
+                                  <Alert bsStyle="warning">
+                                    <strong>Sorry!</strong> We encountered an error, please check the student form for any errors.
+                                  </Alert>
+                                  </div>
+                                : null }
+        { this.props.updateCollegeStatus.success ? <div>
+                                    <br/>
+                                    <Alert bsStyle="success">
+                                      <strong>Success!</strong> We updated the student record and everything went swimmingly.
+                                    </Alert>
+                                    
+                                  </div> : null }
         </Form>
       </div>
 
@@ -74,13 +114,14 @@ SingleCollegeForm = reduxForm({
 
 function mapStateToProps(state) {
   return {
-    collegeForm: state.form
+    collegeForm: state.form,
+    updateCollegeStatus: state.updateCollege
   };
 }
 
 // You have to connect() to any reducers that you wish to connect to yourself
 export default connect(
-  mapStateToProps
+  mapStateToProps, updateCollege
 )(SingleCollegeForm)
 
 
