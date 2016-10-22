@@ -1,6 +1,8 @@
-import studentValidation from '../models/validation/studentValidation';
+import studentValidation2 from '../models/validation/studentValidation';
+import College from '../models/college';
+import { Schema } from 'mongoose';
 
-export default function formatRecord(record) {
+export default function formatRecord(record, callback) {
 
   const logObject = {
     osis: record.osis,
@@ -10,13 +12,15 @@ export default function formatRecord(record) {
   };
 
   if (!record.osis) {
+    callback(null, null);
     return;
   }
 
 
   // handle dates
   let dateFields = [];
-  for (var key in studentValidation) {
+  var studentValidation = studentValidation2(Schema);
+  for (let key in studentValidation) {
     if (studentValidation[key] === Date || studentValidation[key].type === Date) {
       dateFields.push(key);
     }
@@ -47,7 +51,7 @@ export default function formatRecord(record) {
 
   const shouldBeArrays = ['tags', 'studentSupportOrgName', 'transferStatus'];
 
-  for (var key in record) {
+  for (let key in record) {
 
     // sort out arrays 
     if (shouldBeArrays.includes(key)) {
@@ -69,27 +73,18 @@ export default function formatRecord(record) {
 
   }
 
-
-
-  // if (!record.tags || (typeof record.tags === 'string' && record.tags.length < 1)) {
-  //     record.tags = []
-  //   }
-  //   else {
-  //     record.tags = record.tags.split(',');
-  //   }
-
-
-  // handle empty strings - horrible....
-
-  // for (var key in record) {
-  //   if (!record[key] || (typeof record[key] === 'string' && record[key].length < 1)) {
-  //     record[key] = null;
-  //   }
-  // }
-
-
-
-  return record;
+  // reference Collge
+  College.findOne({
+    fullName: record.intendedCollege
+  }, (err, college) => {
+    if (err) {
+      console.log('college not found', err);
+      callback(err);
+      return;
+    }
+    record.intendedCollege = college;
+    callback(null, record);
+  });
 
   // record.termStartDate = new Date(record.termStartDate);
   // record.termEndDate = new Date(record.termEndDate);

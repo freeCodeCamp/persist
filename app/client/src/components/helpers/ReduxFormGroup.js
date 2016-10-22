@@ -65,11 +65,11 @@ class ReduxFormGroup extends React.Component {
           });
           options.unshift(<MenuItem value={ null } primaryText='None' key='none' />);
         }
-
         return (
           <Field disabled={ this.props.disabled }
             name={ this.props.field.dbName }
             component={ SelectField }
+            hintText={ this.props.field.displayName }
             floatingLabelText={ this.props.field.displayName }>
             { options }
           </Field>

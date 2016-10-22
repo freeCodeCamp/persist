@@ -3,9 +3,13 @@ import studentValidation from '../../../../server/models/validation/studentValid
 
 const asyncValidate = (values) => {
 
-  const mongoose = window.mongoose;
-  const Student = new mongoose.Schema(studentValidation);
+  var mongoose = window.mongoose;
+  var Schema = mongoose.Schema;
+
+  const Student = new Schema(studentValidation(Schema));
+
   var student = new mongoose.Document({}, Student);
+
   Object.keys(values).map((key) => {
     student[key] = values[key];
   });

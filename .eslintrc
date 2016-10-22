@@ -36,7 +36,7 @@
   },
   "rules": {
     "comma-dangle": 2,
-    "no-cond-assign": 2,
+    "no-cond-assign": 0,
     "no-console": 0,
     "no-constant-condition": 2,
     "no-control-regex": 2,
@@ -126,7 +126,7 @@
     "no-shadow-restricted-names": 2,
     "no-undef": 2,
     "no-undef-init": 2,
-    "no-undefined": 2,
+    "no-undefined": 0,
     "no-unused-vars": 2,
     "no-use-before-define": 0,
 
