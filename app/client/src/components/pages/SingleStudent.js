@@ -12,6 +12,12 @@ class SingleStudent extends React.Component {
   }
 
 
+
+  componentWillMount() {
+     this.props.getStudent(this.props.params.osis);
+  }
+
+
   render() {
     const {singleStudent} = this.props;
     const student = singleStudent.student;

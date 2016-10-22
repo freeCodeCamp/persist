@@ -18,7 +18,7 @@ const termSchema = {
 
 const applicationsSchema = {
   collAppName: String,
-  collAppType: String,
+  collAppType: Number,
   collAppResult: String,
   collAppHEOP: String,
   collAppAttending: Boolean,

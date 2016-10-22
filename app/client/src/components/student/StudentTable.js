@@ -9,9 +9,6 @@ class StudentTable extends React.Component {
     super(props);
   }
 
-  populateStudent(osis) {
-    this.props.getStudent(osis);
-  }
 
   render() {
     const studentsHTML = this.props.students.map((student, i) => {
@@ -21,7 +18,7 @@ class StudentTable extends React.Component {
             { i }
           </th>
           <th>
-            <Link onClick={this.populateStudent.bind(this, student.osis)} to={ `/student/${student.osis}` }>
+            <Link to={ `/student/${student.osis}` }>
             { student.firstName }
             </Link>
           </th>

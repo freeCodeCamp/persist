@@ -114,6 +114,10 @@ class SingleStudentForm extends React.Component {
             { financialHTML }
             </div>
             <br/>
+             <h2> College Applications </h2>
+            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+          
+            </div>
             <h2> Other </h2>
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             { otherHTML }

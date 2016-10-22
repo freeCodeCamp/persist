@@ -21,7 +21,7 @@ export default function(fileName) {
 
     var transformer = transform(function(record) {
 
-      return formatRecord(record);
+      console.log(record);
 
     }, (err, data) => {
       if (err) {

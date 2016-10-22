@@ -42,30 +42,68 @@ export default function(fileName) {
       // data = data.splice(0, 10);
       let addedCount = 0;
       let modifiedCount = 0;
+      let newColleges = [];
+      let updatedColleges = [];
 
       async.eachLimit(data, 10, (record, callback) => {
 
-        College.update({
+        // college.update({
+        //   fullName: record.fullName
+        // }, record, {
+        //   upsert: true,
+        //   setDefaultsOnInsert: true
+        // }, (err, rawResponse) => {
+        //   if (err) {
+        //     callback(err);
+        //     return;
+        //   }
+
+        //   if (rawResponse.upserted) {
+        //     addedCount += 1;
+        //   } else {
+        //     modifiedCount += 1;
+        //   }
+
+        //   // console.log(rawResponse);
+        //   callback(null);
+
+        // });
+
+        College.findOne({
           fullName: record.fullName
-        }, record, {
-          upsert: true,
-          setDefaultsOnInsert: true
-        }, (err, rawResponse) => {
-          if (err) {
-            callback(err);
-            return;
-          }
+        }, (err, doc) => {
 
-          if (rawResponse.upserted) {
-            addedCount += 1;
+          // if doesnt exist - create new record  
+          if (!doc) {
+            var college = new College(record);
+            college.save((err, doc) => {
+              if (err) {
+                callback(err);
+                return;
+              }
+              addedCount++;
+              newColleges.push({fullName: record.fullName});
+              callback(null);
+            });
           } else {
-            modifiedCount += 1;
-          }
+            modifiedCount++;
+            console.log('the record exists already mate!'.red)
+            updatedColleges.push({fullName: record.fullName})
+            // run some logic of updating
 
-          // console.log(rawResponse);
-          callback(null);
+            // update document with rules from Molly
+            // options: overwrite / add
+            
+            
+            
+
+            callback(null);
+          }
 
         });
+
+
+
 
       }, (err) => {
 
