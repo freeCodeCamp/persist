@@ -1,7 +1,49 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
+import { getSuggestions } from '../../actions/getSuggestions';
+import List from '../helpers/List';
 
-export default class NavigationMenu extends Component {
+class NavigationMenu extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      listItems: [],
+      searchName: '',
+      display: 'none'
+    };
+  }
+
+  onChange(event) {
+    this.setState({
+      searchName: event.target.value
+    });
+    this.props.getSuggestions('firstName', event.target.value);
+  }
+
+  onClick(value) {
+    this.setState({
+      listItems: [],
+      searchName: value,
+      display: 'none'
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.suggestions.length > 0) {
+      this.setState({
+        listItems: nextProps.suggestions,
+        display: 'block'
+      });
+    } else {
+      this.setState({
+        listItems: [],
+        display: 'none'
+      });
+    }
+  }
 
   render() {
     return (
@@ -26,11 +68,16 @@ export default class NavigationMenu extends Component {
               <input type='text'
                 name='q'
                 className='form-control'
+                value={ this.state.searchName }
+                onChange={ this.onChange.bind(this) }
                 placeholder='Search...' />
               <span className='input-group-btn'><button type='submit'
                                                   name='search'
                                                   id='search-btn'
                                                   className='btn btn-flat'> <i className='fa fa-search'></i> </button></span>
+            </div>
+            <div style={ { backgroundColor: 'white', display: this.state.display } }>
+              <List listItems={ this.state.listItems } onClick={ this.onClick.bind(this) } />
             </div>
           </form>
           { /* /.search form */ }
@@ -72,3 +119,18 @@ export default class NavigationMenu extends Component {
   }
 
 }
+
+const mapStateToProps = (state) => {
+  return {
+    suggestions: state.suggestions
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    getSuggestions
+  }, dispatch);
+};
+
+// You have to connect() to any reducers that you wish to connect to yourself
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationMenu);

@@ -12,7 +12,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { RadioButton } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import { SelectField, TextField, AutoComplete } from 'redux-form-material-ui';
-import { AutoComplete as MUIAutoComplete } from 'material-ui'
+import { AutoComplete as MUIAutoComplete } from 'material-ui';
 
 class FilterStudentForm extends React.Component {
 

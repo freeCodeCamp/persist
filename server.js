@@ -18,6 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // connect to mongoDB database
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 var app = express();

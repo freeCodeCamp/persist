@@ -59,14 +59,11 @@ class ReduxFormGroup extends React.Component {
 
         let options = types[this.props.field.dbName];
         if (options) {
-          options = options.map((option, i) => {
-            return <MenuItem value={ option } key={ option } primaryText={ option } />
+          options = options.map((option) => {
+            return (<MenuItem value={ option } key={ option } primaryText={ option } />);
           });
-          options.push(<MenuItem value={ '' } primaryText='None' key='none' />)
+          options.unshift(<MenuItem value={ null } primaryText='None' key='none' />);
         }
-
-
-
 
         return (
           <Field disabled={ !this.props.disabled }
@@ -75,8 +72,8 @@ class ReduxFormGroup extends React.Component {
             floatingLabelText={ this.props.field.displayName }>
             { options }
           </Field>
-        )
-        // case 'RadioButtonGroup':
+          );
+          // case 'RadioButtonGroup':
 
       // case 'AutoComplete':
       default:

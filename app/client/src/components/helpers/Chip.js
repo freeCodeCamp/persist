@@ -94,7 +94,7 @@ export default class Chips extends React.Component {
         <Field name={ this.props.field.dbName.toString() }
           component={ TextField }
           floatingLabelText={ this.props.field.displayName }
-          style={ { display: 'none' } } />
+          style={ { /*display: 'none'*/ } } />
       </div>
       );
   }
