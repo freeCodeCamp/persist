@@ -399,7 +399,33 @@ export const reference = [{
     displayName: 'Graduation Date',
     dbName: 'gradDate',
     fieldType: 'DatePicker'
-  }];
+  },{
+    fieldName: 'Preferred Pronoun',
+    displayName: 'Preferred Pronoun',
+    dbName: 'preferredPronoun',
+    fieldType: 'SelectField'
+  },{
+    fieldName: 'RECORD_FOUND_Y/N',
+    displayName: 'NSC Record Found',
+    dbName: 'nscRecordFound',
+    fieldType: 'Toggle'
+  },{
+    fieldName: 'Preferred Language',
+    displayName: 'Preferred Language',
+    dbName: 'preferredLanguage',
+    fieldType: 'TextField'
+  }
+
+
+
+
+
+
+
+
+
+
+  ];
 
 export default {
 

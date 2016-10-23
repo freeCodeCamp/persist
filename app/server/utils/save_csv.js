@@ -40,13 +40,16 @@ export default function(fileName) {
       console.log('end');
 
       // reduce data size for testing
-      // data = data.splice(0, 10);
+      // data = data.splice(0, 1);
       let addedCount = 0;
       let modifiedCount = 0;
       let newStudents = [];
       let updatedStudents = [];
+      let errorStudents = [];
+      let errorCount = 0;
 
       console.time('dbSave');
+
 
       async.eachLimit(data, 10, (record, callback) => {
 
@@ -66,7 +69,15 @@ export default function(fileName) {
             var student = new Student(record);
             student.save((err, doc) => {
               if (err) {
-                callback(err);
+                console.log('WE GOT A VALIDATION ERROR', err);
+                errorStudents.push({
+                      osis: record.osis,
+                      firstName: record.firstName,
+                      lastName: record.lastName,
+                      err
+                  });
+                errorCount++
+                callback(null);
                 return;
               }
               addedCount++;
@@ -78,19 +89,49 @@ export default function(fileName) {
               callback(null);
             });
           } else {
-            modifiedCount++;
-            console.log('the record exists already mate!'.red);
-            updatedStudents.push({
-              osis: record.osis,
-              firstName: record.firstName,
-              lastName: record.lastName
-            });
-            // run some logic of updating
+            
+            // there should be custom updating here
+            // // console.log(doc);
 
-            // update document with rules from Molly
-            // options: overwrite / add
+            // const addWithComma = ['email', 'parentName', 'parentPhone', 'degreeTitle', 'gradDate', 'preferredLanguage', 'hsc'];
+            // const add = ['otherPhone', 'studentTags', 'transStatus', 'remediationStatus', 'riskFactors', 'employmentStatus'];
+            // const overWriteIfHigher = ['act', 'SAT.math', 'SAT.cr'];
 
-            callback(null);
+            // addWithComma.forEach((field) => {
+            //   if (doc[field]) {
+            //     doc[field] = doc[field] + ', ' + record[field];
+            //   }
+
+            // });
+
+            // for now, lets just overwrite the doc
+            doc.save(function (err, updatedDoc) {
+                if (err) { 
+
+                  console.log('WE GOT A VALIDATION ERROR', err); 
+                   errorStudents.push({
+                      osis: record.osis,
+                      firstName: record.firstName,
+                      lastName: record.lastName,
+                      err
+                  });
+                  errorCount++
+                  callback(null);
+
+                }
+                else {
+                  console.log('we updated the doc!', updatedDoc)
+                  modifiedCount++;
+                  updatedStudents.push({
+                      osis: record.osis,
+                      firstName: record.firstName,
+                      lastName: record.lastName
+                  });
+                  callback(null);
+                }
+                
+              });
+
           }
 
         });
@@ -105,7 +146,9 @@ export default function(fileName) {
           modifiedCount,
           addedCount,
           newStudents,
-          updatedStudents
+          updatedStudents,
+          errorStudents,
+          errorCount
         });
       });
     });

@@ -45,7 +45,7 @@ export default class Upload extends React.Component {
         url: '/upload/collegeData'
       },
        {
-        name: 'College Term Records',
+        name: 'NSC Term Records',
         url: '/upload/collegeTermRecords'
       },
        {

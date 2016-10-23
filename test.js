@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import ourBrilliantFunction from './app/server/utils/save_csv_colleges_updated';
+import ourBrilliantFunction from './app/server/utils/save_csv';
 
 // import Student from './app/server/models/student';
 
@@ -8,7 +8,7 @@ mongoose.connect('mongodb://localhost:27017/nyc_outward');
 
 
 
-ourBrilliantFunction('./collegeData_estimated.csv').then((data) => {
+ourBrilliantFunction('./data.csv').then((data) => {
   console.log(data);
 }).catch((err) => {
   console.log(err);

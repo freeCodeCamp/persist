@@ -261,7 +261,12 @@ export default (Schema) => {
     collApplications: {
       type: Array,
       default: [applicationsSchema(Schema)]
-    }
+    },
+    degreeTitle: String,
+    gradDate: Date,
+    preferredPronoun: String,
+    nscRecordFound: Boolean,
+    preferredLanguage: String
   };
 
   // TO FINISH
