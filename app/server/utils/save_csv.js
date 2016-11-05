@@ -71,11 +71,11 @@ export default function(fileName) {
               if (err) {
                 console.log('WE GOT A VALIDATION ERROR', err);
                 errorStudents.push({
-                      osis: record.osis,
-                      firstName: record.firstName,
-                      lastName: record.lastName,
-                      err
-                  });
+                  osis: record.osis,
+                  firstName: record.firstName,
+                  lastName: record.lastName,
+                  err
+                });
                 errorCount++
                 callback(null);
                 return;
@@ -89,7 +89,7 @@ export default function(fileName) {
               callback(null);
             });
           } else {
-            
+
             // there should be custom updating here
             // // console.log(doc);
 
@@ -105,32 +105,31 @@ export default function(fileName) {
             // });
 
             // for now, lets just overwrite the doc
-            doc.save(function (err, updatedDoc) {
-                if (err) { 
+            doc.save(function(err, updatedDoc) {
+              if (err) {
 
-                  console.log('WE GOT A VALIDATION ERROR', err); 
-                   errorStudents.push({
-                      osis: record.osis,
-                      firstName: record.firstName,
-                      lastName: record.lastName,
-                      err
-                  });
-                  errorCount++
-                  callback(null);
+                console.log('WE GOT A VALIDATION ERROR', err);
+                errorStudents.push({
+                  osis: record.osis,
+                  firstName: record.firstName,
+                  lastName: record.lastName,
+                  err
+                });
+                errorCount++
+                callback(null);
 
-                }
-                else {
-                  console.log('we updated the doc!', updatedDoc)
-                  modifiedCount++;
-                  updatedStudents.push({
-                      osis: record.osis,
-                      firstName: record.firstName,
-                      lastName: record.lastName
-                  });
-                  callback(null);
-                }
-                
-              });
+              } else {
+                console.log('we updated the doc!', updatedDoc)
+                modifiedCount++;
+                updatedStudents.push({
+                  osis: record.osis,
+                  firstName: record.firstName,
+                  lastName: record.lastName
+                });
+                callback(null);
+              }
+
+            });
 
           }
 

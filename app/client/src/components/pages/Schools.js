@@ -1,12 +1,7 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import * as getSchool from '../../actions/getSchool';
-
-import { connect } from 'react-redux';
-
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Content from '../helpers/content';
-
-import { Panel, PanelGroup } from 'react-bootstrap';
+import {Panel, PanelGroup} from 'react-bootstrap';
 
 class Schools extends Component {
   constructor(props) {
@@ -22,17 +17,13 @@ class Schools extends Component {
     });
   }
 
-  componentDidMount() {
-    this.props.getSchool();
-  }
-
   render() {
-    let schoolHTML = this.props.schools.schools.map((school, i) => {
+    let schoolHTML = this.props.schools.value.map((school, i) => {
       return (
         <Panel header={ school.name } eventKey={ i } key={ i }>
-          { `${school.name} content ` }
+          { `${school.name} content` }
         </Panel>
-        );
+      );
     });
 
     return (
@@ -41,7 +32,7 @@ class Schools extends Component {
           { schoolHTML }
         </PanelGroup>
       </Content>
-      );
+    );
   }
 }
 
@@ -51,6 +42,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-Schools = connect(mapStateToProps, getSchool)(Schools);
-
-export default Schools;
+export default connect(mapStateToProps)(Schools);

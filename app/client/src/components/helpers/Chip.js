@@ -2,7 +2,6 @@ import React from 'react';
 import Chip from 'material-ui/Chip';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
 
 import { Field } from 'redux-form';
 

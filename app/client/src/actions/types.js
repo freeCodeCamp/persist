@@ -52,3 +52,18 @@ export const GET_SUGGESTIONS = 'get_suggestions';
 export const CHART_FILTER_SUCCESS = 'chart_filter_success';
 export const CHART_FILTER_ERROR = 'chart_filter_error';
 export const CHART_FILTER_PENDING = 'chart_filter_pending';
+
+// get all students
+export const GET_ALL_STUDENTS_SUCCESS = 'get_all_students_success';
+export const GET_ALL_STUDENTS_ERROR = 'get_all_students_error';
+export const GET_ALL_STUDENTS_PENDING = 'get_all_students_pending';
+
+// get all colleges
+export const GET_ALL_COLLEGES_SUCCESS = 'get_all_colleges_success';
+export const GET_ALL_COLLEGES_ERROR = 'get_all_colleges_error';
+export const GET_ALL_COLLEGES_PENDING = 'get_all_colleges_pending';
+
+// get all schools
+export const GET_ALL_SCHOOLS_SUCCESS = 'get_all_schools_success';
+export const GET_ALL_SCHOOLS_ERROR = 'get_all_schools_error';
+export const GET_ALL_SCHOOLS_PENDING = 'get_all_schools_pending';

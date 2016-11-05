@@ -2,7 +2,6 @@ import { CHART_FILTER_SUCCESS, CHART_FILTER_ERROR, CHART_FILTER_PENDING } from '
 import axios from 'axios';
 
 export function chartFilter(queryObject) {
-    console.log('GETTING TO ACTION')
   return function(dispatch) {
 
     dispatch({

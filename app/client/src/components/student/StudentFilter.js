@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import axios from 'axios';
-
 import { filterStudents } from '../../actions/studentFilter';
 import { getSuggestions } from '../../actions/getSuggestions';
 
