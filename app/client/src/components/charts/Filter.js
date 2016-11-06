@@ -22,15 +22,6 @@ class ChartFilter extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.props.chartFilter({});
-  }
-
-  handleFormSubmit(object) {
-    console.log(object);
-    // this.props.chartFilter(object);
-  }
-
   handleUpdateInput(columnName, form, value) {
     form.props.change.bind(form, columnName, value)();
     this.props.getSuggestions(columnName, value);
@@ -43,13 +34,12 @@ class ChartFilter extends React.Component {
     const hsDropDowns = hsOptions.map((hs, i) => <MenuItem value={ hs } key={ i } primaryText={ hs }/>);
     const gradYearDropDowns = [];
     const currYear = new Date().getFullYear();
-    console.log(currYear);
     for (let i = 2011; i <= currYear; i++) {
       gradYearDropDowns.push(<MenuItem value={ i } key={ i } primaryText={ i }/>)
     }
 
     return (
-      <form onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
+      <form onSubmit={ handleSubmit(this.props.handleFormSubmit) }>
         <div style={ {display: 'flex', flexWrap: 'wrap'} }>
           <div>
             <Field name='firstName'
@@ -90,12 +80,12 @@ class ChartFilter extends React.Component {
                    component={ SelectField }
                    hintText='Ethnicity'
                    floatingLabelText='Ethnicity'>
-              <MenuItem value='1' primaryText='1'/>
-              <MenuItem value='2' primaryText='2'/>
-              <MenuItem value='3' primaryText='3'/>
-              <MenuItem value='4' primaryText='4'/>
-              <MenuItem value='5' primaryText='5'/>
-              <MenuItem value='6' primaryText='6'/>
+              <MenuItem value={1} primaryText='1'/>
+              <MenuItem value={2} primaryText='2'/>
+              <MenuItem value={3} primaryText='3'/>
+              <MenuItem value={4} primaryText='4'/>
+              <MenuItem value={5} primaryText='5'/>
+              <MenuItem value={6} primaryText='6'/>
             </Field>
           </div>
           <div>
@@ -118,7 +108,7 @@ class ChartFilter extends React.Component {
             <Field name='hsGPA'
                    component={ RangeSlider }
                    description='High School GPA'
-                   defaultRange={ {minValue: 25, maxValue: 75} }
+                   defaultRange={ {minValue: 0, maxValue: 100} }
                    min={ 0 }
                    form={this.props.form}
                    max={ 100 }
@@ -134,7 +124,7 @@ class ChartFilter extends React.Component {
 }
 // a unique name for this form
 ChartFilter = reduxForm({
-  form: 'chartFilter'
+  form: 'chartFilterStudents'
 })(ChartFilter);
 
 const mapStateToProps = (state) => {

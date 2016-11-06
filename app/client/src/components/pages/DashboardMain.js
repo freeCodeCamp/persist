@@ -1,73 +1,62 @@
 import React from 'react';
-import InfoTile from '../charts/InfoTile';
 import Content from '../helpers/content';
 import ChartFilter from '../charts/Filter';
-import { connect } from 'react-redux';
-
-import Donut from '../admin-components/charts/Donut';
+import {ChartTabs} from '../dashboard';
+import {connect} from 'react-redux';
+import {reduxForm} from 'redux-form';
+import _ from 'lodash';
 
 class DashboardMain extends React.Component {
   constructor(props) {
     super(props);
+    this.initialize = true;
+    this.state = {
+      filteredStudents: []
+    };
   }
 
-  data() {
-    const data = [];
+  handleSubmit(values) {
+    const conditions = _.cloneDeep(values);
+    this.initialize = false;
+    const {students} = this.props;
+    const hsGPA = conditions.hsGPA;
+    delete conditions.hsGPA;
+    const filteredStudents = _(students).filter(conditions).filter((student) => {
+      if (hsGPA.min === 0 && hsGPA.max === 100) return true;
+      return student.hsGPA > hsGPA.min && student.hsGPA < hsGPA.max;
+    }).value();
+    this.setState({
+      filteredStudents
+    });
+  }
 
-    for (var i = 1; i < 8; i++) {
-      data.push({
-        label: i,
-        value: 0
+  componentWillReceiveProps(nextProps) {
+    if (this.initialize && nextProps.students.length > 0) {
+      this.initialize = false;
+      this.setState({
+        filteredStudents: nextProps.students
       });
     }
-    this.props.students.map(function(elem) {
-      if (elem.ethnicity) {
-        data[elem.ethnicity-1].value++;
-      }
-    });
-    console.log(data);
-    return data;
   }
 
   render() {
-    const donutProps = {
-      id: 'donut-chart-1',
-      title: 'College Direct Enrollment',
-      colors: ['yellow', 'black', 'orange', 'red', 'blue', 'green'],
-      data: this.data(),
-      title: 'Ethnicity'
-    };
-
     return (
       <Content title='Welcome'>
-        <ChartFilter />
-        <div className='row' style={ { marginTop: '30px' } }>
-          <InfoTile icon='fa-envelope-o'
-            subject='Users'
-            stats='1000'
-            theme='bg-aqua'
-            width={ 4 } />
-          <InfoTile icon='fa-flag-o'
-            subject='Students'
-            stats='1000'
-            theme='bg-red'
-            width={ 4 } />
-          <InfoTile icon='fa-star-o'
-            subject='Schools'
-            stats='1000'
-            theme='bg-yellow'
-            width={ 4 } />
-        </div>
-        <Donut {...donutProps} />
+        <ChartFilter handleFormSubmit={this.handleSubmit.bind(this)}/>
+        <ChartTabs students={this.state.filteredStudents}/>
       </Content>
-      );
+    );
   }
 }
 
+DashboardMain = reduxForm({
+  form: 'chartFilterStudents'
+})(DashboardMain);
 
 const mapStateToProps = (state) => {
   return {
-    students: state.chartFilter.students
+    students: state.students.value,
+    filters: state.form.chartFilterStudents
   };
 };
 

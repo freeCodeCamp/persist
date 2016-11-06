@@ -21,9 +21,9 @@ export default class RangeSlider extends React.Component {
       onStart: (data) => {
         this.dispatchChange(data);
       },
-      onChange: (data) => {
-        this.dispatchChange(data);
-      },
+      // onChange: (data) => {
+      //   this.dispatchChange(data);
+      // },
       onFinish: (data) => {
         this.dispatchChange(data);
       },

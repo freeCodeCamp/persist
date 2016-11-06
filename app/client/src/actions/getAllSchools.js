@@ -7,7 +7,7 @@ export default () => {
       type: GET_ALL_SCHOOLS_PENDING
     });
 
-    return axios.get('/api/students')
+    return axios.get('/api/schools')
       .then((response) => {
         dispatch({
           type: GET_ALL_SCHOOLS_SUCCESS,

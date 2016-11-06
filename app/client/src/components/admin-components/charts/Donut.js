@@ -1,21 +1,43 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import classNames from 'classnames';
+import randomColor from 'randomcolor';
 
 class Donut extends Component {
 
   constructor(props) {
     super(props);
+    this.initialized = false;
   }
 
   componentWillReceiveProps(nextProps) {
-    this.donut.setData(nextProps.data);
+    if (nextProps.data.length > 0) {
+      if (!this.initialized) {
+        this.initializeChart(nextProps.data);
+        return;
+      }
+      this.donut.setData(nextProps.data);
+    }
   }
 
   componentDidMount() {
+    if (this.props.data.length > 0) {
+      this.initializeChart();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.active && this.donut) {
+      this.donut.resizeHandler();
+    }
+  }
+
+  initializeChart(data = this.props.data) {
+    this.initialized = true;
     this.donut = new Morris.Donut({
       element: this.props.id,
       resize: true,
-      colors: this.props.colors,
-      data: this.props.data,
+      colors: randomColor({luminosity: 'dark', hue: 'random', count: data.length}),
+      data: data,
       hideHover: 'auto'
     });
   }
@@ -27,13 +49,10 @@ class Donut extends Component {
     };
 
     return (
-      <div className='chart tab-pane active' id={ this.props.id } style={ style }>
-        <p>
-          { this.props.title }
-        </p>
+      <div className={classNames('chart tab-pane', {active: this.props.active})} id={ this.props.id } style={ style }>
         { this.props.children }
       </div>
-      );
+    );
   }
 }
 
