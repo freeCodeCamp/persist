@@ -1,4 +1,3 @@
-
 export const reference = [{
     fieldName: 'COLLEGE_NAME',
     displayName: 'NSC Official College Name',

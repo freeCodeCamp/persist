@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import College from '../models/college';
 import collegeKeys from '../helpers/collegeKeys';
 
-export default function(fileName) {
+export default function (fileName) {
 
   return new Promise((resolve, reject) => {
 
@@ -18,15 +18,15 @@ export default function(fileName) {
       auto_parse: true
     });
 
-    var transformer = transform(function(record) {
+    var transformer = transform(function (record) {
 
       console.log(record);
-      let years =  {};
+      let years = {};
       years[2012] = record['2012 Enrolled Fall1'];
       years[2013] = record['2013 Enrolled Fall 1'];
       years[2014] = record['2014 Enrolled Fall 1'];
       years[2015] = record['2015 Enrolled Fall 1 '];
-      
+
       record.enrollmentYears = years;
 
       return record;

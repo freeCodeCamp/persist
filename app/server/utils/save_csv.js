@@ -23,10 +23,8 @@ export default function(fileName) {
     });
     var data = [];
     var row;
-    var i = 0;
     transformer.on('readable', function() {
       while (row = transformer.read()) {
-        console.log(i++);
         data.push(row);
       }
     });
@@ -37,8 +35,6 @@ export default function(fileName) {
     });
 
     transformer.on('end', function() {
-      console.log('end');
-
       // reduce data size for testing
       // data = data.splice(0, 1);
       let addedCount = 0;
@@ -119,7 +115,7 @@ export default function(fileName) {
                 callback(null);
 
               } else {
-                console.log('we updated the doc!', updatedDoc)
+                console.log('we updated the doc!', updatedDoc);
                 modifiedCount++;
                 updatedStudents.push({
                   osis: record.osis,

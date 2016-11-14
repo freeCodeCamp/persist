@@ -290,7 +290,7 @@ export const enums = {
 
 export default {
 
-  tags: function(v) {
+  tags(v) {
     return this.helpers.validateArray(v, types.tags);
   },
 
@@ -319,7 +319,7 @@ export default {
   },
 
   helpers: {
-    validateArray: function(inputArray, optionsArray) {
+    validateArray(inputArray, optionsArray) {
       // takes an array of values, and an array of possible values, and makes sure they exist
 
       if (inputArray.constructor !== Array) {
