@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware } from 'redux';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { browserHistory } from 'react-router';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {createStore, applyMiddleware} from 'redux';
+import {syncHistoryWithStore, routerMiddleware} from 'react-router-redux';
+import {browserHistory} from 'react-router';
+import {composeWithDevTools} from 'redux-devtools-extension';
 
 // middleware
 import logger from 'redux-logger';
@@ -11,12 +11,12 @@ import reduxThunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 
 // use middleware
-const middleware = applyMiddleware( /*logger(),*/ reduxThunk);
+const middleware = applyMiddleware(/*logger(),*/ reduxThunk, routerMiddleware(browserHistory));
 
 // creating store
 
 const store = createStore(rootReducer, composeWithDevTools(
-middleware
+    middleware
 ));
 
 // syncing history with redux

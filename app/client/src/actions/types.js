@@ -10,6 +10,7 @@ export const GET_STUDENT_ERROR = 'get_student_error';
 export const GET_STUDENT_PENDING = 'get_student_pending';
 
 // single student update
+export const UPDATE_STUDENT = 'update_student';
 export const UPDATE_STUDENT_SUCCESS = 'update_student_success';
 export const UPDATE_STUDENT_ERROR = 'update_student_error';
 export const UPDATE_STUDENT_PENDING = 'update_student_pending';

@@ -1,17 +1,15 @@
 import mongoose from 'mongoose';
-import ourBrilliantFunction from './app/server/utils/save_csv';
+import ourBrilliantFunction from './app/server/utils/save_csv_term_data';
 
 // import Student from './app/server/models/student';
 
 mongoose.connect('mongodb://localhost:27017/nyc_outward');
 
 
-
-
-ourBrilliantFunction('./data.csv').then((data) => {
-  console.log(data);
+ourBrilliantFunction('./termData.csv').then((data) => {
+    console.log(data);
 }).catch((err) => {
-  console.log(err);
+    console.log(err);
 });
 
 // const newStudent = new Student();

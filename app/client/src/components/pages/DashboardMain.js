@@ -47,11 +47,21 @@ class DashboardMain extends React.Component {
         }
     }
 
+    componentDidMount() {
+        const {students} = this.props;
+        if (students.length > 0) {
+            this.update = true;
+            this.setState({
+                filteredStudents: students
+            });
+        }
+    }
+
     render() {
         return (
             <Content title='Welcome'>
                 <ChartFilter handleFormSubmit={this.handleSubmit.bind(this)}/>
-                <ChartTabs students={this.state.filteredStudents}/>
+                <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges}/>
             </Content>
         );
     }
@@ -64,6 +74,7 @@ DashboardMain = reduxForm({
 const mapStateToProps = (state) => {
     return {
         students: state.students.value,
+        colleges: state.colleges.value,
         filters: state.form.chartFilterStudents
     };
 };

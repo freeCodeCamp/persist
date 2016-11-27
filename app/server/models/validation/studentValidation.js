@@ -10,10 +10,10 @@ const Parent = {
 };
 
 const termSchema = (Schema) => ({
+    _id: false,
     name: String,
     college: {
-        type: Schema.Types.ObjectId,
-        ref: 'College'
+        type: Schema.Types.ObjectId
     },
     status: String,
     enrolBegin: Date,
@@ -24,8 +24,7 @@ const termSchema = (Schema) => ({
 const applicationsSchema = (Schema) => {
     return {
         college: {
-            type: Schema.Types.ObjectId,
-            ref: 'College'
+            type: Schema.Types.ObjectId
         },
         result: String,
         heop: String,
@@ -42,6 +41,7 @@ export default (Schema) => {
         },
         lastName: String,
         middleName: String,
+        fullName: String,
         suffix: String,
         altName: String,
         hsGradYear: Number,
@@ -130,10 +130,7 @@ export default (Schema) => {
         },
         actEquiv: Number,
         hsGPA: Number,
-        terms: {
-            type: Array,
-            default: [termSchema(Schema)]
-        },
+        terms: [termSchema(Schema)],
         ferpa: {
             type: String,
             enum: enums.ferpa

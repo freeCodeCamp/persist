@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
-import moment from 'moment';
 import async from 'async';
 import {BasicColumn} from '../admin-components/charts';
 
-class ColDirEnrol extends Component {
+class ColCompRate extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
+            year: '1c',
             data: []
         }
     }
@@ -32,43 +32,23 @@ class ColDirEnrol extends Component {
         });
     }
 
-    diffMonths(dateA, dateB, diff) {
-        return moment(dateA).diff(moment(dateB), 'months') < diff;
-    }
-
     normalizeData(props) {
         return new Promise((resolve) => {
-            if (props.students.length < 1) resolve({});
-            const defaultEnrollmentData = {
-                '6m': 0,
-                '12m': 0,
-                '18m': 0,
-                'total': 0
-            };
+            if (props.colleges.length < 1 || props.students.length < 1) resolve({});
+            const colleges = _.keyBy(props.colleges, '_id');
+            const colCompletionRate = [];
             const result = {};
             const q = async.queue((student, callback) => {
                 const hsGradYear = student.hsGradYear;
                 if (hsGradYear) {
-                    result[hsGradYear] = result[hsGradYear] || _.clone(defaultEnrollmentData);
-                    const hsGradDate = student.hsGradDate;
-                    let enrolDate;
-                    student.terms = _.compact(student.terms);
-                    if (student.terms.length > 0) {
-                        enrolDate = _.last(student.terms).enrolBegin;
-                    }
-                    if (enrolDate && hsGradDate) {
-                        if (this.diffMonths(enrolDate, hsGradDate, 6)) {
-                            result[hsGradYear]['6m'] += 1;
+                    result[hsGradYear] = result[hsGradYear] || _.clone(colCompletionRate);
+                    const terms = student.terms;
+                    if (terms.length > 0) {
+                        const college = colleges[terms[0].college];
+                        const gradRate = college.gradRate.overall;
+                        if (college && gradRate) {
+                            result[hsGradYear].push(gradRate);
                         }
-                        if (this.diffMonths(enrolDate, hsGradDate, 12)) {
-                            result[hsGradYear]['12m'] += 1;
-                        }
-                        if (this.diffMonths(enrolDate, hsGradDate, 18)) {
-                            result[hsGradYear]['18m'] += 1;
-                        }
-                    }
-                    if (hsGradDate) {
-                        result[hsGradYear]['total'] += 1;
                     }
                 }
                 setTimeout(() => {
@@ -84,16 +64,14 @@ class ColDirEnrol extends Component {
 
     chartData(data) {
         return [
-            {name: '6 months', data: this.getRatio(data, '6m')},
-            {name: '12 months', data: this.getRatio(data, '12m')},
-            {name: '18 months', data: this.getRatio(data, '18m')}
+            {name: 'College Completion Rate', data: this.getRatio(data)}
         ]
     }
 
-    getRatio(data, constant) {
+    getRatio(data) {
         const yearlyData = [];
         _(data).keys().sort().forEach(key => {
-            yearlyData.push(data[key][constant] * 100 / data[key]['total']);
+            yearlyData.push(_.mean(data[key]) * 100)
         });
         return yearlyData;
     }
@@ -106,7 +84,7 @@ class ColDirEnrol extends Component {
                 type: 'column'
             },
             title: {
-                text: 'College Direct Enrollment'
+                text: 'College Completion Rate'
             },
             xAxis: {
                 categories: _(data).keys().sort().value(),
@@ -143,8 +121,8 @@ class ColDirEnrol extends Component {
                 position: 'absolute', top: 0, bottom: 0, width: '100%',
                 display: 'flex', justifyContent: 'center', alignItems: 'center'
             }}>
-                <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
-                <span className="sr-only">Loading...</span>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw'></i>
+                <span className='sr-only'>Loading...</span>
             </div>
         )
     }
@@ -164,4 +142,10 @@ class ColDirEnrol extends Component {
 
 }
 
-export default ColDirEnrol;
+const styles = {
+    raisedButton: {
+        marginRight: '5px'
+    }
+};
+
+export default ColCompRate;

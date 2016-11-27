@@ -16,6 +16,8 @@ export default function formatRecord(record, callback) {
         return;
     }
 
+    // create full Name
+    record.fullName = `${record.firstName} ${record.lastName}`.trim();
 
     // handle dates
     let dateFields = [];

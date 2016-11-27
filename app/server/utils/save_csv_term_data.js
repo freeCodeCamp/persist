@@ -33,11 +33,12 @@ export default (fileName) => {
         const transformer = transform(formatRecord, {
             parallel: 20
         });
-        const data = [];
+        const data = {};
         let row;
         transformer.on('readable', () => {
             while (row = transformer.read()) {
-                data.push(row);
+                data[row.osis] = data[row.osis] || [];
+                data[row.osis].push(row);
             }
         });
 
@@ -47,44 +48,46 @@ export default (fileName) => {
         });
 
         transformer.on('end', () => {
-            const termsAdded = [];
-            // async limit is 1 as same terms are being updated by multiple queries resolving
-            // to versioning issue.
-            async.eachLimit(data, 1, (record, callback) => {
-                delete record['null'];
+            async.eachLimit(data, 10, (terms, callback) => {
+                if (!terms || terms.length < 1) {
+                    callback(null);
+                    return;
+                }
+                const osis = terms[0].osis;
                 // find student record
                 // if exists - only then proceed
                 Student.findOne({
-                    osis: record.osis
+                    osis
                 }, (err, student) => {
                     if (err) {
                         callback(err);
                         return;
                     }
                     if (student) {
-                        let terms = student.terms;
-                        let term = terms.find((elem) => {
-                            return elem.name === record.name;
+                        let studentTerms = student.terms;
+                        terms.forEach((termRecord) => {
+                            let term = studentTerms.find((elem) => {
+                                return elem.name === termRecord.name;
+                            });
+                            if (term) {
+                                _.merge(term, termRecord);
+                            } else {
+                                studentTerms.push(termRecord);
+                            }
                         });
-                        if (term) {
-                            _.merge(term, record);
-                        } else {
-                            terms.push(record);
-                        }
-                        terms = terms.filter((obj) =>
+                        studentTerms = studentTerms.filter((obj) =>
                             (!_.isEmpty(obj))
                         );
-                        terms = _.sortBy(terms, (obj) => {
+                        studentTerms = _.sortBy(studentTerms, (obj) => {
                             return obj.enrolBegin;
                         }).reverse();
-                        student.terms = terms;
+                        student.terms = studentTerms;
                         // for now, lets just overwrite the doc
                         student.save((err, updatedStudent) => {
                             if (err) {
-                                console.log('error', record, student);
+                                console.log('error', studentTerms, student);
                                 callback(err);
                             } else {
-                                termsAdded.push(record);
                                 callback(null);
                             }
                         });
@@ -97,7 +100,7 @@ export default (fileName) => {
                     reject(err);
                     return;
                 }
-                resolve({termsAdded});
+                resolve(true);
             });
         });
 

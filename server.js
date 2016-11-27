@@ -57,7 +57,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 serverRoutes(app);
 
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 4545;
 server.listen(PORT, (error) => {
   if (error) {
     console.error(error);

@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import async from 'async';
+import RaisedButton from 'material-ui/RaisedButton';
 import {BasicColumn} from '../admin-components/charts';
 
-class ColDirEnrol extends Component {
+class ColPersist extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
+            year: '1c',
             data: []
         }
     }
@@ -32,8 +34,46 @@ class ColDirEnrol extends Component {
         });
     }
 
-    diffMonths(dateA, dateB, diff) {
-        return moment(dateA).diff(moment(dateB), 'months') < diff;
+    yearEnrol(terms, enrolDate, hsGradDate, diff) {
+        const colDir = moment(enrolDate).diff(moment(hsGradDate), 'months') < diff;
+        if (!colDir) return false;
+        const totalTerms = terms.length;
+        let lastEnrolDate;
+        let firstEnrolDate;
+        switch (this.state.year) {
+            case '1c':
+                if (totalTerms < 2) return false;
+                lastEnrolDate = terms[totalTerms - 2].enrolBegin;
+                firstEnrolDate = terms[totalTerms - 1].enrolBegin;
+                if (lastEnrolDate && firstEnrolDate) {
+                    return moment(lastEnrolDate).diff(moment(firstEnrolDate), 'months') < 6;
+                }
+                return false;
+            case '2c':
+                if (totalTerms < 4) return false;
+                lastEnrolDate = terms[totalTerms - 4].enrolBegin;
+                firstEnrolDate = terms[totalTerms - 1].enrolBegin;
+                if (lastEnrolDate && firstEnrolDate) {
+                    return moment(lastEnrolDate).diff(moment(firstEnrolDate), 'months') < 18;
+                }
+                return false;
+            case '1r':
+                if (totalTerms < 2) return false;
+                lastEnrolDate = terms[totalTerms - 2].enrolBegin;
+                firstEnrolDate = terms[totalTerms - 1].enrolBegin;
+                if (lastEnrolDate && firstEnrolDate) {
+                    return moment(lastEnrolDate).diff(moment(firstEnrolDate), 'months') < 12;
+                }
+                return false;
+            case '3r':
+                if (totalTerms < 2) return false;
+                lastEnrolDate = terms[totalTerms - 2].enrolBegin;
+                firstEnrolDate = terms[totalTerms - 1].enrolBegin;
+                if (lastEnrolDate && firstEnrolDate) {
+                    return moment(lastEnrolDate).diff(moment(firstEnrolDate), 'months') < 24;
+                }
+                return false;
+        }
     }
 
     normalizeData(props) {
@@ -52,18 +92,18 @@ class ColDirEnrol extends Component {
                     result[hsGradYear] = result[hsGradYear] || _.clone(defaultEnrollmentData);
                     const hsGradDate = student.hsGradDate;
                     let enrolDate;
-                    student.terms = _.compact(student.terms);
-                    if (student.terms.length > 0) {
-                        enrolDate = _.last(student.terms).enrolBegin;
+                    const terms = student.terms;
+                    if (terms.length > 0) {
+                        enrolDate = _.last(terms).enrolBegin;
                     }
                     if (enrolDate && hsGradDate) {
-                        if (this.diffMonths(enrolDate, hsGradDate, 6)) {
+                        if (this.yearEnrol(terms, enrolDate, hsGradDate, 6)) {
                             result[hsGradYear]['6m'] += 1;
                         }
-                        if (this.diffMonths(enrolDate, hsGradDate, 12)) {
+                        if (this.yearEnrol(terms, enrolDate, hsGradDate, 12)) {
                             result[hsGradYear]['12m'] += 1;
                         }
-                        if (this.diffMonths(enrolDate, hsGradDate, 18)) {
+                        if (this.yearEnrol(terms, enrolDate, hsGradDate, 18)) {
                             result[hsGradYear]['18m'] += 1;
                         }
                     }
@@ -106,7 +146,7 @@ class ColDirEnrol extends Component {
                 type: 'column'
             },
             title: {
-                text: 'College Direct Enrollment'
+                text: 'College Persistence'
             },
             xAxis: {
                 categories: _(data).keys().sort().value(),
@@ -143,10 +183,17 @@ class ColDirEnrol extends Component {
                 position: 'absolute', top: 0, bottom: 0, width: '100%',
                 display: 'flex', justifyContent: 'center', alignItems: 'center'
             }}>
-                <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
-                <span className="sr-only">Loading...</span>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw'></i>
+                <span className='sr-only'>Loading...</span>
             </div>
         )
+    }
+
+    setYear(year) {
+        this.setState({
+            loading: true,
+            year
+        }, this.updateGraph.bind(this, this.props));
     }
 
     render() {
@@ -158,10 +205,26 @@ class ColDirEnrol extends Component {
                     <BasicColumn {...this.props} config={this.chartConfig()}
                                  data={this.state.data}/>
                 </div>
+                <div style={{display: 'flex'}}>
+                    <RaisedButton style={styles.raisedButton} primary={true} label='YR 1 Cont.'
+                                  onClick={() => this.setYear('1c')}/>
+                    <RaisedButton style={styles.raisedButton} primary={true} label='YR 2 Cont.'
+                                  onClick={() => this.setYear('2c')}/>
+                    <RaisedButton style={styles.raisedButton} primary={true} label='YR 1to2 Persist.'
+                                  onClick={() => this.setYear('1r')}/>
+                    <RaisedButton style={styles.raisedButton} primary={true} label='YR 1to3 Persist.'
+                                  onClick={() => this.setYear('3r')}/>
+                </div>
             </div>
         )
     }
 
 }
 
-export default ColDirEnrol;
+const styles = {
+    raisedButton: {
+        marginRight: '5px'
+    }
+};
+
+export default ColPersist;
