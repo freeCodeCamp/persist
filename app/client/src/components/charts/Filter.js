@@ -1,44 +1,82 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-
-import {chartFilter} from '../../actions/chart';
-import {getSuggestions} from '../../actions/getSuggestions';
-
 import {reduxForm, Field} from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import {SelectField, TextField, AutoComplete} from 'redux-form-material-ui';
 import RangeSlider from '../helpers/RangeSlider';
 import {AutoComplete as MUIAutoComplete} from 'material-ui';
-
 import {types} from '../../../../server/models/validation/validator';
-
 
 class ChartFilter extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            suggestions: {
+                'firstName': [],
+                'lastName': []
+            }
+        }
     }
 
     handleUpdateInput(columnName, form, value) {
+        if (value != null && typeof value === 'object') {
+            form.props.change.bind(form, columnName, value.value)();
+            return;
+        }
         form.props.change.bind(form, columnName, value)();
-        this.props.getSuggestions(columnName, value);
+        this.getSuggestions(columnName, value);
+    }
+
+    setSuggestions(columnName, suggestions) {
+        this.setState({
+            suggestions: {
+                ...this.state.suggestions,
+                [columnName]: suggestions
+            }
+        });
+    }
+
+    getSuggestions(columnName, value) {
+        if (value.length < 3) {
+            this.setSuggestions(columnName, []);
+            return;
+        }
+        const {students} = this.props;
+        const regex = new RegExp('.*' + value + '.*', 'i');
+        const suggestions = _(students)
+            .filter((student) => (regex.test(student[columnName])))
+            .map(columnName)
+            .uniq()
+            .sortBy()
+            .take(5)
+            .value();
+        this.setSuggestions(columnName, suggestions);
     }
 
     render() {
-        const {handleSubmit, suggestions} = this.props;
+        const {handleSubmit} = this.props;
+        const {suggestions} = this.state;
 
         const hsOptions = types.hs;
-        const hsDropDowns = hsOptions.map((hs, i) => <MenuItem value={ hs } key={ i } primaryText={ hs }/>);
-        const cohortOptions = types.cohort.map((cohort, i) => <MenuItem value={cohort} key={cohort}
-                                                                        primaryText={cohort}/>);
+        const hsDropDowns = hsOptions.map((hs, i) => (
+                <MenuItem value={ hs } key={ i } primaryText={ hs }/>
+            )
+        );
+        const cohortOptions = types.cohort.map((cohort, i) => (
+                <MenuItem value={cohort}
+                          key={cohort}
+                          primaryText={cohort}/>
+            )
+        );
         const gradYearDropDowns = [];
         const currYear = new Date().getFullYear();
         for (let i = 2011; i <= currYear; i++) {
-            gradYearDropDowns.push(<MenuItem value={ i } key={ i } primaryText={ i }/>)
+            gradYearDropDowns.push(
+                <MenuItem value={ i } key={ i } primaryText={ i }/>
+            )
         }
-
         return (
             <form onSubmit={ handleSubmit(this.props.handleFormSubmit) }>
                 <div style={ {display: 'flex', flexWrap: 'wrap'} }>
@@ -46,7 +84,7 @@ class ChartFilter extends React.Component {
                         <Field name='firstName'
                                component={ AutoComplete }
                                filter={ MUIAutoComplete.caseInsensitiveFilter }
-                               dataSource={ suggestions }
+                               dataSource={ suggestions['firstName'] }
                                input={ {
                                    onUpdateInput: this.handleUpdateInput.bind(this, 'firstName', this),
                                    onChange: this.handleUpdateInput.bind(this, 'firstName', this)
@@ -60,11 +98,12 @@ class ChartFilter extends React.Component {
                         <Field name='intendedCollege'
                                component={ AutoComplete }
                                filter={ MUIAutoComplete.caseInsensitiveFilter }
-                               dataSource={ suggestions }
+                               dataSource={ this.props.collegeSource }
                                input={ {
                                    onUpdateInput: this.handleUpdateInput.bind(this, 'intendedCollege', this),
                                    onChange: this.handleUpdateInput.bind(this, 'intendedCollege', this)
                                } }
+                               maxSearchResults={5}
                                floatingLabelText='Intended College'/>
                     </div>
                     <div>
@@ -136,18 +175,9 @@ ChartFilter = reduxForm({
     form: 'chartFilterStudents'
 })(ChartFilter);
 
-const mapStateToProps = (state) => {
-    return {
-        suggestions: state.suggestions
-    };
-};
+const mapStateToProps = (state) => ({
+    students: state.students.value,
+    collegeSource: state.colleges.collegeSource
+});
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        chartFilter,
-        getSuggestions
-    }, dispatch);
-};
-
-// You have to connect() to any reducers that you wish to connect to yourself
-export default connect(mapStateToProps, mapDispatchToProps)(ChartFilter);
+export default connect(mapStateToProps)(ChartFilter);

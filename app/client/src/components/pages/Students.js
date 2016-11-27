@@ -16,7 +16,10 @@ class Students extends Component {
     }
 
     onSubmit(filter) {
-        const students = _(this.props.students).filter(filter).value();
+        if (_.isEmpty(filter)) {
+            return;
+        }
+        const students = _(this.props.students).filter(filter).take(20).value();
         this.setState({
             students
         });

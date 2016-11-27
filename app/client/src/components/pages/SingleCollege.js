@@ -1,49 +1,65 @@
 import React from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import Content from '../helpers/content';
-
-import * as getCollege from '../../actions/getCollege';
-
+import isEmpty from 'lodash/isEmpty';
+import {createSelector} from 'reselect';
 import SingleCollegeForm from '../college/SingleCollegeForm';
 
 class SingleCollege extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+    constructor(props) {
+        super(props);
+    }
 
-  componentDidMount() {
-    this.props.getCollege(this.props.params.fullName);
-  }
+    componentDidMount() {
+    }
 
-  render() {
-    console.log(this.props);
-    const {singleCollege} = this.props;
-    const college = singleCollege.college;
-    return (
-      <Content>
-        { singleCollege.pending ? <div>
-                                    <p>
-                                      Loading
-                                    </p><i style={ { fontSize: '50px', textAlign: 'center' } } className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                                  </div> : null }
-        { singleCollege.error ? <p>
-                                  Error Found
-                                </p> : null }
-        { singleCollege.success ? <div>
-                                    <h1 style={ { margin: '20px' } }>{ `${college.fullName}` }</h1>
-                                    <SingleCollegeForm initialValues={ college } college={ college } />
-                                  </div> : null }
-      </Content>
-      );
-  }
+    render() {
+        const {college} = this.props;
+        const collegeData = college.data;
+        return (
+            <Content title={collegeData.fullName}>
+                {college.success && collegeData ?
+                    <div>
+                        <SingleCollegeForm initialValues={ collegeData } college={ collegeData }/>
+                    </div> : college.success && !collegeData ?
+                    <div>No Records Found</div> :
+                    <div>
+                        <p>
+                            Loading
+                        </p><i style={ {fontSize: '50px', textAlign: 'center'} }
+                               className="fa fa-spinner fa-spin fa-3x fa-fw"/>
+                    </div>
+                }
+            </Content>
+        );
+    }
 }
 
-function mapStateToProps(state) {
-  return {
-    singleCollege: state.singleCollege
-  };
-}
+const getColleges = (state) => state.colleges.idObj;
+const getId = (_, props) => props.params.id;
 
-export default connect(mapStateToProps, getCollege)(SingleCollege);
+const makeGetCollege = () => {
+    return createSelector(
+        [getColleges, getId],
+        (colleges, id) => {
+            if (isEmpty(colleges)) {
+                return {success: false, data: null}
+            }
+            console.log(id);
+            return {success: true, data: colleges[id]};
+        }
+    )
+};
+
+const makeMapStateToProps = () => {
+    const getCollege = makeGetCollege();
+    const mapStateToProps = (state, props) => {
+        return {
+            college: getCollege(state, props)
+        }
+    };
+    return mapStateToProps;
+};
+
+export default connect(makeMapStateToProps)(SingleCollege);
 

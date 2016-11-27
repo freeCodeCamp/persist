@@ -37,9 +37,8 @@ class SearchResult extends Component {
             results = _(colleges)
                 .filter((college) => (college.fullName === query.fullName))
                 .map((college) => ({
-                    link: `/college/${college.fullName}`,
+                    link: `/college/${college._id}`,
                     model: 'College',
-                    id: college.id,
                     fullName: college.fullName
                 }))
                 .value();
@@ -51,9 +50,6 @@ class SearchResult extends Component {
 
     renderResults() {
         const {results} = this.state;
-        if (results.length < 1) {
-            return <p>'Sorry! no results found'</p>;
-        }
         return results.map((result, i) => (
             <tr key={_.uniqueId(result.fullName)}>
                 <th>
@@ -72,6 +68,10 @@ class SearchResult extends Component {
     }
 
     render() {
+        const {results} = this.state;
+        if (results.length < 1) {
+            return <h1>'Sorry! no results found'</h1>;
+        }
         return (
             <Content title='Search Results'>
                 <Table striped bordered hover>

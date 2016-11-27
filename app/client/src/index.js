@@ -31,7 +31,7 @@ ReactDOM.render(
                 <Route path='colleges' component={ Colleges }/>
                 <Route path='student/:osis' component={ SingleStudent }/>
                 <Route path='search' component={ SearchResult }/>
-                <Route path='college/:fullName' component={ SingleCollege }/>
+                <Route path='college/:id' component={ SingleCollege }/>
             </Route>
         </Router>
     </Provider>

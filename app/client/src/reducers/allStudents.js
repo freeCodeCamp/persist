@@ -33,8 +33,9 @@ export default function (state = defaultState, action) {
             };
         case UPDATE_STUDENT:
             const student = action.payload;
+            const {osis} = student;
             const newState = cloneDeep(state);
-            const index = newState.value.findIndex({osis: student.osis});
+            const index = newState.value.findIndex({osis});
             newState.value[index] = student;
             newState.osisObj[osis] = student;
             return newState;

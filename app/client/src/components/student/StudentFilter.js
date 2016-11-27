@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {filterStudents} from '../../actions/studentFilter';
 import _ from 'lodash';
 import {reduxForm, Field} from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
@@ -11,7 +9,6 @@ import {AutoComplete as MUIAutoComplete} from 'material-ui';
 
 import {types} from '../../../../server/models/validation/validator';
 
-
 class FilterStudentForm extends React.Component {
 
     constructor(props) {
@@ -19,13 +16,16 @@ class FilterStudentForm extends React.Component {
         this.state = {
             suggestions: {
                 'firstName': [],
-                'lastName': [],
-                'intendedCollege': []
+                'lastName': []
             }
         }
     }
 
     handleUpdateInput(columnName, form, value) {
+        if (value != null && typeof value === 'object') {
+            form.props.change.bind(form, columnName, value.value)();
+            return;
+        }
         form.props.change.bind(form, columnName, value)();
         this.getSuggestions(columnName, value);
     }
@@ -97,7 +97,8 @@ class FilterStudentForm extends React.Component {
                         <Field name='intendedCollege'
                                component={ AutoComplete }
                                filter={ MUIAutoComplete.caseInsensitiveFilter }
-                               dataSource={ suggestions['intendedCollege'] }
+                               dataSource={ this.props.collegeSource }
+                               maxSearchResults={5}
                                input={ {
                                    onUpdateInput: this.handleUpdateInput.bind(this, 'intendedCollege', this),
                                    onChange: this.handleUpdateInput.bind(this, 'intendedCollege', this)
@@ -144,15 +145,10 @@ FilterStudentForm = reduxForm({
 
 const mapStateToProps = (state) => {
     return {
-        students: state.students.value
+        students: state.students.value,
+        collegeSource: state.colleges.collegeSource
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        filterStudents
-    }, dispatch);
-};
-
 // You have to connect() to any reducers that you wish to connect to yourself
-export default connect(mapStateToProps, mapDispatchToProps)(FilterStudentForm);
+export default connect(mapStateToProps)(FilterStudentForm);

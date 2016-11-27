@@ -10,7 +10,6 @@ export const GET_STUDENT_ERROR = 'get_student_error';
 export const GET_STUDENT_PENDING = 'get_student_pending';
 
 // single student update
-export const UPDATE_STUDENT = 'update_student';
 export const UPDATE_STUDENT_SUCCESS = 'update_student_success';
 export const UPDATE_STUDENT_ERROR = 'update_student_error';
 export const UPDATE_STUDENT_PENDING = 'update_student_pending';
@@ -58,11 +57,13 @@ export const CHART_FILTER_PENDING = 'chart_filter_pending';
 export const GET_ALL_STUDENTS_SUCCESS = 'get_all_students_success';
 export const GET_ALL_STUDENTS_ERROR = 'get_all_students_error';
 export const GET_ALL_STUDENTS_PENDING = 'get_all_students_pending';
+export const UPDATE_STUDENT = 'update_student';
 
 // get all colleges
 export const GET_ALL_COLLEGES_SUCCESS = 'get_all_colleges_success';
 export const GET_ALL_COLLEGES_ERROR = 'get_all_colleges_error';
 export const GET_ALL_COLLEGES_PENDING = 'get_all_colleges_pending';
+export const UPDATE_COLLEGE = 'update_college';
 
 // get all schools
 export const GET_ALL_SCHOOLS_SUCCESS = 'get_all_schools_success';

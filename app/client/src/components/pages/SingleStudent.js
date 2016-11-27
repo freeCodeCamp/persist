@@ -14,12 +14,13 @@ class SingleStudent extends React.Component {
         const {student} = this.props;
         const studentData = student.data;
         return (
-            <Content>
+            <Content title={studentData.fullName}>
                 { student.success && student.data ?
                     <div>
-                        <h1 style={ {margin: '20px'} }>{ `${studentData.firstName} ${studentData.lastName}` }</h1>
-                        <SingleStudentForm enableReinitialize={true} initialValues={ studentData }
-                                           student={ studentData }/>
+                        <SingleStudentForm
+                            enableReinitialize={true}
+                            initialValues={ studentData }
+                            student={ studentData }/>
                     </div> : student.success && !student.data ?
                     <div>No Records Found</div> :
                     <div>

@@ -8,10 +8,11 @@ npm-debug.log
 /.env
 /.floo
 /.flooignore
-/adminlte
+/app/adminlte
 /uploads
 /data
 /data2.csv
 /data.csv
 /smalldata.csv
+/termData.csv
 /.DS_Store

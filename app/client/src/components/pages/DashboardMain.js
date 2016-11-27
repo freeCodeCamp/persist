@@ -74,8 +74,7 @@ DashboardMain = reduxForm({
 const mapStateToProps = (state) => {
     return {
         students: state.students.value,
-        colleges: state.colleges.value,
-        filters: state.form.chartFilterStudents
+        colleges: state.colleges.value
     };
 };
 
