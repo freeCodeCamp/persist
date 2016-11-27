@@ -32,11 +32,7 @@ var _index = require('./app/server/routes/index');
 
 var _index2 = _interopRequireDefault(_index);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import passport from 'passport';
 // import flash from 'connect-flash';
@@ -46,6 +42,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // connect to mongoDB database
+_mongoose2.default.Promise = global.Promise;
 _mongoose2.default.connect(process.env.MONGODB_URI);
 
 var app = (0, _express2.default)();
@@ -84,8 +81,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 (0, _index2.default)(app);
 
-var PORT = process.env.PORT || 8080;
-server.listen(PORT, function(error) {
+var PORT = process.env.PORT || 4545;
+server.listen(PORT, function (error) {
   if (error) {
     console.error(error);
   } else {
