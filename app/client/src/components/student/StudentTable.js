@@ -11,21 +11,23 @@ class StudentTable extends React.Component {
 
     render() {
         const {students} = this.props;
-        if (students.length < 1) return null;
+        if (students.length < 1) {
+            return <h1>'Sorry! no results found'</h1>;
+        }
         const studentsHTML = students.map((student, i) => {
             return (
                 <tr key={ i }>
-                    <th>
+                    <td>
                         { i + 1 }
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <Link to={ `/student/${student.osis}` }>
                             { student.firstName }
                         </Link>
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         { student.lastName }
-                    </th>
+                    </td>
                 </tr>
             );
         });

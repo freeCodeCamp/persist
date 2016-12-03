@@ -14,14 +14,16 @@ class SingleStudent extends React.Component {
         const {student} = this.props;
         const studentData = student.data;
         return (
-            <Content title={studentData.fullName}>
-                { student.success && student.data ?
-                    <div>
-                        <SingleStudentForm
-                            enableReinitialize={true}
-                            initialValues={ studentData }
-                            student={ studentData }/>
-                    </div> : student.success && !student.data ?
+            <div>
+                {student.success && student.data ?
+                    <Content title={studentData.fullName}>
+                        <div>
+                            <SingleStudentForm
+                                enableReinitialize={true}
+                                initialValues={ studentData }
+                                student={ studentData }/>
+                        </div>
+                    </Content> : student.success && !student.data ?
                     <div>No Records Found</div> :
                     <div>
                         <p>
@@ -30,7 +32,7 @@ class SingleStudent extends React.Component {
                                className="fa fa-spinner fa-spin fa-3x fa-fw"/>
                     </div>
                 }
-            </Content>
+            </div>
         );
     }
 }

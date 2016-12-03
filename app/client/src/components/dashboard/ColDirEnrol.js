@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'react-router-redux';
 import moment from 'moment';
 import async from 'async';
 import {BasicColumn} from '../admin-components/charts';
@@ -7,6 +10,11 @@ import {BasicColumn} from '../admin-components/charts';
 class ColDirEnrol extends Component {
     constructor(props) {
         super(props);
+        this.refer = {
+            '6 months': '6m',
+            '12 months': '12m',
+            '18 months': '18m'
+        };
         this.state = {
             loading: true,
             data: []
@@ -40,16 +48,16 @@ class ColDirEnrol extends Component {
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {
-                '6m': 0,
-                '12m': 0,
-                '18m': 0,
-                'total': 0
+                '6m': {count: 0, students: []},
+                '12m': {count: 0, students: []},
+                '18m': {count: 0, students: []},
+                'total': 0,
             };
             const result = {};
             const q = async.queue((student, callback) => {
                 const hsGradYear = student.hsGradYear;
                 if (hsGradYear) {
-                    result[hsGradYear] = result[hsGradYear] || _.clone(defaultEnrollmentData);
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
                     const hsGradDate = student.hsGradDate;
                     let enrolDate;
                     student.terms = _.compact(student.terms);
@@ -58,13 +66,16 @@ class ColDirEnrol extends Component {
                     }
                     if (enrolDate && hsGradDate) {
                         if (this.diffMonths(enrolDate, hsGradDate, 6)) {
-                            result[hsGradYear]['6m'] += 1;
+                            result[hsGradYear]['6m'].count += 1;
+                            result[hsGradYear]['6m'].students.push(student.osis);
                         }
                         if (this.diffMonths(enrolDate, hsGradDate, 12)) {
-                            result[hsGradYear]['12m'] += 1;
+                            result[hsGradYear]['12m'].count += 1;
+                            result[hsGradYear]['12m'].students.push(student.osis);
                         }
                         if (this.diffMonths(enrolDate, hsGradDate, 18)) {
-                            result[hsGradYear]['18m'] += 1;
+                            result[hsGradYear]['18m'].count += 1;
+                            result[hsGradYear]['18m'].students.push(student.osis);
                         }
                     }
                     if (hsGradDate) {
@@ -93,13 +104,15 @@ class ColDirEnrol extends Component {
     getRatio(data, constant) {
         const yearlyData = [];
         _(data).keys().sort().forEach(key => {
-            yearlyData.push(data[key][constant] * 100 / data[key]['total']);
+            yearlyData.push(data[key][constant].count * 100 / data[key]['total']);
         });
         return yearlyData;
     }
 
     chartConfig() {
         const data = this.state.data;
+        const {refer} = this;
+        const {push} = this.props;
         const chartData = this.chartData(data);
         const config = {
             chart: {
@@ -129,7 +142,20 @@ class ColDirEnrol extends Component {
             plotOptions: {
                 column: {
                     pointPadding: 0.2,
-                    borderWidth: 0
+                    borderWidth: 0,
+                    point: {
+                        events: {
+                            click: function () {
+                                const {category, series: {name}} = this;
+                                const students = data[category][refer[name]].students;
+                                localStorage.setItem('filtered', JSON.stringify(students));
+                                push('/filtered');
+                            }
+                        }
+                    }
+                },
+                series: {
+                    cursor: 'pointer'
                 }
             },
             series: chartData
@@ -164,4 +190,10 @@ class ColDirEnrol extends Component {
 
 }
 
-export default ColDirEnrol;
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        push
+    }, dispatch);
+};
+
+export default connect(null, mapDispatchToProps)(ColDirEnrol);

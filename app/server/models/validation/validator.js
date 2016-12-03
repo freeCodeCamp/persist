@@ -212,6 +212,15 @@ export const types = {
         'BCS',
         'MELS'
     ],
+    'terms.status': [
+        'F',
+        'H',
+        'L',
+        'Q',
+        'A',
+        'W',
+        'D'
+    ],
     ethnicity: [1, 2, 3, 4, 5, 6, 7],
     expectedGrad: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 };
@@ -273,7 +282,6 @@ export const enums = {
         values: types.physImmunRecords,
         message: messages.default
     },
-
     registeredForClasses: {
         values: types.registeredForClasses,
         message: messages.default
