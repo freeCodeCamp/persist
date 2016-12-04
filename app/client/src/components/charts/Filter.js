@@ -56,7 +56,7 @@ class ChartFilter extends React.Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, collegeSource} = this.props;
         const {suggestions} = this.state;
 
         const hsOptions = types.hs;
@@ -95,16 +95,14 @@ class ChartFilter extends React.Component {
                         <Field name='lastName' component={ TextField } floatingLabelText='Last Name'/>
                     </div>
                     <div>
-                        <Field name='intendedCollege'
-                               component={ AutoComplete }
-                               filter={ MUIAutoComplete.caseInsensitiveFilter }
-                               dataSource={ this.props.collegeSource }
-                               input={ {
-                                   onUpdateInput: this.handleUpdateInput.bind(this, 'intendedCollege', this),
-                                   onChange: this.handleUpdateInput.bind(this, 'intendedCollege', this)
-                               } }
-                               maxSearchResults={5}
-                               floatingLabelText='Intended College'/>
+                        <MUIAutoComplete
+                            name='intendedCollege'
+                            filter={ MUIAutoComplete.caseInsensitiveFilter }
+                            onNewRequest={this.handleUpdateInput.bind(this, `intendedCollege`, this)}
+                            dataSource={collegeSource}
+                            maxSearchResults={5}
+                            floatingLabelText='Intended College'
+                        />
                     </div>
                     <div>
                         <Field name='gender'

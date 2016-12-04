@@ -6,7 +6,7 @@ import {Button, Form, Row, Alert} from 'react-bootstrap';
 
 import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
-import renderTerms from './TermRecords/TermRecords';
+import renderTerms from './TermRecords';
 
 import * as updateStudent from '../../actions/updateStudent';
 
@@ -25,8 +25,6 @@ class SingleStudentForm extends React.Component {
         //this will handle updates
         console.log('this is our form object', studentRecord);
 
-        // lets find the changed data
-
         this.props.updateStudent(studentRecord);
         this.setState({
             editable: !this.state.editable
@@ -40,10 +38,9 @@ class SingleStudentForm extends React.Component {
     }
 
     render() {
-
         const {handleSubmit, reset, initialValues} = this.props;
 
-        const returnFormGroups = (reference) => {
+        const renderFormGroups = (form, reference) => {
 
             // vars for editing
             const fixed = ['hs', 'hsGradYear', 'hsAttended'];
@@ -70,6 +67,7 @@ class SingleStudentForm extends React.Component {
 
                 return (
                     <FormGroup
+                        form={form}
                         style={ {margin: '50px', textAlign: 'center'} }
                         initValue={ initialValue }
                         key={ i }
@@ -84,36 +82,37 @@ class SingleStudentForm extends React.Component {
             return reference.filter((field) => dbNames.includes(field.dbName))
         };
 
-        const bioHTML = returnFormGroups(filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags']));
-        const contactHTML = returnFormGroups(filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency', 'facebookName', 'parentPhone']));
-        const academicHTML = returnFormGroups(filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'intendedCollege', 'remediationStatus', 'hsGPA', 'attendingMeetupDay', 'appliedToOtherSupportProgram', 'completedEssay', 'desiredFieldOfStudy', 'satSubjectTests', 'expectedGrad', 'psat', 'lettersOfRecommendation', 'eaEdApplications', 'taxDocumentsSubmitted']));
-        const financialHTML = returnFormGroups(filterRef(['startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap', 'opportunityProgramEligible', 'studentAidReportReceived', 'fsaid', 'scholarshipAmount', 'awardLetterReceived', 'cssProfileCreated']));
-        const otherHTML = returnFormGroups(filterRef(['photoReleaseForm', 'cunyApp', 'sunyApp', 'crewAdvisor']));
-        const notesHTML = returnFormGroups(filterRef(['riskFactors', 'needsFollowup']));
+        const bioHTML = (form) => renderFormGroups(form, filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags']));
+        const contactHTML = (form) => renderFormGroups(form, filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency', 'facebookName', 'parentPhone']));
+        const academicHTML = (form) => renderFormGroups(form, filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'intendedCollege', 'remediationStatus', 'hsGPA', 'attendingMeetupDay', 'appliedToOtherSupportProgram', 'completedEssay', 'desiredFieldOfStudy', 'satSubjectTests', 'expectedGrad', 'psat', 'lettersOfRecommendation', 'eaEdApplications', 'taxDocumentsSubmitted']));
+        const financialHTML = (form) => renderFormGroups(form, filterRef(['startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap', 'opportunityProgramEligible', 'studentAidReportReceived', 'fsaid', 'scholarshipAmount', 'awardLetterReceived', 'cssProfileCreated']));
+        const otherHTML = (form) => renderFormGroups(form, filterRef(['photoReleaseForm', 'cunyApp', 'sunyApp', 'crewAdvisor']));
+        const notesHTML = (form) => renderFormGroups(form, filterRef(['riskFactors', 'needsFollowup']));
 
         return (
             <div id="single-student-page">
-                <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
+                <Form className='single-student-form'
+                      onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
                     <Row>
                         <br/>
                         <h2>Biographical Information</h2>
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { bioHTML }
+                            { bioHTML(this) }
                         </div>
                         <br/>
                         <h2 style={ {clear: 'both', textAlign: 'center'} }>Student Contact</h2>
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { contactHTML }
+                            { contactHTML(this) }
                         </div>
                         <br/>
                         <h2>Academic Profile</h2>
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { academicHTML }
+                            { academicHTML(this) }
                         </div>
                         <br/>
                         <h2>Financial Profile</h2>
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { financialHTML }
+                            { financialHTML(this) }
                         </div>
                         <br/>
                         <h2>College Applications</h2>
@@ -121,13 +120,18 @@ class SingleStudentForm extends React.Component {
                         </div>
                         <h2>Other</h2>
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { otherHTML }
+                            { otherHTML(this) }
                         </div>
                         <h2>Student Notes</h2>
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { notesHTML }
+                            { notesHTML(this) }
                         </div>
-                        <FieldArray name='terms' component={renderTerms}/>
+                        <FieldArray
+                            name='terms'
+                            form={this}
+                            component={renderTerms}
+                            initValue={initialValues['terms']}
+                        />
                         <br/>
                     </Row>
                     { this.state.editable ? <div>

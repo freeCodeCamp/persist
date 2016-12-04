@@ -49,10 +49,38 @@ label {
   font-weight: 400 !important;
 }
 
-
 /* Student Profile Page */
 .single-student-form h2 {
   clear: both;
   text-align: center;
   margin: 20px 0;
+}
+
+// term record student profile page
+.term-record {
+  &--date-field > div > div {
+    max-width: 160px !important;
+  }
+
+  &--action-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    i {
+      font-size: 20px;
+    }
+  }
+
+  &--add-term {
+    width: 100%;
+    a {
+      display: flex;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      margin: 0;
+      font-size: 16px;
+    }
+  }
 }

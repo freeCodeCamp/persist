@@ -1,16 +1,13 @@
 import React from 'react';
 import {Field} from 'redux-form';
-import moment from 'moment';
-
 import MenuItem from 'material-ui/MenuItem';
-import {RadioButton} from 'material-ui/RadioButton';
-
-import {AutoComplete, Checkbox, RadioButtonGroup, SelectField, Slider, TextField, Toggle} from 'redux-form-material-ui';
+import {AutoComplete, Checkbox, SelectField, TextField, Toggle} from 'redux-form-material-ui';
 import Chips from './Chip';
+import {connect} from 'react-redux';
+import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import DatePicker from './DatePicker';
 
 import {types} from '../../../../server/models/validation/validator';
-
 
 class ReduxFormGroup extends React.Component {
 
@@ -18,8 +15,23 @@ class ReduxFormGroup extends React.Component {
         super(props);
     }
 
+    updateInput(value, columnName) {
+        const {form} = this.props;
+        if (value) {
+            form.props.change.bind(form, columnName, value)();
+        }
+    }
+
+    initCollege(colId) {
+        const {collegeObj} = this.props;
+        if (colId) {
+            return collegeObj[colId].fullName || '';
+        }
+        return '';
+    }
+
     render() {
-        const {disabled, field, initValue} = this.props;
+        const {disabled, field, initValue, collegeSource} = this.props;
         const {fieldType, dbName, displayName} = field;
 
         switch (fieldType) {
@@ -58,7 +70,6 @@ class ReduxFormGroup extends React.Component {
                            label={ displayName }/>
                 );
             case 'SelectField':
-
                 let options = types[dbName];
                 if (options) {
                     options = options.map((option) => {
@@ -68,7 +79,7 @@ class ReduxFormGroup extends React.Component {
                 }
                 return (
                     <Field disabled={ disabled }
-                           name={ dbName }
+                           name={ dbName.toString() }
                            component={ SelectField }
                            hintText={ displayName }
                            floatingLabelText={ displayName }>
@@ -77,7 +88,21 @@ class ReduxFormGroup extends React.Component {
                 );
             // case 'RadioButtonGroup':
 
-            // case 'AutoComplete':
+            case 'AutoComplete':
+                if (field.type === 'college') {
+                    return (
+                        <MUIAutoComplete
+                            floatingLabelText={ displayName }
+                            disabled={disabled}
+                            filter={MUIAutoComplete.caseInsensitiveFilter}
+                            name={dbName.toString()}
+                            searchText={this.initCollege(initValue)}
+                            onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
+                            dataSource={collegeSource}
+                            maxSearchResults={5}
+                        />
+                    );
+                }
             default:
                 return (
                     <Field disabled={ disabled }
@@ -89,4 +114,9 @@ class ReduxFormGroup extends React.Component {
     }
 }
 
-export default ReduxFormGroup;
+const mapStateToProps = (state) => ({
+    collegeSource: state.colleges.collegeSource,
+    collegeObj: state.colleges.idObj
+});
+
+export default connect(mapStateToProps)(ReduxFormGroup);

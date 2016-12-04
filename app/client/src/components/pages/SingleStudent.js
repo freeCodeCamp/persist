@@ -56,7 +56,8 @@ const makeMapStateToProps = () => {
     const getStudent = makeGetStudent();
     const mapStateToProps = (state, props) => {
         return {
-            student: getStudent(state, props)
+            student: getStudent(state, props),
+            collegeObj: state.colleges.idObj
         }
     };
     return mapStateToProps;

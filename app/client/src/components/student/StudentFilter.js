@@ -57,7 +57,7 @@ class FilterStudentForm extends React.Component {
     }
 
     render() {
-        const {handleSubmit, onSubmit} = this.props;
+        const {handleSubmit, onSubmit, collegeSource} = this.props;
         const {suggestions} = this.state;
 
         const hsOptions = types.hs;
@@ -94,16 +94,15 @@ class FilterStudentForm extends React.Component {
                                floatingLabelText='Last Name'/>
                     </div>
                     <div>
-                        <Field name='intendedCollege'
-                               component={ AutoComplete }
-                               filter={ MUIAutoComplete.caseInsensitiveFilter }
-                               dataSource={ this.props.collegeSource }
-                               maxSearchResults={5}
-                               input={ {
-                                   onUpdateInput: this.handleUpdateInput.bind(this, 'intendedCollege', this),
-                                   onChange: this.handleUpdateInput.bind(this, 'intendedCollege', this)
-                               } }
-                               floatingLabelText='Intended College'/>
+                        <MUIAutoComplete
+                            name='intendedCollege'
+                            openOnFocus={true}
+                            filter={ MUIAutoComplete.caseInsensitiveFilter }
+                            onNewRequest={this.handleUpdateInput.bind(this, `intendedCollege`, this)}
+                            dataSource={collegeSource}
+                            maxSearchResults={5}
+                            floatingLabelText='Intended College'
+                        />
                     </div>
                     <div>
                         <Field name='gender'
