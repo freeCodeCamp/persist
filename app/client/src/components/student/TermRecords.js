@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import {Table} from 'react-bootstrap';
 import {Field} from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentRemove from 'material-ui/svg-icons/content/delete-sweep';
+import IconButton from 'material-ui/IconButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import {SelectField} from 'redux-form-material-ui';
 import DatePicker from '../helpers/DatePicker';
@@ -30,11 +34,12 @@ class TermRecords extends Component {
     }
 
     render() {
-        const {fields, collegeSource, initValue} = this.props;
+        const {fields, collegeSource, initValue, disabled} = this.props;
         const terms = fields.map((term, index) => (
             <tr key={index}>
                 <td style={{width: 256}}>
                     <AutoComplete
+                        disabled={disabled}
                         name={`${term}.college`}
                         searchText={this.initValue(initValue[index])}
                         filter={AutoComplete.caseInsensitiveFilter}
@@ -44,35 +49,44 @@ class TermRecords extends Component {
                     />
                 </td>
                 <td style={{width: 100}}>
-                    <Field name={`${term}.status`}
-                           style={{maxWidth: 100}}
-                           component={ SelectField }
-                           hintText='Status'>
+                    <Field
+                        name={`${term}.status`}
+                        disabled={disabled}
+                        style={{maxWidth: 100}}
+                        component={ SelectField }
+                        hintText='Status'>
                         {types['terms.status'].map((status, i) => (
                             <MenuItem value={status} key={i} primaryText={status}/>
                         ))}
                     </Field>
                 </td>
                 <td style={{width: 180}} className='term-record--date-field'>
-                    <Field name={`${term}.enrolBegin`}
-                           style={{maxWidth: 160}}
-                           hintText='Enrollment Begin'
-                           container='inline'
-                           component={ DatePicker }
+                    <Field
+                        name={`${term}.enrolBegin`}
+                        disabled={disabled}
+                        style={{maxWidth: 160}}
+                        hintText='Enrollment Begin'
+                        container='inline'
+                        component={ DatePicker }
                     />
                 </td>
                 <td style={{width: 180}} className='term-record--date-field'>
-                    <Field name={`${term}.enrolEnd`}
-                           style={{maxWidth: 160}}
-                           hintText='Enrollment End'
-                           container='inline'
-                           component={ DatePicker }
+                    <Field
+                        disabled={disabled}
+                        name={`${term}.enrolEnd`}
+                        style={{maxWidth: 160}}
+                        hintText='Enrollment End'
+                        container='inline'
+                        component={ DatePicker }
                     />
                 </td>
                 <td style={{verticalAlign: 'middle', width: 50}}>
-                    <div className='term-record--action-button' onClick={() => fields.remove(index)}>
-                        <i className='fa fa-times' aria-hidden={true}/>
-                    </div>
+                    <IconButton
+                        disabled={disabled}
+                        className='term-record--action-button'
+                        onClick={() => fields.remove(index)}>
+                        <ContentRemove />
+                    </IconButton>
                 </td>
             </tr>
         ));
@@ -100,8 +114,10 @@ class TermRecords extends Component {
                 <tbody>
                 { terms }
                 <tr>
-                    <td className='term-record--add-term' colSpan='5' onClick={() => fields.push({})}>
-                        <a>Add Term</a>
+                    <td colSpan='5' style={{textAlign: 'center'}}>
+                        <FloatingActionButton disabled={disabled} mini={true} onClick={() => fields.push({})}>
+                            <ContentAdd />
+                        </FloatingActionButton>
                     </td>
                 </tr>
                 </tbody>

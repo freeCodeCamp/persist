@@ -6,6 +6,8 @@ import {Button, Form, Row, Alert} from 'react-bootstrap';
 
 import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
+// import Documents from './Documents';
+
 import renderTerms from './TermRecords';
 
 import * as updateStudent from '../../actions/updateStudent';
@@ -39,6 +41,7 @@ class SingleStudentForm extends React.Component {
 
     render() {
         const {handleSubmit, reset, initialValues} = this.props;
+        const {editable} = this.state;
 
         const renderFormGroups = (form, reference) => {
 
@@ -49,11 +52,9 @@ class SingleStudentForm extends React.Component {
             let initialValue;
 
             return reference.map((field, i) => {
-
-                // get fixed non-editable fields
-                let editable = this.state.editable;
+                let disabled = !editable;
                 if (fixed.includes(field.dbName)) {
-                    editable = false;
+                    disabled = true;
                 }
 
                 initialValue = initialValues[field.dbName];
@@ -71,7 +72,7 @@ class SingleStudentForm extends React.Component {
                         style={ {margin: '50px', textAlign: 'center'} }
                         initValue={ initialValue }
                         key={ i }
-                        disabled={ !editable }
+                        disabled={ disabled }
                         field={ field }
                     />
                 );
@@ -88,7 +89,7 @@ class SingleStudentForm extends React.Component {
         const financialHTML = (form) => renderFormGroups(form, filterRef(['startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap', 'opportunityProgramEligible', 'studentAidReportReceived', 'fsaid', 'scholarshipAmount', 'awardLetterReceived', 'cssProfileCreated']));
         const otherHTML = (form) => renderFormGroups(form, filterRef(['photoReleaseForm', 'cunyApp', 'sunyApp', 'crewAdvisor']));
         const notesHTML = (form) => renderFormGroups(form, filterRef(['riskFactors', 'needsFollowup']));
-
+        const documents = [{name: 'sample', type: 'other'}];
         return (
             <div id="single-student-page">
                 <Form className='single-student-form'
@@ -128,6 +129,7 @@ class SingleStudentForm extends React.Component {
                         </div>
                         <FieldArray
                             name='terms'
+                            disabled={ !editable }
                             form={this}
                             component={renderTerms}
                             initValue={initialValues['terms']}
@@ -169,7 +171,8 @@ class SingleStudentForm extends React.Component {
                 </Form>
             </div>
 
-        );
+        )
+            ;
     }
 }
 
