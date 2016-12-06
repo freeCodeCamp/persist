@@ -1,10 +1,13 @@
 import keyBy from 'lodash/keyBy';
+import findIndex from 'lodash/findIndex';
 import cloneDeep from 'lodash/cloneDeep';
 import {
     GET_ALL_STUDENTS_SUCCESS,
     GET_ALL_STUDENTS_ERROR,
     GET_ALL_STUDENTS_PENDING,
-    UPDATE_STUDENT
+    UPDATE_STUDENT,
+    SAVE_DOCUMENT_SUCCESS,
+    SAVE_DOCUMENT_ERROR
 } from '../actions/types';
 
 const defaultState = {
@@ -16,7 +19,9 @@ const defaultState = {
 };
 
 export default function (state = defaultState, action) {
-
+    let osis;
+    let newState;
+    let index;
     switch (action.type) {
         case GET_ALL_STUDENTS_PENDING:
             return {
@@ -31,15 +36,24 @@ export default function (state = defaultState, action) {
                 value: action.payload,
                 osisObj: keyBy(action.payload, 'osis')
             };
+        case SAVE_DOCUMENT_SUCCESS:
+            const documents = action.payload;
+            osis = action.osis;
+            newState = cloneDeep(state);
+            index = findIndex(newState.value, (s) => (s.osis === osis));
+            newState.value[index].documents = documents;
+            newState.osisObj[osis].documents = documents;
+            return newState;
         case UPDATE_STUDENT:
             const student = action.payload;
-            const {osis} = student;
-            const newState = cloneDeep(state);
-            const index = newState.value.findIndex({osis});
+            osis = student.osis;
+            newState = cloneDeep(state);
+            index = findIndex(newState.value, (s) => (s.osis === osis));
             newState.value[index] = student;
             newState.osisObj[osis] = student;
             return newState;
         case GET_ALL_STUDENTS_ERROR:
+        case SAVE_DOCUMENT_ERROR:
             return {
                 ...state,
                 pending: false,

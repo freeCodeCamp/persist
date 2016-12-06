@@ -21,10 +21,14 @@ const termSchema = (Schema) => ({
     gpa: Number
 });
 
-const documentSchema = {
-    name: String,
-    type: String
-};
+const documentSchema = (Schema) => (
+    new Schema({
+        name: String,
+        type: String,
+        Key: String,
+        downloadLink: String
+    })
+);
 
 const applicationsSchema = (Schema) => {
     return {
@@ -136,7 +140,7 @@ export default (Schema) => {
         actEquiv: Number,
         hsGPA: Number,
         terms: [termSchema(Schema)],
-        documents: [documentSchema],
+        documents: [documentSchema(Schema)],
         ferpa: {
             type: String,
             enum: enums.ferpa

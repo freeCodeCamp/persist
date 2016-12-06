@@ -6,8 +6,7 @@ import {Button, Form, Row, Alert} from 'react-bootstrap';
 
 import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
-// import Documents from './Documents';
-
+import renderDocuments from './Documents';
 import renderTerms from './TermRecords';
 
 import * as updateStudent from '../../actions/updateStudent';
@@ -42,7 +41,6 @@ class SingleStudentForm extends React.Component {
     render() {
         const {handleSubmit, reset, initialValues} = this.props;
         const {editable} = this.state;
-
         const renderFormGroups = (form, reference) => {
 
             // vars for editing
@@ -89,12 +87,21 @@ class SingleStudentForm extends React.Component {
         const financialHTML = (form) => renderFormGroups(form, filterRef(['startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap', 'opportunityProgramEligible', 'studentAidReportReceived', 'fsaid', 'scholarshipAmount', 'awardLetterReceived', 'cssProfileCreated']));
         const otherHTML = (form) => renderFormGroups(form, filterRef(['photoReleaseForm', 'cunyApp', 'sunyApp', 'crewAdvisor']));
         const notesHTML = (form) => renderFormGroups(form, filterRef(['riskFactors', 'needsFollowup']));
-        const documents = [{name: 'sample', type: 'other'}];
         return (
             <div id="single-student-page">
                 <Form className='single-student-form'
                       onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
                     <Row>
+                        <br/>
+                        <h2>Documents</h2>
+                        <FieldArray
+                            name='documents'
+                            osis={initialValues.osis}
+                            disabled={ !editable }
+                            form={this}
+                            component={renderDocuments}
+                            initValue={initialValues['documents']}
+                        />
                         <br/>
                         <h2>Biographical Information</h2>
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
@@ -191,8 +198,3 @@ function mapStateToProps(state) {
 export default connect(
     mapStateToProps, updateStudent
 )(SingleStudentForm)
-
-
-
-
-

@@ -69,3 +69,8 @@ export const UPDATE_COLLEGE = 'update_college';
 export const GET_ALL_SCHOOLS_SUCCESS = 'get_all_schools_success';
 export const GET_ALL_SCHOOLS_ERROR = 'get_all_schools_error';
 export const GET_ALL_SCHOOLS_PENDING = 'get_all_schools_pending';
+
+// save document
+export const SAVE_DOCUMENT_SUCCESS = 'save_document_success';
+export const SAVE_DOCUMENT_ERROR = 'save_document_error';
+export const SAVE_DOCUMENT_PENDING = 'save_document_pending';
