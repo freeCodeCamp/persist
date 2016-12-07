@@ -11,7 +11,7 @@ class DocumentEditor extends Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, initialValues} = this.props;
         const documentTypes = types['documents.types'].map((option) => (
             <MenuItem value={ option } key={ option } primaryText={ option }/>
         ));
@@ -33,7 +33,8 @@ class DocumentEditor extends Component {
                 </Field>
                 <Field
                     type='file'
-                    fileName={null}
+                    Key={initialValues.Key}
+                    fileLink={initialValues.downloadLink}
                     name='document'
                     component={FileInput}
                 />

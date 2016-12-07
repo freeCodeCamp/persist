@@ -74,3 +74,8 @@ export const GET_ALL_SCHOOLS_PENDING = 'get_all_schools_pending';
 export const SAVE_DOCUMENT_SUCCESS = 'save_document_success';
 export const SAVE_DOCUMENT_ERROR = 'save_document_error';
 export const SAVE_DOCUMENT_PENDING = 'save_document_pending';
+
+// delete document
+export const DELETE_DOCUMENT_SUCCESS = 'delete_document_success';
+export const DELETE_DOCUMENT_ERROR = 'delete_document_error';
+export const DELETE_DOCUMENT_PENDING = 'delete_document_pending';

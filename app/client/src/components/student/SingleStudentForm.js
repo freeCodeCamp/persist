@@ -93,7 +93,6 @@ class SingleStudentForm extends React.Component {
                       onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
                     <Row>
                         <br/>
-                        <h2>Documents</h2>
                         <FieldArray
                             name='documents'
                             osis={initialValues.osis}

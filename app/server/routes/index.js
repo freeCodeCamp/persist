@@ -5,7 +5,7 @@ import Student from '../models/student';
 import college from '../models/college';
 import school from '../models/school';
 
-import {getSignature, updateDocument} from './utils';
+import {getSignature, updateDocument, deleteDocument} from './utils';
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
 import saveTermData from '../utils/save_csv_term_data';
@@ -212,9 +212,13 @@ export default (app) => {
         getSignature(req, res);
     });
 
-    app.post('/update-document', (req, res) => {
-        updateDocument(req, res);
-    });
+    app.route('/update-document')
+        .post((req, res) => {
+            updateDocument(req, res);
+        })
+        .delete((req, res) => {
+            deleteDocument(req, res);
+        });
 
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, '../../client/public/index.html'));

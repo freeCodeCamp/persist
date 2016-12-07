@@ -7,7 +7,9 @@ import {
     GET_ALL_STUDENTS_PENDING,
     UPDATE_STUDENT,
     SAVE_DOCUMENT_SUCCESS,
-    SAVE_DOCUMENT_ERROR
+    SAVE_DOCUMENT_ERROR,
+    DELETE_DOCUMENT_SUCCESS,
+    DELETE_DOCUMENT_ERROR
 } from '../actions/types';
 
 const defaultState = {
@@ -37,6 +39,7 @@ export default function (state = defaultState, action) {
                 osisObj: keyBy(action.payload, 'osis')
             };
         case SAVE_DOCUMENT_SUCCESS:
+        case DELETE_DOCUMENT_SUCCESS:
             const documents = action.payload;
             osis = action.osis;
             newState = cloneDeep(state);
@@ -53,6 +56,7 @@ export default function (state = defaultState, action) {
             newState.osisObj[osis] = student;
             return newState;
         case GET_ALL_STUDENTS_ERROR:
+        case DELETE_DOCUMENT_ERROR:
         case SAVE_DOCUMENT_ERROR:
             return {
                 ...state,

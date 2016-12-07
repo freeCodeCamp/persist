@@ -3,12 +3,12 @@ import merge from 'lodash/merge';
 
 export default (req, res) => {
     const document = req.body;
-    const oldId = req.body.updateId;
+    const oldId = document.updateId;
     Student.findOne({
         osis: document.osis
     }, (err, student) => {
         if (err || !student) {
-            res.status(500).send(err || 'student not found');
+            return res.status(500).send(err || 'student not found');
         }
         const documents = student.documents;
         let oldDocument;

@@ -5,9 +5,13 @@ import {FileAttachment} from 'material-ui/svg-icons';
 class FileInput extends Component {
     constructor(props) {
         super(props);
-        const {fileName} = this.props;
+        const {Key, fileLink} = this.props;
+        let downloadLink;
+        if (Key && fileLink) {
+            downloadLink = (<a href={fileLink}>{Key}</a>);
+        }
         this.state = {
-            inputFile: fileName || 'No file chosen'
+            inputFile: downloadLink || 'No file chosen'
         };
         this.onChange = this.onChange.bind(this);
     }
