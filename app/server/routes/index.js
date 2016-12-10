@@ -1,11 +1,15 @@
 import path from 'path';
 import multer from 'multer';
-
+import express from 'express';
 import Student from '../models/student';
 import college from '../models/college';
 import school from '../models/school';
-
-import {getSignature, updateDocument, deleteDocument} from './utils';
+import passport from '../config/passport';
+import {
+    AmazonController,
+    AuthController,
+    DocController
+} from '../controllers';
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
 import saveTermData from '../utils/save_csv_term_data';
@@ -32,7 +36,17 @@ var fileUpload = upload.fields([{
     maxCount: 1
 }]);
 
+const requireAuth = passport.authenticate('jwt', {
+    session: false
+});
+
+const requireLogin = passport.authenticate('local', {
+    session: false,
+    failureRedirect: '/login'
+});
+
 export default (app) => {
+    const authRoutes = express.Router();
 
     app.post('/studentPaginate', (req, res) => {
         const offset = req.body.offset;
@@ -173,7 +187,7 @@ export default (app) => {
         });
 
     // main routes for queries to students db
-    app.get('/api/students', (req, res) => {
+    app.get('/api/students', requireAuth, (req, res) => {
 
         let query = Student.find({});
         query.exec((err, students) => {
@@ -186,7 +200,7 @@ export default (app) => {
     });
 
     // main route for to get colleges db
-    app.get('/api/colleges', (req, res) => {
+    app.get('/api/colleges',requireAuth, (req, res) => {
 
         let query = college.find({});
         query.exec((err, colleges) => {
@@ -197,7 +211,7 @@ export default (app) => {
         });
     });
 
-    app.get('/api/schools', (req, res) => {
+    app.get('/api/schools',requireAuth, (req, res) => {
 
         let query = school.find({});
         query.exec((err, schools) => {
@@ -208,18 +222,32 @@ export default (app) => {
         });
     });
 
-    app.get('/sign-s3', (req, res) => {
-        getSignature(req, res);
+    app.get('/sign-s3', requireAuth, (req, res) => {
+        AmazonController.getSign(req, res);
     });
 
-    app.route('/update-document')
+    app.route('/update-document', requireAuth)
         .post((req, res) => {
-            updateDocument(req, res);
+            DocController.updateDocument(req, res);
         })
         .delete((req, res) => {
-            deleteDocument(req, res);
+            DocController.deleteDocument(req, res);
         });
 
+    // Auth Routes
+    app.get('/admin-only',
+        requireAuth,
+        AuthController.roleAuthorization('Admin'), (req, res) => {
+            res.send({content: 'Admin dashboard is working'});
+        });
+    authRoutes.post('/register', AuthController.register);
+    authRoutes.post('/login', requireLogin, AuthController.login);
+    authRoutes.post('/forgot-password', AuthController.forgotPassword);
+    authRoutes.post('/reset-password/:token', AuthController.verifyToken);
+    authRoutes.use((req, res) => {
+        res.sendFile(path.join(__dirname, '../../client/public/index.html'));
+    });
+    // final route
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, '../../client/public/index.html'));
     });

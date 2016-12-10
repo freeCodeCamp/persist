@@ -26,7 +26,7 @@ const getPutSigned = (fileType, s3, _id, res, Key) => {
     });
 };
 
-export default (req, res) => {
+export const getSign = (req, res) => {
     aws.config.update({region: 'us-east-1'});
     const file = req.query['file'];
     const fileType = req.query['fileType'];
@@ -64,4 +64,8 @@ export default (req, res) => {
         })
     }
     getPutSigned(fileType, s3, _id, res, Key);
-}
+};
+
+export default {
+    getSign
+};
