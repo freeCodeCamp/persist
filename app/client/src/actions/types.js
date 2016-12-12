@@ -79,3 +79,14 @@ export const SAVE_DOCUMENT_PENDING = 'save_document_pending';
 export const DELETE_DOCUMENT_SUCCESS = 'delete_document_success';
 export const DELETE_DOCUMENT_ERROR = 'delete_document_error';
 export const DELETE_DOCUMENT_PENDING = 'delete_document_pending';
+
+// authentication
+export const LOGIN_SUCCESS = 'login_success',
+    LOGIN_PENDING = 'login_pending',
+    LOGOUT = 'logout';
+
+export const FORGOT_PASSWORD_SUCCESS = 'forgot_password_success',
+    FORGOT_PASSWORD_PENDING = 'forgot_password_pending';
+
+export const UPDATE_PASSWORD_SUCCESS = 'update_password_success',
+    UPDATE_PASSWORD_PENDING = 'update_password_pending';

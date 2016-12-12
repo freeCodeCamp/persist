@@ -1,11 +1,12 @@
 {
   "verbose": true,
   "ignore": [
-  	"/app/client/src/components",
-  	"/app/client/src/reducers",
-	"/app/client/src/actions",
-  	"/adminlte",
-  	"/uploads",
-  	"/test"
+    "/app/client/src/components",
+    "/app/client/src/reducers",
+    "/app/client/src/actions",
+    "/app/client/public/style",
+    "/adminlte",
+    "/uploads",
+    "/test"
   ]
 }

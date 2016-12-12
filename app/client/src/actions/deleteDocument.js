@@ -4,7 +4,7 @@ import {
     DELETE_DOCUMENT_SUCCESS,
     SPINNER
 } from './types';
-import axios from 'axios';
+import {axios} from './utils';
 
 const deleteDocument = (doc, osis) => (
     (dispatch) => {
@@ -17,7 +17,7 @@ const deleteDocument = (doc, osis) => (
             deleteId: doc._id,
             Key: doc.Key
         };
-        return axios.delete('/update-document', {params})
+        return axios().delete('/update-document', {params})
             .then((res) => {
                 dispatch({
                     type: DELETE_DOCUMENT_SUCCESS,

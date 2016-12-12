@@ -34,6 +34,10 @@ export default (Schema) => ({
         },
         lastName: String
     },
+    enabled: {
+        type: Boolean,
+        default: true
+    },
     access: {
         type: accessSchema(Schema),
         validate: {

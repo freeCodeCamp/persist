@@ -1,5 +1,5 @@
 import {GET_ALL_STUDENTS_ERROR, GET_ALL_STUDENTS_PENDING, GET_ALL_STUDENTS_SUCCESS} from './types';
-import axios from 'axios';
+import {axios} from './utils';
 
 export default () => {
   return (dispatch) => {
@@ -7,7 +7,7 @@ export default () => {
       type: GET_ALL_STUDENTS_PENDING
     });
 
-    return axios.get('/api/students')
+    return axios().get('/api/students')
       .then((response) => {
         dispatch({
           type: GET_ALL_STUDENTS_SUCCESS,

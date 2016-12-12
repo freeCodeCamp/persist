@@ -1,5 +1,5 @@
 import { UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, UPLOAD_FILE_PENDING, UPLOAD_FILE_RESET, SPINNER } from './types';
-import axios from 'axios';
+import {axios} from './utils';
 
 export function uploadFile(url, file) {
 
@@ -15,7 +15,7 @@ export function uploadFile(url, file) {
     var data = new FormData();
     data.append('file', file);
 
-    return axios.post(url, data)
+    return axios().post(url, data)
       .then((response) => {
         const message = 'You added ' + response.data.addedCount + ' and modified ' + response.data.modifiedCount;
         const newStudents = response.data.newStudents;

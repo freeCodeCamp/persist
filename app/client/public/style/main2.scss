@@ -72,3 +72,46 @@ label {
     }
   }
 }
+
+.login-page {
+  @extend .center;
+  background-color: #3c8dbc;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  &--form {
+    max-width: 360px;
+    width: 100%;
+    padding: 20px;
+    margin: 20px;
+    background-color: #ecf0f5;
+    &--logo img {
+      width: 100%;
+    }
+    &--actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      a {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.forgot-password-page, .update-password-page {
+  @extend .login-page;
+  &--form {
+    @extend .login-page--form;
+    h3, p {
+      @extend .center;
+      margin: 20px;
+      text-align: center;
+    }
+  }
+  &--submit-button {
+    margin-top: 20px;
+  }
+}

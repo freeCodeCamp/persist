@@ -41,12 +41,10 @@ const requireAuth = passport.authenticate('jwt', {
 });
 
 const requireLogin = passport.authenticate('local', {
-    session: false,
-    failureRedirect: '/login'
+    session: false
 });
 
 export default (app) => {
-    const authRoutes = express.Router();
 
     app.post('/studentPaginate', (req, res) => {
         const offset = req.body.offset;
@@ -200,7 +198,7 @@ export default (app) => {
     });
 
     // main route for to get colleges db
-    app.get('/api/colleges',requireAuth, (req, res) => {
+    app.get('/api/colleges', requireAuth, (req, res) => {
 
         let query = college.find({});
         query.exec((err, colleges) => {
@@ -211,7 +209,7 @@ export default (app) => {
         });
     });
 
-    app.get('/api/schools',requireAuth, (req, res) => {
+    app.get('/api/schools', requireAuth, (req, res) => {
 
         let query = school.find({});
         query.exec((err, schools) => {
@@ -234,19 +232,15 @@ export default (app) => {
             DocController.deleteDocument(req, res);
         });
 
-    // Auth Routes
-    app.get('/admin-only',
-        requireAuth,
-        AuthController.roleAuthorization('Admin'), (req, res) => {
-            res.send({content: 'Admin dashboard is working'});
-        });
-    authRoutes.post('/register', AuthController.register);
-    authRoutes.post('/login', requireLogin, AuthController.login);
-    authRoutes.post('/forgot-password', AuthController.forgotPassword);
-    authRoutes.post('/reset-password/:token', AuthController.verifyToken);
-    authRoutes.use((req, res) => {
-        res.sendFile(path.join(__dirname, '../../client/public/index.html'));
-    });
+    app.post('/register', AuthController.register);
+    app.post('/login', requireLogin, AuthController.login);
+    app.post('/forgot-password', AuthController.forgotPassword);
+    app.post('/user', AuthController.roleAuthorization('Owner'), AuthController.inviteUser);
+    app.patch('/user', AuthController.roleAuthorization('Owner'), AuthController.updateUser);
+    app.delete('/user', AuthController.roleAuthorization('Owner'), AuthController.deleteUser);
+    app.post('/update-password/:token', AuthController.verifyToken);
+    app.post('/invite/:token', AuthController.verifyToken);
+
     // final route
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, '../../client/public/index.html'));

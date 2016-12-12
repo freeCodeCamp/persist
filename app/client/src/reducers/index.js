@@ -1,3 +1,4 @@
+import {LOGOUT} from '../actions/types';
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 import {reducer as formReducer} from 'redux-form';
@@ -15,23 +16,32 @@ import updateCollegeReducer from './updateCollege';
 import allStudentsReducer from './allStudents';
 import allCollegesReducer from './allColleges';
 import allSchoolsReducer from './allSchools';
+import authReducer from './auth';
 
-const rootReducer = combineReducers({
-  routing: routerReducer,
-  upload: uploadReducer,
-  singleStudent: singleStudentReducer,
-  singleCollege: singleCollegeReducer,
-  form: formReducer,
-  studentFilter: studentFilterReducer,
-  collegeFilter: collegeFilterReducer,
-  spinner: spinnerReducer,
-  suggestions: suggestionsReducer,
-  updateStudent: updateStudentReducer,
-  updateCollege: updateCollegeReducer,
-  chartFilter: chartFilter,
-  students: allStudentsReducer,
-  colleges: allCollegesReducer,
-  schools: allSchoolsReducer
+const appReducer = combineReducers({
+    routing: routerReducer,
+    upload: uploadReducer,
+    singleStudent: singleStudentReducer,
+    singleCollege: singleCollegeReducer,
+    form: formReducer,
+    studentFilter: studentFilterReducer,
+    collegeFilter: collegeFilterReducer,
+    spinner: spinnerReducer,
+    suggestions: suggestionsReducer,
+    updateStudent: updateStudentReducer,
+    updateCollege: updateCollegeReducer,
+    chartFilter: chartFilter,
+    students: allStudentsReducer,
+    colleges: allCollegesReducer,
+    schools: allSchoolsReducer,
+    auth: authReducer
 });
+
+const rootReducer = (state, action) => {
+    if (action.type === LOGOUT) {
+        state = undefined;
+    }
+    return appReducer(state, action);
+};
 
 export default rootReducer;

@@ -1,5 +1,5 @@
 import { UPDATE_COLLEGE_SUCCESS, UPDATE_COLLEGE_ERROR, UPDATE_COLLEGE_PENDING, UPDATE_COLLEGE_RESET } from './types';
-import axios from 'axios';
+import {axios} from './utils';
 
 export function updateCollege(collegeRecord) {
     console.log('getting to action', collegeRecord)
@@ -9,7 +9,7 @@ export function updateCollege(collegeRecord) {
             type: UPDATE_COLLEGE_PENDING
         });
 
-        return axios.put('/api/college/' + collegeRecord.fullName, collegeRecord)
+        return axios().put('/api/college/' + collegeRecord.fullName, collegeRecord)
             .then((response) => {
                 console.log(response);
                 setTimeout(function() {

@@ -1,5 +1,5 @@
 import {UPDATE_STUDENT, UPDATE_STUDENT_SUCCESS, UPDATE_STUDENT_ERROR, UPDATE_STUDENT_PENDING, UPDATE_STUDENT_RESET} from './types';
-import axios from 'axios';
+import {axios} from './utils';
 
 export function updateStudent(studentRecord) {
 
@@ -9,7 +9,7 @@ export function updateStudent(studentRecord) {
             type: UPDATE_STUDENT_PENDING
         });
 
-        return axios.put('/api/student/' + studentRecord.osis, studentRecord)
+        return axios().put('/api/student/' + studentRecord.osis, studentRecord)
             .then((response) => {
                     dispatch({
                         type: UPDATE_STUDENT_SUCCESS,

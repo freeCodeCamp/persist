@@ -4,7 +4,7 @@ import {
     SAVE_DOCUMENT_SUCCESS,
     SPINNER
 } from './types';
-import axios from 'axios';
+import {axios} from './utils';
 
 const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
     const document = doc;
@@ -12,7 +12,7 @@ const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
     document.name = newDocument.name;
     document.type = newDocument.type;
     document.osis = osis;
-    return axios.post('/update-document', document)
+    return axios().post('/update-document', document)
         .then((res) => {
             dispatch({
                 type: SAVE_DOCUMENT_SUCCESS,
@@ -51,7 +51,7 @@ const saveDocument = (oldDocument, newDocument, osis) => (
             type: SPINNER,
             payload: true
         });
-        return axios.get('/sign-s3', {params})
+        return axios().get('/sign-s3', {params})
             .then((res) => {
                 return res.data;
             })

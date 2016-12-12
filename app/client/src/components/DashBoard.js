@@ -8,45 +8,42 @@ import NavigationMenu from './admin-components/navigation-menu';
 import ControlMenu from './admin-components/controls-menu';
 import Footer from './admin-components/footer';
 import '../../public/style/main2.scss';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-injectTapEventPlugin();
+import {MaterialUIWrapper} from './helpers';
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-  }
+    constructor(props) {
+        super(props);
+    }
 
-  componentWillMount() {
-    this.props.getAllStudents();
-    this.props.getAllSchools();
-    this.props.getAllColleges();
-  }
+    componentWillMount() {
+        this.props.getAllStudents();
+        this.props.getAllSchools();
+        this.props.getAllColleges();
+    }
 
-  render() {
-    return (
-      <div className='wrapper'>
-        <HeaderBar />
-        <NavigationMenu />
-        <section className='content-wrapper'>
-          <MuiThemeProvider>
-            { this.props.currentPage }
-          </MuiThemeProvider>
-        </section>
-        <Footer />
-        <ControlMenu />
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className='wrapper'>
+                <HeaderBar />
+                <NavigationMenu />
+                <section className='content-wrapper'>
+                    <MaterialUIWrapper>
+                        { this.props.currentPage }
+                    </MaterialUIWrapper>
+                </section>
+                <Footer />
+                <ControlMenu />
+            </div>
+        );
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    getAllStudents,
-    getAllColleges,
-    getAllSchools
-  }, dispatch);
+    return bindActionCreators({
+        getAllStudents,
+        getAllColleges,
+        getAllSchools
+    }, dispatch);
 };
 
 export default connect(null, mapDispatchToProps)(Dashboard);

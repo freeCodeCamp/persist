@@ -1,5 +1,5 @@
 import {GET_ALL_COLLEGES_ERROR, GET_ALL_COLLEGES_PENDING, GET_ALL_COLLEGES_SUCCESS} from './types';
-import axios from 'axios';
+import {axios} from './utils';
 
 export default () => {
     return (dispatch) => {
@@ -7,7 +7,7 @@ export default () => {
             type: GET_ALL_COLLEGES_PENDING
         });
 
-        return axios.get('/api/colleges')
+        return axios().get('/api/colleges')
             .then((response) => {
                 dispatch({
                     type: GET_ALL_COLLEGES_SUCCESS,

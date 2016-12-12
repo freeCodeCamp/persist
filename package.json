@@ -65,6 +65,7 @@
     "react": "^15.3.1",
     "react-addons-transition-group": "^15.3.2",
     "react-bootstrap": "^0.30.3",
+    "react-cookie": "^1.0.4",
     "react-dom": "^15.3.1",
     "react-dropzone": "^3.6.0",
     "react-highcharts": "^11.0.0",

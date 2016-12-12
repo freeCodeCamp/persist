@@ -10,13 +10,13 @@ const localOptions = {
 
 // Setting up local login strategy
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
+    console.log(email, password);
     User.findOne({email}, (err, user) => {
-        console.log(email, password);
         if (err) {
             return done(err);
         }
-        if (!user) {
-            return done(null, false, {error: 'Your login details could not be verified. Please try again.'});
+        if (!user || !user.enabled) {
+            return done(null, false);
         }
 
         user.comparePassword(password, (err, isMatch) => {
@@ -24,9 +24,8 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
                 return done(err);
             }
             if (!isMatch) {
-                return done(null, false, {error: 'Your login details could not be verified. Please try again.'});
+                return done(null, false);
             }
-
             return done(null, user);
         });
     });
@@ -47,7 +46,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
             return done(err, false);
         }
 
-        if (user) {
+        if (user && user.enabled) {
             done(null, user);
         } else {
             done(null, false);
