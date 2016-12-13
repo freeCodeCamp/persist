@@ -8,7 +8,8 @@ import passport from '../config/passport';
 import {
     AmazonController,
     AuthController,
-    DocController
+    DocController,
+    UserController
 } from '../controllers';
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
@@ -235,9 +236,10 @@ export default (app) => {
     app.post('/register', AuthController.register);
     app.post('/login', requireLogin, AuthController.login);
     app.post('/forgot-password', AuthController.forgotPassword);
-    app.post('/user', AuthController.roleAuthorization('Owner'), AuthController.inviteUser);
-    app.patch('/user', AuthController.roleAuthorization('Owner'), AuthController.updateUser);
-    app.delete('/user', AuthController.roleAuthorization('Owner'), AuthController.deleteUser);
+    app.get('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.getUsers);
+    app.post('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.inviteUser);
+    app.patch('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.updateUser);
+    app.delete('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.deleteUser);
     app.post('/update-password/:token', AuthController.verifyToken);
     app.post('/invite/:token', AuthController.verifyToken);
 

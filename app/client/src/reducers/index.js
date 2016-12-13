@@ -17,6 +17,7 @@ import allStudentsReducer from './allStudents';
 import allCollegesReducer from './allColleges';
 import allSchoolsReducer from './allSchools';
 import authReducer from './auth';
+import usersReducer from './users'
 
 const appReducer = combineReducers({
     routing: routerReducer,
@@ -34,7 +35,8 @@ const appReducer = combineReducers({
     students: allStudentsReducer,
     colleges: allCollegesReducer,
     schools: allSchoolsReducer,
-    auth: authReducer
+    auth: authReducer,
+    users: usersReducer
 });
 
 const rootReducer = (state, action) => {

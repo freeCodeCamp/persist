@@ -13,6 +13,7 @@ export default (ComposedComponent) => {
         }
 
         componentWillUpdate(nextProps) {
+            const {push} = this.props;
             if (!nextProps.authenticated) {
                 push('/login');
             }

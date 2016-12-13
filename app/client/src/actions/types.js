@@ -90,3 +90,19 @@ export const FORGOT_PASSWORD_SUCCESS = 'forgot_password_success',
 
 export const UPDATE_PASSWORD_SUCCESS = 'update_password_success',
     UPDATE_PASSWORD_PENDING = 'update_password_pending';
+
+export const GET_USERS_SUCCESS = 'get_users_success',
+    GET_USERS_ERROR = 'get_users_error',
+    GET_USERS_PENDING = 'get_users_pending';
+
+export const UPDATE_USER_SUCCESS = 'update_user_success',
+    UPDATE_USER_ERROR = 'update_user_error',
+    UPDATE_USER_PENDING = 'update_user_pending';
+
+export const DELETE_USER_SUCCESS = 'delete_user_success',
+    DELETE_USER_ERROR = 'delete_user_error',
+    DELETE_USER_PENDING = 'delete_user_pending';
+
+export const INVITE_USER_SUCCESS = 'invite_user_success',
+    INVITE_USER_ERROR = 'invite_user_error',
+    INVITE_USER_PENDING = 'invite_user_pending';

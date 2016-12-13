@@ -9,11 +9,14 @@ const accessSchema = (Schema) => ({
         type: String,
         enum: [ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR]
     },
-    schools: [Schema.Types.ObjectId]
+    school: {
+        type: Schema.Types.ObjectId,
+        ref: 'School'
+    }
 });
 
 const checkAccess = (access) => (
-    access.role === ROLE_COUNSELOR ? access.schools.length > 0 : true
+    access.role === ROLE_COUNSELOR ? !!access.school : true
 );
 
 export default (Schema) => ({
@@ -25,7 +28,8 @@ export default (Schema) => ({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     profile: {
         firstName: {
@@ -42,7 +46,7 @@ export default (Schema) => ({
         type: accessSchema(Schema),
         validate: {
             validator: checkAccess,
-            message: 'Schools must be selected'
+            message: 'School must be selected'
         },
         default: {}
     },

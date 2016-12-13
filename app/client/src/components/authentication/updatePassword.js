@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {updatePassword} from '../../actions';
 import {TextField} from 'redux-form-material-ui';
+import {Authenticated} from './';
 
 class UpdatePassword extends Component {
 
@@ -56,48 +57,50 @@ class UpdatePassword extends Component {
         const {handleSubmit} = this.props;
         const {open, message} = this.state;
         return (
-            <MaterialUIWrapper>
-                <div className='update-password-page'>
-                    <form onSubmit={handleSubmit(this.handleUpdatePassword.bind(this))}
-                          className='update-password-page--form'>
-                        <h3>Update password?</h3>
-                        <p>Please enter your new password.</p>
-                        <div style={{height: 90}}>
-                            <Field
-                                name='password'
-                                component={TextField}
+            <Authenticated>
+                <MaterialUIWrapper>
+                    <div className='update-password-page'>
+                        <form onSubmit={handleSubmit(this.handleUpdatePassword.bind(this))}
+                              className='update-password-page--form'>
+                            <h3>Update password?</h3>
+                            <p>Please enter your new password.</p>
+                            <div style={{height: 90}}>
+                                <Field
+                                    name='password'
+                                    component={TextField}
+                                    style={{width: '100%'}}
+                                    type='password'
+                                    hintText='Password'
+                                    floatingLabelText='Password'
+                                />
+                            </div>
+                            <div style={{height: 90}}>
+                                <Field
+                                    name='confirm_password'
+                                    component={TextField}
+                                    style={{width: '100%'}}
+                                    type='password'
+                                    hintText='Confirm Password'
+                                    floatingLabelText='Confirm Password'
+                                />
+                            </div>
+                            <RaisedButton
+                                className='update-password-page--submit-button'
                                 style={{width: '100%'}}
-                                type='password'
-                                hintText='Password'
-                                floatingLabelText='Password'
-                            />
-                        </div>
-                        <div style={{height: 90}}>
-                            <Field
-                                name='confirm_password'
-                                component={TextField}
-                                style={{width: '100%'}}
-                                type='password'
-                                hintText='Confirm Password'
-                                floatingLabelText='Confirm Password'
-                            />
-                        </div>
-                        <RaisedButton
-                            className='update-password-page--submit-button'
-                            style={{width: '100%'}}
-                            type='submit'
-                            label="update password"
-                            primary={true}/>
-                        {message.length > 0 ?
-                            <Snackbar
-                                open={open}
-                                message={message}
-                                autoHideDuration={6000}
-                                onRequestClose={() => this.closeSnackBar()}
-                            /> : null }
-                    </form>
-                </div>
-            </MaterialUIWrapper>
+                                type='submit'
+                                label="update password"
+                                primary={true}/>
+                            {message.length > 0 ?
+                                <Snackbar
+                                    open={open}
+                                    message={message}
+                                    autoHideDuration={6000}
+                                    onRequestClose={() => this.closeSnackBar()}
+                                /> : null }
+                        </form>
+                    </div>
+                </MaterialUIWrapper>
+            </Authenticated>
         );
     }
 

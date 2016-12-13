@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getForgotPasswordToken} from '../../actions';
 import {TextField} from 'redux-form-material-ui';
+import {Authenticated} from './';
 
 class ForgotPassword extends Component {
 
@@ -54,38 +55,40 @@ class ForgotPassword extends Component {
         const {handleSubmit} = this.props;
         const {open, message} = this.state;
         return (
-            <MaterialUIWrapper>
-                <div className='forgot-password-page'>
-                    <form onSubmit={handleSubmit(this.handleForgotPassword.bind(this))}
-                          className='forgot-password-page--form'>
-                        <h3>Forgot password?</h3>
-                        <p>We just need your registered Email Id to send you password reset instructions.</p>
-                        <div style={{height: 90}}>
-                            <Field
-                                name='email'
-                                component={TextField}
+            <Authenticated>
+                <MaterialUIWrapper>
+                    <div className='forgot-password-page'>
+                        <form onSubmit={handleSubmit(this.handleForgotPassword.bind(this))}
+                              className='forgot-password-page--form'>
+                            <h3>Forgot password?</h3>
+                            <p>We just need your registered Email Id to send you password reset instructions.</p>
+                            <div style={{height: 90}}>
+                                <Field
+                                    name='email'
+                                    component={TextField}
+                                    style={{width: '100%'}}
+                                    type='email'
+                                    hintText='Email'
+                                    floatingLabelText='Email'
+                                />
+                            </div>
+                            <RaisedButton
+                                className='forgot-password-page--submit-button'
                                 style={{width: '100%'}}
-                                type='email'
-                                hintText='Email'
-                                floatingLabelText='Email'
-                            />
-                        </div>
-                        <RaisedButton
-                            className='forgot-password-page--submit-button'
-                            style={{width: '100%'}}
-                            type='submit'
-                            label="reset password"
-                            primary={true}/>
-                        {message.length > 0 ?
-                            <Snackbar
-                                open={open}
-                                message={message}
-                                autoHideDuration={6000}
-                                onRequestClose={() => this.closeSnackBar()}
-                            /> : null }
-                    </form>
-                </div>
-            </MaterialUIWrapper>
+                                type='submit'
+                                label="reset password"
+                                primary={true}/>
+                            {message.length > 0 ?
+                                <Snackbar
+                                    open={open}
+                                    message={message}
+                                    autoHideDuration={6000}
+                                    onRequestClose={() => this.closeSnackBar()}
+                                /> : null }
+                        </form>
+                    </div>
+                </MaterialUIWrapper>
+            </Authenticated>
         );
     }
 

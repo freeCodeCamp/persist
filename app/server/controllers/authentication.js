@@ -125,7 +125,7 @@ export const roleAuthorization = (requiredRole) => (
             }
 
             // If user is found, check role.
-            if (getRole(foundUser.role) >= getRole(requiredRole)) {
+            if (getRole(foundUser.access.role) >= getRole(requiredRole)) {
                 return next();
             }
 
@@ -179,108 +179,6 @@ export const forgotPassword = (req, res, next) => {
     });
 };
 
-export const inviteUser = (req, res, next) => {
-    const userDetails = req.body;
-    userDetails.password = crypto.randomBytes(16).toString('hex');
-    const email = userDetails.email;
-
-    User.findOne({email}, (err, existingUser) => {
-        // If user is not found, return error
-        if (err || !existingUser) {
-            crypto.randomBytes(48, (err, buffer) => {
-                const resetToken = buffer.toString('hex');
-                if (err) {
-                    return next(err);
-                }
-                User.create(userDetails, (err, newUser) => {
-                    if (err) return next(err);
-                    newUser.resetPasswordToken = resetToken;
-                    newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-                    newUser.save((err) => {
-                        // If error in saving token, return it
-                        if (err) {
-                            return next(err);
-                        }
-
-                        const message = {
-                            subject: 'Invitation for NYC Outward Bound',
-                            text: `${'\n\n' +
-                            'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                            'http://'}${req.headers.host}/invite/${resetToken}\n\n` +
-                            `If you did not request this, please ignore this email.\n`
-                        };
-                        // Otherwise, send user email via Mailgun
-                        console.log(message);
-                        mailgun.sendEmail(newUser.email, message);
-
-                        return res.status(200).json({message: 'Please check your email for the link to reset your password.'});
-                    });
-
-                });
-            });
-        } else {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
-            return next(err);
-        }
-    });
-};
-
-//= =======================================
-// Update User
-//= =======================================
-export const updateUser = (req, res, next) => {
-    const email = req.body.email;
-    const enabled = req.body.enabled;
-
-    User.findOne({email}, (err, existingUser) => {
-        // If user is not found, return error
-        if (err || !existingUser) {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
-            return next(err);
-        }
-
-        existingUser.enabled = enabled;
-        existingUser.save((err) => {
-            // If error in saving token, return it
-            if (err) {
-                return next(err);
-            }
-            let status = '';
-            if (enabled) {
-                status = 'enabled';
-            } else {
-                status = 'disabled';
-            }
-            const message = {
-                subject: `Account ${status}`,
-                text: `Hello ${existingUser.firstName},\n\nYour account has been ${status}.`
-            };
-
-            // send user email via Mailgun
-            mailgun.sendEmail(existingUser.email, message);
-
-            return res.status(200).json({message: `Account ${status}`});
-        });
-    });
-};
-
-//= =======================================
-// Delete User
-//= =======================================
-export const deleteUser = (req, res, next) => {
-    const {email} = req.query;
-
-    User.remove({email}, (err) => {
-        // If user is not found, return error
-        if (err) {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
-            return next(err);
-        }
-        return res.status(200).json({message: 'Account Deleted'});
-    });
-};
-
 //= =======================================
 // Reset Password Route
 //= =======================================
@@ -322,8 +220,5 @@ export default {
     register,
     roleAuthorization,
     forgotPassword,
-    inviteUser,
-    updateUser,
-    deleteUser,
     verifyToken
 };

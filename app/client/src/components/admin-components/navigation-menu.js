@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {push} from 'react-router-redux';
 import {Link} from 'react-router';
 import List from '../helpers/List';
+import {Permission} from '../authentication';
 
 class NavigationMenu extends Component {
 
@@ -165,6 +166,13 @@ class NavigationMenu extends Component {
                                 <i className='fa fa-upload'></i> <span>Upload</span>
                             </Link>
                         </li>
+                        <Permission role='Owner'>
+                            <li className=''>
+                                <Link to='/invite-users'>
+                                    <i className='fa fa-envelope'></i> <span>Invite</span>
+                                </Link>
+                            </li>
+                        </Permission>
                     </ul>
                 </section>
                 { /* /.sidebar */ }
