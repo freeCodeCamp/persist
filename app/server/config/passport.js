@@ -10,21 +10,24 @@ const localOptions = {
 
 // Setting up local login strategy
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
-    console.log(email, password);
-    User.findOne({email}, (err, user) => {
+    User.findOne({email}).select('+password').exec((err, user) => {
         if (err) {
             return done(err);
         }
-        if (!user || !user.enabled) {
-            return done(null, false);
+        if (!user) {
+            console.log('user not');
+            return done(null, false, {error: 'Your login details could not be verified. Please try again.'});
         }
-
+        if (!user.enabled) {
+            return done(null, false, {error: 'Your account has been disabled. Please contact administrator.'});
+        }
         user.comparePassword(password, (err, isMatch) => {
             if (err) {
                 return done(err);
             }
             if (!isMatch) {
-                return done(null, false);
+                console.log('password not');
+                return done(null, false, {error: 'Your login details could not be verified. Please try again.'});
             }
             return done(null, user);
         });

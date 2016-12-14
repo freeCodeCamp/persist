@@ -30,4 +30,29 @@ User.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
-export default mongoose.model('User', User);
+const userModel = mongoose.model('User', User);
+
+// create admin user
+const adminUser = {
+    profile: {
+        firstName: 'Sachin',
+        lastName: 'Mour'
+    },
+    email: 'rtr.sachinmour@gmail.com',
+    password: process.env.ADMIN_PASSWORD,
+    access: {
+        role: 'Admin'
+    },
+    enabled: true
+};
+userModel.findOne({email: adminUser.email}, (err, existingUser) => {
+    if (!existingUser) {
+        userModel.create(adminUser, (err, newAdmin) => {
+            if (err) {
+                return console.log('admin not created', err);
+            }
+        });
+    }
+});
+
+export default userModel;

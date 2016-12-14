@@ -25,7 +25,7 @@ class Login extends Component {
             .catch((err) => {
                 this.setState({
                     open: true,
-                    errorMessage: 'Your login details could not be verified. Please try again.'
+                    errorMessage: err.response.data.message
                 });
                 reset();
             })

@@ -41,9 +41,20 @@ const requireAuth = passport.authenticate('jwt', {
     session: false
 });
 
-const requireLogin = passport.authenticate('local', {
-    session: false
-});
+const requireLogin = (req, res, next) => {
+    passport.authenticate('local', {
+        session: false
+    }, (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(403).json({message: info.error});
+        }
+        req.user = user;
+        next();
+    })(req, res, next);
+};
 
 export default (app) => {
 
