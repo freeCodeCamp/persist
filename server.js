@@ -9,7 +9,11 @@ import mongoose from 'mongoose';
 // import passport from 'passport';
 // import flash from 'connect-flash';
 import bodyParser from 'body-parser';
-dotenv.config();
+
+if (process.env.NODE_ENV !== 'production') {
+    // get environment variables
+    dotenv.config();
+}
 
 // https://github.com/motdotla/dotenv/issues/114
 const serverRoutes = require('./app/server/routes/index').default;

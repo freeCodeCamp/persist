@@ -14,6 +14,7 @@ export const sendEmail = (recipient, message) => {
     };
 
     mailgun.messages().send(data, (error, body) => {
+        console.log('mailgun error', error);
         //  console.log(body);
     });
 };

@@ -1,45 +1,35 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import async from 'async';
 
 const Schema = mongoose.Schema;
 
-const School = new Schema({
-  name: String
+const schoolSchema = new Schema({
+    name: String
 });
 
-module.exports = mongoose.model('School', School);
+const schoolNames = ['Baldwin', 'BCS', 'Channel View', 'Hahn',
+    'Leaders', 'McCown', 'MELS', 'WHEELS', 'Network'];
+const School = mongoose.model('School', schoolSchema);
 
-// let SchoolM = mongoose.model('School', School);
+async.each(schoolNames, (schoolName, callback) => {
+    School.findOne({name: schoolName}, (err, existingSchool) => {
+        if (err) {
+            return callback(err);
+        }
+        if (!existingSchool) {
+            return School.create({name: schoolName}, (err, newSchool) => {
+                if (err) {
+                    return callback(err);
+                }
+                return callback();
+            });
+        }
+        return callback();
+    });
+}, (err) => {
+    if (err) {
+        return console.log(err);
+    }
+});
 
-// var record = [{
-//   name: 'Baldwin'
-// },
-//   {
-//     name: 'BCS'
-//   },
-//   {
-//     name: 'Channel View'
-//   },
-//   {
-//     name: 'Hahn'
-//   },
-//   {
-//     name: 'Leaders'
-//   },
-//   {
-//     name: 'McCown'
-//   },
-//   {
-//     name: 'MELS'
-//   },
-//   {
-//     name: 'WHEELS'
-//   },
-//   {
-//     name: 'Network'
-//   }];
-
-// record.forEach(function(el, index) {
-//   SchoolM.create(el, function(err, data) {
-//     console.log(data);
-//   });
-// });
+export default School;
