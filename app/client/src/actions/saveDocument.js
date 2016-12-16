@@ -4,6 +4,7 @@ import {
     SAVE_DOCUMENT_SUCCESS,
     SPINNER
 } from './types';
+import oaxios from 'axios';
 import {axios} from './utils';
 
 const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
@@ -58,7 +59,7 @@ const saveDocument = (oldDocument, newDocument, osis) => (
             .then((doc) => {
                 if (file) {
                     const signedUrl = doc.signedRequest;
-                    return axios.put(signedUrl, file)
+                    return oaxios.put(signedUrl, file)
                         .then(() => {
                             updateDocument(doc, newDocument, oldDocument._id, osis, dispatch);
                         })

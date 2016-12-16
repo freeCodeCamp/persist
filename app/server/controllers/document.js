@@ -13,7 +13,7 @@ export const deleteDocument = (req, res) => {
         if (err || !student) {
             return res.status(500).send(err || 'student not found');
         }
-        s3.deleteObject({Key: Key, Bucket: bucketName}, (err) => {
+        s3.deleteObject({Key: `documents/${Key}`, Bucket: bucketName}, (err) => {
             if (err) {
                 console.log('delete', err);
             }

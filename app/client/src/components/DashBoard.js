@@ -21,6 +21,13 @@ class Dashboard extends Component {
         this.props.getAllColleges();
     }
 
+    componentDidMount() {
+        // triggering resize event
+        const evt = document.createEvent("HTMLEvents");
+        evt.initEvent('resize', true, false);
+        window.dispatchEvent(evt);
+    }
+
     render() {
         return (
             <div className='wrapper'>

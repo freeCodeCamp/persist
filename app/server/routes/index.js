@@ -6,6 +6,7 @@ import college from '../models/college';
 import school from '../models/school';
 import passport from '../config/passport';
 import {
+    DataManageController,
     AmazonController,
     AuthController,
     DocController,
@@ -40,6 +41,14 @@ var fileUpload = upload.fields([{
 const requireAuth = passport.authenticate('jwt', {
     session: false
 });
+
+const matchSecret = (req, res, next) => {
+    const secret = req.body.secret;
+    if (secret && secret === process.env.SECRET) {
+        return next();
+    }
+    res.status(402).json({error: 'You are not authorized.'});
+};
 
 const requireLogin = (req, res, next) => {
     passport.authenticate('local', {
@@ -253,6 +262,10 @@ export default (app) => {
     app.delete('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.deleteUser);
     app.post('/update-password/:token', AuthController.verifyToken);
     app.post('/invite/:token', AuthController.verifyToken);
+
+    app.get('/backup-database', matchSecret, DataManageController.backupDatabase);
+    app.post('/restore-database', requireAuth, AuthController.roleAuthorization('Owner'), DataManageController.restoreDatabase);
+    app.get('/get-database-backups', requireAuth, AuthController.roleAuthorization('Owner'), DataManageController.getDatabaseBackups);
 
     // final route
     app.get('/*', (req, res) => {

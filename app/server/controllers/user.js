@@ -80,7 +80,7 @@ export const updateUser = (req, res, next) => {
             }
             const message = {
                 subject: `Account ${status}`,
-                text: `Hello ${existingUser.firstName},\n\nYour account has been ${status}.`
+                text: `Hello ${existingUser.profile.firstName},\n\nYour account has been ${status}.`
             };
 
             // send user email via Mailgun

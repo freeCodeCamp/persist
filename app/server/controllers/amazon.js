@@ -32,13 +32,14 @@ export const getSign = (req, res) => {
     const fileType = req.query['fileType'];
     const fileName = req.query['fileName'] || 'provide-file-name';
     const uploadedFileName = req.query['uploadedFileName'];
-    const oldKey = req.query['oldKey'];
+    let oldKey = req.query['oldKey'];
     const ext = path.extname(uploadedFileName);
     const baseName = path.basename(fileName, ext);
     const _id = Types.ObjectId();
-    const Key = `${baseName}-${_id.toString()}${ext}`;
+    const Key = `documents/${baseName}-${_id.toString()}${ext}`;
     const s3 = new aws.S3();
     if (oldKey) {
+        oldKey = `documents/${oldKey}`;
         const bucketName = process.env.S3_BUCKET_NAME;
         const params = {Bucket: bucketName, CopySource: `${bucketName}/${oldKey}`, Key: Key};
         return s3.copyObject(params, (err) => {

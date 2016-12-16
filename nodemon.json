@@ -6,6 +6,7 @@
     "/app/client/src/actions",
     "/app/client/public/style",
     "/adminlte",
+    "/backups",
     "/uploads",
     "/test"
   ]
