@@ -4,7 +4,6 @@ import moment from 'moment';
 import aws from 'aws-sdk';
 import fs from 'fs-extra';
 import stream from 'stream';
-import map from 'lodash/map';
 
 const backupToS3 = (req, res, Key, err) => {
     if (err) {
@@ -93,7 +92,7 @@ export const getDatabaseBackups = (req, res) => {
         }
         let backups = data.Contents.filter((backup) => (backup.Size > 0));
         backups = backups.map((backup) => (backup.Key));
-        res.status(500).json(backups);
+        res.status(200).json(backups);
     });
 };
 

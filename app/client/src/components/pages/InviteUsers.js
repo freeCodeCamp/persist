@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {getUsers} from '../../actions';
 import Content from '../helpers/content';
 import {Users} from '../users';
-import {Panel, PanelGroup} from 'react-bootstrap';
+import {Permission} from '../authentication';
 
 class InviteUsers extends Component {
     constructor(props) {
@@ -17,9 +17,11 @@ class InviteUsers extends Component {
 
     render() {
         return (
-            <Content title='Invite Users'>
-                <Users />
-            </Content>
+            <Permission role='Owner'>
+                <Content title='Invite Users'>
+                    <Users />
+                </Content>
+            </Permission>
         );
     }
 }

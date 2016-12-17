@@ -11,6 +11,7 @@ import SingleStudent from './components/pages/SingleStudent';
 import SearchResult from './components/pages/SearchResult';
 import SingleCollege from './components/pages/SingleCollege';
 import Colleges from './components/pages/Colleges';
+import Recovery from './components/pages/Recovery';
 import FilteredStudents from './components/pages/FilteredStudents';
 import {requireAuth, Login, ForgotPassword, UpdatePassword, logout} from './components/authentication';
 
@@ -32,6 +33,7 @@ export default (
             <Route path='invite-users' component={ InviteUsers }/>
             <Route path='search' component={ SearchResult }/>
             <Route path='college/:id' component={ SingleCollege }/>
+            <Route path='recovery' component={ Recovery }/>
         </Route>
     </Route>
 );
