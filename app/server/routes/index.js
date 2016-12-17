@@ -263,7 +263,7 @@ export default (app) => {
     app.post('/update-password/:token', AuthController.verifyToken);
     app.post('/invite/:token', AuthController.verifyToken);
 
-    app.get('/backup-database', matchSecret, DataManageController.backupDatabase);
+    app.post('/backup-database', matchSecret, DataManageController.backupDatabase);
     app.post('/restore-database', requireAuth, AuthController.roleAuthorization('Owner'), DataManageController.restoreDatabase);
     app.get('/get-database-backups', requireAuth, AuthController.roleAuthorization('Owner'), DataManageController.getDatabaseBackups);
 
