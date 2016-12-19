@@ -167,13 +167,13 @@ class NavigationMenu extends Component {
                             </Link>
                         </li>
                         <Permission role='Owner'>
-                            <li className=''>
+                            <li>
                                 <Link to='/invite-users'>
                                     <i className='fa fa-envelope'></i> <span>Invite</span>
                                 </Link>
                             </li>
                         </Permission>
-                        <Permission role='Owner'>
+                        <Permission>
                             <li>
                                 <Link to='/recovery'>
                                     <i className='fa fa-undo'></i> <span>Recovery</span>

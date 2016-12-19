@@ -19,3 +19,23 @@ export const getRole = (checkRole) => {
     }
     return role;
 };
+
+export const mapping = {
+    ethnicity: {
+        1: 'American Indian or Alaskan Native',
+        2: 'Asian or Pacific Islander',
+        3: 'Hispanic',
+        4: 'Black',
+        5: 'White',
+        6: 'Unknown',
+        7: 'Multiracial'
+    },
+    colType: {
+        1: 'CUNY',
+        2: 'SUNY',
+        3: 'Public, Not NY',
+        4: 'Private, not for Profit',
+        5: 'Private, for profit',
+        6: 'Vocational/Technical'
+    }
+};

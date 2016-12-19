@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
-import {EthnicityChart, HSGradYear, ColDirEnrol, ColCompRate, ColPersist} from './';
+import {
+    EthnicityChart,
+    HSGradYear,
+    ColDirEnrol,
+    ColCompRate,
+    ColPersist,
+    ColType
+} from './';
 
 class ChartTabs extends Component {
 
@@ -11,7 +18,8 @@ class ChartTabs extends Component {
             ethnicity: 'Ethnicity',
             hsGradYear: 'HS Grad Year',
             colCompRate: 'College Completion Rate',
-            colPersist: 'College Persistence'
+            colPersist: 'College Persistence',
+            colType: 'College Type'
         };
         this.state = {
             activeId: null
@@ -42,6 +50,8 @@ class ChartTabs extends Component {
                 return <ColCompRate {...props}/>;
             case 'colPersist':
                 return <ColPersist {...props}/>;
+            case 'colType':
+                return <ColType {...props}/>;
             default:
                 return null;
         }

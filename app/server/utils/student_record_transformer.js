@@ -4,13 +4,6 @@ import {Schema} from 'mongoose';
 
 export default function formatRecord(record, callback) {
 
-    const logObject = {
-        osis: record.osis,
-        firstName: record.firstName,
-        lastName: record.lastName,
-        dob: record.dob
-    };
-
     if (!record.osis) {
         callback(null, null);
         return;
