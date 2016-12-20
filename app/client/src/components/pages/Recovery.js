@@ -18,7 +18,7 @@ class Recovery extends Component {
 
     componentDidMount() {
         this.props.getBackups()
-            .then((backups) => {
+            .then((backups=[]) => {
                 this.setState({
                     backups
                 });

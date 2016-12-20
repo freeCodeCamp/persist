@@ -3,6 +3,8 @@ import path from 'path';
 import express from 'express';
 import http from 'http';
 import reload from 'reload';
+import socketIO from 'socket.io';
+import handleSocket from './app/server/socket';
 
 import mongoose from 'mongoose';
 
@@ -35,6 +37,8 @@ app.use(bodyParser.urlencoded({
 // using webpack-dev-server and middleware in development environment
 
 const server = http.createServer(app);
+const io = socketIO(server);
+io.on('connection', handleSocket);
 
 if (process.env.NODE_ENV !== 'production') {
     const webpackDevMiddleware = require('webpack-dev-middleware');
