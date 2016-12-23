@@ -24,14 +24,22 @@ class ReduxFormGroup extends React.Component {
 
     initCollege(colId) {
         const {collegeObj} = this.props;
-        if (colId) {
+        if (colId && collegeObj[colId]) {
             return collegeObj[colId].fullName || '';
         }
         return '';
     }
 
+    initSchool(school) {
+        const {schoolObj} = this.props;
+        if (school && schoolObj[school]) {
+            return schoolObj[school].name || '';
+        }
+        return '';
+    }
+
     render() {
-        const {disabled, field, initValue, collegeSource} = this.props;
+        const {disabled, field, initValue, collegeSource, schoolSource} = this.props;
         const {fieldType, dbName, displayName} = field;
 
         switch (fieldType) {
@@ -89,19 +97,36 @@ class ReduxFormGroup extends React.Component {
             // case 'RadioButtonGroup':
 
             case 'AutoComplete':
-                if (field.type === 'college') {
-                    return (
-                        <MUIAutoComplete
-                            floatingLabelText={ displayName }
-                            disabled={disabled}
-                            filter={MUIAutoComplete.caseInsensitiveFilter}
-                            name={dbName.toString()}
-                            searchText={this.initCollege(initValue)}
-                            onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
-                            dataSource={collegeSource}
-                            maxSearchResults={5}
-                        />
-                    );
+                switch (field.type) {
+                    case 'college':
+                        return (
+                            <MUIAutoComplete
+                                floatingLabelText={ displayName }
+                                disabled={disabled}
+                                filter={MUIAutoComplete.caseInsensitiveFilter}
+                                name={dbName.toString()}
+                                searchText={this.initCollege(initValue)}
+                                onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
+                                dataSource={collegeSource}
+                                maxSearchResults={5}
+                            />
+                        );
+                    case 'school':
+                        return (
+                            <Field
+                                name={dbName.toString()}
+                                hintText={displayName}
+                                floatingLabelText={displayName}
+                                component={AutoComplete}
+                                disabled={disabled}
+                                searchText={this.initSchool(initValue)}
+                                input={{
+                                    onChange: (v) => this.updateInput(v.value, dbName.toString())
+                                }}
+                                dataSource={schoolSource}
+                                maxSearchResults={5}
+                            />
+                        );
                 }
             default:
                 return (
@@ -116,7 +141,9 @@ class ReduxFormGroup extends React.Component {
 
 const mapStateToProps = (state) => ({
     collegeSource: state.colleges.collegeSource,
-    collegeObj: state.colleges.idObj
+    collegeObj: state.colleges.idObj,
+    schoolSource: state.schools.schoolSource,
+    schoolObj: state.schools.idObj
 });
 
 export default connect(mapStateToProps)(ReduxFormGroup);

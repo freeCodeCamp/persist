@@ -1,47 +1,29 @@
 import mongoose from 'mongoose';
-import ourBrilliantFunction from './app/server/utils/save_csv_term_data';
 
-// import Student from './app/server/models/student';
+import Student from './app/server/models/student';
+import School from './app/server/models/school';
 
 mongoose.connect('mongodb://localhost:27017/nyc_outward');
 
-
-ourBrilliantFunction('./termData.csv').then((data) => {
-    console.log(data);
-}).catch((err) => {
-    console.log(err);
+Student.find({}, (err, students) => {
+    if (err) {
+        console.log('initial err');
+    }
+    students.forEach((student) => {
+        console.log(student.hs);
+        if (student.hs) {
+            School.find({name: student.hs}, (err, school) => {
+                if (err) {
+                    console.log(err, student._id);
+                }
+                student.hs = school._id;
+                student.save((err, stu) => {
+                    if (err) {
+                        console.log(student._id);
+                        return;
+                    }
+                })
+            })
+        }
+    })
 });
-
-// const newStudent = new Student();
-
-// newStudent.tags = ['Free Lunch Eligible', 'ELL'];
-// newStudent.hsAttended = 'Baldwin';
-// newStudent.gender = 'M';
-// newStudent.ethnicity = 7;
-// newStudent.transferStatus = ['2 Year to 4 Year',
-//   '2 Year to 2 Year']
-// newStudent.studentSupportOrgName = ['Other',
-//   'SEEK'];
-
-// newStudent.remediationStatus = ['Has Completed All Remediation Requirements'];
-// newStudent.residency = 'A stupid field';
-// newStudent.riskFactors = ['Taking time off',
-//   'Shifting from Full-time to Part-time'];
-// newStudent.employmentStatus = ['Seeking Employment'];
-// newStudent.progressToGradAss = 'Short 12 credits or less to graduation';
-// newStudent.progressToGradBa = 'Confirmed Graduate';
-
-
-// console.log(newStudent)
-
-
-// newStudent.save((err) => {
-
-//   if (err) {
-//     console.log(err);
-//     return;
-//   }
-
-//   //save the shit
-//   console.log('save it man- its good to go!');
-// });

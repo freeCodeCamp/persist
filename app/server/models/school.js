@@ -4,7 +4,11 @@ import async from 'async';
 const Schema = mongoose.Schema;
 
 const schoolSchema = new Schema({
-    name: String
+    name: String,
+    users: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 
 const schoolNames = ['Baldwin', 'BCS', 'Channel View', 'Hahn',

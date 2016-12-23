@@ -19,6 +19,7 @@ export default () => {
                     type: GET_ALL_STUDENTS_ERROR,
                     payload: err
                 });
+                return err;
             })
     }
 };

@@ -54,7 +54,8 @@ export const reference = [{
     fieldName: 'HS',
     displayName: 'HS',
     dbName: 'hs',
-    fieldType: 'TextField'
+    fieldType: 'AutoComplete',
+    type: 'school'
 }, {
     fieldName: 'Cellphone',
     displayName: 'Cellphone',

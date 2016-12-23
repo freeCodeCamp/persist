@@ -1,6 +1,27 @@
 import User from '../models/user';
+import School from '../models/school';
 import crypto from 'crypto';
 import * as mailgun from '../config/mailgun';
+
+const saveUser = (req, res, newUser, resetToken, err) => {
+    // If error in saving token, return it
+    if (err) {
+        return next(err);
+    }
+
+    const message = {
+        subject: 'Invitation for NYC Outward Bound',
+        text: `${'\n\n' +
+        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        'http://'}${req.headers.host}/invite/${resetToken}\n\n` +
+        `If you did not request this, please ignore this email.\n`
+    };
+    // Otherwise, send user email via Mailgun
+    console.log(message);
+    mailgun.sendEmail(newUser.email, message);
+
+    return res.status(200).json(newUser);
+};
 
 export const inviteUser = (req, res, next) => {
     const userDetails = req.body;
@@ -24,26 +45,19 @@ export const inviteUser = (req, res, next) => {
                     newUser.resetPasswordToken = resetToken;
                     newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
-                    newUser.save((err) => {
-                        // If error in saving token, return it
-                        if (err) {
-                            return next(err);
-                        }
-
-                        const message = {
-                            subject: 'Invitation for NYC Outward Bound',
-                            text: `${'\n\n' +
-                            'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                            'http://'}${req.headers.host}/invite/${resetToken}\n\n` +
-                            `If you did not request this, please ignore this email.\n`
-                        };
-                        // Otherwise, send user email via Mailgun
-                        console.log(message);
-                        mailgun.sendEmail(newUser.email, message);
-
-                        return res.status(200).json(newUser);
-                    });
-
+                    const schoolId = userDetails.access.school;
+                    if (schoolId) {
+                        School.findOne({_id: schoolId}, (err, existingSchool) => {
+                            if (err) return next(err);
+                            existingSchool.users.push(newUser._id);
+                            existingSchool.save((err) => {
+                                if (err) return next(err);
+                                newUser.save(saveUser.bind(null, req, res, newUser, resetToken));
+                            });
+                        });
+                    } else {
+                        newUser.save(saveUser.bind(null, req, res, newUser, resetToken));
+                    }
                 });
             });
         } else {

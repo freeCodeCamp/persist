@@ -13,7 +13,8 @@ const setUserInfo = (user) => ({
     firstName: user.profile.firstName,
     lastName: user.profile.lastName,
     email: user.email,
-    role: user.access.role
+    role: user.access.role,
+    school: user.access.school
 });
 
 const getRole = (checkRole) => {

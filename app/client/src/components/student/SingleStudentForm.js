@@ -3,6 +3,7 @@ import {Field, FieldArray, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 
 import {Button, Form, Row, Alert} from 'react-bootstrap';
+import {socket} from '../utils';
 
 import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
@@ -17,6 +18,7 @@ import asyncValidate from '../helpers/asyncValidate';
 class SingleStudentForm extends React.Component {
     constructor(props) {
         super(props);
+        socket.on('notification', (data) => (console.log(data)));
         this.state = {
             editable: false
         };
@@ -24,8 +26,14 @@ class SingleStudentForm extends React.Component {
 
     handleFormSubmit(studentRecord) {
         //this will handle updates
+        const {auth} = this.props;
         console.log('this is our form object', studentRecord);
-
+        socket.emit('update', {
+            user: auth.user._id,
+            school: studentRecord.hs,
+            student: studentRecord._id,
+            text: 'New Notification'
+        });
         this.props.updateStudent(studentRecord);
         this.setState({
             editable: !this.state.editable
@@ -189,6 +197,7 @@ SingleStudentForm = reduxForm({
 
 function mapStateToProps(state) {
     return {
+        auth: state.auth,
         studentForm: state.form.SingleStudent,
         updateStudentStatus: state.updateStudent
     };

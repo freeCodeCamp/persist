@@ -19,6 +19,7 @@ export default () => {
                     type: GET_ALL_SCHOOLS_ERROR,
                     payload: err
                 });
+                return err;
             })
     }
 };

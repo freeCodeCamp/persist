@@ -220,8 +220,8 @@ export default (Schema) => {
             }
         },
         hs: {
-            type: String,
-            enum: enums.hs
+            type: Schema.Types.ObjectId,
+            ref: 'School'
         },
         intendedCollege: {
             type: Schema.Types.ObjectId,

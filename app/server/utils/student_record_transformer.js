@@ -1,5 +1,7 @@
 import studentValidation2 from '../models/validation/studentValidation';
 import College from '../models/college';
+import async from 'async';
+import School from '../models/school';
 import {Schema} from 'mongoose';
 
 export default function formatRecord(record, callback) {
@@ -73,16 +75,38 @@ export default function formatRecord(record, callback) {
         delete record.hsGradYear;
     }
 
-    // reference College
-    College.findOne({
-        fullName: record.intendedCollege
-    }, (err, college) => {
-        if (err) {
-            console.log('college not found', err);
-            callback(err);
-            return;
+    async.parallel([
+        (callback2) => {
+            // reference College
+            College.findOne({
+                fullName: record.intendedCollege
+            }, (err, college) => {
+                if (err) {
+                    console.log('college not found', err);
+                    callback2(err);
+                    return;
+                }
+                record.intendedCollege = college;
+                callback2(null);
+            });
+        },
+        (callback2) => {
+            // reference school
+            School.findOne({
+                name: record.hs
+            }, (err, school) => {
+                if (err) {
+                    console.log('school not found', err);
+                    return callback2(err);
+                }
+                record.hs = school;
+                callback2(null);
+            });
         }
-        record.intendedCollege = college;
+    ], (err) => {
+        if (err) {
+            return callback(err);
+        }
         callback(null, record);
     });
 

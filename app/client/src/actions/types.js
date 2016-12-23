@@ -106,3 +106,5 @@ export const DELETE_USER_SUCCESS = 'delete_user_success',
 export const INVITE_USER_SUCCESS = 'invite_user_success',
     INVITE_USER_ERROR = 'invite_user_error',
     INVITE_USER_PENDING = 'invite_user_pending';
+
+export const UPDATE_NOTIFICATIONS = 'update_notifications';

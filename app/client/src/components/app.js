@@ -3,7 +3,19 @@ import Dashboard from './DashBoard';
 import {socket} from './utils';
 import {connect} from 'react-redux';
 
-export default class App extends Component {
+class App extends Component {
+
+    componentDidMount() {
+        const {auth} = this.props;
+        socket.emit('subscribe', {room: auth.user._id});
+        socket.emit('subscribe', {room: auth.user.school});
+    }
+
+    componentWillUnmount() {
+        const {auth} = this.props;
+        socket.emit('unsubscribe', {room: auth.user._id});
+        socket.emit('unsubscribe', {room: auth.user.school});
+    }
 
     render() {
         let currentPage;

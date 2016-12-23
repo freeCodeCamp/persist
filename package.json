@@ -12,6 +12,7 @@
     "watch": "nodemon --config nodemon.json --exec babel-node server.js",
     "debug": "node-inspector --web-port=8888 & nodemon --config nodemon.json --exec babel-node --debug server.js",
     "build": "babel server.js --out-file serverProd.js & webpack -p --config ./webpack.prod.config.js",
+    "prestart": "babel app/common --out-dir app/common",
     "start": "NODE_ENV=production babel-node serverProd.js",
     "babel": "./node_modules/.bin/babel-node",
     "watch:test": "webpack-dev-server --progress"
@@ -84,13 +85,14 @@
     "redux-thunk": "^2.1.0",
     "reload": "^1.0.1",
     "reselect": "^2.5.4",
+    "sanitize-html": "^1.13.0",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
     "winston": "^2.3.0",
     "zip-local": "^0.3.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.14.0",
+    "babel-cli": "^6.18.0",
     "babel-eslint": "^7.0.0",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.5.0",

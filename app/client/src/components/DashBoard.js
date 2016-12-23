@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import HeaderBar from './admin-components/header-bar/header-bar';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -16,9 +17,17 @@ class Dashboard extends Component {
     }
 
     componentWillMount() {
-        this.props.getAllStudents();
-        this.props.getAllSchools();
-        this.props.getAllColleges();
+        axios.all([
+            this.props.getAllStudents(),
+            this.props.getAllSchools(),
+            this.props.getAllColleges()
+        ]).then((results) => {
+            results.map((result) => {
+                if (result && result.response && result.response.status === 401) {
+                    window.location = '/logout';
+                }
+            });
+        });
     }
 
     componentDidMount() {

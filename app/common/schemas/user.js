@@ -15,6 +15,17 @@ const accessSchema = (Schema) => ({
     }
 });
 
+const notificationSchema = (Schema) => ({
+    read: {
+        type: Boolean,
+        default: false
+    },
+    notifId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Notification'
+    }
+});
+
 const checkAccess = (access) => (
     access.role === ROLE_COUNSELOR ? !!access.school : true
 );
@@ -55,5 +66,6 @@ export default (Schema) => ({
     },
     resetPasswordExpires: {
         type: Date
-    }
+    },
+    notifications: [notificationSchema(Schema)]
 });

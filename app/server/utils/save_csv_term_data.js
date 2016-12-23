@@ -41,13 +41,14 @@ export default (fileName) => {
                 data[row.osis].push(row);
             }
         });
-
+        let error;
         transformer.on('error', (err) => {
+            error = err;
             console.log(err.message);
-            reject(err);
         });
 
         transformer.on('end', () => {
+            if (error) return reject(error);
             async.eachLimit(data, 10, (terms, callback) => {
                 if (!terms || terms.length < 1) {
                     callback(null);
