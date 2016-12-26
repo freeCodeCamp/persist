@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import NotificationItem from './notification-item';
 import {connect} from 'react-redux';
+import {socket} from '../../../utils';
 
 class HeaderNotifications extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    componentDidMount() {
+        socket.on('notification', (data) => (console.log(data)));
     }
 
     render() {
@@ -23,8 +28,7 @@ class HeaderNotifications extends Component {
                     className='label label-warning'>{ notifications.length }</span></a>
                 <ul className='dropdown-menu'>
                     <li className='header'>
-                        You have
-                        { notifications.length } notifications
+                        You have { notifications.length } notifications
                     </li>
                     <li>
                         { /* inner menu: contains the actual data */ }

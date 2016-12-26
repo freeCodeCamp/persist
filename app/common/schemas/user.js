@@ -67,5 +67,6 @@ export default (Schema) => ({
     resetPasswordExpires: {
         type: Date
     },
-    notifications: [notificationSchema(Schema)]
+    notifications: [notificationSchema(Schema)],
+    lastAllRead: Date
 });

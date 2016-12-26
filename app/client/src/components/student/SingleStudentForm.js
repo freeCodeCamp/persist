@@ -18,7 +18,6 @@ import asyncValidate from '../helpers/asyncValidate';
 class SingleStudentForm extends React.Component {
     constructor(props) {
         super(props);
-        socket.on('notification', (data) => (console.log(data)));
         this.state = {
             editable: false
         };

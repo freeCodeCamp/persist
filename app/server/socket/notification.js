@@ -14,7 +14,7 @@ const handleNotifications = (socket) => {
         Notification.create(data, (err, new_not) => {
             if (err || !new_not) return;
             socket.to(data.school).emit('notification', new_not);
-            School.findOne({name: data.school}, (err, school) => {
+            School.findOne({_id: data.school}, (err, school) => {
                 if (err || !school || !school.users) return;
                 const notifyUsers = school.users
                     .filter((user) => (user.toString() !== data.user.toString()));

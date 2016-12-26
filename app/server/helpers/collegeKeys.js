@@ -36,7 +36,7 @@ export const reference = [{
     displayName: 'Average HS GPA',
     dbName: 'avgHsGpa',
     fieldType: 'TextField'
-},{
+}, {
     fieldName: '% First Generation',
     displayName: '% First Generation',
     dbName: 'percentFirstGen',
@@ -77,6 +77,11 @@ export const reference = [{
     dbName: 'collType',
     fieldType: 'SelectField'
 }, {
+    fieldName: '4 Year vs. Two Year',
+    displayName: '4 Year vs 2 Year',
+    dbName: 'durationType',
+    fieldType: 'SelectField'
+}, {
     fieldName: 'HIGHDEG',
     displayName: 'Highest Degree Granted',
     dbName: 'highestDegGranted',
@@ -105,7 +110,7 @@ export const reference = [{
     fieldName: 'INSTURL',
     displayName: 'Website',
     dbName: 'website',
-    fieldType: 'SelectField'
+    fieldType: 'TextField'
 }, {
     fieldName: 'NPCURL',
     displayName: 'Net Price Calculator',
@@ -192,32 +197,30 @@ export const reference = [{
     dbName: 'numberStudents',
     fieldType: 'TextField'
 },
-{
-    fieldName: 'PPTUG_EF',
-    displayName: '% Students Enrolled Part Time',
-    dbName: 'fullTimeEnrolledPercentage',
-    fieldType: 'TextField'
-},
-{
-    fieldName: 'Average net price for $0-$30,000 family income',
-    displayName: 'Average net price for $0-$30,000 family income',
-    dbName: 'netPrice0to30',
-    fieldType: 'TextField'
-},
-{
-    fieldName: 'Average net price for $30,001-$48,000 family income',
-    displayName: 'Average net price for $30,001-$48,000 family income',
-    dbName: 'netPrice30to48',
-    fieldType: 'TextField'
-},
-{
-    fieldName: 'Average net price for $48,001-$75,000 family income',
-    displayName: 'Average net price for $48,001-$75,000 family income',
-    dbName: 'netPrice48to75',
-    fieldType: 'TextField'
-}];
-
-
+    {
+        fieldName: 'PPTUG_EF',
+        displayName: '% Students Enrolled Part Time',
+        dbName: 'fullTimeEnrolledPercentage',
+        fieldType: 'TextField'
+    },
+    {
+        fieldName: 'Average net price for $0-$30,000 family income',
+        displayName: 'Average net price for $0-$30,000 family income',
+        dbName: 'netPrice0to30',
+        fieldType: 'TextField'
+    },
+    {
+        fieldName: 'Average net price for $30,001-$48,000 family income',
+        displayName: 'Average net price for $30,001-$48,000 family income',
+        dbName: 'netPrice30to48',
+        fieldType: 'TextField'
+    },
+    {
+        fieldName: 'Average net price for $48,001-$75,000 family income',
+        displayName: 'Average net price for $48,001-$75,000 family income',
+        dbName: 'netPrice48to75',
+        fieldType: 'TextField'
+    }];
 
 
 export default {
@@ -251,5 +254,6 @@ export default {
     'Important Contacts': 'impContacts',
     'Opportunity programs/special programs': 'specialPrograms',
     'Notes on special programs': 'notesPrograms',
-    'Other notes on college': 'otherNotes'
+    'Other notes on college': 'otherNotes',
+    '4 Year vs. Two Year': 'durationType'
 };

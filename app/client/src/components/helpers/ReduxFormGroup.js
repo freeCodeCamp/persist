@@ -113,16 +113,13 @@ class ReduxFormGroup extends React.Component {
                         );
                     case 'school':
                         return (
-                            <Field
+                            <MUIAutoComplete
                                 name={dbName.toString()}
                                 hintText={displayName}
                                 floatingLabelText={displayName}
-                                component={AutoComplete}
                                 disabled={disabled}
                                 searchText={this.initSchool(initValue)}
-                                input={{
-                                    onChange: (v) => this.updateInput(v.value, dbName.toString())
-                                }}
+                                onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
                                 dataSource={schoolSource}
                                 maxSearchResults={5}
                             />

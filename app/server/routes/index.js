@@ -10,6 +10,7 @@ import {
     AmazonController,
     AuthController,
     DocController,
+    NotificationController,
     UserController
 } from '../controllers';
 import saveCSV from '../utils/save_csv';
@@ -267,6 +268,9 @@ export default (app) => {
     app.post('/restore-database', requireAuth, AuthController.roleAuthorization('Owner'), DataManageController.restoreDatabase);
     app.get('/get-database-backups', requireAuth, AuthController.roleAuthorization('Owner'), DataManageController.getDatabaseBackups);
 
+    app.post('/notifications', requireAuth, NotificationController.getNotifications);
+    app.get('/notifications/read/all', requireAuth, NotificationController.allRead);
+    app.post('/notifications/read', requireAuth, NotificationController.markRead);
     // final route
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, '../../client/public/index.html'));

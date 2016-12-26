@@ -20,6 +20,10 @@ const College = new Schema({
         overall: Number
     },
     collType: Number,
+    durationType: {
+        type: String,
+        lowercase: true
+    },
     highestDegGranted: String,
     predominentDegGranted: String,
     city: String,
