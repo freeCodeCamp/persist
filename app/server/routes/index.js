@@ -5,6 +5,7 @@ import Student from '../models/student';
 import college from '../models/college';
 import school from '../models/school';
 import passport from '../config/passport';
+import {getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN} from '../../common/constants';
 import {
     DataManageController,
     AmazonController,
@@ -208,8 +209,14 @@ export default (app) => {
 
     // main routes for queries to students db
     app.get('/api/students', requireAuth, (req, res) => {
-
-        let query = Student.find({});
+        let query;
+        if (getRole(req.user.access.role) < getRole(ROLE_COUNSELOR)) {
+            return res.status(200).json([]);
+        } else if (getRole(req.user.access.role) === getRole(ROLE_COUNSELOR)) {
+            query = Student.find({hs: req.user.access.school});
+        } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {
+            query = Student.find({});
+        }
         query.exec((err, students) => {
             if (err) {
                 res.status(500).send(err);

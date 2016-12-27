@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import NotificationItem from './notification-item';
+import {markReadAllNotification} from '../../../../actions';
+import {updateNotification} from '../../../../actions/socket';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {socket} from '../../../utils';
 
 class HeaderNotifications extends Component {
@@ -10,25 +14,36 @@ class HeaderNotifications extends Component {
     }
 
     componentDidMount() {
-        socket.on('notification', (data) => (console.log(data)));
+        socket.on('notification', this.props.updateNotification);
+    }
+
+    markAllRead(e) {
+        e.preventDefault();
+        this.props.markReadAllNotification();
     }
 
     render() {
-        const {notifications} = this.props;
-        const notificationList = notifications.map(function (notificationDetails, iterator) {
+        const {notificationsObj} = this.props;
+        const notifications = notificationsObj.value;
+        const unread = notificationsObj.unread;
+        const lastAllRead = notificationsObj.lastAllRead;
+        const notificationList = notifications.map((notification, iterator) => {
             return (
-                <NotificationItem key={ iterator } theme={ notificationDetails.theme }
-                                  content={ notificationDetails.content }/>
+                <NotificationItem key={ iterator } lastAllRead={lastAllRead} notification={notification}/>
             );
         });
 
         return (
             <li className='dropdown notifications-menu'>
-                <a href='#' className='dropdown-toggle' data-toggle='dropdown'><i className='fa fa-bell-o'></i> <span
-                    className='label label-warning'>{ notifications.length }</span></a>
+                <a href='#' className='dropdown-toggle' data-toggle='dropdown'>
+                    <i className='fa fa-bell-o'/>
+                    <span className='label label-warning'>{ unread }</span>
+                </a>
                 <ul className='dropdown-menu'>
                     <li className='header'>
-                        You have { notifications.length } notifications
+                        <span>You have { unread } notifications</span>
+                        <span style={{cursor: 'pointer', color: '#3c8dbc'}} className='pull-right'
+                              onClick={(e) => this.markAllRead(e)}>Mark all read</span>
                     </li>
                     <li>
                         { /* inner menu: contains the actual data */ }
@@ -41,7 +56,7 @@ class HeaderNotifications extends Component {
                         </div>
                     </li>
                     <li className='footer'>
-                        <a href='#'>View all</a>
+                        <Link to='/notifications'>View all</Link>
                     </li>
                 </ul>
             </li>
@@ -51,7 +66,14 @@ class HeaderNotifications extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    notifications: state.notifications
+    notificationsObj: state.notifications
 });
 
-export default connect(mapStateToProps)(HeaderNotifications);
+const mapDispatchToProps = (dispatch) => (
+    bindActionCreators({
+        markReadAllNotification,
+        updateNotification
+    }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderNotifications);

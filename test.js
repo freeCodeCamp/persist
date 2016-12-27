@@ -7,9 +7,12 @@ import School from './app/server/models/school';
 
 mongoose.connect('mongodb://localhost:27017/nyc_outward');
 const bulk = User.collection.initializeUnorderedBulkOp();
-User
-    .findOne({
-        _id: '585cf33604388a0d63fd9f6a'
-    }, {'notifications.$': 0}, (err, user) => {
-        console.log(user);
-    });
+User.findOne(
+    {_id: '585cf33604388a0d63fd9f6a'},
+    {'notifications': {$slice: [5, 5]}}
+).exec((err, user) => {
+    if (err || !user) {
+        return res.status(500).send(err || 'User not found');
+    }
+    console.log(user.notifications);
+});

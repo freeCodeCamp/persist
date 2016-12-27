@@ -13,3 +13,6 @@ export {default as inviteUser} from './inviteUser';
 export {default as updateUser} from './updateUser';
 export {default as getBackups} from './getBackups';
 export {default as restoreDatabase} from './restoreDatabase';
+export {default as getNotifications} from './getNotifications';
+export {default as markReadNotification} from './markReadNotification';
+export {default as markReadAllNotification} from './markReadAllNotification'

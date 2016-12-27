@@ -1,5 +1,5 @@
 import {default as handleNotifications} from './notification';
 
-export default (socket) => {
-    handleNotifications(socket);
+export default (io, socket) => {
+    handleNotifications(io, socket);
 };

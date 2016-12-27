@@ -3,7 +3,7 @@ import axios from 'axios';
 import HeaderBar from './admin-components/header-bar/header-bar';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getAllSchools, getAllStudents, getAllColleges} from '../actions'
+import {getAllSchools, getNotifications, getAllStudents, getAllColleges} from '../actions'
 import NavigationMenu from './admin-components/navigation-menu';
 // import ControlPanel from './admin-components/control-panel';
 import ControlMenu from './admin-components/controls-menu';
@@ -20,7 +20,8 @@ class Dashboard extends Component {
         axios.all([
             this.props.getAllStudents(),
             this.props.getAllSchools(),
-            this.props.getAllColleges()
+            this.props.getAllColleges(),
+            this.props.getNotifications(0, 5)
         ]).then((results) => {
             results.map((result) => {
                 if (result && result.response && result.response.status === 401) {
@@ -58,7 +59,8 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         getAllStudents,
         getAllColleges,
-        getAllSchools
+        getAllSchools,
+        getNotifications
     }, dispatch);
 };
 

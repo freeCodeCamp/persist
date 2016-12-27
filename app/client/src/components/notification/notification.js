@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
-import {push} from 'react-router-redux';
-import {bindActionCreators} from 'redux';
-import {markReadNotification} from '../../../../actions';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import moment from 'moment';
+import {push} from 'react-router-redux';
+import {markReadNotification} from '../../actions';
 import classNames from 'classnames';
 
-class NotifcationItem extends Component {
+class Notification extends Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     markRead(e, id) {
         e.preventDefault();
@@ -18,10 +22,10 @@ class NotifcationItem extends Component {
     }
 
     handleClick(e, notification) {
-        e.preventDefault();
         if (e.target === this.readComp) {
             return;
         }
+        e.preventDefault();
         const {notifId} = notification;
         if (!notification.read) {
             this.props.markReadNotification(notifId._id);
@@ -37,6 +41,7 @@ class NotifcationItem extends Component {
         }
         const time = moment(notifId.createdAt).fromNow();
         const userName = `${notifId.user.profile.firstName} ${notifId.user.profile.lastName}`.trim();
+
         let backgroundColor = '#f7f7f7';
         let title = 'Mark as Read';
         if (read) {
@@ -71,7 +76,6 @@ class NotifcationItem extends Component {
             </li>
         );
     }
-
 }
 
 const mapDispatchToProps = (dispatch) => (
@@ -81,4 +85,4 @@ const mapDispatchToProps = (dispatch) => (
     }, dispatch)
 );
 
-export default connect(null, mapDispatchToProps)(NotifcationItem);
+export default connect(null, mapDispatchToProps)(Notification);

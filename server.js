@@ -21,7 +21,11 @@ if (process.env.NODE_ENV !== 'production') {
 const serverRoutes = require('./app/server/routes/index').default;
 // connect to mongoDB database
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
+const options = {
+    server: {socketOptions: {keepAlive: 300000, connectTimeoutMS: 30000}},
+    replset: {socketOptions: {keepAlive: 300000, connectTimeoutMS: 30000}}
+};
+mongoose.connect(process.env.MONGODB_URI, options);
 
 const app = express();
 
@@ -38,7 +42,7 @@ app.use(bodyParser.urlencoded({
 
 const server = http.createServer(app);
 const io = socketIO(server);
-io.on('connection', handleSocket);
+io.on('connection', handleSocket.bind(null, io));
 
 if (process.env.NODE_ENV !== 'production') {
     const webpackDevMiddleware = require('webpack-dev-middleware');

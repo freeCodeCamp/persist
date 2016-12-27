@@ -3,15 +3,16 @@ import User from '../models/user';
 const getNotifications = (req, res) => {
     const offset = req.body.offset;
     const limit = req.body.limit;
+    const user = req.user;
     User.findOne(
-        {_id: '585cf33604388a0d63fd9f6a'},
-        {'notifications': {$slice: [offset * limit, limit]}}
+        {_id: user._id},
+        {'notifications': {$slice: [offset, limit]}}
     )
         .populate({
             path: 'notifications.notifId',
             populate: {
                 path: 'user student',
-                select: 'profile fullName'
+                select: 'profile fullName osis'
             }
         })
         .exec((err, user) => {
@@ -27,7 +28,7 @@ const getNotifications = (req, res) => {
 
 const markRead = (req, res) => {
     const user = req.user;
-    const notifId = req.notifId;
+    const notifId = req.body.notifId;
     User.findOne({_id: user._id})
         .update({'notifications.notifId': notifId},
             {
@@ -39,6 +40,7 @@ const markRead = (req, res) => {
             if (err) {
                 return res.status(500).send(err);
             }
+            console.log(notifId, status);
             return res.status(200).json({status: 'done'});
         });
 };

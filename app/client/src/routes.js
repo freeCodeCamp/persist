@@ -10,6 +10,7 @@ import InviteUsers from './components/pages/InviteUsers';
 import SingleStudent from './components/pages/SingleStudent';
 import SearchResult from './components/pages/SearchResult';
 import SingleCollege from './components/pages/SingleCollege';
+import Notifications from './components/pages/Notifications';
 import Colleges from './components/pages/Colleges';
 import Recovery from './components/pages/Recovery';
 import FilteredStudents from './components/pages/FilteredStudents';
@@ -34,6 +35,7 @@ export default (
             <Route path='search' component={ SearchResult }/>
             <Route path='college/:id' component={ SingleCollege }/>
             <Route path='recovery' component={ Recovery }/>
+            <Route path='notifications' component={Notifications}/>
         </Route>
     </Route>
 );

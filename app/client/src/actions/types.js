@@ -108,3 +108,6 @@ export const INVITE_USER_SUCCESS = 'invite_user_success',
     INVITE_USER_PENDING = 'invite_user_pending';
 
 export const UPDATE_NOTIFICATIONS = 'update_notifications';
+export const GET_NOTIFICATIONS = 'get_notifications';
+export const MARK_READ_NOTIFICATION = 'mark_read_notification';
+export const MARK_READ_ALL_NOTIFICATION = 'mark_read_all_notification';

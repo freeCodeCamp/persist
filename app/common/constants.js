@@ -15,7 +15,7 @@ export const getRole = (checkRole) => {
             role = 1;
             break;
         default:
-            role = 1;
+            role = 0;
     }
     return role;
 };
