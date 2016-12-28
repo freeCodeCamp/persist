@@ -3,7 +3,7 @@ import {reduxForm, Field} from 'redux-form';
 import {MenuItem} from 'material-ui';
 import {FileInput} from '../utils';
 import {SelectField, TextField} from 'redux-form-material-ui';
-import {types} from '../../../../server/models/validation/validator';
+import {types} from '../../../../common/validator';
 
 class DocumentEditor extends Component {
     constructor(props) {

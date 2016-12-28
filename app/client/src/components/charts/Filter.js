@@ -3,16 +3,18 @@ import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import {studentKeys} from '../../../../common/fieldKeys';
+import {ReduxFormGroup} from '../helpers';
 import {SelectField, TextField, AutoComplete} from 'redux-form-material-ui';
 import RangeSlider from '../helpers/RangeSlider';
 import {AutoComplete as MUIAutoComplete} from 'material-ui';
-import {types} from '../../../../server/models/validation/validator';
 
 class ChartFilter extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            filteredKeys: [],
             suggestions: {
                 'firstName': [],
                 'lastName': []
@@ -20,56 +22,75 @@ class ChartFilter extends React.Component {
         }
     }
 
-    handleUpdateInput(columnName, form, value) {
-        if (value != null && typeof value === 'object') {
-            form.props.change.bind(form, columnName, value.value)();
-            return;
-        }
-        form.props.change.bind(form, columnName, value)();
-        this.getSuggestions(columnName, value);
-    }
-
-    setSuggestions(columnName, suggestions) {
+    componentDidMount() {
+        const fields = [
+            'ethnicity',
+            'hs',
+            'intendedCollege',
+            'gender',
+            'cohort'
+        ];
+        const filteredKeys = studentKeys
+            .filter((field) => fields.includes(field.dbName));
         this.setState({
-            suggestions: {
-                ...this.state.suggestions,
-                [columnName]: suggestions
-            }
+            ...this.state,
+            filteredKeys
         });
     }
 
-    getSuggestions(columnName, value) {
-        if (value.length < 3) {
-            this.setSuggestions(columnName, []);
-            return;
+    componentWillReceiveProps(nextProps) {
+        if (this.props.students !== nextProps.students) {
+            const {students} = nextProps;
+            const lodashStudents = _(students);
+            const firstNameSuggestions = lodashStudents
+                .map('firstName').uniq().value();
+            const lastNameSuggestions = lodashStudents
+                .map('lastName').uniq().value();
+            this.setState({
+                ...this.state,
+                suggestions: {
+                    firstName: firstNameSuggestions,
+                    lastName: lastNameSuggestions
+                }
+            });
         }
-        const {students} = this.props;
-        const regex = new RegExp('.*' + value + '.*', 'i');
-        const suggestions = _(students)
-            .filter((student) => (regex.test(student[columnName])))
-            .map(columnName)
-            .uniq()
-            .sortBy()
-            .take(5)
-            .value();
-        this.setSuggestions(columnName, suggestions);
+    }
+
+    updateInput(columnName, form, value) {
+        if (value) {
+            form.props.change.bind(form, columnName, value)();
+        }
+    }
+
+    fieldsHTML(form) {
+        const {filteredKeys} = this.state;
+        const nullValueFields = ['hs', 'intendedCollege'];
+        return filteredKeys.map((key, i) => {
+            let nullValue = false;
+            if (nullValueFields.includes(key.dbName)) {
+                nullValue = true;
+            }
+            return (
+                <div key={ i }>
+                    <ReduxFormGroup
+                        nullAllowed={nullValue}
+                        form={form}
+                        field={ key }
+                    />
+                </div>
+            );
+        });
+    }
+
+    checkEmpty(columnName, form, value) {
+        if (value.length === 0) {
+            form.props.change.bind(form, columnName, null)();
+        }
     }
 
     render() {
-        const {handleSubmit, collegeSource} = this.props;
+        const {handleSubmit, handleFormSubmit} = this.props;
         const {suggestions} = this.state;
-
-        const hsOptions = types.hs;
-        const hsDropDowns = hsOptions.map((hs, i) => (
-                <MenuItem value={ hs } key={ i } primaryText={ hs }/>
-            )
-        );
-        const cohortOptions = types.cohort.map((cohort, i) => (
-                <MenuItem value={cohort}
-                          key={cohort}
-                          primaryText={cohort}/>
-            )
-        );
         const gradYearDropDowns = [];
         const currYear = new Date().getFullYear();
         for (let i = 2011; i <= currYear; i++) {
@@ -78,61 +99,35 @@ class ChartFilter extends React.Component {
             )
         }
         return (
-            <form onSubmit={ handleSubmit(this.props.handleFormSubmit) }>
+            <form onSubmit={ handleSubmit(handleFormSubmit) }>
                 <div style={ {display: 'flex', flexWrap: 'wrap'} }>
                     <div>
-                        <Field name='firstName'
-                               component={ AutoComplete }
-                               filter={ MUIAutoComplete.caseInsensitiveFilter }
-                               dataSource={ suggestions['firstName'] }
-                               input={ {
-                                   onUpdateInput: this.handleUpdateInput.bind(this, 'firstName', this),
-                                   onChange: this.handleUpdateInput.bind(this, 'firstName', this)
-                               } }
-                               floatingLabelText='First Name'/>
-                    </div>
-                    <div>
-                        <Field name='lastName' component={ TextField } floatingLabelText='Last Name'/>
-                    </div>
-                    <div>
-                        <MUIAutoComplete
-                            name='intendedCollege'
-                            filter={ MUIAutoComplete.caseInsensitiveFilter }
-                            onNewRequest={this.handleUpdateInput.bind(this, `intendedCollege`, this)}
-                            dataSource={collegeSource}
+                        <Field
+                            name='firstName'
+                            hintText='First Name'
+                            floatingLabelText='First Name'
+                            component={AutoComplete}
+                            input={{
+                                onUpdateInput: this.checkEmpty.bind(this, 'firstName', this),
+                                onChange: this.updateInput.bind(this, 'firstName', this)
+                            }}
+                            dataSource={ suggestions['firstName'] }
                             maxSearchResults={5}
-                            floatingLabelText='Intended College'
                         />
                     </div>
                     <div>
-                        <Field name='gender'
-                               component={ SelectField }
-                               hintText='Gender'
-                               floatingLabelText='Gender'>
-                            <MenuItem value='M' primaryText='Male'/>
-                            <MenuItem value='F' primaryText='Female'/>
-                        </Field>
-                    </div>
-                    <div>
-                        <Field name='ethnicity'
-                               component={ SelectField }
-                               hintText='Ethnicity'
-                               floatingLabelText='Ethnicity'>
-                            <MenuItem value={1} primaryText='1'/>
-                            <MenuItem value={2} primaryText='2'/>
-                            <MenuItem value={3} primaryText='3'/>
-                            <MenuItem value={4} primaryText='4'/>
-                            <MenuItem value={5} primaryText='5'/>
-                            <MenuItem value={6} primaryText='6'/>
-                        </Field>
-                    </div>
-                    <div>
-                        <Field name='cohort'
-                               component={ SelectField }
-                               hintText='Cohort'
-                               floatingLabelText='Cohort'>
-                            {cohortOptions}
-                        </Field>
+                        <Field
+                            name='lastName'
+                            hintText='Last Name'
+                            floatingLabelText='Last Name'
+                            component={AutoComplete}
+                            input={{
+                                onUpdateInput: this.checkEmpty.bind(this, 'lastName', this),
+                                onChange: this.updateInput.bind(this, 'lastName', this)
+                            }}
+                            dataSource={ suggestions['lastName'] }
+                            maxSearchResults={5}
+                        />
                     </div>
                     <div>
                         <Field name='hsGradYear'
@@ -142,21 +137,14 @@ class ChartFilter extends React.Component {
                             { gradYearDropDowns }
                         </Field>
                     </div>
-                    <div>
-                        <Field name='hs'
-                               component={ SelectField }
-                               hintText='High School'
-                               floatingLabelText='HighSchool'>
-                            { hsDropDowns }
-                        </Field>
-                    </div>
+                    {this.fieldsHTML(this)}
                     <div>
                         <Field name='hsGPA'
                                component={ RangeSlider }
                                description='High School GPA'
                                defaultRange={ {minValue: 0, maxValue: 100} }
                                min={ 0 }
-                               form={this.props.form}
+                               form={this}
                                max={ 100 }
                                step={ 1 }/>
                     </div>
@@ -174,8 +162,7 @@ ChartFilter = reduxForm({
 })(ChartFilter);
 
 const mapStateToProps = (state) => ({
-    students: state.students.value,
-    collegeSource: state.colleges.collegeSource
+    students: state.students.value
 });
 
 export default connect(mapStateToProps)(ChartFilter);

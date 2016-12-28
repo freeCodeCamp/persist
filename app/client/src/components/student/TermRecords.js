@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import {SelectField} from 'redux-form-material-ui';
 import DatePicker from '../helpers/DatePicker';
-import {types} from '../../../../server/models/validation/validator';
+import {types} from '../../../../common/validator';
 import {connect} from 'react-redux';
 
 class TermRecords extends Component {

@@ -6,8 +6,8 @@ import Chips from './Chip';
 import {connect} from 'react-redux';
 import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import DatePicker from './DatePicker';
-
-import {types} from '../../../../server/models/validation/validator';
+import isPlainObject from 'lodash/isPlainObject';
+import {types} from '../../../../common/validator';
 
 class ReduxFormGroup extends React.Component {
 
@@ -19,6 +19,13 @@ class ReduxFormGroup extends React.Component {
         const {form} = this.props;
         if (value) {
             form.props.change.bind(form, columnName, value)();
+        }
+    }
+
+    checkEmpty(value, columnName, nullValue) {
+        if (!isPlainObject(value) && value.length === 0 && nullValue) {
+            const {form} = this.props;
+            form.props.change.bind(form, columnName, null)();
         }
     }
 
@@ -81,6 +88,15 @@ class ReduxFormGroup extends React.Component {
                 let options = types[dbName];
                 if (options) {
                     options = options.map((option) => {
+                        if (isPlainObject(option)) {
+                            return (
+                                <MenuItem
+                                    value={option.value}
+                                    key={option.value}
+                                    primaryText={option.text}
+                                />
+                            )
+                        }
                         return (<MenuItem value={ option } key={ option } primaryText={ option }/>);
                     });
                     options.unshift(<MenuItem value={ null } primaryText='None' key='none'/>);
@@ -97,6 +113,7 @@ class ReduxFormGroup extends React.Component {
             // case 'RadioButtonGroup':
 
             case 'AutoComplete':
+                const {nullAllowed} = this.props;
                 switch (field.type) {
                     case 'college':
                         return (
@@ -106,6 +123,7 @@ class ReduxFormGroup extends React.Component {
                                 filter={MUIAutoComplete.caseInsensitiveFilter}
                                 name={dbName.toString()}
                                 searchText={this.initCollege(initValue)}
+                                onUpdateInput={(v) => this.checkEmpty(v, dbName.toString(), nullAllowed)}
                                 onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
                                 dataSource={collegeSource}
                                 maxSearchResults={5}
@@ -117,8 +135,10 @@ class ReduxFormGroup extends React.Component {
                                 name={dbName.toString()}
                                 hintText={displayName}
                                 floatingLabelText={displayName}
+                                filter={ MUIAutoComplete.caseInsensitiveFilter }
                                 disabled={disabled}
                                 searchText={this.initSchool(initValue)}
+                                onUpdateInput={(v) => this.checkEmpty(v, dbName.toString(), nullAllowed)}
                                 onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
                                 dataSource={schoolSource}
                                 maxSearchResults={5}

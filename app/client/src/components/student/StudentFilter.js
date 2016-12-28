@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {SelectField, AutoComplete} from 'redux-form-material-ui';
 import {AutoComplete as MUIAutoComplete} from 'material-ui';
 
-import {types} from '../../../../server/models/validation/validator';
+import {types} from '../../../../common/validator';
 
 class FilterStudentForm extends React.Component {
 
@@ -125,7 +125,7 @@ class FilterStudentForm extends React.Component {
                         <Field name='hs'
                                component={ SelectField }
                                hintText='High School'
-                               floatingLabelText='HighSchool'>
+                               floatingLabelText='High School'>
                             {hsDropDowns}
                         </Field>
                     </div>

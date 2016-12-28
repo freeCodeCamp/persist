@@ -26,6 +26,7 @@ class SingleStudentForm extends React.Component {
     handleFormSubmit(studentRecord) {
         //this will handle updates
         const {auth} = this.props;
+
         console.log('this is our form object', studentRecord);
         socket.emit('update', {
             user: auth.user._id,

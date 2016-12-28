@@ -17,7 +17,7 @@ class DashboardMain extends React.Component {
 
     handleSubmit(values) {
         this.update = true;
-        const conditions = _.cloneDeep(values);
+        const conditions = _(values).omitBy(_.isNil).cloneDeep();
         const {students} = this.props;
         const hsGPA = conditions.hsGPA;
         delete conditions.hsGPA;
