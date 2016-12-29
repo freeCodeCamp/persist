@@ -173,7 +173,7 @@ class NavigationMenu extends Component {
                                 </Link>
                             </li>
                         </Permission>
-                        <Permission>
+                        <Permission role='Owner'>
                             <li>
                                 <Link to='/recovery'>
                                     <i className='fa fa-undo'></i> <span>Recovery</span>

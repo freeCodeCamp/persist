@@ -32,7 +32,7 @@ class NotifcationItem extends Component {
     render() {
         const {notification, lastAllRead} = this.props;
         let {read, notifId} = notification;
-        if (lastAllRead > notifId.createdAt) {
+        if (moment(notifId.createdAt).isBefore(lastAllRead)) {
             read = true;
         }
         const time = moment(notifId.createdAt).fromNow();

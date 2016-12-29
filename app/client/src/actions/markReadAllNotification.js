@@ -7,7 +7,7 @@ const markReadAll = () => {
             .then((response) => {
                 dispatch({
                     type: MARK_READ_ALL_NOTIFICATION,
-                    payload: response.data.lastAllRead
+                    payload: new Date()
                 });
             })
             .catch((err) => {
