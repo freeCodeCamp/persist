@@ -1,4 +1,4 @@
-import studentValidation2 from '../models/validation/studentValidation';
+import {studentSchema} from '../../common/schemas';
 import College from '../models/college';
 import async from 'async';
 import School from '../models/school';
@@ -16,7 +16,7 @@ export default function formatRecord(record, callback) {
 
     // handle dates
     let dateFields = [];
-    var studentValidation = studentValidation2(Schema);
+    var studentValidation = studentSchema(Schema);
     for (let key in studentValidation) {
         if (studentValidation[key] === Date || studentValidation[key].type === Date) {
             dateFields.push(key);

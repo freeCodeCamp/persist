@@ -1,4 +1,4 @@
-import validator, {messages, enums} from './validator';
+import validator, {messages, enums} from '../validator';
 
 const Parent = {
     relationship: String,
@@ -41,6 +41,17 @@ const applicationsSchema = (Schema) => {
         notes: String
     };
 };
+
+const graduationsSchema = (Schema) => ({
+    _id: false,
+    college: {
+        type: Schema.Types.ObjectId
+    },
+    status: String,
+    enrolBegin: Date,
+    enrolEnd: Date,
+    type: String
+});
 
 export default (Schema) => {
     return {
@@ -140,6 +151,7 @@ export default (Schema) => {
         actEquiv: Number,
         hsGPA: Number,
         terms: [termSchema(Schema)],
+        graduations: [graduationsSchema(Schema)],
         documents: [documentSchema(Schema)],
         ferpa: {
             type: String,

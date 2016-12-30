@@ -46,7 +46,7 @@ class ReduxFormGroup extends React.Component {
     }
 
     render() {
-        const {disabled, field, initValue, collegeSource, schoolSource} = this.props;
+        const {disabled, field, form, initValue, collegeSource, schoolSource} = this.props;
         const {fieldType, dbName, displayName} = field;
 
         switch (fieldType) {
@@ -71,6 +71,7 @@ class ReduxFormGroup extends React.Component {
                 return (
                     <Field disabled={ disabled }
                            name={ dbName }
+                           form={ form }
                            options={ types[dbName] }
                            initValue={ initValue }
                            component={ Chips }

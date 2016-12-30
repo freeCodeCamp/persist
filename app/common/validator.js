@@ -17,8 +17,7 @@ export const types = {
         '4 Year to 2 Year',
         'Planning to Transfer',
         'Needs Transfer Support',
-        'Multiple transfers',
-        ''
+        'Multiple transfers'
     ],
     studentSupportOrgName: [
         'Other',
@@ -41,8 +40,7 @@ export const types = {
         'TRIO',
         'Apple Corps',
         'Red Hook Initiative Young Adult program',
-        'John Jay ACE',
-        ''
+        'John Jay ACE'
     ],
     remediationStatus: [
         'Needs Math Remediation',
@@ -52,8 +50,7 @@ export const types = {
         'Never Needed Remediation',
         'Attempted Math Remediation (Failed)',
         'Attempted Reading Remediation (Failed)',
-        'Attempted Writing Remediation (Failed)',
-        ''
+        'Attempted Writing Remediation (Failed)'
     ],
     riskFactors: [
         'Academic Probation',
@@ -66,15 +63,13 @@ export const types = {
         'Has a child',
         'Other',
         'Taking time off',
-        'Shifting from Full-time to Part-time',
-        ''
+        'Shifting from Full-time to Part-time'
     ],
     employmentStatus: [
         'Working Less than 12 hours',
         'Working 12-25 hours',
         'Working more than 25 hours',
-        'Seeking Employment',
-        ''
+        'Seeking Employment'
     ],
     commsType: [
         'In person',
@@ -82,8 +77,7 @@ export const types = {
         'Facebook',
         'Phone call',
         'Email',
-        'Other',
-        ''
+        'Other'
     ],
     hsAttended: [
         'Baldwin',
@@ -118,12 +112,13 @@ export const types = {
         'Y (2019)',
         'Z (2020)'
     ],
-    residency: ['Lives with Family',
+    residency: [
+        'Lives with Family',
         'Lives independently',
         'Lives on Campus',
         'Displaced',
-        'Lives on Campus, displaced during breaks',
-        ''],
+        'Lives on Campus, displaced during breaks'
+    ],
     progressToGradAss: [
         'Confirmed Graduate',
         'Confirmed Graduated',
@@ -132,8 +127,7 @@ export const types = {
         'Stopped Enrolling',
         'Transfered to BA program,unknown if earned AA/AS',
         'Unclear if Graduated or Dropped Out',
-        'Dropped Out',
-        ''
+        'Dropped Out'
     ],
     progressToGradBa: [
         'Confirmed Graduate',
@@ -141,8 +135,7 @@ export const types = {
         'Short 12 credits or less to graduation',
         'Stopped Enrolling',
         'Unclear if Graduated or Dropped Out',
-        'Dropped Out',
-        ''
+        'Dropped Out'
     ],
     tshirtSize: [
         'S',
@@ -164,15 +157,13 @@ export const types = {
         'Not started',
         'Not planning to apply via Common App',
         'Started, did not finish',
-        'Completed',
-        ''
+        'Completed'
     ],
     sunyApp: [
         'Not started',
         'Not applying to SUNY',
         'Started, did not finish',
-        'Completed',
-        ''
+        'Completed'
     ],
     cunyApp: [
         'Not started',
@@ -183,14 +174,12 @@ export const types = {
     housingStatus: [
         'Housing form completed and deposit submitted',
         'Housing form not completed',
-        'N/A: Student not planning to live on campus',
-        ''
+        'N/A: Student not planning to live on campus'
     ],
     physImmunRecords: [
         'Sent to School',
         'Not Sent to School',
-        'Still needs to get immunizations',
-        ''
+        'Still needs to get immunizations'
     ],
     registeredForClasses: [
         'Yes',
@@ -204,8 +193,12 @@ export const types = {
         'Planning to wait a year and enroll next Fall',
         'Interested in working or Vocational training only',
         'Planning to enlist in military',
-        'Not planning to attend college- other',
-        ''
+        'Not planning to attend college- other'
+    ],
+    'graduations.type': [
+        'Associates Degree',
+        'Bachelors Degree',
+        'Certificate'
     ],
     hs: [
         'Hahn',

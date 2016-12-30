@@ -1,12 +1,12 @@
 // validation helpers
-import studentValidation from '../../../../server/models/validation/studentValidation';
+import {studentSchema} from '../../../../common/schemas';
 
 const asyncValidate = (values) => {
     console.log('asyncValidate');
     var mongoose = window.mongoose;
     var Schema = mongoose.Schema;
 
-    const Student = new Schema(studentValidation(Schema));
+    const Student = new Schema(studentSchema(Schema));
 
     var student = new mongoose.Document({}, Student);
 

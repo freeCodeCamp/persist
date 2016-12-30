@@ -1,19 +1,14 @@
+import {schoolSchema} from '../../common/schemas';
 import mongoose from 'mongoose';
 import async from 'async';
 
 const Schema = mongoose.Schema;
 
-const schoolSchema = new Schema({
-    name: String,
-    users: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }]
-});
+const schoolSchemaModel = new Schema(schoolSchema(Schema));
 
 const schoolNames = ['Baldwin', 'BCS', 'Channel View', 'Hahn',
     'Leaders', 'McCown', 'MELS', 'WHEELS', 'Network'];
-const School = mongoose.model('School', schoolSchema);
+const School = mongoose.model('School', schoolSchemaModel);
 
 async.each(schoolNames, (schoolName, callback) => {
     School.findOne({name: schoolName}, (err, existingSchool) => {
