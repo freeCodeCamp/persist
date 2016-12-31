@@ -5,7 +5,7 @@ import async from 'async';
 
 // this is the data we need for validation and transforming
 import Student from '../models/student';
-import {reference} from '../helpers/key';
+import {studentKeys} from '../../common/fieldKeys';
 import formatRecord from './student_record_transformer';
 
 export default function (fileName) {
@@ -160,7 +160,7 @@ export default function (fileName) {
 function mapValues(line) {
 
     return line.map((key) => {
-        var obj = reference.find((field) => {
+        var obj = studentKeys.find((field) => {
             return field.fieldName === key;
         });
         if (obj) {

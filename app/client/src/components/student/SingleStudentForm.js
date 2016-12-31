@@ -12,7 +12,7 @@ import renderTerms from './TermRecords';
 
 import * as updateStudent from '../../actions/updateStudent';
 
-import {reference} from '../../../../server/helpers/key';
+import {studentKeys} from '../../../../common/fieldKeys';
 import asyncValidate from '../helpers/asyncValidate';
 
 class SingleStudentForm extends React.Component {
@@ -49,7 +49,7 @@ class SingleStudentForm extends React.Component {
     render() {
         const {handleSubmit, reset, initialValues} = this.props;
         const {editable} = this.state;
-        const renderFormGroups = (form, reference) => {
+        const renderFormGroups = (form, studentKeys) => {
 
             // vars for editing
             const fixed = ['hs', 'hsGradYear', 'hsAttended'];
@@ -57,7 +57,7 @@ class SingleStudentForm extends React.Component {
             // initial value var
             let initialValue;
 
-            return reference.map((field, i) => {
+            return studentKeys.map((field, i) => {
                 let disabled = !editable;
                 if (fixed.includes(field.dbName)) {
                     disabled = true;
@@ -86,7 +86,7 @@ class SingleStudentForm extends React.Component {
         };
 
         const filterRef = (dbNames) => {
-            return reference.filter((field) => dbNames.includes(field.dbName))
+            return studentKeys.filter((field) => dbNames.includes(field.dbName))
         };
 
         const bioHTML = (form) => renderFormGroups(form, filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags']));

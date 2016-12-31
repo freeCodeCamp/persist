@@ -6,7 +6,7 @@ import winston from 'winston';
 import _ from 'lodash';
 
 import Student from '../models/student';
-import termKeys from '../helpers/termKeys';
+import {termKeys} from '../../common/fieldKeys';
 import formatRecord from './term_record_transformer';
 
 const mapValues = (line) => {

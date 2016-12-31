@@ -52,8 +52,11 @@ export default class Upload extends React.Component {
             {
                 name: 'College Applications',
                 url: '/upload/collegeApplications'
+            },
+            {
+                name: 'College Graduation Records',
+                url: '/upload/collegeGraduation'
             }
-
         ];
 
         var optionsHTML = fileTypes.map((type, i) => {

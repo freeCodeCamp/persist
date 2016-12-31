@@ -6,7 +6,7 @@ import merge from 'lodash/merge';
 import mongoose from 'mongoose';
 
 import College from '../models/college';
-import {reference} from '../helpers/collegeKeys';
+import {collegeKeys} from '../../common/fieldKeys';
 
 export default function (fileName) {
 
@@ -127,7 +127,7 @@ export default function (fileName) {
 function mapValues(line) {
 
     return line.map((key) => {
-        var obj = reference.find((field) => {
+        var obj = collegeKeys.find((field) => {
             return field.fieldName === key;
         });
         if (obj) {
