@@ -15,4 +15,7 @@ npm-debug.log
 /data.csv
 /smalldata.csv
 /termData.csv
+/collegeGraduationRecords.csv
+/collegeData.csv
+/collegeData_estimated.csv
 /.DS_Store

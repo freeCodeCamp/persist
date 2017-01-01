@@ -1,18 +1,7 @@
-import mongoose from 'mongoose';
+import saveGraduationData from './app/server/utils/save_csv_graduation_data';
 
-import Student from './app/server/models/student';
-import User from './app/server/models/user'
-import Notification from './app/server/models/notification';
-import School from './app/server/models/school';
-
-mongoose.connect('mongodb://localhost:27017/nyc_outward');
-const bulk = User.collection.initializeUnorderedBulkOp();
-User.findOne(
-    {_id: '585cf33604388a0d63fd9f6a'},
-    {'notifications': {$slice: [5, 5]}}
-).exec((err, user) => {
-    if (err || !user) {
-        return res.status(500).send(err || 'User not found');
-    }
-    console.log(user.notifications);
+saveGraduationData('./collegeGraduationRecords.csv').then((data) => {
+    console.log(data);
+}).catch((err) => {
+    console.log(err);
 });

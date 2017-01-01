@@ -42,16 +42,17 @@ const applicationsSchema = (Schema) => {
     };
 };
 
-const graduationsSchema = (Schema) => ({
-    _id: false,
-    college: {
-        type: Schema.Types.ObjectId
-    },
-    status: String,
-    enrolBegin: Date,
-    enrolEnd: Date,
-    type: String
-});
+const graduationsSchema = (Schema) => (
+    new Schema({
+        college: {
+            type: Schema.Types.ObjectId
+        },
+        status: String,
+        enrolBegin: Date,
+        enrolEnd: Date,
+        type: String
+    })
+);
 
 export default (Schema) => {
     return {

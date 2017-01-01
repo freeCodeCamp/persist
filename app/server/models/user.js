@@ -39,7 +39,6 @@ const adminUser = {
         lastName: 'Mour'
     },
     email: 'rtr.sachinmour@gmail.com',
-    password: process.env.ADMIN_PASSWORD,
     access: {
         role: 'Admin'
     },
@@ -47,6 +46,7 @@ const adminUser = {
 };
 userModel.findOne({email: adminUser.email}, (err, existingUser) => {
     if (!existingUser) {
+        adminUser.password = process.env.ADMIN_PASSWORD;
         userModel.create(adminUser, (err, newAdmin) => {
             if (err) {
                 return console.log('admin not created', err);
