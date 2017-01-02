@@ -5,3 +5,4 @@ export {default as HSGradYear} from './HSGradYear';
 export {default as ColCompRate} from './ColCompRate';
 export {default as ColPersist} from './ColPersist';
 export {default as ColType} from './ColType';
+export {default as GradRate} from './GradRate';

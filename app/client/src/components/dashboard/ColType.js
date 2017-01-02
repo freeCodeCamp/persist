@@ -70,7 +70,8 @@ class ColType extends Component {
     }
 
     chartData(data) {
-        const values = _.values(data);
+        const sortedYears = _(data).keys().sort().value();
+        const values = sortedYears.map((key) => (data[key]));
         const keys = _.keys(values[0]);
         return keys.map(key => ({
             name: mapping.colType[key],
