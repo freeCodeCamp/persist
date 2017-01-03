@@ -58,6 +58,15 @@ class ReduxFormGroup extends React.Component {
                            component={ TextField }
                            floatingLabelText={ displayName }/>
                 );
+            case 'TextBox':
+                return (
+                    <Field disabled={ disabled }
+                           name={ dbName.toString() }
+                           component={ TextField }
+                           floatingLabelText={ displayName }
+                           multiline={ true }
+                           rows={ 2 }/>
+                );
             case 'DatePicker':
                 return (
                     <Field disabled={ disabled }

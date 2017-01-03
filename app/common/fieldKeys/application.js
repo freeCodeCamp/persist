@@ -1,31 +1,36 @@
 export const reference = [{
     fieldName: 'College',
     displayName: 'College',
-    dbName: 'collAppName',
-    fieldType: 'TextField'
+    dbName: 'college',
+    fieldType: 'AutoComplete'
 }, {
     fieldName: 'Type',
     displayName: 'Type',
-    dbName: 'collAppType',
+    dbName: 'type',
     fieldType: 'SelectField'
 }, {
     fieldName: 'Result',
     displayName: 'Result',
-    dbName: 'collAppResult',
+    dbName: 'result',
     fieldType: 'SelectField'
 }, {
     fieldName: 'HEOP/EOP',
     displayName: 'HEOP/EOP',
-    dbName: 'collAppHEOP',
+    dbName: 'heop',
     fieldType: 'SelectField'
 }, {
     fieldName: 'Attending',
     displayName: 'Attending',
-    dbName: 'collAppAttending',
+    dbName: 'attending',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Defer',
+    displayName: 'Student Planning to Defer',
+    dbName: 'defer',
     fieldType: 'Toggle'
 }, {
     fieldName: 'Notes',
     displayName: 'Notes',
-    dbName: 'collAppNotes',
-    fieldType: 'TextField'
+    dbName: 'notes',
+    fieldType: 'TextBox'
 }];

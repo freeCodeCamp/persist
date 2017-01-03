@@ -30,17 +30,18 @@ const documentSchema = (Schema) => (
     })
 );
 
-const applicationsSchema = (Schema) => {
-    return {
+const applicationsSchema = (Schema) => (
+    new Schema({
         college: {
             type: Schema.Types.ObjectId
         },
         result: String,
         heop: String,
         attending: Boolean,
+        defer: Boolean,
         notes: String
-    };
-};
+    })
+);
 
 const graduationsSchema = (Schema) => (
     new Schema({

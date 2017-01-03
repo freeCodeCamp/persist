@@ -6,7 +6,7 @@ export const reference = [{
     fieldType: 'TextField'
 }, {
     fieldName: 'Short Name',
-    displayName: 'College Name',
+    displayName: 'College Short Name',
     dbName: 'shortName',
     fieldType: 'TextField'
 }, {

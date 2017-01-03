@@ -143,280 +143,279 @@ export const reference = [{
     displayName: 'Student Support Program: Other',
     dbName: 'studentSupportOrgNameOther',
     fieldType: 'TextField'
-},
-    {
-        fieldName: 'Major/Minor',
-        displayName: 'Major/Minor',
-        dbName: 'majorMinor',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Post-Secondary Plan',
-        displayName: 'Post-Secondary Plan',
-        dbName: 'postSecPlan',
-        fieldType: 'SelectField'
+}, {
+    fieldName: 'Major/Minor',
+    displayName: 'Major/Minor',
+    dbName: 'majorMinor',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Post-Secondary Plan',
+    displayName: 'Post-Secondary Plan',
+    dbName: 'postSecPlan',
+    fieldType: 'SelectField'
 
-    }, {
-        fieldName: 'Remediation Status',
-        displayName: 'Remediation Status',
-        dbName: 'remediationStatus',
-        fieldType: 'Checkbox'
-    }, {
-        fieldName: 'Current/Most Recent College',
-        displayName: 'Current/Most Recent College',
-        dbName: 'mostRecentCol',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Current/Most Recent Employer',
-        displayName: 'Current/Most Recent Employer',
-        dbName: 'mostRecentEmp',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Employment Status',
-        displayName: 'Employment Status',
-        dbName: 'employmentStatus',
-        fieldType: 'Checkbox'
-    }, {
-        fieldName: 'Risk Factors',
-        displayName: 'Risk Factors',
-        dbName: 'riskFactors',
-        fieldType: 'Checkbox'
-    }, {
-        fieldName: 'Student Needs Followup',
-        displayName: 'Student Needs Follow Up?',
-        dbName: 'needsFollowup',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Progress to Graduation (Associate\'s)',
-        displayName: 'Progress to Graduation (Associate\'s)',
-        dbName: 'progressToGradAss',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Progress to Graduation (Bachelor\'s)',
-        displayName: 'Progress to Graduation (Bachelor\'s)',
-        dbName: 'progressToGradBa',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Master\'s Degree Progress',
-        displayName: 'Master\'s Degree Progress',
-        dbName: 'progressToMasters',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Residency',
-        displayName: 'Residency',
-        dbName: 'residency',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Expected Graduation',
-        displayName: 'Expected Graduation',
-        dbName: 'expectedGrad',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'T-shirt size',
-        displayName: 'T-shirt size',
-        dbName: 'tshirtSize',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Sweatshirt Size',
-        displayName: 'Sweatshirt Size',
-        dbName: 'sweatshirtSize',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Photo Release Form',
-        displayName: 'Photo Release Form',
-        dbName: 'photoReleaseForm',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Attending Meet-Up Day?',
-        displayName: 'Attending Meet-Up Day?',
-        dbName: 'attendingMeetupDay',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Application Wave',
-        displayName: 'Application Wave',
-        dbName: 'applicationWave',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'PSAT',
-        displayName: 'PSAT',
-        dbName: 'psat',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'EA/ED Applications?',
-        displayName: 'EA/ED Applications?',
-        dbName: 'eaEdApplications',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Letters of Recommendation?',
-        displayName: 'Letters of Recommendation?',
-        dbName: 'lettersOfRecommendation',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Common App?',
-        displayName: 'Common App?',
-        dbName: 'commonApp',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Tax Documents Submitted',
-        displayName: 'Tax Documents Submitted',
-        dbName: 'taxDocumentsSubmitted',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Opportunity Program Eligible',
-        displayName: 'Opportunity Program Eligible',
-        dbName: 'opportunityProgramEligible',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Student Aid Report Recieved:',
-        displayName: 'Student Aid Report Recieved:',
-        dbName: 'studentAidReportReceived',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Need Gap?',
-        displayName: 'Need Gap?',
-        dbName: 'needGap',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Amount of Need Gap',
-        displayName: 'Amount of Need Gap',
-        dbName: 'amountOfNeedGap',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'FSAID',
-        displayName: 'FSAID',
-        dbName: 'fsaid',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Started FAFSA?',
-        displayName: 'Started FAFSA?',
-        dbName: 'startedFafsa',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Completed FAFSA?',
-        displayName: 'Completed FAFSA?',
-        dbName: 'completedFafsa',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'CSS Profile Created?',
-        displayName: 'CSS Profile Created?',
-        dbName: 'cssProfileCreated',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Award Letter Recieved?',
-        displayName: 'Award Letter Recieved?',
-        dbName: 'awardLetterReceived',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Completed TAP?',
-        displayName: 'Completed TAP?',
-        dbName: 'completedTap',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Scholarship Amount',
-        displayName: 'Scholarship Amount',
-        dbName: 'scholarshipAmount',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'ACT',
-        displayName: 'ACT',
-        dbName: 'act',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'CUNY App?',
-        displayName: 'CUNY App?',
-        dbName: 'cunyApp',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'SUNY App?',
-        displayName: 'SUNY App?',
-        dbName: 'sunyApp',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Desired Field of Study',
-        displayName: 'Desired Field of Study',
-        dbName: 'desiredFieldOfStudy',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Completed Essay/Personal Statement?',
-        displayName: 'Completed Essay/Personal Statement?',
-        dbName: 'completedEssay',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Crew Advisor',
-        displayName: 'Crew Advisor',
-        dbName: 'crewAdvisor',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'SAT Subject Tests',
-        displayName: 'SAT Subject Tests',
-        dbName: 'satSubjectTests',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Facebook Name',
-        displayName: 'Facebook Name',
-        dbName: 'facebookName',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Parent Name',
-        displayName: 'Parent Name',
-        dbName: 'parentName',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Parent Phone',
-        displayName: 'Parent Phone',
-        dbName: 'parentPhone',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'Applied to SEEK/ASAP/Other Support Program?',
-        displayName: 'Applied to SEEK/ASAP/Other Support Program?',
-        dbName: 'appliedToOtherSupportProgram',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Housing Status',
-        displayName: 'Housing Status',
-        dbName: 'housingStatus',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Physical and Immunization Records Status',
-        displayName: 'Physical and Immunization Records Status',
-        dbName: 'physImmunRecords',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Registered for Classes?',
-        displayName: 'Registered for Classes?',
-        dbName: 'registeredForClasses',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'Intended College',
-        displayName: 'Intended College',
-        dbName: 'intendedCollege',
-        fieldType: 'AutoComplete',
-        type: 'college'
-    }, {
-        fieldName: 'DEGREE_TITLE',
-        displayName: 'Degree Earned',
-        dbName: 'degreeTitle',
-        fieldType: 'TextField'
-    }, {
-        fieldName: 'GRADUATION_DATE',
-        displayName: 'Graduation Date',
-        dbName: 'gradDate',
-        fieldType: 'DatePicker'
-    }, {
-        fieldName: 'Preferred Pronoun',
-        displayName: 'Preferred Pronoun',
-        dbName: 'preferredPronoun',
-        fieldType: 'SelectField'
-    }, {
-        fieldName: 'RECORD_FOUND_Y/N',
-        displayName: 'NSC Record Found',
-        dbName: 'nscRecordFound',
-        fieldType: 'Toggle'
-    }, {
-        fieldName: 'Preferred Language',
-        displayName: 'Preferred Language',
-        dbName: 'preferredLanguage',
-        fieldType: 'TextField'
-    }
+}, {
+    fieldName: 'Remediation Status',
+    displayName: 'Remediation Status',
+    dbName: 'remediationStatus',
+    fieldType: 'Checkbox'
+}, {
+    fieldName: 'Current/Most Recent College',
+    displayName: 'Current/Most Recent College',
+    dbName: 'mostRecentCol',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Current/Most Recent Employer',
+    displayName: 'Current/Most Recent Employer',
+    dbName: 'mostRecentEmp',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Employment Status',
+    displayName: 'Employment Status',
+    dbName: 'employmentStatus',
+    fieldType: 'Checkbox'
+}, {
+    fieldName: 'Risk Factors',
+    displayName: 'Risk Factors',
+    dbName: 'riskFactors',
+    fieldType: 'Checkbox'
+}, {
+    fieldName: 'Student Needs Followup',
+    displayName: 'Student Needs Follow Up?',
+    dbName: 'needsFollowup',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Progress to Graduation (Associate\'s)',
+    displayName: 'Progress to Graduation (Associate\'s)',
+    dbName: 'progressToGradAss',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Progress to Graduation (Bachelor\'s)',
+    displayName: 'Progress to Graduation (Bachelor\'s)',
+    dbName: 'progressToGradBa',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Master\'s Degree Progress',
+    displayName: 'Master\'s Degree Progress',
+    dbName: 'progressToMasters',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Residency',
+    displayName: 'Residency',
+    dbName: 'residency',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Expected Graduation',
+    displayName: 'Expected Graduation',
+    dbName: 'expectedGrad',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'T-shirt size',
+    displayName: 'T-shirt size',
+    dbName: 'tshirtSize',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Sweatshirt Size',
+    displayName: 'Sweatshirt Size',
+    dbName: 'sweatshirtSize',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Photo Release Form',
+    displayName: 'Photo Release Form',
+    dbName: 'photoReleaseForm',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Attending Meet-Up Day?',
+    displayName: 'Attending Meet-Up Day?',
+    dbName: 'attendingMeetupDay',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Application Wave',
+    displayName: 'Application Wave',
+    dbName: 'applicationWave',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'PSAT',
+    displayName: 'PSAT',
+    dbName: 'psat',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'EA/ED Applications?',
+    displayName: 'EA/ED Applications?',
+    dbName: 'eaEdApplications',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Letters of Recommendation?',
+    displayName: 'Letters of Recommendation?',
+    dbName: 'lettersOfRecommendation',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Common App?',
+    displayName: 'Common App?',
+    dbName: 'commonApp',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Tax Documents Submitted',
+    displayName: 'Tax Documents Submitted',
+    dbName: 'taxDocumentsSubmitted',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Opportunity Program Eligible',
+    displayName: 'Opportunity Program Eligible',
+    dbName: 'opportunityProgramEligible',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Student Aid Report Recieved:',
+    displayName: 'Student Aid Report Recieved:',
+    dbName: 'studentAidReportReceived',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Need Gap?',
+    displayName: 'Need Gap?',
+    dbName: 'needGap',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Amount of Need Gap',
+    displayName: 'Amount of Need Gap',
+    dbName: 'amountOfNeedGap',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'FSAID',
+    displayName: 'FSAID',
+    dbName: 'fsaid',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Started FAFSA?',
+    displayName: 'Started FAFSA?',
+    dbName: 'startedFafsa',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Completed FAFSA?',
+    displayName: 'Completed FAFSA?',
+    dbName: 'completedFafsa',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'CSS Profile Created?',
+    displayName: 'CSS Profile Created?',
+    dbName: 'cssProfileCreated',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Award Letter Recieved?',
+    displayName: 'Award Letter Recieved?',
+    dbName: 'awardLetterReceived',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Completed TAP?',
+    displayName: 'Completed TAP?',
+    dbName: 'completedTap',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Scholarship Amount',
+    displayName: 'Scholarship Amount',
+    dbName: 'scholarshipAmount',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'ACT',
+    displayName: 'ACT',
+    dbName: 'act',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'CUNY App?',
+    displayName: 'CUNY App?',
+    dbName: 'cunyApp',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'SUNY App?',
+    displayName: 'SUNY App?',
+    dbName: 'sunyApp',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Desired Field of Study',
+    displayName: 'Desired Field of Study',
+    dbName: 'desiredFieldOfStudy',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Completed Essay/Personal Statement?',
+    displayName: 'Completed Essay/Personal Statement?',
+    dbName: 'completedEssay',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Crew Advisor',
+    displayName: 'Crew Advisor',
+    dbName: 'crewAdvisor',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'SAT Subject Tests',
+    displayName: 'SAT Subject Tests',
+    dbName: 'satSubjectTests',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Facebook Name',
+    displayName: 'Facebook Name',
+    dbName: 'facebookName',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Parent Name',
+    displayName: 'Parent Name',
+    dbName: 'parentName',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Parent Phone',
+    displayName: 'Parent Phone',
+    dbName: 'parentPhone',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'Applied to SEEK/ASAP/Other Support Program?',
+    displayName: 'Applied to SEEK/ASAP/Other Support Program?',
+    dbName: 'appliedToOtherSupportProgram',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Housing Status',
+    displayName: 'Housing Status',
+    dbName: 'housingStatus',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Physical and Immunization Records Status',
+    displayName: 'Physical and Immunization Records Status',
+    dbName: 'physImmunRecords',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Registered for Classes?',
+    displayName: 'Registered for Classes?',
+    dbName: 'registeredForClasses',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'Intended College',
+    displayName: 'Intended College',
+    dbName: 'intendedCollege',
+    fieldType: 'AutoComplete',
+    type: 'college'
+}, {
+    fieldName: 'DEGREE_TITLE',
+    displayName: 'Degree Earned',
+    dbName: 'degreeTitle',
+    fieldType: 'TextField'
+}, {
+    fieldName: 'GRADUATION_DATE',
+    displayName: 'Graduation Date',
+    dbName: 'gradDate',
+    fieldType: 'DatePicker'
+}, {
+    fieldName: 'Preferred Pronoun',
+    displayName: 'Preferred Pronoun',
+    dbName: 'preferredPronoun',
+    fieldType: 'SelectField'
+}, {
+    fieldName: 'RECORD_FOUND_Y/N',
+    displayName: 'NSC Record Found',
+    dbName: 'nscRecordFound',
+    fieldType: 'Toggle'
+}, {
+    fieldName: 'Preferred Language',
+    displayName: 'Preferred Language',
+    dbName: 'preferredLanguage',
+    fieldType: 'TextField'
+}
 
 
 ];
