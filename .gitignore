@@ -17,6 +17,7 @@ npm-debug.log
 /termData.csv
 /collegeGraduationRecords.csv
 /collegeData.csv
+/collegeNames.csv
 /applicationData.csv
 /collegeData_estimated.csv
 /.DS_Store

@@ -68,6 +68,8 @@ export default function (fileName) {
                         var student = new Student(record);
                         student.save((err, doc) => {
                             if (err) {
+                                console.log(doc, 'doc');
+                                console.log(student, 'student');
                                 console.log('WE GOT A VALIDATION ERROR', err);
                                 errorStudents.push({
                                     osis: record.osis,
@@ -106,7 +108,6 @@ export default function (fileName) {
                         // for now, lets just overwrite the doc
                         doc.save(function (err, updatedDoc) {
                             if (err) {
-
                                 console.log('WE GOT A VALIDATION ERROR', err);
                                 errorStudents.push({
                                     osis: record.osis,

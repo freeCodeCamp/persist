@@ -79,14 +79,22 @@ export default function formatRecord(record, callback) {
         (callback2) => {
             // reference College
             College.findOne({
-                fullName: record.intendedCollege
+                $or: [
+                    {fullName: record.intendedCollege},
+                    {shortName: record.intendedCollege},
+                    {navianceName: record.intendedCollege},
+                    {collegeScorecardName: record.intendedCollege}
+                ]
             }, (err, college) => {
                 if (err) {
                     console.log('college not found', err);
                     callback2(err);
                     return;
                 }
-                record.intendedCollege = college;
+                record.intendedCollege = undefined;
+                if (college) {
+                    record.intendedCollege = college._id;
+                }
                 callback2(null);
             });
         },

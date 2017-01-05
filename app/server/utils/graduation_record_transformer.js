@@ -29,7 +29,12 @@ export default (record, callback) => {
 
 //  reference college
     College.findOne({
-        fullName: record.college
+        $or: [
+            {fullName: record.college},
+            {shortName: record.college},
+            {navianceName: record.college},
+            {collegeScorecardName: record.college}
+        ]
     }, (err, college) => {
         if (err) {
             console.log('college not found', err);

@@ -17,6 +17,7 @@ import {
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
 import saveTermData from '../utils/save_csv_term_data';
+import saveApplicationDate from '../utils/save_csv_applications';
 import saveGraduationData from '../utils/save_csv_graduation_data';
 import saveApplicationData from '../utils/save_csv_applications';
 
@@ -120,6 +121,18 @@ export default (app) => {
         })
     });
 
+    app.post('/upload/applicationData', fileUpload, (req, res) => {
+        const fileData = req.files.file[0];
+        const filePath = path.join(fileData.destination, fileData.filename);
+
+        saveApplicationData(filePath).then((data) => {
+            res.status(200).send(data);
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).send(err);
+        })
+    });
+
     app.post('/upload/collegeGraduation', fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
@@ -130,20 +143,6 @@ export default (app) => {
             console.log(err);
             res.status(500).send(err);
         });
-    });
-
-    app.post('/upload/applicationData', fileUpload, function (req, res) {
-        const fileData = req.files.file[0];
-        const filePath = path.join(fileData.destination, fileData.filename);
-
-        res.send('getting through ok')
-
-        // saveApplicationData(filePath).then((data) => {
-        //   res.status(200).send(data);
-        // }).catch((err) => {
-        //   console.log(err);
-        //   res.status(500).send(err);
-        // });
     });
 
     // main REST API for getting/adding/deleting/modifying student data

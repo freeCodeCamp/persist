@@ -284,10 +284,7 @@ export default (Schema) => {
         satSubjectTests: String,
 
         appliedToOtherSupportProgram: Boolean,
-        collApplications: {
-            type: Array,
-            default: [applicationsSchema(Schema)]
-        },
+        applications: [applicationsSchema(Schema)],
         degreeTitle: String,
         gradDate: Date,
         preferredPronoun: String,

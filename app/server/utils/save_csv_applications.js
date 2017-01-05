@@ -33,7 +33,7 @@ export default (fileName) => {
         const transformer = transform(formatRecord, {
             parallel: 20
         });
-        const data = {};
+        let data = {};
         let row;
         transformer.on('readable', () => {
             while (row = transformer.read()) {
@@ -44,12 +44,10 @@ export default (fileName) => {
         let error;
         transformer.on('error', (err) => {
             error = err;
-            console.log(err.message);
+            console.log(err.message, 'error');
         });
 
         transformer.on('end', () => {
-            console.log(data[274724103]);
-            return reject(null);
             if (error) return reject(error);
             async.eachLimit(data, 10, (applications, callback) => {
                 if (!applications || applications.length < 1) {

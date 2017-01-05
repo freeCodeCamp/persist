@@ -1,4 +1,9 @@
 export const reference = [{
+    fieldName: 'OSIS',
+    displayName: 'OSIS',
+    dbName: 'osis',
+    hidden: true
+}, {
     fieldName: 'College',
     displayName: 'College',
     dbName: 'college',
