@@ -1,9 +1,7 @@
 import path from 'path';
 import multer from 'multer';
 import express from 'express';
-import Student from '../models/student';
-import college from '../models/college';
-import school from '../models/school';
+import {Student, College, School, User} from '../models';
 import passport from '../config/passport';
 import {getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN} from '../../common/constants';
 import {
@@ -12,7 +10,8 @@ import {
     AuthController,
     DocController,
     NotificationController,
-    UserController
+    UserController,
+    CaseNoteController
 } from '../controllers';
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
@@ -185,7 +184,7 @@ export default (app) => {
     app.route('/api/college/:fullName')
         .get((req, res) => {
             console.log(req.params.fullName);
-            college.find({
+            College.find({
                 fullName: req.params.fullName
             }, (err, college) => {
                 if (err) {
@@ -202,7 +201,7 @@ export default (app) => {
 
             const data = req.body;
 
-            college.findOneAndUpdate({
+            College.findOneAndUpdate({
                 fullName: data.fullName
             }, {
                 $set: data
@@ -238,10 +237,34 @@ export default (app) => {
         });
     });
 
+    app.get('/api/users', requireAuth, (req, res) => {
+        let query;
+        if (getRole(req.user.access.role) < getRole(ROLE_COUNSELOR)) {
+            return res.status(200).json([]);
+        } else if (getRole(req.user.access.role) === getRole(ROLE_COUNSELOR)) {
+            query = User.find({
+                $or: [
+                    {access: {school: req.user.access.school}},
+                    {access: {role: ROLE_OWNER}},
+                    {access: {role: ROLE_ADMIN}}
+                ]
+            });
+        } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {
+            query = User.find({});
+        }
+        query.select('profile email').exec((err, users) => {
+            if (err) {
+                res.status(500).send(err);
+                return;
+            }
+            res.status(200).json(users);
+        });
+    });
+
     // main route for to get colleges db
     app.get('/api/colleges', requireAuth, (req, res) => {
 
-        let query = college.find({});
+        let query = College.find({});
         query.exec((err, colleges) => {
             if (err) {
                 res.status(500).send(err);
@@ -252,7 +275,7 @@ export default (app) => {
 
     app.get('/api/schools', requireAuth, (req, res) => {
 
-        let query = school.find({});
+        let query = School.find({});
         query.exec((err, schools) => {
             if (err) {
                 res.status(500).send(err);
@@ -271,6 +294,14 @@ export default (app) => {
         })
         .delete((req, res) => {
             DocController.deleteDocument(req, res);
+        });
+
+    app.route('/update-caseNote', requireAuth)
+        .post((req, res) => {
+            CaseNoteController.updateCaseNote(req, res);
+        })
+        .delete((req, res) => {
+            CaseNoteController.deleteCaseNote(req, res);
         });
 
     app.post('/register', AuthController.register);
