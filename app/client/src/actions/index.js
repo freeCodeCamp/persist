@@ -1,8 +1,11 @@
 export {default as getAllColleges} from './getAllColleges';
 export {default as getAllStudents} from './getAllStudents';
 export {default as getAllSchools} from './getAllSchools';
+export {default as getAllCounselors} from './getAllCounselors';
 export {default as saveDocument} from './saveDocument';
+export {default as saveCaseNote} from './saveCaseNote';
 export {default as deleteDocument} from './deleteDocument';
+export {default as deleteCaseNote} from './deleteCaseNote';
 export {default as loginUser} from './login';
 export {default as registerUser} from './register';
 export {default as getForgotPasswordToken} from './forgotPassword';

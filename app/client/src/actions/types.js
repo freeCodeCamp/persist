@@ -70,15 +70,29 @@ export const GET_ALL_SCHOOLS_SUCCESS = 'get_all_schools_success';
 export const GET_ALL_SCHOOLS_ERROR = 'get_all_schools_error';
 export const GET_ALL_SCHOOLS_PENDING = 'get_all_schools_pending';
 
+export const GET_ALL_USERS_SUCCESS = 'get_all_users_success',
+    GET_ALL_USERS_ERROR = 'get_all_users_error',
+    GET_ALL_USERS_PENDING = 'get_all_users_pending';
+
 // save document
 export const SAVE_DOCUMENT_SUCCESS = 'save_document_success';
 export const SAVE_DOCUMENT_ERROR = 'save_document_error';
 export const SAVE_DOCUMENT_PENDING = 'save_document_pending';
 
+// save case note
+export const SAVE_CASE_NOTE_SUCCESS = 'save_case_note_success',
+    SAVE_CASE_NOTE_ERROR = 'save_case_note_error',
+    SAVE_CASE_NOTE_PENDING = 'save_case_note_pending';
+
 // delete document
 export const DELETE_DOCUMENT_SUCCESS = 'delete_document_success';
 export const DELETE_DOCUMENT_ERROR = 'delete_document_error';
 export const DELETE_DOCUMENT_PENDING = 'delete_document_pending';
+
+// delete case note
+export const DELETE_CASE_NOTE_SUCCESS = 'delete_case_note_success',
+    DELETE_CASE_NOTE_ERROR = 'delete_case_note_error',
+    DELETE_CASE_NOTE_PENDING = 'delete_case_note_pending';
 
 // authentication
 export const LOGIN_SUCCESS = 'login_success',

@@ -16,6 +16,7 @@ import updateCollegeReducer from './updateCollege';
 import allStudentsReducer from './allStudents';
 import allCollegesReducer from './allColleges';
 import allSchoolsReducer from './allSchools';
+import allCounselorsReducer from './allCounselors';
 import authReducer from './auth';
 import usersReducer from './users'
 import notificationsReducer from './notifications';
@@ -38,6 +39,7 @@ const appReducer = combineReducers({
     schools: allSchoolsReducer,
     auth: authReducer,
     users: usersReducer,
+    counselors: allCounselorsReducer,
     notifications: notificationsReducer
 });
 
