@@ -38,13 +38,14 @@ class SingleStudent extends React.Component {
 }
 
 const getStudents = (state) => state.students.osisObj;
+const getCounselors = (state) => state.counselors.idObj;
 const getOSIS = (_, props) => props.params.osis;
 
 const makeGetStudent = () => {
     return createSelector(
-        [getStudents, getOSIS],
-        (students, osis) => {
-            if (isEmpty(students)) {
+        [getStudents, getCounselors, getOSIS],
+        (students, counselors, osis) => {
+            if (isEmpty(students) || isEmpty(counselors)) {
                 return {success: false, data: null}
             }
             return {success: true, data: students[osis]};

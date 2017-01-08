@@ -3,7 +3,13 @@ import axios from 'axios';
 import HeaderBar from './admin-components/header-bar/header-bar';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getAllSchools, getNotifications, getAllStudents, getAllColleges} from '../actions'
+import {
+    getAllSchools,
+    getNotifications,
+    getAllStudents,
+    getAllColleges,
+    getAllCounselors
+} from '../actions'
 import NavigationMenu from './admin-components/navigation-menu';
 // import ControlPanel from './admin-components/control-panel';
 import ControlMenu from './admin-components/controls-menu';
@@ -21,6 +27,7 @@ class Dashboard extends Component {
             this.props.getAllStudents(),
             this.props.getAllSchools(),
             this.props.getAllColleges(),
+            this.props.getAllCounselors(),
             this.props.getNotifications(0, 5)
         ]).then((results) => {
             results.map((result) => {
@@ -60,6 +67,7 @@ const mapDispatchToProps = (dispatch) => {
         getAllStudents,
         getAllColleges,
         getAllSchools,
+        getAllCounselors,
         getNotifications
     }, dispatch);
 };

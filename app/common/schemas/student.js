@@ -13,7 +13,8 @@ const termSchema = (Schema) => ({
     _id: false,
     name: String,
     college: {
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref: 'College'
     },
     status: String,
     enrolBegin: Date,
@@ -30,10 +31,25 @@ const documentSchema = (Schema) => (
     })
 );
 
+const caseNotesSchema = (Schema) => (
+    new Schema({
+        description: String,
+        communicationType: String,
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        date: Date,
+        needFollowUp: Boolean,
+        issueResolved: Boolean
+    })
+);
+
 const applicationsSchema = (Schema) => (
     new Schema({
         college: {
-            type: Schema.Types.ObjectId
+            type: Schema.Types.ObjectId,
+            ref: 'College'
         },
         result: String,
         heop: String,
@@ -46,7 +62,8 @@ const applicationsSchema = (Schema) => (
 const graduationsSchema = (Schema) => (
     new Schema({
         college: {
-            type: Schema.Types.ObjectId
+            type: Schema.Types.ObjectId,
+            ref: 'College'
         },
         status: String,
         enrolBegin: Date,
@@ -131,7 +148,6 @@ export default (Schema) => {
             }
         },
         studentSupportOrgNameOther: String,
-        notes: String,
         cohort: String,
         hsGradDate: Date,
         iniEnrollDate: Date,
@@ -155,6 +171,7 @@ export default (Schema) => {
         terms: [termSchema(Schema)],
         graduations: [graduationsSchema(Schema)],
         documents: [documentSchema(Schema)],
+        caseNotes: [caseNotesSchema(Schema)],
         ferpa: {
             type: String,
             enum: enums.ferpa

@@ -64,7 +64,7 @@ class ReduxFormGroup extends React.Component {
                            name={ dbName.toString() }
                            component={ TextField }
                            floatingLabelText={ displayName }
-                           multiline={ true }
+                           multiLine={ true }
                            rows={ 2 }/>
                 );
             case 'DatePicker':
