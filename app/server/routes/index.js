@@ -11,7 +11,8 @@ import {
     DocController,
     NotificationController,
     UserController,
-    CaseNoteController
+    CaseNoteController,
+    ApplicationController
 } from '../controllers';
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
@@ -302,6 +303,14 @@ export default (app) => {
         })
         .delete((req, res) => {
             CaseNoteController.deleteCaseNote(req, res);
+        });
+
+    app.route('/update-application', requireAuth)
+        .post((req, res) => {
+            ApplicationController.updateApplication(req, res);
+        })
+        .delete((req, res) => {
+            ApplicationController.deleteApplication(req, res);
         });
 
     app.post('/register', AuthController.register);
