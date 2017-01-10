@@ -84,6 +84,11 @@ export const SAVE_CASE_NOTE_SUCCESS = 'save_case_note_success',
     SAVE_CASE_NOTE_ERROR = 'save_case_note_error',
     SAVE_CASE_NOTE_PENDING = 'save_case_note_pending';
 
+// save application
+export const SAVE_APPLICATION_SUCCESS = 'save_application_success',
+    SAVE_APPLICATION_ERROR = 'save_application_error',
+    SAVE_APPLICATION_PENDING = 'save_application_pending';
+
 // delete document
 export const DELETE_DOCUMENT_SUCCESS = 'delete_document_success';
 export const DELETE_DOCUMENT_ERROR = 'delete_document_error';
@@ -93,6 +98,11 @@ export const DELETE_DOCUMENT_PENDING = 'delete_document_pending';
 export const DELETE_CASE_NOTE_SUCCESS = 'delete_case_note_success',
     DELETE_CASE_NOTE_ERROR = 'delete_case_note_error',
     DELETE_CASE_NOTE_PENDING = 'delete_case_note_pending';
+
+// delete application
+export const DELETE_APPLICATION_SUCCESS = 'delete_application_success',
+    DELETE_APPLICATION_ERROR = 'delete_application_error',
+    DELETE_APPLICATION_PENDING = 'delete_application_pending'
 
 // authentication
 export const LOGIN_SUCCESS = 'login_success',
