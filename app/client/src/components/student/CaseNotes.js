@@ -3,7 +3,7 @@ import {Accordion, Panel, Table} from 'react-bootstrap';
 import {IconButton, FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import {submit} from 'redux-form';
 import moment from 'moment';
-import {saveCaseNote, deleteCaseNote} from '../../actions';
+import {saveCaseNote, deleteCaseNote, addReminder, removeReminder} from '../../actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -99,9 +99,14 @@ class CaseNotes extends Component {
         caseNote.user = user._id;
         caseNote.date = new Date();
         this.props.saveCaseNote(caseNote)
-            .then(() => (
-                this.handleClose()
-            ));
+            .then(() => {
+                this.handleClose();
+                if (caseNote.needFollowUp && !caseNote.issueResolved) {
+                    this.props.addReminder(caseNote);
+                } else if (caseNote.issueResolved) {
+                    this.props.removeReminder(caseNote._id);
+                }
+            });
     }
 
     handleSave() {
@@ -216,6 +221,8 @@ const mapDispatchToProps = (dispatch) => (
     bindActionCreators({
         saveCaseNote,
         deleteCaseNote,
+        addReminder,
+        removeReminder,
         submit
     }, dispatch)
 );

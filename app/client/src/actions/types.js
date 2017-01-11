@@ -135,3 +135,7 @@ export const UPDATE_NOTIFICATIONS = 'update_notifications';
 export const GET_NOTIFICATIONS = 'get_notifications';
 export const MARK_READ_NOTIFICATION = 'mark_read_notification';
 export const MARK_READ_ALL_NOTIFICATION = 'mark_read_all_notification';
+
+export const ALL_REMINDERS = 'all_reminders',
+    ADD_REMINDER = 'ADD_REMINDER',
+    REMOVE_REMINDER = 'REMOVE_REMINDER';

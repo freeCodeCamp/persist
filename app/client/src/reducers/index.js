@@ -9,6 +9,7 @@ import singleCollegeReducer from './singleCollege';
 import studentFilterReducer from './studentFilter';
 import collegeFilterReducer from './collegeFilter';
 import spinnerReducer from './spinner';
+import remindersReducer from './reminders';
 import suggestionsReducer from './suggestions';
 import updateStudentReducer from './updateStudent';
 import chartFilter from './chartFilter';
@@ -40,6 +41,7 @@ const appReducer = combineReducers({
     auth: authReducer,
     users: usersReducer,
     counselors: allCounselorsReducer,
+    reminders: remindersReducer,
     notifications: notificationsReducer
 });
 

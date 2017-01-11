@@ -37,7 +37,8 @@ class HeaderNotifications extends Component {
             <li className='dropdown notifications-menu'>
                 <a href='#' className='dropdown-toggle' data-toggle='dropdown'>
                     <i className='fa fa-bell-o'/>
-                    <span className='label label-warning'>{ unread }</span>
+                    { unread > 0 ?
+                        <span className='label label-warning'>{ unread }</span> : null }
                 </a>
                 <ul className='dropdown-menu'>
                     <li className='header'>
@@ -66,7 +67,8 @@ class HeaderNotifications extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    notificationsObj: state.notifications
+    notificationsObj: state.notifications,
+    reminders: state.reminders
 });
 
 const mapDispatchToProps = (dispatch) => (
