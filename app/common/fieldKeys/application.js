@@ -7,7 +7,8 @@ export const reference = [{
     fieldName: 'College',
     displayName: 'College',
     dbName: 'college',
-    fieldType: 'AutoComplete'
+    fieldType: 'AutoComplete',
+    type: 'college'
 }, {
     fieldName: 'Type',
     displayName: 'Type',

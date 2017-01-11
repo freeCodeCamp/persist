@@ -8,6 +8,7 @@ import {socket} from '../utils';
 import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
 import renderDocuments from './Documents';
+import renderApplications from './Applications';
 import renderCaseNotes from './CaseNotes';
 import renderTerms from './TermRecords';
 
@@ -101,6 +102,14 @@ class SingleStudentForm extends React.Component {
                 <Form className='single-student-form'
                       onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
                     <Row>
+                        <br/>
+                        <FieldArray
+                            name='applications'
+                            osis={initialValues.osis}
+                            form={this}
+                            component={renderApplications}
+                            initValue={initialValues['applications']}
+                        />
                         <br/>
                         <FieldArray
                             name='caseNotes'
