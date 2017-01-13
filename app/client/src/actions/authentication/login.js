@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {push} from 'react-router-redux';
 import cookie from 'react-cookie';
-import {LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_ERROR} from './types';
+import {LOGIN_PENDING, LOGIN_SUCCESS} from '../types';
 
 const loginUser = ({email, password}) => (
     (dispatch) => {
@@ -18,12 +18,6 @@ const loginUser = ({email, password}) => (
                     payload: user
                 });
                 dispatch(push('/'));
-            })
-            .catch((err) => {
-                dispatch({
-                    type: LOGIN_ERROR,
-                    payload: err
-                });
             });
     }
 );

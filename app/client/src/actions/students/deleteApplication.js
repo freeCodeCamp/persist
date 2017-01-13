@@ -1,23 +1,27 @@
 import {
-    SAVE_CASE_NOTE_ERROR,
-    SAVE_CASE_NOTE_PENDING,
-    SAVE_CASE_NOTE_SUCCESS,
+    DELETE_APPLICATION_ERROR,
+    DELETE_APPLICATION_PENDING,
+    DELETE_APPLICATION_SUCCESS,
     SPINNER
-} from './types';
-import {axios} from './utils';
+} from '../types';
+import {axios} from '../utils';
 
-const saveCaseNote = (caseNote) => (
+const deleteApplication = (osis, _id) => (
     (dispatch) => {
         dispatch({
             type: SPINNER,
             payload: true
         });
-        return axios().post('/update-caseNote', {caseNote})
+        const params = {
+            osis,
+            _id
+        };
+        return axios().delete('/update-application', {params})
             .then((res) => {
                 dispatch({
-                    type: SAVE_CASE_NOTE_SUCCESS,
-                    payload: res.data,
-                    osis: caseNote.osis
+                    type: DELETE_APPLICATION_SUCCESS,
+                    osis,
+                    _id
                 });
                 dispatch({
                     type: SPINNER,
@@ -26,15 +30,15 @@ const saveCaseNote = (caseNote) => (
             })
             .catch((err) => {
                 dispatch({
-                    type: SAVE_CASE_NOTE_ERROR,
+                    type: DELETE_APPLICATION_ERROR,
                     payload: err
                 });
                 dispatch({
                     type: SPINNER,
                     payload: false
-                })
+                });
             });
     }
 );
 
-export default saveCaseNote;
+export default deleteApplication;

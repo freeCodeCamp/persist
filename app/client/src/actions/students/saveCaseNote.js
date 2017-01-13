@@ -1,28 +1,23 @@
 import {
-    DELETE_DOCUMENT_ERROR,
-    DELETE_DOCUMENT_PENDING,
-    DELETE_DOCUMENT_SUCCESS,
+    SAVE_CASE_NOTE_ERROR,
+    SAVE_CASE_NOTE_PENDING,
+    SAVE_CASE_NOTE_SUCCESS,
     SPINNER
-} from './types';
-import {axios} from './utils';
+} from '../types';
+import {axios} from '../utils';
 
-const deleteDocument = (doc, osis) => (
+const saveCaseNote = (caseNote) => (
     (dispatch) => {
         dispatch({
             type: SPINNER,
             payload: true
         });
-        const params = {
-            osis,
-            deleteId: doc._id,
-            Key: doc.Key
-        };
-        return axios().delete('/update-document', {params})
+        return axios().post('/update-caseNote', {caseNote})
             .then((res) => {
                 dispatch({
-                    type: DELETE_DOCUMENT_SUCCESS,
+                    type: SAVE_CASE_NOTE_SUCCESS,
                     payload: res.data,
-                    osis
+                    osis: caseNote.osis
                 });
                 dispatch({
                     type: SPINNER,
@@ -31,15 +26,15 @@ const deleteDocument = (doc, osis) => (
             })
             .catch((err) => {
                 dispatch({
-                    type: DELETE_DOCUMENT_ERROR,
+                    type: SAVE_CASE_NOTE_ERROR,
                     payload: err
                 });
                 dispatch({
                     type: SPINNER,
                     payload: false
-                });
+                })
             });
     }
 );
 
-export default deleteDocument;
+export default saveCaseNote;

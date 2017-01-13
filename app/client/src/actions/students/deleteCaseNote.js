@@ -3,8 +3,8 @@ import {
     DELETE_CASE_NOTE_PENDING,
     DELETE_CASE_NOTE_SUCCESS,
     SPINNER
-} from './types';
-import {axios} from './utils';
+} from '../types';
+import {axios} from '../utils';
 
 const deleteCaseNote = (osis, _id) => (
     (dispatch) => {

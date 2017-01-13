@@ -1,5 +1,5 @@
-import {GET_ALL_SCHOOLS_ERROR, GET_ALL_SCHOOLS_PENDING, GET_ALL_SCHOOLS_SUCCESS} from './types';
-import {axios} from './utils';
+import {GET_ALL_SCHOOLS_ERROR, GET_ALL_SCHOOLS_PENDING, GET_ALL_SCHOOLS_SUCCESS} from '../types';
+import {axios} from '../utils';
 
 export default () => {
     return (dispatch) => {

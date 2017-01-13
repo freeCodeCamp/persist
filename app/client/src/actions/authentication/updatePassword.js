@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {UPDATE_PASSWORD_PENDING, UPDATE_PASSWORD_SUCCESS} from './types';
+import {UPDATE_PASSWORD_PENDING, UPDATE_PASSWORD_SUCCESS} from '../types';
 
 const updatePassword = (token, {password}) => (
     (dispatch) => {

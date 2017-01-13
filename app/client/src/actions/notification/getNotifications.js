@@ -1,5 +1,5 @@
-import {GET_NOTIFICATIONS} from './types';
-import {axios} from './utils';
+import {GET_NOTIFICATIONS} from '../types';
+import {axios} from '../utils';
 
 const getNotifications = (offset, limit) => {
     return (dispatch) => {

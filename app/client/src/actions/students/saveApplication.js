@@ -1,27 +1,23 @@
 import {
-    DELETE_TERM_ERROR,
-    DELETE_TERM_PENDING,
-    DELETE_TERM_SUCCESS,
+    SAVE_APPLICATION_ERROR,
+    SAVE_APPLICATION_PENDING,
+    SAVE_APPLICATION_SUCCESS,
     SPINNER
-} from './types';
-import {axios} from './utils';
+} from '../types';
+import {axios} from '../utils';
 
-const deleteTerm = (osis, _id) => (
+const saveApplication = (application) => (
     (dispatch) => {
         dispatch({
             type: SPINNER,
             payload: true
         });
-        const params = {
-            osis,
-            _id
-        };
-        return axios().delete('/update-term', {params})
+        return axios().post('/update-application', {application})
             .then((res) => {
                 dispatch({
-                    type: DELETE_TERM_SUCCESS,
-                    osis,
-                    _id
+                    type: SAVE_APPLICATION_SUCCESS,
+                    payload: res.data,
+                    osis: application.osis
                 });
                 dispatch({
                     type: SPINNER,
@@ -30,15 +26,15 @@ const deleteTerm = (osis, _id) => (
             })
             .catch((err) => {
                 dispatch({
-                    type: DELETE_TERM_ERROR,
+                    type: SAVE_APPLICATION_ERROR,
                     payload: err
                 });
                 dispatch({
                     type: SPINNER,
                     payload: false
-                });
+                })
             });
     }
 );
 
-export default deleteTerm;
+export default saveApplication;

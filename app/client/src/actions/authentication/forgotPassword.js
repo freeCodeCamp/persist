@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FORGOT_PASSWORD_PENDING, FORGOT_PASSWORD_SUCCESS} from './types';
+import {FORGOT_PASSWORD_PENDING, FORGOT_PASSWORD_SUCCESS} from '../types';
 
 const getForgotPasswordToken = ({email}) => (
     (dispatch) => {

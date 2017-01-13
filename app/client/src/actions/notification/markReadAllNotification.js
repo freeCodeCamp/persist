@@ -1,5 +1,5 @@
-import {MARK_READ_ALL_NOTIFICATION} from './types';
-import {axios} from './utils';
+import {MARK_READ_ALL_NOTIFICATION} from '../types';
+import {axios} from '../utils';
 
 const markReadAll = () => {
     return (dispatch) => {

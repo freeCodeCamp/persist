@@ -3,9 +3,9 @@ import {
     SAVE_DOCUMENT_PENDING,
     SAVE_DOCUMENT_SUCCESS,
     SPINNER
-} from './types';
+} from '../types';
 import oaxios from 'axios';
-import {axios} from './utils';
+import {axios} from '../utils';
 
 const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
     const document = doc;

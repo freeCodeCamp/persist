@@ -20,4 +20,6 @@ npm-debug.log
 /collegeNames.csv
 /applicationData.csv
 /collegeData_estimated.csv
+/test.js
+/test2.js
 /.DS_Store

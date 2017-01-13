@@ -1,6 +1,6 @@
 import async from 'async';
-import {GET_ALL_STUDENTS_ERROR, ALL_REMINDERS, GET_ALL_STUDENTS_PENDING, GET_ALL_STUDENTS_SUCCESS} from './types';
-import {axios} from './utils';
+import {GET_ALL_STUDENTS_ERROR, ALL_REMINDERS, GET_ALL_STUDENTS_PENDING, GET_ALL_STUDENTS_SUCCESS} from '../types';
+import {axios} from '../utils';
 
 export default () => {
     return (dispatch) => {

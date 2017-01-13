@@ -1,23 +1,28 @@
 import {
-    SAVE_TERM_ERROR,
-    SAVE_TERM_PENDING,
-    SAVE_TERM_SUCCESS,
+    DELETE_DOCUMENT_ERROR,
+    DELETE_DOCUMENT_PENDING,
+    DELETE_DOCUMENT_SUCCESS,
     SPINNER
-} from './types';
-import {axios} from './utils';
+} from '../types';
+import {axios} from '../utils';
 
-const saveTerm = (term) => (
+const deleteDocument = (doc, osis) => (
     (dispatch) => {
         dispatch({
             type: SPINNER,
             payload: true
         });
-        return axios().post('/update-term', {term})
+        const params = {
+            osis,
+            deleteId: doc._id,
+            Key: doc.Key
+        };
+        return axios().delete('/update-document', {params})
             .then((res) => {
                 dispatch({
-                    type: SAVE_TERM_SUCCESS,
+                    type: DELETE_DOCUMENT_SUCCESS,
                     payload: res.data,
-                    osis: term.osis
+                    osis
                 });
                 dispatch({
                     type: SPINNER,
@@ -26,15 +31,15 @@ const saveTerm = (term) => (
             })
             .catch((err) => {
                 dispatch({
-                    type: SAVE_TERM_ERROR,
+                    type: DELETE_DOCUMENT_ERROR,
                     payload: err
                 });
                 dispatch({
                     type: SPINNER,
                     payload: false
-                })
+                });
             });
     }
 );
 
-export default saveTerm;
+export default deleteDocument;
