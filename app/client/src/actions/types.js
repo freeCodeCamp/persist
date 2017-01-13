@@ -89,6 +89,10 @@ export const SAVE_APPLICATION_SUCCESS = 'save_application_success',
     SAVE_APPLICATION_ERROR = 'save_application_error',
     SAVE_APPLICATION_PENDING = 'save_application_pending';
 
+export const SAVE_TERM_SUCCESS = 'save_term_success',
+    SAVE_TERM_ERROR = 'save_term_error',
+    SAVE_TERM_PENDING = 'save_term_pending';
+
 // delete document
 export const DELETE_DOCUMENT_SUCCESS = 'delete_document_success';
 export const DELETE_DOCUMENT_ERROR = 'delete_document_error';
@@ -103,6 +107,11 @@ export const DELETE_CASE_NOTE_SUCCESS = 'delete_case_note_success',
 export const DELETE_APPLICATION_SUCCESS = 'delete_application_success',
     DELETE_APPLICATION_ERROR = 'delete_application_error',
     DELETE_APPLICATION_PENDING = 'delete_application_pending'
+
+// delete term
+export const DELETE_TERM_SUCCESS = 'delete_term_success',
+    DELETE_TERM_ERROR = 'delete_term_error',
+    DELETE_TERM_PENDING = 'delete_term_pending';
 
 // authentication
 export const LOGIN_SUCCESS = 'login_success',

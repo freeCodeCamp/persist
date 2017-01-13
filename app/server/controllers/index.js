@@ -6,3 +6,4 @@ export {default as DataManageController} from './dataManage';
 export {default as NotificationController} from './notification';
 export {default as CaseNoteController} from './caseNote';
 export {default as ApplicationController} from './application';
+export {default as TermController} from './term';

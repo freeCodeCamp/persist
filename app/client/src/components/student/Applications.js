@@ -161,8 +161,9 @@ class Applications extends Component {
         const title = isEmpty(application) ? 'Add new Case Note' : 'Edit Application';
         const oldApplication = cloneDeep(application);
         return (
-            <Dialog actions={actions} open={open} title={title}>
-                <ApplicationEditor initialValues={application} onSubmit={this.saveApplication.bind(this, oldApplication)}/>
+            <Dialog actions={actions} autoScrollBodyContent={true} open={open} title={title}>
+                <ApplicationEditor initialValues={application}
+                                   onSubmit={this.saveApplication.bind(this, oldApplication)}/>
             </Dialog>
         );
     }

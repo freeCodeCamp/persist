@@ -16,8 +16,12 @@ import {
     DELETE_CASE_NOTE_ERROR,
     SAVE_APPLICATION_SUCCESS,
     SAVE_APPLICATION_ERROR,
+    SAVE_TERM_SUCCESS,
+    SAVE_TERM_ERROR,
     DELETE_APPLICATION_SUCCESS,
-    DELETE_APPLICATION_ERROR
+    DELETE_APPLICATION_ERROR,
+    DELETE_TERM_SUCCESS,
+    DELETE_TERM_ERROR
 } from '../actions/types';
 
 const defaultState = {
@@ -87,6 +91,23 @@ export default function (state = defaultState, action) {
                 .filter((application) => (application._id.toString() !== _id.toString()));
             newState.osisObj[osis].applications = cloneDeep(newState.value[index].applications);
             return newState;
+        case SAVE_TERM_SUCCESS:
+            const terms = action.payload;
+            osis = action.osis;
+            newState = cloneDeep(state);
+            index = findIndex(newState.value, (s) => (s.osis === osis));
+            newState.value[index].terms = terms;
+            newState.osisObj[osis].terms = terms;
+            return newState;
+        case DELETE_TERM_SUCCESS:
+            osis = action.osis;
+            _id = action._id;
+            newState = cloneDeep(state);
+            index = findIndex(newState.value, (s) => (s.osis === osis));
+            newState.value[index].terms = newState.value[index].terms
+                .filter((term) => (term._id.toString() !== _id.toString()));
+            newState.osisObj[osis].terms = cloneDeep(newState.value[index].terms);
+            return newState;
         case UPDATE_STUDENT:
             const student = action.payload;
             osis = student.osis;
@@ -102,6 +123,8 @@ export default function (state = defaultState, action) {
         case DELETE_CASE_NOTE_ERROR:
         case SAVE_APPLICATION_ERROR:
         case DELETE_APPLICATION_ERROR:
+        case SAVE_TERM_ERROR:
+        case DELETE_TERM_ERROR:
             return {
                 ...state,
                 pending: false,

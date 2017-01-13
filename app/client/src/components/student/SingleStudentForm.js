@@ -8,9 +8,9 @@ import {socket} from '../utils';
 import FormGroup from '../helpers/ReduxFormGroup';
 import CollegeSummary from './CollegeSummary';
 import renderDocuments from './Documents';
+import renderTerms from './Terms';
 import renderApplications from './Applications';
 import renderCaseNotes from './CaseNotes';
-import renderTerms from './TermRecords';
 
 import * as updateStudent from '../../actions/updateStudent';
 
@@ -104,6 +104,14 @@ class SingleStudentForm extends React.Component {
                     <Row>
                         <br/>
                         <FieldArray
+                            name='terms'
+                            osis={initialValues.osis}
+                            form={this}
+                            component={renderTerms}
+                            initValue={initialValues['terms']}
+                        />
+                        <br/>
+                        <FieldArray
                             name='applications'
                             osis={initialValues.osis}
                             form={this}
@@ -159,14 +167,6 @@ class SingleStudentForm extends React.Component {
                         <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
                             { notesHTML(this) }
                         </div>
-                        <FieldArray
-                            name='terms'
-                            disabled={ !editable }
-                            form={this}
-                            component={renderTerms}
-                            initValue={initialValues['terms']}
-                        />
-                        <br/>
                     </Row>
                     { this.state.editable ? <div>
                         <Button type="submit">

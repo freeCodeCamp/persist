@@ -210,15 +210,9 @@ export const types = {
         'BCS',
         'MELS'
     ],
-    'terms.status': [
-        'F',
-        'H',
-        'L',
-        'Q',
-        'A',
-        'W',
-        'D'
-    ],
+    'terms.status': transform(mapping.termStatus, (res, val, key) => {
+        res.push({text: val, value: key});
+    }, []),
     'caseNotes.communicationType': [
         'In person',
         'Text',

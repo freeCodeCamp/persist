@@ -7,7 +7,8 @@ export default [{
     fieldName: 'COLLEGE_NAME',
     displayName: 'College Name',
     dbName: 'college',
-    fieldType: 'AutoComplete'
+    fieldType: 'AutoComplete',
+    type: 'college'
 }, {
     fieldName: 'Term Enrollment Status',
     displayName: 'Status',

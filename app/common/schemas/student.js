@@ -9,18 +9,21 @@ const Parent = {
     OtherPhone: [Number]
 };
 
-const termSchema = (Schema) => ({
-    _id: false,
-    name: String,
-    college: {
-        type: Schema.Types.ObjectId,
-        ref: 'College'
-    },
-    status: String,
-    enrolBegin: Date,
-    enrolEnd: Date,
-    gpa: Number
-});
+const termSchema = (Schema) => (
+    new Schema({
+        name: String,
+        college: {
+            type: Schema.Types.ObjectId,
+            ref: 'College'
+        },
+        status: String,
+        enrolBegin: Date,
+        enrolEnd: Date,
+        creditsEarned: Number,
+        creditsAttempted: Number,
+        gpa: Number
+    })
+);
 
 const documentSchema = (Schema) => (
     new Schema({
@@ -266,8 +269,6 @@ export default (Schema) => {
         completedTap: Boolean,
         needGap: Boolean,
         amountOfNeedGap: Number,
-
-
         facebookName: String,
         parentPhone: String,
 
@@ -282,7 +283,6 @@ export default (Schema) => {
         taxDocumentsSubmitted: Boolean,
         opportunityProgramEligible: Boolean,
         studentAidReportReceived: Boolean,
-
         fsaid: Number,
         cssProfileCreated: Boolean,
         awardLetterReceived: Boolean,
@@ -299,7 +299,6 @@ export default (Schema) => {
         completedEssay: Boolean,
         crewAdvisor: String,
         satSubjectTests: String,
-
         appliedToOtherSupportProgram: Boolean,
         applications: [applicationsSchema(Schema)],
         degreeTitle: String,

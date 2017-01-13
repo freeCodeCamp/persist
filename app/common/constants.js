@@ -37,5 +37,14 @@ export const mapping = {
         4: 'Private, not for Profit',
         5: 'Private, for profit',
         6: 'Vocational/Technical'
+    },
+    termStatus: {
+        F: 'Full-time',
+        H: 'Half-time',
+        L: 'Less than half-time',
+        Q: 'Three-Quarter Time',
+        A: 'Leave of absence',
+        W: 'Withdrawn',
+        D: 'Deceased'
     }
 };

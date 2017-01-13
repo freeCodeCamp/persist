@@ -2,21 +2,21 @@ import React, {Component} from 'react';
 import {Accordion, Panel, Table} from 'react-bootstrap';
 import {IconButton, FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import {submit} from 'redux-form';
-import moment from 'moment';
-import {saveCaseNote, deleteCaseNote, addReminder, removeReminder} from '../../actions';
+import {saveTerm, deleteTerm} from '../../actions';
+import {mapping} from '../../../../common/constants';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
-import CaseNoteEditor from './CaseNoteEditor';
+import TermEditor from './TermEditor';
 import {EditorModeEdit, ContentDeleteSweep, ContentAdd} from 'material-ui/svg-icons';
 
-class CaseNotes extends Component {
+class Terms extends Component {
     constructor(props) {
         super(props);
         this.osis = this.props.osis;
-        this.caseNote = {};
+        this.term = {};
         this.state = {
             open: {
                 edit: false,
@@ -25,31 +25,30 @@ class CaseNotes extends Component {
         };
     }
 
-    renderCaseNotes() {
-        const {initValue, usersObj} = this.props;
-        const caseNotesHTML = initValue.map((caseNote, index) => {
-            const {profile: {firstName, lastName}} = usersObj[caseNote.user];
+    renderTerms() {
+        const {initValue, collegeObj} = this.props;
+        const termsHTML = initValue.map((term, index) => {
+            const college = collegeObj[term.college];
             const {
-                date,
-                description,
-                communicationType,
-                needFollowUp,
-                issueResolved
-            } = caseNote;
-            const fullName = `${firstName} ${lastName}`.trim();
+                name,
+                status,
+                creditEarned,
+                creditAttempted,
+                gpa
+            } = term;
             return (
                 <tr key={index}>
-                    <td>{moment(date).format('ll')}</td>
-                    <td>{description}</td>
-                    <td>{communicationType}</td>
-                    <td>{fullName}</td>
-                    <td>{needFollowUp ? 'Yes' : 'No'}</td>
-                    <td>{issueResolved ? 'Yes' : ''}</td>
+                    <td>{college.fullName}</td>
+                    <td>{name}</td>
+                    <td>{mapping.termStatus[status] || 'Unknown if Full or Part-time'}</td>
+                    <td>{creditEarned}</td>
+                    <td>{creditAttempted}</td>
+                    <td>{gpa}</td>
                     <td>
-                        <IconButton onClick={() => this.handleEdit(caseNote)}>
+                        <IconButton onClick={() => this.handleEdit(term)}>
                             <EditorModeEdit />
                         </IconButton>
-                        <IconButton onClick={() => this.handleDelete(caseNote)}>
+                        <IconButton onClick={() => this.handleDelete(term)}>
                             <ContentDeleteSweep/>
                         </IconButton>
                     </td>
@@ -58,13 +57,13 @@ class CaseNotes extends Component {
         });
         return (
             <tbody>
-            {caseNotesHTML}
+            {termsHTML}
             </tbody>
         );
     }
 
-    handleDelete(caseNote) {
-        this.caseNote = caseNote;
+    handleDelete(term) {
+        this.term = term;
         this.setState({
             open: {
                 ...this.state.open,
@@ -73,13 +72,13 @@ class CaseNotes extends Component {
         });
     }
 
-    deleteCaseNote() {
-        this.props.deleteCaseNote(this.osis, this.caseNote._id)
+    deleteTerm() {
+        this.props.deleteTerm(this.osis, this.term._id)
             .then(() => (this.handleClose()));
     }
 
-    handleEdit(caseNote) {
-        this.caseNote = caseNote;
+    handleEdit(term) {
+        this.term = term;
         this.setState({
             open: {
                 ...this.state.open,
@@ -88,29 +87,21 @@ class CaseNotes extends Component {
         });
     }
 
-    saveCaseNote(oldCaseNote, newCaseNote) {
-        const {auth: {user}} = this.props;
-        let caseNote;
-        caseNote = newCaseNote;
-        if (oldCaseNote._id) {
-            caseNote = merge(oldCaseNote, newCaseNote);
+    saveTerm(oldTerm, newTerm) {
+        let term;
+        term = newTerm;
+        if (oldTerm._id) {
+            term = merge(oldTerm, newTerm);
         }
-        caseNote.osis = this.osis;
-        caseNote.user = user._id;
-        caseNote.date = new Date();
-        this.props.saveCaseNote(caseNote)
-            .then(() => {
-                this.handleClose();
-                if (caseNote.needFollowUp && !caseNote.issueResolved) {
-                    this.props.addReminder(caseNote);
-                } else if (caseNote.issueResolved) {
-                    this.props.removeReminder(caseNote._id);
-                }
-            });
+        term.osis = this.osis;
+        this.props.saveTerm(term)
+            .then(() => (
+                this.handleClose()
+            ));
     }
 
     handleSave() {
-        this.props.submit('CaseNoteEditor');
+        this.props.submit('TermEditor');
     }
 
     handleClose() {
@@ -127,17 +118,17 @@ class CaseNotes extends Component {
         const open = this.state.open.delete;
         const actions = [
             <FlatButton
-                label="Cancel"
+                label='Cancel'
                 disabled={spinner}
                 primary={true}
                 keyboardFocused={true}
                 onTouchTap={() => this.handleClose()}
             />,
             <FlatButton
-                label="Delete"
+                label='Delete'
                 disabled={spinner}
                 primary={true}
-                onTouchTap={() => this.deleteCaseNote()}
+                onTouchTap={() => this.deleteTerm()}
             />
         ];
         return (
@@ -149,28 +140,28 @@ class CaseNotes extends Component {
 
     renderEditDialog() {
         const {spinner} = this.props;
-        const caseNote = this.caseNote;
+        const term = this.term;
         const open = this.state.open.edit;
         const actions = [
             <FlatButton
-                label="Cancel"
+                label='Cancel'
                 disabled={spinner}
                 primary={true}
                 onTouchTap={() => this.handleClose()}
             />,
             <FlatButton
-                label="Save"
+                label='Save'
                 disabled={spinner}
                 primary={true}
                 keyboardFocused={true}
                 onTouchTap={() => this.handleSave()}
             />
         ];
-        const title = isEmpty(caseNote) ? 'Add new Case Note' : 'Edit CaseNote';
-        const oldCaseNote = cloneDeep(caseNote);
+        const title = isEmpty(term) ? 'Add new Term' : 'Edit Term';
+        const oldTerm = cloneDeep(term);
         return (
             <Dialog actions={actions} autoScrollBodyContent={true} open={open} title={title}>
-                <CaseNoteEditor initialValues={caseNote} onSubmit={this.saveCaseNote.bind(this, oldCaseNote)}/>
+                <TermEditor initialValues={term} onSubmit={this.saveTerm.bind(this, oldTerm)}/>
             </Dialog>
         );
     }
@@ -181,23 +172,23 @@ class CaseNotes extends Component {
         const tableHead = (
             <thead>
             <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Communication Type</th>
-                <th>Counselor</th>
-                <th>Needs Follow Up</th>
-                <th>Issue Resolved</th>
+                <th>College</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Credits Earned</th>
+                <th>Credits Attempted</th>
+                <th>Term GPA</th>
                 <th>Actions</th>
             </tr>
             </thead>
         );
         return (
             <Accordion>
-                <Panel header='Case Notes' eventKey='1'>
+                <Panel header='Terms' eventKey='1'>
                     {fields.length > 0 ?
                         <Table responsive condensed>
                             {tableHead}
-                            {this.renderCaseNotes()}
+                            {this.renderTerms()}
                         </Table> : null
                     }
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
@@ -214,17 +205,15 @@ class CaseNotes extends Component {
 const mapStateToProps = (state) => ({
     spinner: state.spinner,
     auth: state.auth,
-    usersObj: state.counselors.idObj
+    collegeObj: state.colleges.idObj
 });
 
 const mapDispatchToProps = (dispatch) => (
     bindActionCreators({
-        saveCaseNote,
-        deleteCaseNote,
-        addReminder,
-        removeReminder,
+        saveTerm,
+        deleteTerm,
         submit
     }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(CaseNotes);
+export default connect(mapStateToProps, mapDispatchToProps)(Terms);

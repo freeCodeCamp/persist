@@ -12,7 +12,8 @@ import {
     NotificationController,
     UserController,
     CaseNoteController,
-    ApplicationController
+    ApplicationController,
+    TermController
 } from '../controllers';
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
@@ -311,6 +312,14 @@ export default (app) => {
         })
         .delete((req, res) => {
             ApplicationController.deleteApplication(req, res);
+        });
+
+    app.route('/update-term', requireAuth)
+        .post((req, res) => {
+            TermController.updateTerm(req, res);
+        })
+        .delete((req, res) => {
+            TermController.deleteTerm(req, res);
         });
 
     app.post('/register', AuthController.register);
