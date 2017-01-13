@@ -14,6 +14,7 @@ export default () => {
                     type: GET_ALL_STUDENTS_SUCCESS,
                     payload: response.data
                 });
+                const user = cookie.load('user');
                 const caseNotes = [];
                 const q = async.queue((student, callback) => {
                     const osis = student.osis;
@@ -21,7 +22,7 @@ export default () => {
                     if (studentCaseNotes.length > 0) {
                         const filtered = studentCaseNotes
                             .filter((caseNote) => {
-                                if (caseNote.needFollowUp && !caseNote.issueResolved) {
+                                if (caseNote.user = user._id && caseNote.needFollowUp && !caseNote.issueResolved) {
                                     caseNote.osis = osis;
                                     return true;
                                 }

@@ -219,6 +219,43 @@ export const types = {
         'W',
         'D'
     ],
+    'caseNotes.communicationType': [
+        'In person',
+        'Text',
+        'Facebook',
+        'Phone call',
+        'Email',
+        'Other'
+    ],
+    'applications.result': [
+        'Accepted',
+        'Withdrawn',
+        'Unknown',
+        'Incomplete',
+        'Denied',
+        'Cond. Accept',
+        'No decision',
+        'Waitlisted',
+        'Guar. Transfer',
+        'Deferred',
+        'Jan. Admit'
+    ],
+    'applications.type': [
+        'RD',
+        'ROLL',
+        'EA',
+        'EDII',
+        'ED',
+        'PRI',
+        'OTHR',
+        'EAII',
+        'REA'
+    ],
+    'applications.heop': [
+        'HEOP',
+        'EOP',
+        'Not Eligible'
+    ],
     'documents.types': [
         'other'
     ],
