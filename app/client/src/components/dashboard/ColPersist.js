@@ -80,10 +80,7 @@ class ColPersist extends Component {
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {
-                '6m': 0,
-                '12m': 0,
-                '18m': 0,
-                'total': 0
+                count: 0, students: [], total: 0
             };
             const result = {};
             const q = async.queue((student, callback) => {
@@ -98,17 +95,12 @@ class ColPersist extends Component {
                     }
                     if (enrolDate && hsGradDate) {
                         if (this.yearEnrol(terms, enrolDate, hsGradDate, 6)) {
-                            result[hsGradYear]['6m'] += 1;
-                        }
-                        if (this.yearEnrol(terms, enrolDate, hsGradDate, 12)) {
-                            result[hsGradYear]['12m'] += 1;
-                        }
-                        if (this.yearEnrol(terms, enrolDate, hsGradDate, 18)) {
-                            result[hsGradYear]['18m'] += 1;
+                            result[hsGradYear].count += 1;
+                            result[hsGradYear].students.push(student);
                         }
                     }
                     if (hsGradDate) {
-                        result[hsGradYear]['total'] += 1;
+                        result[hsGradYear].total += 1;
                     }
                 }
                 setTimeout(() => {
@@ -124,16 +116,14 @@ class ColPersist extends Component {
 
     chartData(data) {
         return [
-            {name: '6 months', data: this.getRatio(data, '6m')},
-            {name: '12 months', data: this.getRatio(data, '12m')},
-            {name: '18 months', data: this.getRatio(data, '18m')}
+            {name: '6 months', data: this.getRatio(data)},
         ]
     }
 
-    getRatio(data, constant) {
+    getRatio(data) {
         const yearlyData = [];
         _(data).keys().sort().forEach(key => {
-            yearlyData.push(data[key][constant] * 100 / data[key]['total']);
+            yearlyData.push(data[key]['count'] * 100 / data[key]['total']);
         });
         return yearlyData;
     }

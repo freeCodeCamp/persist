@@ -64,7 +64,7 @@ class ColCompRate extends Component {
 
     chartData(data) {
         return [
-            {name: 'College Completion Rate', data: this.getRatio(data)}
+            {name: 'Average College Completion Rate', data: this.getRatio(data)}
         ]
     }
 
@@ -84,7 +84,7 @@ class ColCompRate extends Component {
                 type: 'column'
             },
             title: {
-                text: 'College Completion Rate'
+                text: 'Average College Completion Rate'
             },
             xAxis: {
                 categories: _(data).keys().sort().value(),
