@@ -81,7 +81,7 @@ class ReduxFormGroup extends React.Component {
                     <Field disabled={ disabled }
                            name={ dbName }
                            form={ form }
-                           options={ types[dbName] }
+                           options={ types[dbName] || [] }
                            initValue={ initValue }
                            component={ Chips }
                            field={ field }/>

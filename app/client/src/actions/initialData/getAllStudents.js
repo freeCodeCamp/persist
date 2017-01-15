@@ -1,4 +1,5 @@
 import async from 'async';
+import cookie from 'react-cookie';
 import {GET_ALL_STUDENTS_ERROR, ALL_REMINDERS, GET_ALL_STUDENTS_PENDING, GET_ALL_STUDENTS_SUCCESS} from '../types';
 import {axios} from '../utils';
 
@@ -22,7 +23,8 @@ export default () => {
                     if (studentCaseNotes.length > 0) {
                         const filtered = studentCaseNotes
                             .filter((caseNote) => {
-                                if (caseNote.user = user._id && caseNote.needFollowUp && !caseNote.issueResolved) {
+                                if (caseNote.user === user._id &&
+                                    caseNote.needFollowUp && !caseNote.issueResolved) {
                                     caseNote.osis = osis;
                                     return true;
                                 }

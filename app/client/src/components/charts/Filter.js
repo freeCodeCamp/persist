@@ -102,34 +102,6 @@ class ChartFilter extends React.Component {
             <form onSubmit={ handleSubmit(handleFormSubmit) }>
                 <div style={ {display: 'flex', flexWrap: 'wrap'} }>
                     <div>
-                        <Field
-                            name='firstName'
-                            hintText='First Name'
-                            floatingLabelText='First Name'
-                            component={AutoComplete}
-                            input={{
-                                onUpdateInput: this.checkEmpty.bind(this, 'firstName', this),
-                                onChange: this.updateInput.bind(this, 'firstName', this)
-                            }}
-                            dataSource={ suggestions['firstName'] }
-                            maxSearchResults={5}
-                        />
-                    </div>
-                    <div>
-                        <Field
-                            name='lastName'
-                            hintText='Last Name'
-                            floatingLabelText='Last Name'
-                            component={AutoComplete}
-                            input={{
-                                onUpdateInput: this.checkEmpty.bind(this, 'lastName', this),
-                                onChange: this.updateInput.bind(this, 'lastName', this)
-                            }}
-                            dataSource={ suggestions['lastName'] }
-                            maxSearchResults={5}
-                        />
-                    </div>
-                    <div>
                         <Field name='hsGradYear'
                                component={ SelectField }
                                hintText='Grad Year'

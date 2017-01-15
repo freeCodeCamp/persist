@@ -91,7 +91,7 @@ class SingleStudentForm extends React.Component {
             return studentKeys.filter((field) => dbNames.includes(field.dbName))
         };
 
-        const bioHTML = (form) => renderFormGroups(form, filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'tags']));
+        const bioHTML = (form) => renderFormGroups(form, filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'descriptors']));
         const contactHTML = (form) => renderFormGroups(form, filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency', 'facebookName', 'parentPhone']));
         const academicHTML = (form) => renderFormGroups(form, filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'intendedCollege', 'remediationStatus', 'hsGPA', 'attendingMeetupDay', 'appliedToOtherSupportProgram', 'completedEssay', 'desiredFieldOfStudy', 'satSubjectTests', 'expectedGrad', 'psat', 'lettersOfRecommendation', 'eaEdApplications', 'taxDocumentsSubmitted']));
         const financialHTML = (form) => renderFormGroups(form, filterRef(['startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap', 'opportunityProgramEligible', 'studentAidReportReceived', 'fsaid', 'scholarshipAmount', 'awardLetterReceived', 'cssProfileCreated']));

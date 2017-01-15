@@ -4,8 +4,6 @@ import {ReduxFormGroup} from '../helpers'
 import {MenuItem} from 'material-ui';
 import isPlainObject from 'lodash/isPlainObject';
 import {termKeys} from '../../../../common/fieldKeys';
-import {SelectField, TextField, Toggle} from 'redux-form-material-ui';
-import {types} from '../../../../common/validator';
 
 class TermEditor extends Component {
     constructor(props) {

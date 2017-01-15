@@ -6,6 +6,8 @@ import Content from '../helpers/content';
 
 import StudentFilter from '../student/StudentFilter';
 import StudentTable from '../student/StudentTable';
+import ExportCSV from '../studentFilter/exportFields';
+import FilterStudents from '../studentFilter/filter';
 
 class Students extends Component {
     constructor(props) {
@@ -29,7 +31,9 @@ class Students extends Component {
         const {students} = this.state;
         return (
             <Content title='Students'>
-                <StudentFilter onSubmit={this.onSubmit.bind(this)}/>
+                {/*<StudentFilter onSubmit={this.onSubmit.bind(this)}/>*/}
+                <FilterStudents/>
+                <ExportCSV />
                 <StudentTable  {...this.props} students={ students }/>
             </Content>
         );

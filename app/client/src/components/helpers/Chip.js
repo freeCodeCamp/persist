@@ -27,7 +27,7 @@ export default class Chips extends React.Component {
 
     componentWillMount() {
         let options = this.props.options;
-        let initValue = this.props.input.value;
+        let initValue = this.props.input.value || [];
         options = options.filter((el) => {
             return !initValue.includes(el);
         });
@@ -115,7 +115,7 @@ export default class Chips extends React.Component {
         });
         return (
             <div style={ this.styles.wrapper }>
-                <div className="chips">
+                <div className="chips" style={this.styles.wrapper}>
                     { this.state.chipData.map(this.renderChip, this) }
                 </div>
                 <div className="selectField">
