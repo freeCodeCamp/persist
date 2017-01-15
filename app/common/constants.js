@@ -2,6 +2,17 @@ export const ROLE_ADMIN = 'Admin';
 export const ROLE_OWNER = 'Owner';
 export const ROLE_COUNSELOR = 'Counselor';
 
+export const validateArray = (inputArray, optionsArray) => {
+    // takes an array of values, and an array of possible values, and makes sure they exist
+    if (inputArray.constructor !== Array) {
+        return false;
+    }
+    for (const option of inputArray) {
+        if (!optionsArray.includes(option)) return false;
+    }
+    return true;
+};
+
 export const getRole = (checkRole) => {
     let role;
     switch (checkRole) {
@@ -45,6 +56,8 @@ export const mapping = {
         Q: 'Three-Quarter Time',
         A: 'Leave of absence',
         W: 'Withdrawn',
-        D: 'Deceased'
+        D: 'Deceased',
+        Military: 'Military',
+        'Not Enrolled': 'Not Enrolled'
     }
 };

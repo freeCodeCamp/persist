@@ -1,14 +1,34 @@
 import transform from 'lodash/transform';
 import map from 'lodash/map';
-import {mapping} from './constants';
+import range from 'lodash/range';
+import {studentKeys} from './fieldKeys';
+import exportKeys from './exportKeys';
+import {mapping, validateArray} from './constants';
 
 export const messages = {
     default: 'You tried to add `{VALUE}` to `{PATH}` which is forbidden'
 };
 
 export const types = {
-    tags: [
-        'SPED', 'Free Lunch Eligible', 'ELL', 'IEP', 'FRL'
+    descriptors: [
+        'SPED',
+        'Free Lunch Eligible',
+        'ELL',
+        'IEP',
+        'FRL',
+        'Academic Probation',
+        'Enrolled in Less than 15 Credits',
+        'In Danger of Losing Financial Aid',
+        'Declining GPA',
+        'Mental Health Counseling Needs',
+        'Familial Stressors',
+        'Displaced',
+        'Has a child',
+        'Other',
+        'Taking time off',
+        'Shifting from Full-time to Part-time',
+        'Not insured',
+        'Failed a Class'
     ],
     transferStatus: [
         '2 Year to 4 Year',
@@ -52,42 +72,11 @@ export const types = {
         'Attempted Reading Remediation (Failed)',
         'Attempted Writing Remediation (Failed)'
     ],
-    riskFactors: [
-        'Academic Probation',
-        'Enrolled in Less than 15 Credits',
-        'In Danger of Losing Financial Aid',
-        'Declining GPA',
-        'Mental Health Counseling Needs',
-        'Familial Stressors',
-        'Displaced',
-        'Has a child',
-        'Other',
-        'Taking time off',
-        'Shifting from Full-time to Part-time'
-    ],
     employmentStatus: [
         'Working Less than 12 hours',
         'Working 12-25 hours',
         'Working more than 25 hours',
         'Seeking Employment'
-    ],
-    commsType: [
-        'In person',
-        'Text',
-        'Facebook',
-        'Phone call',
-        'Email',
-        'Other'
-    ],
-    hsAttended: [
-        'Baldwin',
-        'Brooklyn Collaborative',
-        'Channel View',
-        'Kurt Hahn',
-        'Leaders',
-        'MELS',
-        'McCown',
-        'WHEELS'
     ],
     gender: [
         {text: 'Male', value: 'M'},
@@ -111,6 +100,21 @@ export const types = {
         'X (2018)',
         'Y (2019)',
         'Z (2020)'
+    ],
+    degreeTitle: [
+        'BACHELOR OF BUSINESS ADMINISTRATION',
+        'BACHELOR OF MUSIC',
+        'BACHELOR OF SCIENCE',
+        'BACHELOR OF ARTS',
+        'BACHELOR OF TECHNOLOGY',
+        'ASSOCIATE IN ARTS',
+        'ASSOCIATE IN SCIENCE',
+        'MASTER OF BUSINESS ADMINISTRATION',
+        'MASTER OF EDUCATION',
+        'MASTER OF SOCIAL WORK',
+        'CERTIFICATE',
+        'Bachelors Degree',
+        'Associates Degree'
     ],
     residency: [
         'Lives with Family',
@@ -200,16 +204,6 @@ export const types = {
         'Bachelors Degree',
         'Certificate'
     ],
-    hs: [
-        'Hahn',
-        'Baldwin',
-        'Channel View',
-        'McCown',
-        'WHEELS',
-        'Leaders',
-        'BCS',
-        'MELS'
-    ],
     'terms.status': transform(mapping.termStatus, (res, val, key) => {
         res.push({text: val, value: key});
     }, []),
@@ -236,19 +230,21 @@ export const types = {
     ],
     'applications.type': [
         'RD',
-        'ROLL',
-        'EA',
-        'EDII',
-        'ED',
         'PRI',
-        'OTHR',
+        'ED',
+        'EDII',
+        'EA',
         'EAII',
-        'REA'
+        'ROLL',
+        'REA',
+        'OTHR'
     ],
     'applications.heop': [
         'HEOP',
         'EOP',
-        'Not Eligible'
+        'SEEK',
+        'Not Eligible',
+        'Other Program'
     ],
     'documents.types': [
         'other'
@@ -256,14 +252,11 @@ export const types = {
     ethnicity: transform(mapping.ethnicity, (res, val, key) => {
         res.push({text: val, value: key});
     }, []),
-    expectedGrad: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+    hsGradYear: range((new Date().getFullYear()) - 3, (new Date().getFullYear()) + 5, 1),
+    expectedGrad: range((new Date().getFullYear()) - 3, (new Date().getFullYear()) + 5, 1)
 };
 
 export const enums = {
-    hsAttended: {
-        values: types.hsAttended,
-        message: messages.default
-    },
     gender: {
         values: map(types.gender, 'value'),
         message: messages.default
@@ -323,61 +316,15 @@ export const enums = {
     postSecPlan: {
         values: types.postSecPlan,
         message: messages.default
-    },
-    hs: {
-        values: types.hs,
-        message: messages.default
     }
 };
 
-export default {
+const validator = {};
 
-    tags(v) {
-        return this.helpers.validateArray(v, types.tags);
-    },
-
-    transferStatus(v) {
-        return this.helpers.validateArray(v, types.transferStatus);
-    },
-
-    studentSupportOrgName(v) {
-        return this.helpers.validateArray(v, types.studentSupportOrgName);
-    },
-
-    remediationStatus(v) {
-        return this.helpers.validateArray(v, types.remediationStatus);
-    },
-
-    riskFactors(v) {
-        return this.helpers.validateArray(v, types.riskFactors);
-    },
-
-    employmentStatus(v) {
-        return this.helpers.validateArray(v, types.employmentStatus);
-    },
-
-    commsType(v) {
-        return this.helpers.validateArray(v, types.commsType);
-    },
-
-    helpers: {
-        validateArray(inputArray, optionsArray) {
-            // takes an array of values, and an array of possible values, and makes sure they exist
-
-            if (inputArray.constructor !== Array) {
-                return false;
-            }
-
-            var output = true;
-            inputArray.forEach(function (str) {
-                if (!optionsArray.includes(str)) {
-                    output = false;
-                    return;
-                }
-            });
-
-            return output;
-        }
+for (const field of exportKeys(map(studentKeys, 'dbName'))['checkbox']) {
+    validator[field] = (values) => {
+        return validateArray(values, types[field]);
     }
+}
 
-};
+export default validator;

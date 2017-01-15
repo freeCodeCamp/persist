@@ -87,12 +87,12 @@ export default (Schema) => {
         suffix: String,
         altName: String,
         hsGradYear: Number,
-        tags: {
-            type: [String]
-            // validate: {
-            //   validator: validator.tags.bind(validator),
-            //   message: messages.default
-            // }
+        descriptors: {
+            type: [String],
+            validate: {
+                validator: validator.descriptors,
+                message: messages.default
+            }
         },
         edHistNo: String,
         recType: String,
@@ -125,28 +125,28 @@ export default (Schema) => {
         lastModifiedBy: String,
         parentGuardian: [Parent],
         hsID: Number,
-        hsAttended: {
-            type: String,
-            enum: enums.hsAttended
-        },
         cellPhone: String,
         email1: String,
         email2: String,
         parentName: String,
         parentContact: String,
         majorMinor: String,
-        mostRecentColEmp: String,
+        mostRecentCol: {
+            type: Schema.Types.ObjectId,
+            ref: 'College'
+        },
+        mostRecentEmp: String,
         transferStatus: {
             type: [String],
             validate: {
-                validator: validator.transferStatus.bind(validator),
+                validator: validator.transferStatus,
                 message: messages.default
             }
         },
         studentSupportOrgName: {
             type: [String],
             validate: {
-                validator: validator.studentSupportOrgName.bind(validator),
+                validator: validator.studentSupportOrgName,
                 message: messages.default
             }
         },
@@ -182,7 +182,7 @@ export default (Schema) => {
         remediationStatus: {
             type: [String],
             validate: {
-                validator: validator.remediationStatus.bind(validator),
+                validator: validator.remediationStatus,
                 message: messages.default
             }
         },
@@ -190,17 +190,10 @@ export default (Schema) => {
             type: String,
             enum: enums.residency
         },
-        riskFactors: {
-            type: [String],
-            validate: {
-                validator: validator.riskFactors.bind(validator),
-                message: messages.default
-            }
-        },
         employmentStatus: {
             type: [String],
             validate: {
-                validator: validator.employmentStatus.bind(validator),
+                validator: validator.employmentStatus,
                 message: messages.default
             }
         },
@@ -246,13 +239,6 @@ export default (Schema) => {
             type: String,
             enum: enums.postSecPlan
         },
-        commsType: {
-            type: [String],
-            validate: {
-                validator: validator.commsType.bind(validator),
-                message: messages.default
-            }
-        },
         hs: {
             type: Schema.Types.ObjectId,
             ref: 'School'
@@ -271,8 +257,6 @@ export default (Schema) => {
         amountOfNeedGap: Number,
         facebookName: String,
         parentPhone: String,
-
-
         // TO ADD IN
         attendingMeetupDay: Boolean,
         expectedGrad: Number,
@@ -301,14 +285,16 @@ export default (Schema) => {
         satSubjectTests: String,
         appliedToOtherSupportProgram: Boolean,
         applications: [applicationsSchema(Schema)],
-        degreeTitle: String,
+        degreeTitle: {
+            type: [String],
+            validate: {
+                validator: validator.degreeTitle,
+                message: messages.default
+            }
+        },
         gradDate: Date,
         preferredPronoun: String,
         nscRecordFound: Boolean,
         preferredLanguage: String
     };
-
-    // TO FINISH
-    // Graduation Date, Intended College, College Name, Term, Status
-
 };
