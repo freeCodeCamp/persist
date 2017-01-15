@@ -1,8 +1,11 @@
-import {studentSchema} from '../../common/schemas';
 import College from '../models/college';
+import compact from 'lodash/compact';
 import async from 'async';
 import School from '../models/school';
-import {Schema} from 'mongoose';
+import {studentKeys} from '../../common/fieldKeys';
+import exportKeys from '../../common/exportKeys';
+import map from 'lodash/map';
+const typeKeys = exportKeys(map(studentKeys, 'dbName'));
 
 export default function formatRecord(record, callback) {
 
@@ -15,13 +18,7 @@ export default function formatRecord(record, callback) {
     record.fullName = `${record.firstName} ${record.lastName}`.trim();
 
     // handle dates
-    let dateFields = [];
-    var studentValidation = studentSchema(Schema);
-    for (let key in studentValidation) {
-        if (studentValidation[key] === Date || studentValidation[key].type === Date) {
-            dateFields.push(key);
-        }
-    }
+    const dateFields = typeKeys['datepicker'];
 
     dateFields.forEach(function (dateField) {
 
@@ -45,8 +42,7 @@ export default function formatRecord(record, callback) {
 
 
     // handle things that should be arrays
-
-    const shouldBeArrays = ['tags', 'studentSupportOrgName', 'transferStatus'];
+    const shouldBeArrays = typeKeys['checkbox'];
 
     for (let key in record) {
         if (!record.hasOwnProperty(key)) continue;
@@ -57,6 +53,8 @@ export default function formatRecord(record, callback) {
             } else {
                 record[key] = record[key].replace(/,\s+/g, ',');
                 record[key] = record[key].split(/[;,]/);
+                record[key] = compact(record[key]);
+                record[key] = record[key].map((str) => (str.trim()));
             }
             continue;
         }
@@ -67,12 +65,6 @@ export default function formatRecord(record, callback) {
             record[key] = undefined;
         }
 
-    }
-    // handle hsGradYear
-    if (record.hsGradDate instanceof Date) {
-        record.hsGradYear = record.hsGradDate.getFullYear();
-    } else {
-        delete record.hsGradYear;
     }
 
     async.parallel([
@@ -117,38 +109,5 @@ export default function formatRecord(record, callback) {
         }
         callback(null, record);
     });
-
-    // record.termStartDate = new Date(record.termStartDate);
-    // record.termEndDate = new Date(record.termEndDate);
-
-    // if (record.tags) {
-    //  record.tags = record.tags.split(/\s+/);
-    // }
-
-
-    // if (!checkDate(record.lastModifiedDate) && !checkDate(record.termStartDate) && !checkDate(record.termEndDate)) {
-    //  console.log(record);
-    //  return;
-    // }
-
-    // console.log(record);
-    // let terms = [];
-
-    // for (let i = 1; i <= 8; i++) {
-    //   terms[i - 1] = {};
-    //   terms[i - 1].name = record['Term' + i];
-    //   terms[i - 1].status = record['Status' + i];
-    //   terms[i - 1].college = record['College' + i];
-    //   terms[i - 1].recordType = record['Record Type' + i];
-    // }
-
-
-    // record.terms = terms;
-
-    // record.terms = [];
-
-    // for (var i = 0; i < 8; i++) {
-    //  record.terms.push({});
-    // }
 
 }

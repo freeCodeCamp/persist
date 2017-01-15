@@ -79,9 +79,6 @@ export default (fileName) => {
                         studentTerms = studentTerms.filter((obj) =>
                             (!_.isEmpty(obj))
                         );
-                        studentTerms = _.sortBy(studentTerms, (obj) => {
-                            return obj.enrolBegin;
-                        }).reverse();
                         student.terms = studentTerms;
                         // for now, lets just overwrite the doc
                         student.save((err, updatedStudent) => {
