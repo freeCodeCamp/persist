@@ -88,6 +88,11 @@ class Terms extends Component {
     }
 
     saveTerm(oldTerm, newTerm) {
+        const {termForm} = this.props;
+        if (!isEmpty(termForm.syncErrors)) {
+            console.log(termForm);
+            return;
+        }
         let term;
         term = newTerm;
         if (oldTerm._id) {
@@ -205,7 +210,8 @@ class Terms extends Component {
 const mapStateToProps = (state) => ({
     spinner: state.spinner,
     auth: state.auth,
-    collegeObj: state.colleges.idObj
+    collegeObj: state.colleges.idObj,
+    termForm: state.form['TermEditor']
 });
 
 const mapDispatchToProps = (dispatch) => (
