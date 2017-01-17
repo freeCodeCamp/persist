@@ -97,8 +97,8 @@ UserEditor = reduxForm({
     form: 'UserEditor',
     validate
 })(UserEditor);
-const selector = formValueSelector('UserEditor');
 
+const selector = formValueSelector('UserEditor');
 const mapStateToProps = (state) => ({
     users: state.users.value,
     schoolSource: state.schools.schoolSource,

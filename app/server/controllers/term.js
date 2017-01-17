@@ -1,4 +1,5 @@
 import Student from '../models/student';
+import sortBy from 'lodash/sortBy';
 
 export const deleteTerm = (req, res) => {
     const {osis, _id} = req.query;

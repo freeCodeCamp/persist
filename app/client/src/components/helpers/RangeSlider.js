@@ -33,13 +33,13 @@ export default class RangeSlider extends React.Component {
     }
 
     dispatchChange(data) {
-        const {form, name} = this.props;
+        const {form, input: {name}} = this.props;
         form.props.change.bind(form, `${name}.min`, data.from)();
         form.props.change.bind(form, `${name}.max`, data.to)();
     }
 
     render() {
-        const {defaultRange, min, max, step, name} = this.props;
+        const {defaultRange, description, min, max, step, input: {name}} = this.props;
         const data_attr = {
             'data-type': 'double',
             'data-min': min,
@@ -57,7 +57,7 @@ export default class RangeSlider extends React.Component {
                 flexDirection: 'column',
                 justifyContent: 'space-around'
             }}>
-                <label htmlFor={name}>{name}</label>
+                <label htmlFor={name}>{description}</label>
                 <input ref={(c) => {
                     this.slider = c;
                 }} type='text' id={name} name={name} {...data_attr} />
