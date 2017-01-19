@@ -46,16 +46,14 @@ export default class Chips extends React.Component {
     }
 
     handleRequestDelete(key) {
+        const {form} = this.props;
         let chipData = this.state.chipData;
         const chipToDelete = Array.from(chipData, chip => chip.key).indexOf(key);
-
         let options = this.state.options;
         options.push(chipData[chipToDelete].label);
-
         chipData.splice(chipToDelete, 1);
-
         let chips = Array.from(chipData, data => data.label);
-        this.dispatchChange(this.props.meta.dispatch, chips);
+        form.props.change.bind(form, this.fieldName, chips)();
 
         this.setState({
             chipData: chipData,

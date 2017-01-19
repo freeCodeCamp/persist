@@ -2,12 +2,14 @@ import React from 'react';
 import {Link} from 'react-router';
 import {Table} from 'react-bootstrap';
 
-
 class StudentTable extends React.Component {
     constructor(props) {
         super(props);
     }
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
 
     render() {
         const {students} = this.props;
@@ -57,9 +59,4 @@ class StudentTable extends React.Component {
     }
 }
 
-
 export default StudentTable;
-
-
-
-

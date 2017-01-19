@@ -19,7 +19,7 @@ class FilteredStudents extends Component {
     componentWillReceiveProps(nextProps) {
         this.updateStudents(nextProps);
     }
-    
+
     updateStudents(props) {
         if (isEmpty(props.studentsObj)) return;
         const osisStudents = JSON.parse(localStorage.getItem('filtered'));

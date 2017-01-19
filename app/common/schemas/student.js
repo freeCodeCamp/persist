@@ -43,8 +43,14 @@ const caseNotesSchema = (Schema) => (
             ref: 'User'
         },
         date: Date,
-        needFollowUp: Boolean,
-        issueResolved: Boolean
+        needFollowUp: {
+            type: Boolean,
+            default: false
+        },
+        issueResolved: {
+            type: Boolean,
+            default: false
+        }
     })
 );
 
@@ -56,8 +62,14 @@ const applicationsSchema = (Schema) => (
         },
         result: String,
         heop: String,
-        attending: Boolean,
-        defer: Boolean,
+        attending: {
+            type: Boolean,
+            default: false
+        },
+        defer: {
+            type: Boolean,
+            default: false
+        },
         notes: String
     })
 );
@@ -117,7 +129,10 @@ export default (Schema) => {
             type: Date
         },
         mobile: Number,
-        textable: Boolean,
+        textable: {
+            type: Boolean,
+            default: false
+        },
         homePhone: Number,
         otherPhone: String,
         email: String,
@@ -135,7 +150,10 @@ export default (Schema) => {
             type: Schema.Types.ObjectId,
             ref: 'College'
         },
+        cumColGPA: Number,
+        lastTermGPA: Number,
         mostRecentEmp: String,
+        mostRecentEnrolStatus: String,
         transferStatus: {
             type: [String],
             validate: {
@@ -249,27 +267,69 @@ export default (Schema) => {
         },
         act: Number,
         osis: Number,
-        startedFafsa: Boolean,
-        needsFollowup: Boolean,
-        completedFafsa: Boolean,
-        completedTap: Boolean,
-        needGap: Boolean,
+        startedFafsa: {
+            type: Boolean,
+            default: false
+        },
+        needsFollowup: {
+            type: Boolean,
+            default: false
+        },
+        completedFafsa: {
+            type: Boolean,
+            default: false
+        },
+        completedTap: {
+            type: Boolean,
+            default: false
+        },
+        needGap: {
+            type: Boolean,
+            default: false
+        },
         amountOfNeedGap: Number,
         facebookName: String,
         parentPhone: String,
         // TO ADD IN
-        attendingMeetupDay: Boolean,
+        attendingMeetupDay: {
+            type: Boolean,
+            default: false
+        },
         expectedGrad: Number,
-        photoReleaseForm: Boolean,
+        photoReleaseForm: {
+            type: Boolean,
+            default: false
+        },
         psat: Number,
-        eaEdApplications: Boolean,
-        lettersOfRecommendation: Boolean,
-        taxDocumentsSubmitted: Boolean,
-        opportunityProgramEligible: Boolean,
-        studentAidReportReceived: Boolean,
+        eaEdApplications: {
+            type: Boolean,
+            default: false
+        },
+        lettersOfRecommendation: {
+            type: Boolean,
+            default: false
+        },
+        taxDocumentsSubmitted: {
+            type: Boolean,
+            default: false
+        },
+        opportunityProgramEligible: {
+            type: Boolean,
+            default: false
+        },
+        studentAidReportReceived: {
+            type: Boolean,
+            default: false
+        },
         fsaid: Number,
-        cssProfileCreated: Boolean,
-        awardLetterReceived: Boolean,
+        cssProfileCreated: {
+            type: Boolean,
+            default: false
+        },
+        awardLetterReceived: {
+            type: Boolean,
+            default: false
+        },
         scholarshipAmount: Number,
         cunyApp: {
             type: String,
@@ -280,10 +340,16 @@ export default (Schema) => {
             enum: enums.sunyApp
         },
         desiredFieldOfStudy: String,
-        completedEssay: Boolean,
+        completedEssay: {
+            type: Boolean,
+            default: false
+        },
         crewAdvisor: String,
         satSubjectTests: String,
-        appliedToOtherSupportProgram: Boolean,
+        appliedToOtherSupportProgram: {
+            type: Boolean,
+            default: false
+        },
         applications: [applicationsSchema(Schema)],
         degreeTitle: {
             type: [String],
@@ -294,7 +360,10 @@ export default (Schema) => {
         },
         gradDate: Date,
         preferredPronoun: String,
-        nscRecordFound: Boolean,
+        nscRecordFound: {
+            type: Boolean,
+            default: false
+        },
         preferredLanguage: String
     };
 };

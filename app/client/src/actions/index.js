@@ -5,6 +5,7 @@ export {default as updateUser} from './updateUser';
 export {default as getBackups} from './getBackups';
 export {default as restoreDatabase} from './restoreDatabase';
 export * from './reminders';
+export * from './export';
 export * from './students';
 export * from './authentication';
 export * from './notification';

@@ -5,7 +5,7 @@ import App from './components/app';
 import DashboardMain from './components/pages/DashboardMain';
 import Upload from './components/pages/Upload';
 import Schools from './components/pages/Schools';
-import Students from './components/pages/Students';
+import Students from './components/studentFilter/filter';
 import InviteUsers from './components/pages/InviteUsers';
 import SingleStudent from './components/pages/SingleStudent';
 import SearchResult from './components/pages/SearchResult';

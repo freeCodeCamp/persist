@@ -4,7 +4,6 @@ import express from 'express';
 import http from 'http';
 import reload from 'reload';
 import socketIO from 'socket.io';
-import handleSocket from './app/server/socket';
 
 import mongoose from 'mongoose';
 
@@ -16,9 +15,14 @@ if (process.env.NODE_ENV !== 'production') {
     // get environment variables
     dotenv.config();
 }
-
+let serverFolder = 'serverDist';
+if (process.env.NODE_ENV !== 'production') {
+    serverFolder = 'server';
+}
 // https://github.com/motdotla/dotenv/issues/114
-const serverRoutes = require('./app/server/routes/index').default;
+const serverRoutes = require(`./app/${serverFolder}/routes/index`).default;
+const handleSocket = require(`./app/${serverFolder}/socket`).default;
+
 // connect to mongoDB database
 mongoose.Promise = global.Promise;
 const options = {
@@ -30,8 +34,9 @@ mongoose.connect(process.env.MONGODB_URI, options);
 const app = express();
 
 app.use(express.static(path.join(__dirname, '/app/client/public')));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '20mb'}));
 app.use(bodyParser.urlencoded({
+    limit: '20mb',
     extended: true
 }));
 

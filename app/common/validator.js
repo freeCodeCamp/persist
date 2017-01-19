@@ -85,22 +85,6 @@ export const types = {
     ferpa: [
         'Yes', 'No'
     ],
-    cohort: [
-        'M (2007)',
-        'N (2008)',
-        'O (2009)',
-        'P (2010)',
-        'Q (2011)',
-        'R (2012)',
-        'S (2013)',
-        'T (2014)',
-        'U (2015)',
-        'V (2016)',
-        'W (2017)',
-        'X (2018)',
-        'Y (2019)',
-        'Z (2020)'
-    ],
     degreeTitle: [
         'BACHELOR OF BUSINESS ADMINISTRATION',
         'BACHELOR OF MUSIC',
@@ -252,8 +236,8 @@ export const types = {
     ethnicity: transform(mapping.ethnicity, (res, val, key) => {
         res.push({text: val, value: key});
     }, []),
-    hsGradYear: range((new Date().getFullYear()) - 3, (new Date().getFullYear()) + 5, 1),
-    expectedGrad: range((new Date().getFullYear()) - 3, (new Date().getFullYear()) + 5, 1)
+    hsGradYear: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1),
+    expectedGrad: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1)
 };
 
 export const enums = {
