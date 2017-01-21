@@ -4,7 +4,7 @@ import {reduxForm, Field} from 'redux-form';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {RaisedButton} from 'material-ui';
-import {exportStudents} from '../../actions'
+import {exportStudents} from '../../actions';
 import {Checkbox} from 'redux-form-material-ui';
 import {studentKeys} from '../../../../common/fieldKeys';
 import keyBy from 'lodash/keyBy';
@@ -21,7 +21,7 @@ class ExportCSV extends Component {
     initiateExport(values) {
         const exportKeys = keys(pickBy(values, (v) => (v)));
         const {students} = this.props;
-        let picked = students.map((student) => pick(student, exportKeys));
+        const picked = students.map((student) => pick(student, exportKeys));
         this.props.exportStudents(exportKeys, picked);
     }
 

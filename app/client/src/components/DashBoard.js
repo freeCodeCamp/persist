@@ -8,8 +8,10 @@ import {
     getNotifications,
     getAllStudents,
     getAllColleges,
-    getAllCounselors
+    getAllCounselors,
+    setSpinner
 } from '../actions'
+import {Spinner} from './helpers';
 import NavigationMenu from './admin-components/navigation-menu';
 // import ControlPanel from './admin-components/control-panel';
 import ControlMenu from './admin-components/controls-menu';
@@ -20,6 +22,10 @@ import {MaterialUIWrapper} from './helpers';
 class Dashboard extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            load: false,
+            initialLoad: false
+        }
     }
 
     componentWillMount() {
@@ -35,6 +41,10 @@ class Dashboard extends Component {
                     window.location = '/logout';
                 }
             });
+            this.setState({
+                ...this.state,
+                initialLoad: true
+            }, this.removeSpinner);
         });
     }
 
@@ -43,17 +53,54 @@ class Dashboard extends Component {
         const evt = document.createEvent("HTMLEvents");
         evt.initEvent('resize', true, false);
         window.dispatchEvent(evt);
+        this.componentDidUpdate();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.currentPage != nextProps.currentPage) {
+            this.props.setSpinner(true);
+            this.setState({...this.state, load: false});
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return (
+            nextProps.spinner !== this.props.spinner ||
+            nextState.load !== this.state.load
+        )
+    }
+
+    componentDidUpdate() {
+        if (!this.state.load && this.state.initialLoad) {
+            setTimeout(() => {
+                this.setState({
+                    ...this.state,
+                    load: true
+                });
+            }, 500);
+        } else if (this.state.load) {
+            this.removeSpinner();
+        }
+    }
+
+    removeSpinner() {
+        if (this.state.initialLoad) {
+            this.props.setSpinner(false);
+        }
     }
 
     render() {
+        const {load} = this.state;
         return (
             <div className='wrapper'>
                 <HeaderBar />
                 <NavigationMenu />
                 <section className='content-wrapper'>
-                    <MaterialUIWrapper>
-                        { this.props.currentPage }
-                    </MaterialUIWrapper>
+                    <Spinner/>
+                    { load ?
+                        <MaterialUIWrapper>
+                            { this.props.currentPage }
+                        </MaterialUIWrapper> : null }
                 </section>
                 <Footer />
                 <ControlMenu />
@@ -62,14 +109,19 @@ class Dashboard extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    spinner: state.spinner
+});
+
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         getAllStudents,
         getAllColleges,
         getAllSchools,
         getAllCounselors,
-        getNotifications
+        getNotifications,
+        setSpinner
     }, dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

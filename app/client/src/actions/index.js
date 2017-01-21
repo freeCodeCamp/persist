@@ -4,6 +4,7 @@ export {default as inviteUser} from './inviteUser';
 export {default as updateUser} from './updateUser';
 export {default as getBackups} from './getBackups';
 export {default as restoreDatabase} from './restoreDatabase';
+export {default as setSpinner} from './setSpinner';
 export * from './reminders';
 export * from './export';
 export * from './students';

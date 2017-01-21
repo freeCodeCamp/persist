@@ -2,16 +2,13 @@ import React from 'react';
 import * as uploadFile from '../../actions/uploadFile';
 import {connect} from 'react-redux';
 import {FormGroup, ControlLabel, FormControl, Button, Input, InputGroup} from 'react-bootstrap';
-
+import {Spinner} from '../helpers';
 import Content from '../helpers/content';
 import DropZoneUpload from '../helpers/dropzoneUpload';
 import Paginate from '../uploadUI/Paginate';
-
-import Spinner from '../helpers/loadingScreen';
-
 import {SelectField, MenuItem} from 'material-ui';
 
-export default class Upload extends React.Component {
+class Upload extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,7 +32,7 @@ export default class Upload extends React.Component {
     }
 
     render() {
-
+        const {spinner} = this.props;
         const fileTypes = [
             {
                 name: 'Student Data',
@@ -70,6 +67,7 @@ export default class Upload extends React.Component {
 
         return (
             <Content title='Upload'>
+                <Spinner/>
                 <p>
                     Which data would you like to upload?
                 </p>
@@ -81,8 +79,13 @@ export default class Upload extends React.Component {
                 </div>
                 { this.state.chosen ? <DropZoneUpload url={ this.state.url }/> : null }
                 <Paginate />
-                <Spinner />
             </Content>
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    spinner: state.spinner
+});
+
+export default connect(mapStateToProps)(Upload);

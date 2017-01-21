@@ -1,10 +1,12 @@
-import { SPINNER } from './types';
+import {SPINNER} from './types';
 
-export const setSpinner = (status) => {
-  return (dispatch) => {
-    dispatch({
-      type: SPINNER,
-      payload: status
-    });
-  }
+const setSpinner = (status) => {
+    return (dispatch) => {
+        dispatch({
+            type: SPINNER,
+            payload: status
+        });
+    }
 };
+
+export default setSpinner;

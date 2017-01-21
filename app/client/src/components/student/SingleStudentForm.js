@@ -1,35 +1,35 @@
 import React from 'react';
 import {Field, FieldArray, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-
-import {Button, Form, Row, Alert} from 'react-bootstrap';
+import {Button, Form, Row, Alert, Col, Clearfix} from 'react-bootstrap';
 import {socket} from '../utils';
-
+import {RaisedButton, Snackbar} from 'material-ui';
 import FormGroup from '../helpers/ReduxFormGroup';
-import CollegeSummary from './CollegeSummary';
 import renderDocuments from './Documents';
 import renderTerms from './Terms';
 import renderApplications from './Applications';
 import renderCaseNotes from './CaseNotes';
-
 import * as updateStudent from '../../actions/updateStudent';
-
 import {studentKeys} from '../../../../common/fieldKeys';
 import asyncValidate from '../helpers/asyncValidate';
+import keyBy from 'lodash/keyBy';
+const studentKeysObj = keyBy(studentKeys, 'dbName');
 
 class SingleStudentForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editable: false
+            editable: false,
+            notification: {
+                success: false,
+                error: false
+            }
         };
     }
 
     handleFormSubmit(studentRecord) {
         //this will handle updates
         const {auth} = this.props;
-
-        console.log('this is our form object', studentRecord);
         socket.emit('update', {
             user: auth.user._id,
             school: studentRecord.hs,
@@ -42,6 +42,26 @@ class SingleStudentForm extends React.Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.updateStudentStatus.error) {
+            this.setState({
+                ...this.state,
+                notification: {
+                    error: true,
+                    success: false
+                }
+            });
+        } else if (nextProps.updateStudentStatus.success) {
+            this.setState({
+                ...this.state,
+                notification: {
+                    error: false,
+                    success: true
+                }
+            })
+        }
+    }
+
     toggleEdit() {
         this.setState({
             editable: !this.state.editable
@@ -52,81 +72,70 @@ class SingleStudentForm extends React.Component {
         const {handleSubmit, reset, initialValues} = this.props;
         const {editable} = this.state;
         const renderFormGroups = (form, studentKeys) => {
-
-            // vars for editing
-            const fixed = ['hs', 'hsGradYear', 'hsAttended'];
-
-            // initial value var
-            let initialValue;
-
-            return studentKeys.map((field, i) => {
+            const HTML = [];
+            studentKeys.map((field, i) => {
+                field = studentKeysObj[field];
                 let disabled = !editable;
-                if (fixed.includes(field.dbName)) {
+                if (!field.editable) {
                     disabled = true;
                 }
-
-                initialValue = initialValues[field.dbName];
-
-                if (field.dbName === 'hsGradYear') {
-                    if (initialValues['hsGradDate']) {
-                        const date = new Date(initialValues['hsGradDate'])
-                        initialValue = date.getFullYear();
-                    }
-                }
-
-                return (
-                    <FormGroup
-                        form={form}
-                        style={ {margin: '50px', textAlign: 'center'} }
-                        initValue={ initialValue }
-                        key={ i }
-                        disabled={ disabled }
-                        field={ field }
-                    />
+                const initialValue = initialValues[field.dbName];
+                HTML.push(
+                    <Col key={field.dbName}
+                         style={{minHeight: 100, display: 'flex', justifyContent: 'center'}} xs={12}
+                         sm={6} md={6}
+                         lg={4}>
+                        <FormGroup
+                            form={form}
+                            style={ {margin: '50px', textAlign: 'center'} }
+                            initValue={ initialValue }
+                            key={ i }
+                            disabled={ disabled }
+                            field={ field }
+                        />
+                    </Col>
                 );
+                if ((i + 1) % 2 === 0) {
+                    HTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock/>);
+                }
+                if ((i + 1) % 3 === 0) {
+                    HTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock/>);
+                }
             });
+            return HTML;
         };
 
-        const filterRef = (dbNames) => {
-            return studentKeys.filter((field) => dbNames.includes(field.dbName))
-        };
+        let basicProfile, contactInfo, academicInfo, financialInfo, colApplications, historicalInfo, hasGradDate;
+        if (initialValues['hsGradDate'] && new Date(initialValues['hsGradDate']) !== 'Invalid Date') {
+            basicProfile = ['altName', 'dob', 'mostRecentCol', 'levelOfSupport', 'suffix', 'hs', 'hsGradYear', 'descriptors', 'preferredPronoun'];
+            contactInfo = ['cellPhone', 'otherPhone', 'email', 'facebookName', 'address'];
+            academicInfo = ['intendedCollege', 'cumColGPA', 'remediationStatus', 'registeredForClasses', 'majorMinor', 'transferStatus', 'progressToGradAss', 'progressToGradBa', 'ferpa'];
+            financialInfo = ['studentSupportOrgName', 'mostRecentEmp', 'needGap', 'fsaid', 'studentSupportOrgNameOther', 'employmentStatus', 'amountOfNeedGap'];
+            historicalInfo = ['hsGPA', 'SAT.math', 'SAT.cr', 'actEquiv', 'crewAdvisor', 'hsGradDate', 'cohort', 'hsDiplomaType'];
+            colApplications = [];
+            hasGradDate = true;
+        } else {
+            basicProfile = ['altName', 'dob', 'descriptors', 'preferredPronoun', 'suffix', 'hs', 'cohort', 'expectedHSGrad', 'crewAdvisor', 'levelOfSupport'];
+            contactInfo = ['cellPhone', 'otherPhone', 'email', 'facebookName', 'address', 'parentName', 'parentPhone'];
+            academicInfo = ['hsGPA', 'psat', 'SAT.math', 'SAT.cr', 'regents.ela', 'regents.math', 'SAT.subjectTests', 'actEquiv'];
+            financialInfo = ['opportunityProgramEligible', 'startedFafsa', 'completedFafsa', 'fsaid', 'cssProfileCreated', 'startedTap', 'completedTap', 'taxDocumentsSubmitted', 'awardLetterReceived', 'studentAidReportReceived', 'needGap', 'amountOfNeedGap'];
+            colApplications = ['applicationWave', 'eaEdApplications', 'completedEssay', 'lettersOfRecommendation', 'cunyApp', 'sunyApp', 'commonApp', 'appliedToOtherSupportProgram', 'postSecPlan', 'intendedCollege', 'desiredFieldOfStudy', 'registeredForClasses', 'studentSupportOrgName', 'studentSupportOrgNameOther', 'ferpa'];
+            historicalInfo = [];
+            hasGradDate = false;
+        }
 
-        const bioHTML = (form) => renderFormGroups(form, filterRef(['altName', 'dob', 'hs', 'hsGradYear', 'hsGPA', 'descriptors']));
-        const contactHTML = (form) => renderFormGroups(form, filterRef(['cellPhone', 'email', 'otherPhone', 'address', 'residency', 'facebookName', 'parentPhone']));
-        const academicHTML = (form) => renderFormGroups(form, filterRef(['mostRecentCol', 'majorMinor', 'studentSupportOrgName', 'intendedCollege', 'remediationStatus', 'hsGPA', 'attendingMeetupDay', 'appliedToOtherSupportProgram', 'completedEssay', 'desiredFieldOfStudy', 'satSubjectTests', 'expectedGrad', 'psat', 'lettersOfRecommendation', 'eaEdApplications', 'taxDocumentsSubmitted']));
-        const financialHTML = (form) => renderFormGroups(form, filterRef(['startedFafsa', 'completedFafsa', 'completedTap', 'needGap', 'amountOfNeedGap', 'opportunityProgramEligible', 'studentAidReportReceived', 'fsaid', 'scholarshipAmount', 'awardLetterReceived', 'cssProfileCreated']));
-        const otherHTML = (form) => renderFormGroups(form, filterRef(['photoReleaseForm', 'cunyApp', 'sunyApp', 'crewAdvisor']));
-        const notesHTML = (form) => renderFormGroups(form, filterRef(['riskFactors', 'needsFollowup']));
         return (
             <div id="single-student-page">
                 <Form className='single-student-form'
                       onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
+                    <Row className='text-right'>
+                        {editable ? <RaisedButton label='Submit' type='submit' primary={true}/> : null}
+                        {editable ?
+                            <RaisedButton label='Undo' secondary={true} onClick={reset}/> :
+                            <RaisedButton label='Edit' primary={true} onClick={() => this.toggleEdit()}/>
+                        }
+                    </Row>
                     <Row>
-                        <br/>
-                        <FieldArray
-                            name='terms'
-                            osis={initialValues.osis}
-                            form={this}
-                            component={renderTerms}
-                            initValue={initialValues['terms']}
-                        />
-                        <br/>
-                        <FieldArray
-                            name='applications'
-                            osis={initialValues.osis}
-                            form={this}
-                            component={renderApplications}
-                            initValue={initialValues['applications']}
-                        />
-                        <br/>
-                        <FieldArray
-                            name='caseNotes'
-                            osis={initialValues.osis}
-                            form={this}
-                            component={renderCaseNotes}
-                            initValue={initialValues['caseNotes']}
-                        />
-                        <br/>
                         <FieldArray
                             name='documents'
                             osis={initialValues.osis}
@@ -135,76 +144,74 @@ class SingleStudentForm extends React.Component {
                             component={renderDocuments}
                             initValue={initialValues['documents']}
                         />
-                        <br/>
-                        <h2>Biographical Information</h2>
-                        <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { bioHTML(this) }
-                        </div>
-                        <br/>
-                        <h2 style={ {clear: 'both', textAlign: 'center'} }>Student Contact</h2>
-                        <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { contactHTML(this) }
-                        </div>
-                        <br/>
-                        <h2>Academic Profile</h2>
-                        <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { academicHTML(this) }
-                        </div>
-                        <br/>
+                        <h2>Basic Profile</h2>
+                        <Row>
+                            {renderFormGroups(this, basicProfile)}
+                        </Row>
+                        <h2>Student Contact</h2>
+                        <Row>
+                            {renderFormGroups(this, contactInfo)}
+                        </Row>
+                        <h2>Academic Information</h2>
+                        <Row>
+                            {renderFormGroups(this, academicInfo)}
+                        </Row>
                         <h2>Financial Profile</h2>
-                        <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { financialHTML(this) }
-                        </div>
-                        <br/>
-                        <h2>College Applications</h2>
-                        <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                        </div>
-                        <h2>Other</h2>
-                        <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { otherHTML(this) }
-                        </div>
-                        <h2>Student Notes</h2>
-                        <div style={ {display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'} }>
-                            { notesHTML(this) }
-                        </div>
+                        <Row>
+                            {renderFormGroups(this, financialInfo)}
+                        </Row>
+                        {hasGradDate ?
+                            <h2>College Applications</h2> :
+                            <h2>Historical Information</h2>
+                        }
+                        <Row>
+                            {renderFormGroups(this, colApplications)}
+                            {renderFormGroups(this, historicalInfo)}
+                        </Row>
+                        <FieldArray
+                            name='applications'
+                            osis={initialValues.osis}
+                            form={this}
+                            component={renderApplications}
+                            initValue={initialValues['applications']}
+                        />
+                        <FieldArray
+                            name='caseNotes'
+                            osis={initialValues.osis}
+                            form={this}
+                            component={renderCaseNotes}
+                            initValue={initialValues['caseNotes']}
+                        />
+                        { hasGradDate ?
+                            <FieldArray
+                                name='terms'
+                                osis={initialValues.osis}
+                                form={this}
+                                component={renderTerms}
+                                initValue={initialValues['terms']}
+                            /> : null }
                     </Row>
-                    { this.state.editable ? <div>
-                        <Button type="submit">
-                            Submit
-                        </Button>
-                        <Button type="button" onClick={ reset }>
-                            Undo Changes
-                        </Button>
-                    </div> : <Button type="button" onClick={ () => this.toggleEdit() }>
-                        Edit
-                    </Button> }
-                    { this.props.updateStudentStatus.pending ? <div>
-                        <br/>
-                        <p>
-                            Loading
-                        </p><i style={ {fontSize: '50px', textAlign: 'center'} }
-                               className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                    </div> : null }
-                    { this.props.updateStudentStatus.error ?
-                        <div>
-                            <br/>
-                            <Alert bsStyle="warning">
-                                <strong>Sorry!</strong> We encountered an error, please check the student form for any
-                                errors.
-                            </Alert>
-                        </div>
-                        : null }
-                    { this.props.updateStudentStatus.success ? <div>
-                        <br/>
-                        <Alert bsStyle="success">
-                            <strong>Success!</strong> We updated the student record and everything went swimmingly.
-                        </Alert>
-                    </div> : null }
+                    <Snackbar
+                        bodyStyle={{backgroundColor: 'red'}}
+                        open={this.state.notification.error}
+                        message='Something went wrong. Please try again'
+                        autoHideDuration={2000}
+                        onRequestClose={() => {
+                            this.setState({...this.state, notification: {success: false, error: false}})
+                        }}
+                    />
+                    <Snackbar
+                        bodyStyle={{backgroundColor: 'green'}}
+                        open={this.state.notification.success}
+                        message='Student record is updated'
+                        autoHideDuration={2000}
+                        onRequestClose={() => {
+                            this.setState({...this.state, notification: {success: false, error: false}})
+                        }}
+                    />
                 </Form>
             </div>
-
-        )
-            ;
+        );
     }
 }
 

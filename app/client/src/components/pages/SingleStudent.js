@@ -65,4 +65,3 @@ const makeMapStateToProps = () => {
 };
 
 export default connect(makeMapStateToProps)(SingleStudent);
-
