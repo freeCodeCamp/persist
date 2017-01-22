@@ -16,9 +16,14 @@ export default class Chips extends React.Component {
             chip: {
                 margin: 4
             },
+            wrapContainer: {
+                display: 'flex',
+                flexDirection: 'column'
+            },
             wrapper: {
                 display: 'flex',
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
+                maxWidth: 256
             }
         };
         this.key = 0;
@@ -61,18 +66,6 @@ export default class Chips extends React.Component {
         });
     }
 
-    dispatchChange(dispatch, chips) {
-
-        dispatch({
-            type: 'redux-form/CHANGE',
-            meta: {
-                form: 'SingleStudent',
-                field: this.fieldName
-            },
-            payload: chips
-        });
-    }
-
     renderChip(data) {
         return (
             <Chip key={ data.key } onRequestDelete={ this.handleRequestDelete.bind(this, data.key) }
@@ -108,13 +101,14 @@ export default class Chips extends React.Component {
     }
 
     render() {
+        const {state, styles} = this;
         let optionsHTML = this.state.options.map((elem) => {
             return <MenuItem key={ elem } value={ elem } primaryText={ elem }/>;
         });
         return (
-            <div style={ this.styles.wrapper }>
-                <div className="chips" style={this.styles.wrapper}>
-                    { this.state.chipData.map(this.renderChip, this) }
+            <div style={ styles.wrapContainer }>
+                <div className="chips" style={ styles.wrapper }>
+                    { state.chipData.map(this.renderChip, this) }
                 </div>
                 <div className="selectField">
                     <SelectField name='chips'

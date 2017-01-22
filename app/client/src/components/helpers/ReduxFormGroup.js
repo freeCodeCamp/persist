@@ -3,6 +3,7 @@ import {Field} from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 import {AutoComplete, Checkbox, SelectField, TextField, Toggle} from 'redux-form-material-ui';
 import Chips from './Chip';
+import ChipsAdd from './ChipAdd';
 import {connect} from 'react-redux';
 import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import DatePicker from './DatePicker';
@@ -85,6 +86,17 @@ class ReduxFormGroup extends React.Component {
                            initValue={ initValue }
                            component={ Chips }
                            field={ field }/>
+                );
+            case 'Checkbox_Add':
+                return (
+                    <Field
+                        disabled={disabled}
+                        name={dbName}
+                        form={form}
+                        initValue={initValue}
+                        component={ChipsAdd}
+                        field={field}
+                    />
                 );
             case 'Toggle':
                 return (
