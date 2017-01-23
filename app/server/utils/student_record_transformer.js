@@ -5,7 +5,7 @@ import School from '../models/school';
 import {studentKeys} from '../../common/fieldKeys';
 import exportKeys from '../../common/exportKeys';
 import map from 'lodash/map';
-const typeKeys = exportKeys(map(studentKeys, 'dbName'));
+const typeKeys = exportKeys(map(studentKeys, 'dbName'), studentKeys);
 
 export default function formatRecord(record, callback) {
 

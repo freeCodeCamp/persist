@@ -13,13 +13,11 @@ import {
     UserController,
     CaseNoteController,
     ApplicationController,
-    TermController,
-    ExportController
+    TermController
 } from '../controllers';
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
 import saveTermData from '../utils/save_csv_term_data';
-import saveApplicationDate from '../utils/save_csv_applications';
 import saveGraduationData from '../utils/save_csv_graduation_data';
 import saveApplicationData from '../utils/save_csv_applications';
 
@@ -323,8 +321,6 @@ export default (app) => {
             TermController.deleteTerm(req, res);
         });
 
-    app.post('/export-students', requireAuth, ExportController.exportStudentCSV);
-    
     app.post('/register', AuthController.register);
     app.post('/login', requireLogin, AuthController.login);
     app.post('/forgot-password', AuthController.forgotPassword);
