@@ -7,6 +7,7 @@ export default (keysList) => {
         'college': [],
         'school': [],
         'checkbox': [],
+        'checkbox_add': [],
         'datepicker': [],
         'normal': []
     };
@@ -22,6 +23,9 @@ export default (keysList) => {
         switch (studentKeysObj[studentKey].fieldType) {
             case 'Checkbox':
                 keys['checkbox'].push(studentKey);
+                return;
+            case 'Checkbox_Add':
+                keys['checkbox_add'].push(studentKey);
                 return;
             case 'DatePicker':
                 keys['datepicker'].push(studentKey);

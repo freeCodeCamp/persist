@@ -1,14 +1,5 @@
 import validator, {messages, enums} from '../validator';
 
-const Parent = {
-    relationship: String,
-    name: String,
-    mobile: Number,
-    textable: Boolean,
-    workPhone: Number,
-    OtherPhone: [Number]
-};
-
 const termSchema = (Schema) => (
     new Schema({
         name: String,
@@ -89,89 +80,6 @@ const graduationsSchema = (Schema) => (
 
 export default (Schema) => {
     return {
-        firstName: {
-            type: String,
-            index: true
-        },
-        lastName: String,
-        middleName: String,
-        fullName: String,
-        suffix: String,
-        altName: String,
-        hsGradYear: Number,
-        descriptors: {
-            type: [String],
-            validate: {
-                validator: validator.descriptors,
-                message: messages.default
-            }
-        },
-        edHistNo: String,
-        recType: String,
-        schoolAccName: String,
-        schoolType: String,
-        enrollmentStatus: String,
-        termName: String,
-        termStartDate: Date,
-        termEndDate: Date,
-        termGPA: Number,
-        cumulativeGPA: Number,
-        creditHoursAttempted: Number,
-        creditHoursGradEarned: Number,
-        remedialHoursEarned: Number,
-        termID: String,
-        educationalHistory: String,
-        contactID: {
-            type: String,
-            index: true
-        },
-        dob: {
-            type: Date
-        },
-        mobile: Number,
-        textable: {
-            type: Boolean,
-            default: false
-        },
-        homePhone: Number,
-        otherPhone: String,
-        email: String,
-        lastModifiedDate: Date,
-        lastModifiedBy: String,
-        parentGuardian: [Parent],
-        hsID: Number,
-        cellPhone: String,
-        email1: String,
-        email2: String,
-        parentName: String,
-        parentContact: String,
-        majorMinor: String,
-        mostRecentCol: {
-            type: Schema.Types.ObjectId,
-            ref: 'College'
-        },
-        cumColGPA: Number,
-        lastTermGPA: Number,
-        mostRecentEmp: String,
-        mostRecentEnrolStatus: String,
-        transferStatus: {
-            type: [String],
-            validate: {
-                validator: validator.transferStatus,
-                message: messages.default
-            }
-        },
-        studentSupportOrgName: {
-            type: [String],
-            validate: {
-                validator: validator.studentSupportOrgName,
-                message: messages.default
-            }
-        },
-        studentSupportOrgNameOther: String,
-        cohort: String,
-        hsGradDate: Date,
-        iniEnrollDate: Date,
         ethnicity: {
             type: Number,
             min: [
@@ -183,31 +91,72 @@ export default (Schema) => {
             type: String,
             enum: enums.gender
         },
-        SAT: {
-            math: Number,
-            cr: Number
+        hsGradDate: Date,
+        osis: Number,
+        nscRecordFound: {
+            type: Boolean,
+            default: false
         },
-        actEquiv: Number,
-        hsGPA: Number,
-        terms: [termSchema(Schema)],
-        graduations: [graduationsSchema(Schema)],
-        documents: [documentSchema(Schema)],
-        caseNotes: [caseNotesSchema(Schema)],
+        address: String,
+        altName: String,
+        amountOfNeedGap: Number,
+        dob: {
+            type: Date
+        },
+        cellPhone: String,
+        crewAdvisor: String,
+        email: [String],
         ferpa: {
             type: String,
             enum: enums.ferpa
         },
-        remediationStatus: {
+        firstName: {
+            type: String,
+            index: true
+        },
+        fsaid: Number,
+        hs: {
+            type: Schema.Types.ObjectId,
+            ref: 'School'
+        },
+        cohort: String,
+        hsDiplomaType: String,
+        hsGPA: Number,
+        hsGradYear: Number,
+        intendedCollege: {
+            type: Schema.Types.ObjectId,
+            ref: 'College'
+        },
+        lastName: String,
+        levelOfSupport: String,
+        middleName: String,
+        fullName: String,
+        needGap: {
+            type: Boolean,
+            default: false
+        },
+        otherPhone: [String],
+        postSecPlan: {
+            type: String,
+            enum: enums.postSecPlan
+        },
+        preferredPronoun: String,
+        descriptors: {
             type: [String],
             validate: {
-                validator: validator.remediationStatus,
+                validator: validator.descriptors,
                 message: messages.default
             }
         },
-        residency: {
-            type: String,
-            enum: enums.residency
+        studentSupportOrgName: {
+            type: [String],
+            validate: {
+                validator: validator.studentSupportOrgName,
+                message: messages.default
+            }
         },
+        studentSupportOrgNameOther: String,
+        suffix: String,
         employmentStatus: {
             type: [String],
             validate: {
@@ -215,6 +164,20 @@ export default (Schema) => {
                 message: messages.default
             }
         },
+        mostRecentCol: {
+            type: Schema.Types.ObjectId,
+            ref: 'College'
+        },
+        mostRecentEmp: String,
+        degreeTitle: {
+            type: [String],
+            validate: {
+                validator: validator.degreeTitle,
+                message: messages.default
+            }
+        },
+        gradDate: Date,
+        majorMinor: [String],
         progressToGradAss: {
             type: String,
             enum: enums.progressToGradAss
@@ -223,55 +186,43 @@ export default (Schema) => {
             type: String,
             enum: enums.progressToGradBa
         },
-        tshirtSize: {
-            type: String,
-            enum: enums.tshirtSize
+        remediationStatus: {
+            type: [String],
+            validate: {
+                validator: validator.remediationStatus,
+                message: messages.default
+            }
         },
-        sweatshirtSize: {
-            type: String,
-            enum: enums.sweatshirtSize
+        transferStatus: {
+            type: [String],
+            validate: {
+                validator: validator.transferStatus,
+                message: messages.default
+            }
         },
+        actEquiv: Number,
         applicationWave: {
             type: Number,
             min: [1, 'Application Wave must be between 1 and 3'],
             max: [3, 'Application Wave must be between 1 and 3']
         },
+        appliedToOtherSupportProgram: {
+            type: Boolean,
+            default: false
+        },
+        attendingMeetupDay: {
+            type: Boolean,
+            default: false
+        },
+        awardLetterReceived: {
+            type: Boolean,
+            default: false
+        },
         commonApp: {
             type: String,
             enum: enums.commonApp
         },
-
-        housingStatus: {
-            type: String,
-            enum: enums.housingStatus
-        },
-        physImmunRecords: {
-            type: String,
-            enum: enums.physImmunRecords
-        },
-        registeredForClasses: {
-            type: String,
-            enum: enums.registeredForClasses
-        },
-        postSecPlan: {
-            type: String,
-            enum: enums.postSecPlan
-        },
-        hs: {
-            type: Schema.Types.ObjectId,
-            ref: 'School'
-        },
-        intendedCollege: {
-            type: Schema.Types.ObjectId,
-            ref: 'College'
-        },
-        act: Number,
-        osis: Number,
-        startedFafsa: {
-            type: Boolean,
-            default: false
-        },
-        needsFollowup: {
+        completedEssay: {
             type: Boolean,
             default: false
         },
@@ -283,33 +234,22 @@ export default (Schema) => {
             type: Boolean,
             default: false
         },
-        needGap: {
+        cssProfileCreated: {
             type: Boolean,
             default: false
         },
-        amountOfNeedGap: Number,
-        facebookName: String,
-        parentPhone: String,
-        // TO ADD IN
-        attendingMeetupDay: {
-            type: Boolean,
-            default: false
+        cunyApp: {
+            type: String,
+            enum: enums.cunyApp
         },
-        expectedGrad: Number,
-        photoReleaseForm: {
-            type: Boolean,
-            default: false
-        },
-        psat: Number,
+        desiredFieldOfStudy: String,
         eaEdApplications: {
             type: Boolean,
             default: false
         },
+        expectedHSGrad: Date,
+        facebookName: String,
         lettersOfRecommendation: {
-            type: Boolean,
-            default: false
-        },
-        taxDocumentsSubmitted: {
             type: Boolean,
             default: false
         },
@@ -317,50 +257,82 @@ export default (Schema) => {
             type: Boolean,
             default: false
         },
+        parentContact: [String],
+        parentName: [String],
+        psat: Number,
+        registeredForClasses: {
+            type: String,
+            enum: enums.registeredForClasses
+        },
+        residency: {
+            type: String,
+            enum: enums.residency
+        },
+        SAT: {
+            cr: Number,
+            math: Number,
+            subjectTest: Number
+        },
+        scholarshipAmount: Number,
+        startedFafsa: {
+            type: Boolean,
+            default: false
+        },
         studentAidReportReceived: {
             type: Boolean,
             default: false
-        },
-        fsaid: Number,
-        cssProfileCreated: {
-            type: Boolean,
-            default: false
-        },
-        awardLetterReceived: {
-            type: Boolean,
-            default: false
-        },
-        scholarshipAmount: Number,
-        cunyApp: {
-            type: String,
-            enum: enums.cunyApp
         },
         sunyApp: {
             type: String,
             enum: enums.sunyApp
         },
-        desiredFieldOfStudy: String,
-        completedEssay: {
+        taxDocumentsSubmitted: {
             type: Boolean,
             default: false
         },
-        crewAdvisor: String,
-        satSubjectTests: String,
-        appliedToOtherSupportProgram: {
-            type: Boolean,
-            default: false
+        cumColGPA: Number,
+        regents: {
+            ela: Number,
+            math: Number
         },
+        lastModifiedDate: Date,
+        lastModifiedBy: String,
+        hsID: Number,
+        lastTermGPA: Number,
+        mostRecentEnrolStatus: String,
+        iniEnrollDate: Date,
+        terms: [termSchema(Schema)],
+        graduations: [graduationsSchema(Schema)],
+        documents: [documentSchema(Schema)],
+        caseNotes: [caseNotesSchema(Schema)],
         applications: [applicationsSchema(Schema)],
-        degreeTitle: {
-            type: [String],
-            validate: {
-                validator: validator.degreeTitle,
-                message: messages.default
-            }
+
+
+        tshirtSize: {
+            type: String,
+            enum: enums.tshirtSize
         },
-        gradDate: Date,
-        preferredPronoun: String,
-        nscRecordFound: {
+        sweatshirtSize: {
+            type: String,
+            enum: enums.sweatshirtSize
+        },
+        housingStatus: {
+            type: String,
+            enum: enums.housingStatus
+        },
+        physImmunRecords: {
+            type: String,
+            enum: enums.physImmunRecords
+        },
+        act: Number,
+        needsFollowup: {
+            type: Boolean,
+            default: false
+        },
+        parentPhone: String,
+        // TO ADD IN
+        expectedGrad: Number,
+        photoReleaseForm: {
             type: Boolean,
             default: false
         },

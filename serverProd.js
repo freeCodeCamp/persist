@@ -20,6 +20,10 @@ var _reload = require('reload');
 
 var _reload2 = _interopRequireDefault(_reload);
 
+var _socket = require('socket.io');
+
+var _socket2 = _interopRequireDefault(_socket);
+
 var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
@@ -35,21 +39,31 @@ if (process.env.NODE_ENV !== 'production') {
     _dotenv2.default.config();
 }
 
-// https://github.com/motdotla/dotenv/issues/114
-
-
 // import passport from 'passport';
 // import flash from 'connect-flash';
-var serverRoutes = require('./app/server/routes/index').default;
+
+var serverFolder = 'serverDist';
+if (process.env.NODE_ENV !== 'production') {
+    serverFolder = 'server';
+}
+// https://github.com/motdotla/dotenv/issues/114
+var serverRoutes = require('./app/' + serverFolder + '/routes/index').default;
+var handleSocket = require('./app/' + serverFolder + '/socket').default;
+
 // connect to mongoDB database
 _mongoose2.default.Promise = global.Promise;
-_mongoose2.default.connect(process.env.MONGODB_URI);
+var options = {
+    server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+    replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
+};
+_mongoose2.default.connect(process.env.MONGODB_URI, options);
 
 var app = (0, _express2.default)();
 
 app.use(_express2.default.static(_path2.default.join(__dirname, '/app/client/public')));
-app.use(_bodyParser2.default.json());
+app.use(_bodyParser2.default.json({ limit: '20mb' }));
 app.use(_bodyParser2.default.urlencoded({
+    limit: '20mb',
     extended: true
 }));
 
@@ -59,6 +73,8 @@ app.use(_bodyParser2.default.urlencoded({
 // using webpack-dev-server and middleware in development environment
 
 var server = _http2.default.createServer(app);
+var io = (0, _socket2.default)(server);
+io.on('connection', handleSocket.bind(null, io));
 
 if (process.env.NODE_ENV !== 'production') {
     var webpackDevMiddleware = require('webpack-dev-middleware');

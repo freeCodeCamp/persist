@@ -8,6 +8,8 @@
     "/adminlte",
     "/backups",
     "/uploads",
-    "/test"
+    "/test",
+    "/app/serverDist",
+    "/app/sachin"
   ]
 }

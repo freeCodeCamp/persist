@@ -42,7 +42,7 @@ export default function formatRecord(record, callback) {
 
 
     // handle things that should be arrays
-    const shouldBeArrays = typeKeys['checkbox'];
+    const shouldBeArrays = [...typeKeys['checkbox'], ...typeKeys['checkbox_add']];
 
     for (let key in record) {
         if (!record.hasOwnProperty(key)) continue;
@@ -51,6 +51,7 @@ export default function formatRecord(record, callback) {
             if (!record[key] || (typeof record[key] === 'string' && record[key].length < 1)) {
                 record[key] = [];
             } else {
+                record[key] = String(record[key]);
                 record[key] = record[key].replace(/,\s+/g, ',');
                 record[key] = record[key].split(/[;,]/);
                 record[key] = compact(record[key]);

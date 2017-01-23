@@ -13,8 +13,9 @@
     "debug": "node-inspector --web-port=8888 & nodemon --config nodemon.json --exec babel-node --debug server.js",
     "build": "babel server.js --out-file serverProd.js & webpack -p --config ./webpack.prod.config.js",
     "prestart": "babel app/common --out-dir app/common",
-    "start": "NODE_ENV=production babel-node serverProd.js",
+    "start": "NODE_ENV=production node serverProd.js",
     "babel": "./node_modules/.bin/babel-node",
+    "build-prod": "babel app/server --out-dir app/serverDist",
     "watch:test": "webpack-dev-server --progress"
   },
   "repository": {

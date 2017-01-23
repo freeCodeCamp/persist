@@ -1,5 +1,6 @@
 import fs from 'fs';
 import parse from 'csv-parse';
+import merge from 'lodash/merge';
 import transform from 'stream-transform';
 import async from 'async';
 
@@ -46,94 +47,36 @@ export default function (fileName) {
             let updatedStudents = [];
             let errorStudents = [];
             let errorCount = 0;
-
             console.time('dbSave');
 
-
             async.eachLimit(data, 10, (record, callback) => {
-
-                // find student record
-
-                // if exists - modify values in a set way for each value
-
-                Student.findOne({
-                    osis: record.osis
-                }, (err, doc) => {
-                    if (err) {
-                        callback(err);
-                        return;
-                    }
-                    // if doesnt exist - create new record
-                    if (!doc) {
-                        var student = new Student(record);
-                        student.save((err, doc) => {
-                            if (err) {
-                                console.log(doc, 'doc');
-                                console.log(student, 'student');
-                                console.log('WE GOT A VALIDATION ERROR', err);
-                                errorStudents.push({
-                                    osis: record.osis,
-                                    firstName: record.firstName,
-                                    lastName: record.lastName,
-                                    err
-                                });
-                                errorCount++
-                                callback(null);
-                                return;
-                            }
-                            addedCount++;
-                            newStudents.push({
-                                osis: doc.osis,
-                                firstName: doc.firstName,
-                                lastName: doc.lastName
+                Student.findOne(
+                    {osis: record.osis},
+                    (err, oldStudent) => {
+                        if (err) {
+                            console.log('error in finding document', err);
+                            return callback(err);
+                        }
+                        if (!oldStudent) {
+                            const newStudent = new Student(record);
+                            newStudent.save((err) => {
+                                if (err) {
+                                    console.log('we got a validation error', err);
+                                    return callback(err);
+                                }
+                                return callback(null);
                             });
-                            callback(null);
-                        });
-                    } else {
-
-                        // there should be custom updating here
-                        // // console.log(doc);
-
-                        // const addWithComma = ['email', 'parentName', 'parentPhone', 'degreeTitle', 'gradDate', 'preferredLanguage', 'hsc'];
-                        // const add = ['otherPhone', 'studentTags', 'transStatus', 'remediationStatus', 'riskFactors', 'employmentStatus'];
-                        // const overWriteIfHigher = ['act', 'SAT.math', 'SAT.cr'];
-
-                        // addWithComma.forEach((field) => {
-                        //   if (doc[field]) {
-                        //     doc[field] = doc[field] + ', ' + record[field];
-                        //   }
-
-                        // });
-
-                        // for now, lets just overwrite the doc
-                        doc.save(function (err, updatedDoc) {
-                            if (err) {
-                                console.log('WE GOT A VALIDATION ERROR', err);
-                                errorStudents.push({
-                                    osis: record.osis,
-                                    firstName: record.firstName,
-                                    lastName: record.lastName,
-                                    err
-                                });
-                                errorCount++
-                                callback(null);
-
-                            } else {
-                                console.log('we updated the doc!', updatedDoc);
-                                modifiedCount++;
-                                updatedStudents.push({
-                                    osis: record.osis,
-                                    firstName: record.firstName,
-                                    lastName: record.lastName
-                                });
-                                callback(null);
-                            }
-
-                        });
-
-                    }
-
-                });
+                        } else {
+                            const newStudent = merge(oldStudent, record);
+                            newStudent.save((err) => {
+                                if (err) {
+                                    console.log('we got a validation error', err);
+                                    return callback(err);
+                                }
+                                return callback(null);
+                            })
+                        }
+                    });
             }, (err) => {
                 console.log('getting through to here'.blue);
                 if (err) {
