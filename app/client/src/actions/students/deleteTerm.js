@@ -2,14 +2,14 @@ import {
     DELETE_TERM_ERROR,
     DELETE_TERM_PENDING,
     DELETE_TERM_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const deleteTerm = (osis, _id) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         const params = {
@@ -24,7 +24,7 @@ const deleteTerm = (osis, _id) => (
                     _id
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -34,7 +34,7 @@ const deleteTerm = (osis, _id) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             });

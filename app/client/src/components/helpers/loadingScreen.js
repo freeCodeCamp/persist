@@ -21,10 +21,9 @@ class FullScreenLoader extends Component {
         };
 
         const loaderStyle = {
-            fontSize: '200px',
+            fontSize: '100px',
             textAlign: 'center'
         };
-        console.log(this.props.spinner);
         return (
             <div style={ fullPageStyle }>
                 <i style={ loaderStyle } className='fa fa-refresh fa-spin'></i>
@@ -35,7 +34,7 @@ class FullScreenLoader extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        spinner: state.spinner
+        spinner: state.spinner.main || state.spinner.page
     };
 };
 

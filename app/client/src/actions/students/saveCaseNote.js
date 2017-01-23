@@ -2,14 +2,14 @@ import {
     SAVE_CASE_NOTE_ERROR,
     SAVE_CASE_NOTE_PENDING,
     SAVE_CASE_NOTE_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const saveCaseNote = (caseNote) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         return axios().post('/update-caseNote', {caseNote})
@@ -20,7 +20,7 @@ const saveCaseNote = (caseNote) => (
                     osis: caseNote.osis
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -30,7 +30,7 @@ const saveCaseNote = (caseNote) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 })
             });

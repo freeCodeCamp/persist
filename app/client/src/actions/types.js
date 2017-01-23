@@ -39,6 +39,7 @@ export const UPDATE_COLLEGE_RESET = 'filter_student_reset';
 
 // spinner
 export const SPINNER = 'spinner';
+export const SPINNER_PAGE = 'spinner_page';
 
 // schools
 export const GET_SCHOOLS_SUCCESS = 'get_schools_success';

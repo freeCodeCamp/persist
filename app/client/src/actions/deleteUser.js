@@ -2,14 +2,14 @@ import {
     DELETE_USER_ERROR,
     DELETE_USER_PENDING,
     DELETE_USER_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from './types';
 import {axios} from './utils';
 
 const deleteUser = (user) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         const params = {
@@ -22,7 +22,7 @@ const deleteUser = (user) => (
                     payload: user
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -32,7 +32,7 @@ const deleteUser = (user) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })

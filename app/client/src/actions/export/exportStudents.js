@@ -1,13 +1,13 @@
 import moment from 'moment';
 import {
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const exportStudents = (fields, students) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         const params = {
@@ -17,7 +17,7 @@ const exportStudents = (fields, students) => (
         return axios().post('/export-students', params)
             .then((res) => {
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
                 const a = document.createElement('a');
@@ -28,7 +28,7 @@ const exportStudents = (fields, students) => (
             })
             .catch((err) => {
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             });

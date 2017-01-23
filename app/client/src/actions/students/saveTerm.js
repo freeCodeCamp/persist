@@ -2,14 +2,14 @@ import {
     SAVE_TERM_ERROR,
     SAVE_TERM_PENDING,
     SAVE_TERM_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const saveTerm = (term) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         return axios().post('/update-term', {term})
@@ -20,7 +20,7 @@ const saveTerm = (term) => (
                     osis: term.osis
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -30,7 +30,7 @@ const saveTerm = (term) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 })
             });

@@ -2,14 +2,14 @@ import {
     DELETE_DOCUMENT_ERROR,
     DELETE_DOCUMENT_PENDING,
     DELETE_DOCUMENT_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const deleteDocument = (doc, osis) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         const params = {
@@ -25,7 +25,7 @@ const deleteDocument = (doc, osis) => (
                     osis
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -35,7 +35,7 @@ const deleteDocument = (doc, osis) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             });

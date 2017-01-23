@@ -2,14 +2,14 @@ import {
     DELETE_APPLICATION_ERROR,
     DELETE_APPLICATION_PENDING,
     DELETE_APPLICATION_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const deleteApplication = (osis, _id) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         const params = {
@@ -24,7 +24,7 @@ const deleteApplication = (osis, _id) => (
                     _id
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -34,7 +34,7 @@ const deleteApplication = (osis, _id) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             });

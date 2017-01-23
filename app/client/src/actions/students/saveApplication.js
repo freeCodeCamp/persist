@@ -2,14 +2,14 @@ import {
     SAVE_APPLICATION_ERROR,
     SAVE_APPLICATION_PENDING,
     SAVE_APPLICATION_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const saveApplication = (application) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         return axios().post('/update-application', {application})
@@ -20,7 +20,7 @@ const saveApplication = (application) => (
                     osis: application.osis
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -30,7 +30,7 @@ const saveApplication = (application) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 })
             });

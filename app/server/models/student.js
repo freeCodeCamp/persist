@@ -15,7 +15,7 @@ Student.pre('save', true, function (next, done) {
     if (record.hsGradDate instanceof Date) {
         record.hsGradYear = record.hsGradDate.getFullYear();
     } else {
-        delete record.hsGradYear;
+        record.hsGradYear = undefined;
     }
     done();
 });

@@ -32,7 +32,6 @@ class Upload extends React.Component {
     }
 
     render() {
-        const {spinner} = this.props;
         const fileTypes = [
             {
                 name: 'Student Data',
@@ -56,7 +55,7 @@ class Upload extends React.Component {
             }
         ];
 
-        var optionsHTML = fileTypes.map((type, i) => {
+        const optionsHTML = fileTypes.map((type, i) => {
             return (
                 <MenuItem key={ i }
                           name={ type.name }
@@ -67,7 +66,6 @@ class Upload extends React.Component {
 
         return (
             <Content title='Upload'>
-                <Spinner/>
                 <p>
                     Which data would you like to upload?
                 </p>
@@ -84,8 +82,4 @@ class Upload extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    spinner: state.spinner
-});
-
-export default connect(mapStateToProps)(Upload);
+export default Upload;

@@ -2,7 +2,7 @@ import {
     SAVE_DOCUMENT_ERROR,
     SAVE_DOCUMENT_PENDING,
     SAVE_DOCUMENT_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import oaxios from 'axios';
 import {axios} from '../utils';
@@ -21,7 +21,7 @@ const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
                 osis: osis
             });
             dispatch({
-                type: SPINNER,
+                type: SPINNER_PAGE,
                 payload: false
             });
         })
@@ -31,8 +31,8 @@ const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
                 payload: err
             });
             dispatch({
-                type: SPINNER,
-                payload: true
+                type: SPINNER_PAGE,
+                payload: false
             });
         });
 };
@@ -49,7 +49,7 @@ const saveDocument = (oldDocument, newDocument, osis) => (
         params.file = !!file;
         params.fileName = newDocument.name;
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         return axios().get('/sign-s3', {params})
@@ -69,7 +69,7 @@ const saveDocument = (oldDocument, newDocument, osis) => (
                                 payload: err
                             });
                             dispatch({
-                                type: SPINNER,
+                                type: SPINNER_PAGE,
                                 payload: false
                             });
                         });

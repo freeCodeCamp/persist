@@ -110,7 +110,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    spinner: state.spinner
+    spinner: state.spinner.main
 });
 
 const mapDispatchToProps = (dispatch) => {

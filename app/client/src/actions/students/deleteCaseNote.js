@@ -2,14 +2,14 @@ import {
     DELETE_CASE_NOTE_ERROR,
     DELETE_CASE_NOTE_PENDING,
     DELETE_CASE_NOTE_SUCCESS,
-    SPINNER
+    SPINNER_PAGE
 } from '../types';
 import {axios} from '../utils';
 
 const deleteCaseNote = (osis, _id) => (
     (dispatch) => {
         dispatch({
-            type: SPINNER,
+            type: SPINNER_PAGE,
             payload: true
         });
         const params = {
@@ -24,7 +24,7 @@ const deleteCaseNote = (osis, _id) => (
                     _id
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             })
@@ -34,7 +34,7 @@ const deleteCaseNote = (osis, _id) => (
                     payload: err
                 });
                 dispatch({
-                    type: SPINNER,
+                    type: SPINNER_PAGE,
                     payload: false
                 });
             });
