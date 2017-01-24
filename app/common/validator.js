@@ -304,8 +304,8 @@ export const enums = {
 };
 
 const validator = {};
-
-for (const field of exportKeys(map(studentKeys, 'dbName'))['checkbox']) {
+const studentFieldTypes = exportKeys(map(studentKeys, 'dbName'), studentKeys);
+for (const field of studentFieldTypes['checkbox']) {
     validator[field] = (values) => {
         return validateArray(values, types[field]);
     }

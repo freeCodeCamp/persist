@@ -23,12 +23,12 @@ export default [{
     fieldName: 'ENROLLMENT_BEGIN',
     displayName: 'Enrollment Begin',
     dbName: 'enrolBegin',
-    fieldType: 'DateField'
+    fieldType: 'DatePicker'
 }, {
     fieldName: 'ENROLLMENT_END',
     displayName: 'Enrollment End',
     dbName: 'enrolEnd',
-    fieldType: 'DateField'
+    fieldType: 'DatePicker'
 }, {
     fieldName: 'Term GPA',
     displayName: 'Term GPA',

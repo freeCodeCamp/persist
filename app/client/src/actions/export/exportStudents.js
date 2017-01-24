@@ -2,7 +2,10 @@ import moment from 'moment';
 import {
     SPINNER_PAGE
 } from '../types';
-import {axios} from '../utils';
+import {studentKeys} from '../../../../common/fieldKeys';
+import json2csv from 'json2csv';
+import keyBy from 'lodash/keyBy';
+const studentKeysObj = keyBy(studentKeys, 'dbName');
 
 const exportStudents = (fields, students) => (
     (dispatch) => {
@@ -10,28 +13,34 @@ const exportStudents = (fields, students) => (
             type: SPINNER_PAGE,
             payload: true
         });
-        const params = {
+        const fieldNames = fields.map((field) => {
+            if (studentKeysObj[field]) {
+                return studentKeysObj[field].fieldName
+            }
+            return 'Field not available';
+        });
+        const quotes = '';
+        const doubleQuotes = '"';
+        const csv = json2csv({
+            data: students,
             fields,
-            students
-        };
-        return axios().post('/export-students', params)
-            .then((res) => {
-                dispatch({
-                    type: SPINNER_PAGE,
-                    payload: false
-                });
-                const a = document.createElement('a');
-                a.setAttribute('href', `data:attachment/csv;charset=utf-8,${encodeURI(res.data)}`);
-                a.setAttribute('target', '_blank');
-                a.setAttribute('download', `students-${moment(new Date()).format('lll')}.csv`);
-                a.click();
-            })
-            .catch((err) => {
-                dispatch({
-                    type: SPINNER_PAGE,
-                    payload: false
-                });
+            fieldNames,
+            quotes,
+            doubleQuotes
+        }, (err, csvFile) => {
+            if (err) {
+                return console.log(err);
+            }
+            const a = document.createElement('a');
+            a.setAttribute('href', `data:attachment/csv;charset=utf-8,${encodeURI(csvFile)}`);
+            a.setAttribute('target', '_blank');
+            a.setAttribute('download', `students-${moment(new Date()).format('lll')}.csv`);
+            a.click();
+            dispatch({
+                type: SPINNER_PAGE,
+                payload: false
             });
+        });
     }
 );
 

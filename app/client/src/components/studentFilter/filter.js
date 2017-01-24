@@ -64,7 +64,6 @@ class StudentFilter extends Component {
                 studentKeysObj[key].fieldType === 'Checkbox'
             )).value();
         conditions = _.omit(conditions, [..._.keys(extraConditions), ..._.keys(arrayConditions)]);
-        console.log(conditions, arrayConditions, extraConditions);
         let filteredStudents = _(students)
             .filter(conditions);
         filteredStudents = filteredStudents

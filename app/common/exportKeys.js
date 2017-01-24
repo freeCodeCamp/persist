@@ -1,8 +1,6 @@
 import keyBy from 'lodash/keyBy';
-import {studentKeys} from './fieldKeys';
-const studentKeysObj = keyBy(studentKeys, 'dbName');
 
-export default (keysList) => {
+export default (keysList, fieldList) => {
     const keys = {
         'college': [],
         'school': [],
@@ -11,27 +9,28 @@ export default (keysList) => {
         'datepicker': [],
         'normal': []
     };
-    keysList.forEach((studentKey) => {
-        switch (studentKeysObj[studentKey].type) {
+    const fieldListObj = keyBy(fieldList, 'dbName');
+    keysList.forEach((fieldKey) => {
+        switch (fieldListObj[fieldKey].type) {
             case 'college':
-                keys['college'].push(studentKey);
+                keys['college'].push(fieldKey);
                 return;
             case 'school':
-                keys['school'].push(studentKey);
+                keys['school'].push(fieldKey);
                 return;
         }
-        switch (studentKeysObj[studentKey].fieldType) {
+        switch (fieldListObj[fieldKey].fieldType) {
             case 'Checkbox':
-                keys['checkbox'].push(studentKey);
+                keys['checkbox'].push(fieldKey);
                 return;
             case 'Checkbox_Add':
-                keys['checkbox_add'].push(studentKey);
+                keys['checkbox_add'].push(fieldKey);
                 return;
             case 'DatePicker':
-                keys['datepicker'].push(studentKey);
+                keys['datepicker'].push(fieldKey);
                 return;
             default:
-                keys['normal'].push(studentKey);
+                keys['normal'].push(fieldKey);
                 return;
         }
     });
