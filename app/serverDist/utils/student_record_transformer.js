@@ -35,7 +35,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var typeKeys = (0, _exportKeys2.default)((0, _map2.default)(_fieldKeys.studentKeys, 'dbName'));
+var typeKeys = (0, _exportKeys2.default)((0, _map2.default)(_fieldKeys.studentKeys, 'dbName'), _fieldKeys.studentKeys);
 
 function formatRecord(record, callback) {
 

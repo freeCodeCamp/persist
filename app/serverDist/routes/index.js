@@ -38,13 +38,13 @@ var _save_csv_term_data = require('../utils/save_csv_term_data');
 
 var _save_csv_term_data2 = _interopRequireDefault(_save_csv_term_data);
 
-var _save_csv_applications = require('../utils/save_csv_applications');
-
-var _save_csv_applications2 = _interopRequireDefault(_save_csv_applications);
-
 var _save_csv_graduation_data = require('../utils/save_csv_graduation_data');
 
 var _save_csv_graduation_data2 = _interopRequireDefault(_save_csv_graduation_data);
+
+var _save_csv_applications = require('../utils/save_csv_applications');
+
+var _save_csv_applications2 = _interopRequireDefault(_save_csv_applications);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -326,8 +326,6 @@ exports.default = function (app) {
     }).delete(function (req, res) {
         _controllers.TermController.deleteTerm(req, res);
     });
-
-    app.post('/export-students', requireAuth, _controllers.ExportController.exportStudentCSV);
 
     app.post('/register', _controllers.AuthController.register);
     app.post('/login', requireLogin, _controllers.AuthController.login);

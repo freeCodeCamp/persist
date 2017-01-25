@@ -85,13 +85,4 @@ Object.defineProperty(exports, 'TermController', {
   }
 });
 
-var _export = require('./export');
-
-Object.defineProperty(exports, 'ExportController', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_export).default;
-  }
-});
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

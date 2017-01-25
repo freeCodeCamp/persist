@@ -47,6 +47,10 @@ class ExportCSV extends Component {
                     const studentField = student[field];
                     student[field] = `"${studentField.join(',')}"`;
                 });
+                fieldTypes['checkbox_add'].forEach((field) => {
+                    const studentField = student[field];
+                    student[field] = `"${studentField.join(',')}"`;
+                });
                 fieldTypes['datepicker'].forEach((field) => {
                     const studentField = student[field];
                     const dateString = moment(studentField).format('l');
