@@ -5,7 +5,6 @@ import {FormGroup, ControlLabel, FormControl, Button, Input, InputGroup} from 'r
 import {Spinner} from '../helpers';
 import Content from '../helpers/content';
 import DropZoneUpload from '../helpers/dropzoneUpload';
-import Paginate from '../uploadUI/Paginate';
 import {SelectField, MenuItem} from 'material-ui';
 
 class Upload extends React.Component {
@@ -76,7 +75,6 @@ class Upload extends React.Component {
                     </SelectField>
                 </div>
                 { this.state.chosen ? <DropZoneUpload url={ this.state.url }/> : null }
-                <Paginate />
             </Content>
         );
     }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Accordion, Panel, Col, Row} from 'react-bootstrap';
+import {Accordion, Panel, Col, Row, Clearfix} from 'react-bootstrap';
 import {reduxForm, Field} from 'redux-form';
 import {connect} from 'react-redux';
 import {RaisedButton} from 'material-ui';
@@ -139,10 +139,14 @@ class StudentFilter extends Component {
         const {handleSubmit} = this.props;
         const {filteredStudents} = this.state;
         const filterKeysHTML = (form) => {
-            const fieldsHTML = filterKeys.map((filterKey) => {
+            const fieldsHTML = [];
+            filterKeys.map((filterKey, i) => {
                 const field = studentKeysObj[filterKey];
-                return (
-                    <Col style={{minHeight: 100}} xs={12} sm={6} md={4} lg={3} key={field.dbName}>
+                fieldsHTML.push(
+                    <Col key={field.dbName}
+                         style={{minHeight: 100, display: 'flex', justifyContent: 'center'}} xs={12}
+                         sm={6} md={6}
+                         lg={4}>
                         <ReduxFormGroup
                             name={field.dbName}
                             form={form}
@@ -150,6 +154,12 @@ class StudentFilter extends Component {
                         />
                     </Col>
                 );
+                if ((i + 1) % 2 === 0) {
+                    fieldsHTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock/>);
+                }
+                if ((i + 1) % 3 === 0) {
+                    fieldsHTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock/>);
+                }
             });
             // hsGPA
             fieldsHTML.push(

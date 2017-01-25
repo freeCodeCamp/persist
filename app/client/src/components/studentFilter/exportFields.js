@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Accordion, Panel, Col, Row} from 'react-bootstrap';
+import {Accordion, Panel, Col, Row, Clearfix} from 'react-bootstrap';
 import {reduxForm, Field} from 'redux-form';
 import moment from 'moment';
 import {connect} from 'react-redux';
@@ -147,16 +147,29 @@ class ExportCSV extends Component {
         const {styles} = this;
         const {handleSubmit} = this.props;
         const exportKeys = keys(studentKeysObj);
-        const exportKeysHTML = exportKeys.map((field, i) => {
-            return (
-                <Col xs={12} sm={6} md={4} lg={3} key={field}>
+        const exportKeysHTML = [];
+        exportKeys.map((field, i) => {
+            exportKeysHTML.push(
+                <Col key={field}
+                     style={{display: 'flex', justifyContent: 'center'}} xs={12}
+                     sm={6} md={4}
+                     lg={3}>
                     <Field
                         name={field}
                         component={Checkbox}
                         label={studentKeysObj[field].displayName}
                     />
                 </Col>
-            )
+            );
+            if ((i + 1) % 2 === 0) {
+                exportKeysHTML.push(<Clearfix key={`${field}-sm-${i}`} visibleSmBlock/>);
+            }
+            if ((i + 1) % 3 === 0) {
+                exportKeysHTML.push(<Clearfix key={`${field}-md-${i}`} visibleMdBlock/>);
+            }
+            if ((i + 1) % 4 === 0) {
+                exportKeysHTML.push(<Clearfix key={`${field}-lg-${i}`} visibleLgBlock/>);
+            }
         });
         return (
             <Accordion>
