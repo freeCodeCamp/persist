@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import HeaderMessages from './header-messages/header-messages';
 import HeaderNotifications from './header-notifications/header-notifications';
 
-export default class HeaderBar extends Component {
+class HeaderBar extends Component {
 
     pushMenu() {
         var body = document.body;
@@ -28,6 +29,7 @@ export default class HeaderBar extends Component {
     }
 
     render() {
+        const {user: {firstName, lastName}} = this.props;
         return (
             <header className='main-header'>
                 { /* Logo */ }
@@ -50,45 +52,26 @@ export default class HeaderBar extends Component {
                             <HeaderNotifications />
                             { /* User Account: style can be found in dropdown.less */ }
                             <li className='dropdown user user-menu'>
-                                <a href='#' className='dropdown-toggle' data-toggle='dropdown'><img src='/molly.PNG'
-                                                                                                    className='user-image'
-                                                                                                    alt='User Image'/>
-                                    <span className='hidden-xs'>Molly Dunbar</span></a>
+                                <a href='#' className='dropdown-toggle' data-toggle='dropdown'><img
+                                    src='/default-profile-pic.png'
+                                    className='user-image'
+                                    alt='User Image'/>
+                                    <span className='hidden-xs'>{`${firstName} ${lastName}`.trim()}</span></a>
                                 <ul className='dropdown-menu'>
                                     { /* User image */ }
                                     <li className='user-header'>
-                                        <img src='/molly.PNG' className='img-circle' alt='User Image'/>
+                                        <img src='/default-profile-pic.png' className='img-circle' alt='User Image'/>
                                         <p>
-                                            Molly Dunbar - The Boss
-                                            <small>Member since Forever</small>
+                                            {`${firstName} ${lastName}`.trim()}
                                         </p>
-                                    </li>
-                                    { /* Menu Body */ }
-                                    <li className='user-body'>
-                                        <div className='col-xs-4 text-center'>
-                                            <a href='#'>Followers</a>
-                                        </div>
-                                        <div className='col-xs-4 text-center'>
-                                            <a href='#'>Sales</a>
-                                        </div>
-                                        <div className='col-xs-4 text-center'>
-                                            <a href='#'>Friends</a>
-                                        </div>
                                     </li>
                                     { /* Menu Footer */ }
                                     <li className='user-footer'>
-                                        <div className='pull-left'>
-                                            <a href='#' className='btn btn-default btn-flat'>Profile</a>
-                                        </div>
-                                        <div className='pull-right'>
-                                            <a href='#' className='btn btn-default btn-flat'>Sign out</a>
+                                        <div style={{textAlign: 'center'}}>
+                                            <Link to='/logout' className='btn btn-default btn-flat'>Sign out</Link>
                                         </div>
                                     </li>
                                 </ul>
-                            </li>
-                            { /* ontrol Sidebar Toggle Button */ }
-                            <li>
-                                <a href='#' data-toggle='control-sidebar'><i className='fa fa-gears'></i></a>
                             </li>
                         </ul>
                     </div>
@@ -97,3 +80,9 @@ export default class HeaderBar extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    user: state.auth.user
+});
+
+export default connect(mapStateToProps)(HeaderBar);

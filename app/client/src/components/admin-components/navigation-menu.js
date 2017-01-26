@@ -95,6 +95,7 @@ class NavigationMenu extends Component {
     }
 
     render() {
+        const {user: {firstName, lastName}} = this.props;
         return (
             <aside className='main-sidebar'>
                 { /* sidebar: style can be found in sidebar.less */ }
@@ -102,11 +103,11 @@ class NavigationMenu extends Component {
                     { /* Sidebar user panel */ }
                     <div className='user-panel'>
                         <div className='pull-left image'>
-                            <img src='/molly.PNG' className='img-circle' alt='User Image'/>
+                            <img src='/default-profile-pic.png' className='img-circle' alt='User Image'/>
                         </div>
                         <div className='pull-left info'>
                             <p>
-                                Molly Dunbar
+                                {`${firstName} ${lastName}`.trim()}
                             </p>
                             <a href='#'><i className='fa fa-circle text-success'></i> Online</a>
                         </div>
@@ -192,7 +193,8 @@ class NavigationMenu extends Component {
 const mapStateToProps = (state) => {
     return {
         students: state.students.value,
-        colleges: state.colleges.value
+        colleges: state.colleges.value,
+        user: state.auth.user
     };
 };
 
