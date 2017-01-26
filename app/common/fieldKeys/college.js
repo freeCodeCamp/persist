@@ -3,164 +3,220 @@ export const reference = [{
     displayName: 'NSC Official College Name',
     dbName: 'fullName',
     hidden: true,
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: false
 }, {
     fieldName: 'Short Name',
-    displayName: 'College Short Name',
+    displayName: 'College Name',
     dbName: 'shortName',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: false
 }, {
     fieldName: 'Naviance Name',
     displayName: 'Naviance Name',
     dbName: 'navianceName',
     hidden: true,
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: false
 }, {
     fieldName: 'INSTNM',
     displayName: 'College Scorecard Name',
     dbName: 'collegeScorecardName',
     hidden: true,
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: false
 }, {
     fieldName: 'Testing Policy',
     displayName: 'Testing Policy',
     dbName: 'testingPolicy',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: 'Barron\'s Rating',
     displayName: 'Barron\'s Rating',
     dbName: 'barronsRating',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: 'Average HS GPA',
     displayName: 'Average HS GPA',
     dbName: 'avgHsGpa',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: '% First Generation',
     displayName: '% First Generation',
     dbName: 'percentFirstGen',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'PCTPELL',
     displayName: '% Pell Grant Recipient',
     dbName: 'percentPellGrant',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'Freshman Retention Rate',
     displayName: 'Freshman Retention Rate',
     dbName: 'freshRetRate',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'Grad Rate in 150% of time: White Students',
     displayName: 'Grad Rate in 150% of time: White Students',
     dbName: 'gradRate.white',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'Grad Rate in 150% of time: Black Students',
     displayName: 'Grad Rate in 150% of time: Black Students',
     dbName: 'gradRate.black',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'Grad Rate in 150% of time: Hispanic Students',
     displayName: 'Grad Rate in 150% of time: Hispanic Students',
     dbName: 'gradRate.hispanic',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'Grad Rate in 150% of time: Overall',
     displayName: 'Grad Rate in 150% of time: Overall',
     dbName: 'gradRate.overall',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'College Type',
     displayName: 'College Type',
     dbName: 'collType',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: '4 Year vs. Two Year',
     displayName: '4 Year vs 2 Year',
     dbName: 'durationType',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: 'HIGHDEG',
     displayName: 'Highest Degree Granted',
     dbName: 'highestDegGranted',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: 'PREDDEG',
     displayName: 'Predominent Degree Granted',
     dbName: 'predominentDegGranted',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: 'CITY',
     displayName: 'City',
     dbName: 'city',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: 'STABBR',
     displayName: 'State',
     dbName: 'state',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: 'ZIP',
     displayName: 'Zipcode',
     dbName: 'zipcode',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'INSTURL',
     displayName: 'Website',
     dbName: 'website',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'NPCURL',
     displayName: 'Net Price Calculator',
     dbName: 'netPriceCalculator',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
-    fieldName: 'LOCALE2',
+    fieldName: 'LOCALE',
     displayName: 'Locale',
     dbName: 'locale',
-    fieldType: 'SelectField'
+    fieldType: 'SelectField',
+    editable: true
 }, {
     fieldName: '% Need met',
     displayName: '% Need met',
     dbName: 'percentNeedMet',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
-    fieldName: 'How many students from each HS class enrolled in fall after graduation',
-    displayName: 'How many students from each HS class enrolled in fall after graduation',
-    dbName: 'studentsEnrolledAfterGrad',
-    fieldType: 'TextField'
+    fieldName: '# Network Students Attended: 2012',
+    displayName: '2012',
+    dbName: 'networkStudentsAttended.2012',
+    fieldType: 'TextField',
+    editable: false
+}, {
+    fieldName: '# Network Students Attended: 2013',
+    displayName: '2013',
+    dbName: 'networkStudentsAttended.2013',
+    fieldType: 'TextField',
+    editable: false
+}, {
+    fieldName: '# Network Students Attended: 2014',
+    displayName: '2014',
+    dbName: 'networkStudentsAttended.2014',
+    fieldType: 'TextField',
+    editable: false
+}, {
+    fieldName: '# Network Students Attended: 2015',
+    displayName: '2015',
+    dbName: 'networkStudentsAttended.2015',
+    fieldType: 'TextField',
+    editable: false
+}, {
+    fieldName: '# Network Students Attended: 2016',
+    displayName: '2016',
+    dbName: 'networkStudentsAttended.2016',
+    fieldType: 'TextField',
+    editable: false
 }, {
     fieldName: 'Important Contacts',
     displayName: 'Important Contacts',
     dbName: 'importantContacts',
-    fieldType: 'TextField'
+    fieldType: 'Checkbox_Add',
+    editable: true
 }, {
     fieldName: 'Opportunity programs/special programs',
     displayName: 'Opportunity programs/special programs',
     dbName: 'specialPrograms',
-    fieldType: 'TextField'
+    fieldType: 'Checkbox',
+    editable: true
 }, {
     fieldName: 'Notes on special programs',
     displayName: 'Notes on special programs',
     dbName: 'specialProgramsNotes',
-    fieldType: 'TextField'
+    fieldType: 'TextBox',
+    editable: true
 }, {
     fieldName: 'Other notes on college',
     displayName: 'Other notes on college',
     dbName: 'otherNotes',
-    fieldType: 'TextField'
+    fieldType: 'TextBox',
+    editable: true
 }, {
     fieldName: 'REGION',
     displayName: 'REGION',
     dbName: 'region',
-    fieldType: 'TextField'
+    fieldType: 'TextField',
+    editable: true
 }, {
     fieldName: 'HBCU',
     displayName: 'HBCU',
     dbName: 'hbcu',
-    fieldType: 'TextField'
+    fieldType: 'Toggle',
+    editable: true
 }, {
     fieldName: 'RELAFFIL',
     displayName: 'Religious Affiliation',

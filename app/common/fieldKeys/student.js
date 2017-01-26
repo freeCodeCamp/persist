@@ -222,12 +222,6 @@ export const reference = [
         fieldType: 'TextField',
         editable: true
     }, {
-        fieldName: 'DEGREE_TITLE',
-        displayName: 'Degree Earned',
-        dbName: 'degreeTitle',
-        fieldType: 'Checkbox',
-        editable: true
-    }, {
         fieldName: 'GRADUATION_DATE',
         displayName: 'Graduation Date',
         dbName: 'gradDate',

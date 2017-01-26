@@ -252,6 +252,9 @@ export const types = {
     ethnicity: transform(mapping.ethnicity, (res, val, key) => {
         res.push({text: val, value: key});
     }, []),
+    colType: transform(mapping.colType, (res, val, key) => {
+        res.push({text: val, value: key});
+    }, []),
     hsGradYear: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1),
     expectedGrad: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1)
 };
@@ -321,7 +324,8 @@ export const enums = {
 
 const validator = {};
 const studentFieldTypes = exportKeys(map(studentKeys, 'dbName'), studentKeys);
-for (const field of studentFieldTypes['checkbox']) {
+const arrayTypes = [...studentFieldTypes['checkbox'], ...studentFieldTypes['checkbox_add'], 'degreeTitle'];
+for (const field of arrayTypes) {
     validator[field] = (values) => {
         return validateArray(values, types[field]);
     }

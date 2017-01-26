@@ -12,7 +12,18 @@ const termSchema = (Schema) => (
         enrolEnd: Date,
         creditsEarned: Number,
         creditsAttempted: Number,
-        gpa: Number
+        recordType: {
+            type: String,
+            default: 'Counselor Added'
+        },
+        gpa: Number,
+        degreeTitle: {
+            type: [String],
+            validate: {
+                validator: validator.degreeTitle,
+                message: messages.default
+            }
+        },
     })
 );
 
@@ -28,7 +39,10 @@ const documentSchema = (Schema) => (
 const caseNotesSchema = (Schema) => (
     new Schema({
         description: String,
-        communicationType: String,
+        communicationType: {
+            type: String,
+            enum: enums['caseNotes.communicationType']
+        },
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User'
@@ -51,8 +65,18 @@ const applicationsSchema = (Schema) => (
             type: Schema.Types.ObjectId,
             ref: 'College'
         },
-        result: String,
-        heop: String,
+        type: {
+            type: String,
+            enum: enums['applications.type']
+        },
+        result: {
+            type: String,
+            enum: enums['applications.result']
+        },
+        heop: {
+            type: String,
+            enum: enums['application.heop']
+        },
         attending: {
             type: Boolean,
             default: false
@@ -169,13 +193,6 @@ export default (Schema) => {
             ref: 'College'
         },
         mostRecentEmp: String,
-        degreeTitle: {
-            type: [String],
-            validate: {
-                validator: validator.degreeTitle,
-                message: messages.default
-            }
-        },
         gradDate: Date,
         majorMinor: [String],
         progressToGradAss: {

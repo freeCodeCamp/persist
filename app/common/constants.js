@@ -58,6 +58,7 @@ export const mapping = {
         W: 'Withdrawn',
         D: 'Deceased',
         Military: 'Military',
-        'Not Enrolled': 'Not Enrolled'
+        'Not Enrolled': 'Not Enrolled',
+        'Graduated': 'Graduated'
     }
 };
