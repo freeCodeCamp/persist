@@ -20,7 +20,7 @@ const termSchema = (Schema) => (
         degreeTitle: {
             type: [String],
             validate: {
-                validator: validator.degreeTitle,
+                validator: validator['terms.degreeTitle'],
                 message: messages.default
             }
         },

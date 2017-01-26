@@ -206,7 +206,7 @@ class Applications extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    spinner: state.spinner,
+    spinner: state.spinner.page,
     auth: state.auth,
     collegeObj: state.colleges.idObj
 });

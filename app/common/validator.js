@@ -101,7 +101,7 @@ export const types = {
         'Y (2019)',
         'Z (2020)'
     ],
-    degreeTitle: [
+    'terms.degreeTitle': [
         'BACHELOR OF BUSINESS ADMINISTRATION',
         'BACHELOR OF MUSIC',
         'BACHELOR OF SCIENCE',
@@ -324,7 +324,7 @@ export const enums = {
 
 const validator = {};
 const studentFieldTypes = exportKeys(map(studentKeys, 'dbName'), studentKeys);
-const arrayTypes = [...studentFieldTypes['checkbox'], ...studentFieldTypes['checkbox_add'], 'degreeTitle'];
+const arrayTypes = [...studentFieldTypes['checkbox'], ...studentFieldTypes['checkbox_add'], 'terms.degreeTitle'];
 for (const field of arrayTypes) {
     validator[field] = (values) => {
         return validateArray(values, types[field]);

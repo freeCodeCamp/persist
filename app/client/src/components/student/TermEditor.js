@@ -5,11 +5,13 @@ import {Col} from 'react-bootstrap';
 import {ReduxFormGroup, DatePicker} from '../helpers'
 import {MenuItem} from 'material-ui';
 import moment from 'moment';
+import keyBy from 'lodash/keyBy';
 import isPlainObject from 'lodash/isPlainObject';
 import {termKeys} from '../../../../common/fieldKeys';
+import {Chip} from '../helpers';
 import {SelectField, TextField, Toggle} from 'redux-form-material-ui';
 import {types} from '../../../../common/validator';
-
+const termKeysObj = keyBy(termKeys, 'dbName');
 const styles = {
     error: {
         fontSize: 12,
@@ -44,8 +46,6 @@ class TermEditor extends Component {
     }
 
     render() {
-        const collegeField = termKeys
-            .find((key) => key.dbName === 'college');
         const {initialValues, termForm, termName, termStart, termEnd} = this.props;
         let termNamesHTML = [];
         let syncErrors = {};
@@ -57,9 +57,9 @@ class TermEditor extends Component {
                 );
             });
         }
-        const nameVisibility = termStart &&
+        const nameDisplay = termStart &&
         termEnd &&
-        (!termName || termName.length < 1) ? 'visible' : 'hidden';
+        (!termName || termName.length < 1) ? 'block' : 'none';
         if (termForm['TermEditor']) {
             syncErrors = termForm['TermEditor'].syncErrors;
         }
@@ -69,21 +69,18 @@ class TermEditor extends Component {
                     <ReduxFormGroup
                         form={this}
                         initValue={ initialValues.college }
-                        field={ collegeField }
+                        field={ termKeysObj.college }
                     />
-                    {syncErrors.college ?
+                    {syncErrors && syncErrors.college ?
                         <div style={styles.error}>{syncErrors.college}</div> :
                         null
                     }
                 </Col>
                 <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
-                    <Field
-                        name='enrolBegin'
-                        hintText='Enrollment Begin'
-                        floatingLabelText='Enrollment Begin'
-                        container='inline'
-                        locale='en-US'
-                        component={ DatePicker }
+                    <ReduxFormGroup
+                        form={this}
+                        initValue={ initialValues.enrolBegin }
+                        field={ termKeysObj.enrolBegin }
                     />
                 </Col>
                 <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
@@ -127,7 +124,19 @@ class TermEditor extends Component {
                         floatingLabelText='Term GPA'
                     />
                 </Col>
-                <Col style={{minHeight: 100, visibility: nameVisibility}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='degreeTitle'
+                        component={ Chip }
+                        hintText='Degree Earned'
+                        floatingLabelText='Degree Earned'
+                        form={this}
+                        options={ types['terms.degreeTitle']}
+                        initValue={initialValues.degreeTitle}
+                        field={termKeysObj['degreeTitle']}
+                    />
+                </Col>
+                <Col style={{minHeight: 100, display: nameDisplay}} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='name'
                         component={SelectField}

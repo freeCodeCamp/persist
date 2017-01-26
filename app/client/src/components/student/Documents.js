@@ -182,7 +182,7 @@ class Documents extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    spinner: state.spinner
+    spinner: state.spinner.page
 });
 
 const mapDispatchToProps = (dispatch) => (

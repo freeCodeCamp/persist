@@ -75,6 +75,7 @@ class ReduxFormGroup extends React.Component {
                            hintText={ displayName }
                            floatingLabelText={ displayName }
                            container='inline'
+                           locale='en-US'
                            component={ DatePicker }/>
                 );
             case 'Checkbox':

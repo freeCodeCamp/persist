@@ -93,6 +93,7 @@ class Terms extends Component {
             console.log(termForm);
             return;
         }
+        return console.log(newTerm);
         let term;
         term = newTerm;
         if (oldTerm._id) {
@@ -208,7 +209,7 @@ class Terms extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    spinner: state.spinner,
+    spinner: state.spinner.page,
     auth: state.auth,
     collegeObj: state.colleges.idObj,
     termForm: state.form['TermEditor']

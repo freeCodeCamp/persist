@@ -28,7 +28,6 @@ const filterKeys = [
     'descriptors',
     'employmentStatus',
     'mostRecentCol',
-    'degreeTitle',
     'progressToGradAss',
     'progressToGradBa',
     'opportunityProgramEligible',

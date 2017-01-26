@@ -212,7 +212,7 @@ class CaseNotes extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    spinner: state.spinner,
+    spinner: state.spinner.page,
     auth: state.auth,
     usersObj: state.counselors.idObj
 });
