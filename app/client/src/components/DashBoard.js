@@ -14,7 +14,6 @@ import {
 import {Spinner} from './helpers';
 import NavigationMenu from './admin-components/navigation-menu';
 // import ControlPanel from './admin-components/control-panel';
-import ControlMenu from './admin-components/controls-menu';
 import Footer from './admin-components/footer';
 import '../../public/style/main2.scss';
 import {MaterialUIWrapper} from './helpers';

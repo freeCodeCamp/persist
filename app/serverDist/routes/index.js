@@ -97,20 +97,6 @@ var requireLogin = function requireLogin(req, res, next) {
 
 exports.default = function (app) {
 
-    app.post('/studentPaginate', function (req, res) {
-        var offset = req.body.offset;
-        _models.Student.paginate({}, {
-            offset: offset,
-            limit: 20
-        }, function (err, result) {
-            if (err) {
-                res.status(500).send(err);
-                return;
-            }
-            res.status(200).send(result.docs);
-        });
-    });
-
     app.post('/upload/studentData', fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
