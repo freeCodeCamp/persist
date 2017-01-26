@@ -45,9 +45,9 @@ class ColCompRate extends Component {
                     const terms = student.terms;
                     if (terms.length > 0) {
                         const college = colleges[terms[0].college];
-                        const gradRate = college.gradRate.overall;
-                        if (college && gradRate) {
-                            result[hsGradYear].push(gradRate);
+                        const gradRate = college.gradRate;
+                        if (college && gradRate && gradRate.overall) {
+                            result[hsGradYear].push(gradRate.overall);
                         }
                     }
                 }

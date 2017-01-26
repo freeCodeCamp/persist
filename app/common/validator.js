@@ -85,6 +85,22 @@ export const types = {
     ferpa: [
         'Yes', 'No'
     ],
+    cohort: [
+        'M (2007)',
+        'N (2008)',
+        'O (2009)',
+        'P (2010)',
+        'Q (2011)',
+        'R (2012)',
+        'S (2013)',
+        'T (2014)',
+        'U (2015)',
+        'V (2016)',
+        'W (2017)',
+        'X (2018)',
+        'Y (2019)',
+        'Z (2020)'
+    ],
     degreeTitle: [
         'BACHELOR OF BUSINESS ADMINISTRATION',
         'BACHELOR OF MUSIC',

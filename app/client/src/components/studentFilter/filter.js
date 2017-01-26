@@ -144,7 +144,8 @@ class StudentFilter extends Component {
                 const field = studentKeysObj[filterKey];
                 fieldsHTML.push(
                     <Col key={field.dbName}
-                         style={{minHeight: 100, display: 'flex', justifyContent: 'center'}} xs={12}
+                         style={{minHeight: 100, display: 'flex', justifyContent: 'center'}}
+                         xs={12}
                          sm={6} md={6}
                          lg={4}>
                         <ReduxFormGroup
@@ -163,7 +164,10 @@ class StudentFilter extends Component {
             });
             // hsGPA
             fieldsHTML.push(
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={4} lg={3} key='hsGPA'>
+                <Col key='hsGPA'
+                     style={{minHeight: 100, display: 'flex', justifyContent: 'center'}} xs={12}
+                     sm={6} md={6}
+                     lg={4}>
                     <Field
                         name='hsGPA'
                         component={ RangeSlider }

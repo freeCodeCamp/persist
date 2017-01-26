@@ -205,7 +205,7 @@ class Users extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    spinner: state.spinner,
+    spinner: state.spinner.page,
     loading: state.users.pending,
     users: state.users.value,
     schoolObj: state.schools.idObj

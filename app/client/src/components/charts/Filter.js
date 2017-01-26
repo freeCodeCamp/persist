@@ -1,116 +1,70 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Row, Col, Clearfix} from 'react-bootstrap';
+import keyBy from 'lodash/keyBy';
 import {reduxForm, Field} from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import {studentKeys} from '../../../../common/fieldKeys';
 import {ReduxFormGroup} from '../helpers';
 import {SelectField, TextField, AutoComplete} from 'redux-form-material-ui';
 import RangeSlider from '../helpers/RangeSlider';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
+const studentKeysObj = keyBy(studentKeys, 'dbName');
 
 class ChartFilter extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            filteredKeys: [],
-            suggestions: {
-                'firstName': [],
-                'lastName': []
-            }
-        }
     }
 
-    componentDidMount() {
+    fieldsHTML(form) {
         const fields = [
+            'hsGradYear',
             'ethnicity',
             'hs',
             'intendedCollege',
             'gender',
             'cohort'
         ];
-        const filteredKeys = studentKeys
-            .filter((field) => fields.includes(field.dbName));
-        this.setState({
-            ...this.state,
-            filteredKeys
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.students !== nextProps.students) {
-            const {students} = nextProps;
-            const lodashStudents = _(students);
-            const firstNameSuggestions = lodashStudents
-                .map('firstName').uniq().value();
-            const lastNameSuggestions = lodashStudents
-                .map('lastName').uniq().value();
-            this.setState({
-                ...this.state,
-                suggestions: {
-                    firstName: firstNameSuggestions,
-                    lastName: lastNameSuggestions
-                }
-            });
-        }
-    }
-
-    updateInput(columnName, form, value) {
-        if (value) {
-            form.props.change.bind(form, columnName, value)();
-        }
-    }
-
-    fieldsHTML(form) {
-        const {filteredKeys} = this.state;
         const nullValueFields = ['hs', 'intendedCollege'];
-        return filteredKeys.map((key, i) => {
+        const HTML = [];
+        fields.map((field, i) => {
+            const fieldObj = studentKeysObj[field];
             let nullValue = false;
-            if (nullValueFields.includes(key.dbName)) {
+            if (nullValueFields.includes(fieldObj.dbName)) {
                 nullValue = true;
             }
-            return (
-                <div key={ i }>
+            HTML.push(
+                <Col key={ fieldObj.dbName }
+                     style={{display: 'flex', justifyContent: 'center'}} xs={12}
+                     sm={6} md={6}
+                     lg={4}>
                     <ReduxFormGroup
                         nullAllowed={nullValue}
                         form={form}
-                        field={ key }
+                        field={ fieldObj }
                     />
-                </div>
+                </Col>
             );
+            if ((i + 1) % 2 === 0) {
+                HTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock/>);
+            }
+            if ((i + 1) % 3 === 0) {
+                HTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock/>);
+            }
         });
-    }
-
-    checkEmpty(columnName, form, value) {
-        if (value.length === 0) {
-            form.props.change.bind(form, columnName, null)();
-        }
+        return HTML;
     }
 
     render() {
         const {handleSubmit, handleFormSubmit} = this.props;
-        const {suggestions} = this.state;
-        const gradYearDropDowns = [];
-        const currYear = new Date().getFullYear();
-        for (let i = 2011; i <= currYear; i++) {
-            gradYearDropDowns.push(
-                <MenuItem value={ i } key={ i } primaryText={ i }/>
-            )
-        }
         return (
             <form onSubmit={ handleSubmit(handleFormSubmit) }>
-                <div style={ {display: 'flex', flexWrap: 'wrap'} }>
-                    <div>
-                        <Field name='hsGradYear'
-                               component={ SelectField }
-                               hintText='Grad Year'
-                               floatingLabelText='Grad Year'>
-                            { gradYearDropDowns }
-                        </Field>
-                    </div>
+                <Row>
                     {this.fieldsHTML(this)}
-                    <div>
+                    <Col key='hsGPA'
+                         style={{display: 'flex', justifyContent: 'center'}} xs={12}
+                         sm={6} md={6}
+                         lg={4}>
                         <Field name='hsGPA'
                                component={ RangeSlider }
                                description='High School GPA'
@@ -119,11 +73,13 @@ class ChartFilter extends React.Component {
                                form={this}
                                max={ 100 }
                                step={ 1 }/>
-                    </div>
-                </div>
-                <div>
-                    <RaisedButton type='submit' label='Filter' primary={ true }/>
-                </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12} style={{marginTop: 10}}>
+                        <RaisedButton type='submit' label='Filter' primary={ true }/>
+                    </Col>
+                </Row>
             </form>
         );
     }

@@ -49,14 +49,19 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
+        this.resize();
+        this.componentDidUpdate();
+    }
+
+    resize() {
         // triggering resize event
         const evt = document.createEvent("HTMLEvents");
         evt.initEvent('resize', true, false);
         window.dispatchEvent(evt);
-        this.componentDidUpdate();
     }
 
     componentWillReceiveProps(nextProps) {
+        this.resize();
         if (this.props.currentPage != nextProps.currentPage) {
             this.props.setSpinner(true);
             this.setState({...this.state, load: false});
@@ -103,7 +108,6 @@ class Dashboard extends Component {
                         </MaterialUIWrapper> : null }
                 </section>
                 <Footer />
-                <ControlMenu />
             </div>
         );
     }
