@@ -83,6 +83,7 @@ class TermEditor extends Component {
                         field={ termKeysObj.enrolBegin }
                     />
                 </Col>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
                 <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='enrolEnd'
@@ -103,6 +104,7 @@ class TermEditor extends Component {
                         {this.termStatusOptions}
                     </Field>
                 </Col>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
                 <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='creditsEarned'
@@ -117,6 +119,7 @@ class TermEditor extends Component {
                         floatingLabelText='Credits Attempted'
                     />
                 </Col>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
                 <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='gpa'
@@ -136,6 +139,7 @@ class TermEditor extends Component {
                         field={termKeysObj['degreeTitle']}
                     />
                 </Col>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
                 <Col style={{minHeight: 100, display: nameDisplay}} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='name'

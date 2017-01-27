@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Col, Clearfix} from 'react-bootstrap';
 import {reduxForm, Field} from 'redux-form';
 import {MenuItem} from 'material-ui';
 import isPlainObject from 'lodash/isPlainObject';
@@ -11,7 +12,7 @@ class CaseNoteEditor extends Component {
     }
 
     render() {
-        const {handleSubmit, initialValues} = this.props;
+        const {handleSubmit} = this.props;
         let communicationTypes = types['caseNotes.communicationType'];
         if (communicationTypes) {
             communicationTypes = communicationTypes.map((option) => {
@@ -30,37 +31,60 @@ class CaseNoteEditor extends Component {
         }
         return (
             <form onSubmit={handleSubmit}>
-                <Field
-                    name='description'
-                    component={ TextField }
-                    floatingLabelText='Description'
-                    multiLine={ true }
-                    rows={ 2 }/>
-                <Field
-                    name='communicationType'
-                    component={SelectField}
-                    hintText='Communication Type'
-                    floatingLabelText='Communication Type'
-                >
-                    { communicationTypes }
-                </Field>
-                <Field
-                    name='needFollowUp'
-                    component={Toggle}
-                    label='Needs Follow Up'
-                />
-                <Field
-                    name='issueResolved'
-                    component={Toggle}
-                    label='Issue Resolved'
-                />
+                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='description'
+                        component={ TextField }
+                        floatingLabelText='Description'
+                        multiLine={ true }
+                        rows={ 2 }/>
+                </Col>
+                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='communicationType'
+                        component={SelectField}
+                        hintText='Communication Type'
+                        floatingLabelText='Communication Type'
+                    >
+                        { communicationTypes }
+                    </Field>
+                </Col>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
+                <Col style={{minHeight: 100, display: 'flex', alignItems: 'center'}} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='needFollowUp'
+                        component={Toggle}
+                        label='Needs Follow Up'
+                    />
+                </Col>
+                <Col style={{minHeight: 100, display: 'flex', alignItems: 'center'}} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='issueResolved'
+                        component={Toggle}
+                        label='Issue Resolved'
+                    />
+                </Col>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
             </form>
         );
     }
 }
 
+const validate = (values) => {
+    const errors = {};
+    if (!values.description || values.description.length < 1) {
+        errors.description = 'Required';
+        return errors;
+    } else if (!values.communicationType || values.communicationType.length < 1) {
+        errors.communicationType = 'Required';
+        return errors;
+    }
+    return errors;
+};
+
 CaseNoteEditor = reduxForm({
-    form: 'CaseNoteEditor'
+    form: 'CaseNoteEditor',
+    validate
 })(CaseNoteEditor);
 
 export default CaseNoteEditor;

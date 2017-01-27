@@ -43,7 +43,7 @@ class Users extends Component {
                     <td>{user.profile.firstName}</td>
                     <td>{user.email}</td>
                     <td>{user.access.role}</td>
-                    <td>{school ?
+                    <td>{school && schoolObj[school] ?
                         schoolObj[school].name :
                         '--'}
                     </td>

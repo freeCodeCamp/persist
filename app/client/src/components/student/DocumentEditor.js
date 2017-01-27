@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Col, Clearfix} from 'react-bootstrap';
 import {reduxForm, Field} from 'redux-form';
 import {MenuItem} from 'material-ui';
 import {FileInput} from '../utils';
@@ -17,27 +18,33 @@ class DocumentEditor extends Component {
         ));
         return (
             <form onSubmit={handleSubmit}>
-                <Field
-                    name='name'
-                    component={TextField}
-                    hintText='Name'
-                    floatingLabelText='Name'
-                />
-                <Field
-                    name='type'
-                    component={SelectField}
-                    hintText='Type'
-                    floatingLabelText='Type'
-                >
-                    {documentTypes}
-                </Field>
-                <Field
-                    type='file'
-                    Key={initialValues.Key}
-                    fileLink={initialValues.downloadLink}
-                    name='document'
-                    component={FileInput}
-                />
+                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='name'
+                        component={TextField}
+                        hintText='Name'
+                        floatingLabelText='Name'
+                    />
+                </Col>
+                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='type'
+                        component={SelectField}
+                        hintText='Type'
+                        floatingLabelText='Type'
+                    >
+                        {documentTypes}
+                    </Field>
+                </Col>
+                <Col style={{minHeight: 100, display: 'flex', alignItems: 'center'}} xs={12} sm={12} md={12} lg={12}>
+                    <Field
+                        type='file'
+                        Key={initialValues.Key}
+                        fileLink={initialValues.downloadLink}
+                        name='document'
+                        component={FileInput}
+                    />
+                </Col>
             </form>
         );
     }
