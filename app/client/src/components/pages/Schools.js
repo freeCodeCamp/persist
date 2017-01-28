@@ -71,7 +71,7 @@ class Schools extends Component {
 
     exportSchool(students, year) {
         const filteredStudents = students.filter((student) => student.hsGradYear === year);
-        const selectedKeys = ['osis', 'intendedCollege', 'mostRecentCol', 'mostRecentEnrolStatus', 'cellPhone', 'email'];
+        const selectedKeys = ['firstName', 'lastName', 'osis', 'intendedCollege', 'mostRecentCol', 'mostRecentEnrolStatus', 'cellPhone', 'email'];
         const picked = filteredStudents.map((student) => _.pick(student, selectedKeys));
         const fieldTypes = exportKeys(selectedKeys, studentKeys);
         this.referenceFields(picked, fieldTypes)
