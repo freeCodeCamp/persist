@@ -36,7 +36,7 @@ const filterKeys = [
 ];
 const extraFilters = {
     enrolLast6: 'Enrolled in last 6 months',
-    fallNotSpring: 'Have a term record for fall of most recent year but not spring of following year',
+    fallNotSpring: 'Enrolled in fall of most recent year but not in following spring',
     fallAndSpringNotSpring: 'Enrolled in fall and spring of year after graduation but then NOT the following fall (year 2 dropoff)',
     // '43NotAssociate': 'Earned a total of 43 credits toward an associate’s degree and have not received a degree',
     // '103NotBachelor': 'Earned a total of 103 credits toward a bachelor’s degree and have not received a degree',
@@ -47,12 +47,14 @@ const extraKeys = _.keys(extraFilters);
 class StudentFilter extends Component {
     constructor(props) {
         super(props);
+        this.showStudentsTable = false;
         this.state = {
             filteredStudents: []
         };
     }
 
     filterStudents(values) {
+        this.showStudentsTable = true;
         let conditions = _(values).omitBy(_.isNil).cloneDeep();
         const {students} = this.props;
         const hsGPA = conditions.hsGPA;
@@ -206,7 +208,8 @@ class StudentFilter extends Component {
                     </Row>
                 </form>
                 <ExportCSV students={filteredStudents}/>
-                <StudentTable students={filteredStudents}/>
+                {this.showStudentsTable ?
+                    <StudentTable students={filteredStudents}/> : null }
             </Content>
         );
     }

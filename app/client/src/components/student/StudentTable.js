@@ -8,6 +8,7 @@ class StudentTable extends React.Component {
         super(props);
         this.updating = false;
         this.length = 0;
+        this.mounted = false;
         this.state = {
             students: [],
             offset: 0
@@ -31,6 +32,7 @@ class StudentTable extends React.Component {
     }
 
     componentDidMount() {
+        this.mounted = true;
         window.scrollTo(0, 0);
         window.addEventListener('scroll', this.handleScroll.bind(this));
         this.length = this.props.students.length;
@@ -44,6 +46,7 @@ class StudentTable extends React.Component {
     }
 
     getNewStudents() {
+        if (!this.mounted) return;
         const _this = this;
         const {students} = this.props;
         const {offset} = this.state;
@@ -57,14 +60,31 @@ class StudentTable extends React.Component {
         });
     }
 
+    renderLoading() {
+        return (
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                paddingTop: 40
+            }}>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
+            </div>
+        )
+    }
+
     componentWillUnmount() {
+        this.mounted = false;
         window.removeEventListener('scroll', this.handleScroll.bind(this));
     }
 
     render() {
         const {students} = this.state;
+        const {noSearch} = this.props;
         if (students.length < 1) {
-            return <h1>'Sorry! no results found'</h1>;
+            if (!noSearch) {
+                return <h1>'Sorry! no results found'</h1>;
+            }
+            return this.renderLoading();
         }
         const studentsHTML = students.map((student, i) => {
             return (

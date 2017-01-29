@@ -12,8 +12,12 @@ class FilteredStudents extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.updateStudents(this.props);
+    }
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,7 +35,7 @@ class FilteredStudents extends Component {
 
     render() {
         return (
-            <StudentTable students={this.state.students}/>
+            <StudentTable students={this.state.students} noSearch={true}/>
         )
     }
 
