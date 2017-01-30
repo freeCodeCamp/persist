@@ -7,7 +7,8 @@ import {
     ColCompRate,
     ColPersist,
     ColType,
-    GradRate
+    GradRate,
+    SemEnrol
 } from './';
 
 class ChartTabs extends Component {
@@ -21,7 +22,8 @@ class ChartTabs extends Component {
             colCompRate: 'College Completion Rate',
             colPersist: 'College Persistence',
             colType: 'College Type',
-            gradRate: 'Graduation Rate'
+            gradRate: 'Graduation Rate',
+            semEnrol: 'Semester by Semester Enrollment'
         };
         this.state = {
             activeId: null
@@ -56,6 +58,8 @@ class ChartTabs extends Component {
                 return <ColType {...props}/>;
             case 'gradRate':
                 return <GradRate {...props}/>;
+            case 'semEnrol':
+                return <SemEnrol {...props}/>;
             default:
                 return null;
         }

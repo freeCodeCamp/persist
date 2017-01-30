@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'react-router-redux';
 import async from 'async';
 import RaisedButton from 'material-ui/RaisedButton';
 import {BasicColumn} from '../admin-components/charts';
@@ -122,7 +124,7 @@ class GradRate extends Component {
                             fields.map((field) => {
                                 if (_.isPlainObject(result[hsGradYear][field])) {
                                     result[hsGradYear][field].count += 1;
-                                    result[hsGradYear][field].students.push(student);
+                                    result[hsGradYear][field].students.push(student.osis);
                                 } else {
                                     result[hsGradYear][field] += 1;
                                 }
@@ -268,4 +270,10 @@ const mapStateToProps = (state) => ({
     collegeObj: state.colleges.idObj
 });
 
-export default connect(mapStateToProps)(GradRate);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        push
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GradRate);

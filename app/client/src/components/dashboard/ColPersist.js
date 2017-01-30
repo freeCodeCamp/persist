@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'react-router-redux';
 import moment from 'moment';
 import async from 'async';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -96,7 +99,7 @@ class ColPersist extends Component {
                     if (enrolDate && hsGradDate) {
                         if (this.yearEnrol(terms, enrolDate, hsGradDate, 6)) {
                             result[hsGradYear].count += 1;
-                            result[hsGradYear].students.push(student);
+                            result[hsGradYear].students.push(student.osis);
                         }
                     }
                     if (hsGradDate) {
@@ -130,6 +133,7 @@ class ColPersist extends Component {
 
     chartConfig() {
         const data = this.state.data;
+        const {push} = this.props;
         const chartData = this.chartData(data);
         const config = {
             chart: {
@@ -159,7 +163,20 @@ class ColPersist extends Component {
             plotOptions: {
                 column: {
                     pointPadding: 0.2,
-                    borderWidth: 0
+                    borderWidth: 0,
+                    point: {
+                        events: {
+                            click: function () {
+                                const {category} = this;
+                                const students = data[category].students;
+                                localStorage.setItem('filtered', JSON.stringify(students));
+                                push('/filtered');
+                            }
+                        }
+                    }
+                },
+                series: {
+                    cursor: 'pointer'
                 }
             },
             series: chartData
@@ -173,8 +190,7 @@ class ColPersist extends Component {
                 position: 'absolute', top: 0, bottom: 0, width: '100%',
                 display: 'flex', justifyContent: 'center', alignItems: 'center'
             }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw'></i>
-                <span className='sr-only'>Loading...</span>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
             </div>
         )
     }
@@ -217,4 +233,10 @@ const styles = {
     }
 };
 
-export default ColPersist;
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        push
+    }, dispatch);
+};
+
+export default connect(null, mapDispatchToProps)(ColPersist);
