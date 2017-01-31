@@ -131,8 +131,8 @@ export default (Schema) => {
         crewAdvisor: String,
         email: [String],
         ferpa: {
-            type: String,
-            enum: enums.ferpa
+            type: Boolean,
+            default: false
         },
         firstName: {
             type: String,

@@ -101,11 +101,15 @@ class ReduxFormGroup extends React.Component {
                 );
             case 'Toggle':
                 return (
-                    <Field style={ {width: 'auto', margin: '20px'} }
-                           disabled={ disabled }
+                    <Field disabled={ disabled }
                            name={ dbName.toString() }
-                           component={ Toggle }
-                           label={ displayName }/>
+                           component={ SelectField }
+                           hintText={ displayName }
+                           floatingLabelText={ displayName }>
+                        <MenuItem value={ true } key='true' primaryText='True'/>
+                        <MenuItem value={ false } key='false' primaryText='False'/>
+                        <MenuItem value={ null } primaryText='None' key='none'/>
+                    </Field>
                 );
             case 'SelectField':
                 let options = types[dbName];

@@ -82,9 +82,6 @@ export const types = {
         {text: 'Male', value: 'M'},
         {text: 'Female', value: 'F'}
     ],
-    ferpa: [
-        'Yes', 'No'
-    ],
     cohort: [
         'M (2007)',
         'N (2008)',
@@ -262,10 +259,6 @@ export const types = {
 export const enums = {
     gender: {
         values: map(types.gender, 'value'),
-        message: messages.default
-    },
-    ferpa: {
-        values: types.ferpa,
         message: messages.default
     },
     cohort: {
