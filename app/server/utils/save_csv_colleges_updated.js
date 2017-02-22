@@ -3,6 +3,7 @@ import parse from 'csv-parse';
 import transform from 'stream-transform';
 import async from 'async';
 import merge from 'lodash/merge';
+import forOwn from 'lodash/forOwn';
 import mongoose from 'mongoose';
 
 import College from '../models/college';
@@ -72,11 +73,11 @@ export default function (fileName) {
 
                 College.findOne({
                     fullName: record.fullName
-                }, (err, doc) => {
+                }, (err, oldCollege) => {
 
                     // if doesnt exist - create new record
-                    if (!doc) {
-                        var college = new College(record);
+                    if (!oldCollege) {
+                        const college = new College(record);
                         college.save((err) => {
                             if (err) {
                                 callback(err);
@@ -88,8 +89,12 @@ export default function (fileName) {
                         });
                     } else {
                         modifiedCount++;
-                        merge(doc, record);
-                        doc.save((err) => {
+                        const collegeObject = oldCollege.toObject();
+                        const newCollege = merge(collegeObject, record);
+                        forOwn(collegeObject, (value, key) => {
+                            oldCollege[key] = newCollege[key];
+                        });
+                        oldCollege.save((err) => {
                             if (err) return callback(err);
                             callback(null);
                         });

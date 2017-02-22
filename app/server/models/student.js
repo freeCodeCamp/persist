@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 import mongoosePaginate from 'mongoose-paginate';
 import sortBy from 'lodash/sortBy';
+import uniq from 'lodash/uniq';
 import map from 'lodash/map';
 const Schema = mongoose.Schema;
 import {College} from './';
@@ -29,9 +30,35 @@ Student.pre('save', true, function (next, done) {
     record.terms = sortBy(record.terms, (obj) => {
         return obj.enrolBegin;
     }).reverse();
+    const recordTerms = record.terms.reverse();
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
-    done();
+    record.firstCol = recordTerms[0].college;
+    const colleges = uniq(map(recordTerms, 'college'));
+    if (colleges.length > 1) {
+        College.find({_id: {$in: [colleges]}}, 'durationType',
+            (err, durationTypes) => {
+                if (err || durationTypes.length < 2) {
+                    return done();
+                }
+                if (durationTypes[0].toString() === '2 year') {
+                    if (durationTypes[1].toString() === '2 year') {
+                        record.transferStatus.push('2 Year to 2 Year');
+                    } else if (durationTypes[1].toString() === '4 year') {
+                        record.transferStatus.push('2 Year to 4 Year');
+                    }
+                } else if (durationTypes[0].toString() === '4 year') {
+                    if (durationTypes[1].toString() === '2 year') {
+                        record.transferStatus.push('4 Year to 2 Year');
+                    } else if (durationTypes[1].toString() === '4 year') {
+                        record.transferStatus.push('4 Year to 4 Year');
+                    }
+                }
+                return done();
+            });
+    } else {
+        done();
+    }
 });
 Student.pre('save', true, function (next, done) {
     next();
@@ -76,8 +103,9 @@ Student.pre('save', true, function (next, done) {
             }
             return done();
         })
+    } else {
+        done();
     }
-    done();
 });
 Student.pre('save', true, function (next, done) {
     next();
@@ -99,7 +127,8 @@ Student.pre('save', true, function (next, done) {
             }
             return done();
         });
+    } else {
+        done();
     }
-    done();
 });
 export default mongoose.model('Student', Student);

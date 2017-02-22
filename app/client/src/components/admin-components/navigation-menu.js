@@ -149,7 +149,7 @@ class NavigationMenu extends Component {
                         </li>
                         <li className=''>
                             <Link to='/schools'>
-                                <i className='fa ion-university'></i> <span>Schools</span>
+                                <i className='fa ion-university'></i> <span>High Schools</span>
                             </Link>
                         </li>
                         <li className=''>

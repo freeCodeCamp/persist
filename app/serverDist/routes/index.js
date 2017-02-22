@@ -46,6 +46,10 @@ var _save_csv_applications = require('../utils/save_csv_applications');
 
 var _save_csv_applications2 = _interopRequireDefault(_save_csv_applications);
 
+var _save_csv_schools = require('../utils/save_csv_schools');
+
+var _save_csv_schools2 = _interopRequireDefault(_save_csv_schools);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var upload = (0, _multer2.default)({
@@ -114,6 +118,18 @@ exports.default = function (app) {
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
         (0, _save_csv_colleges_updated2.default)(filePath).then(function (data) {
+            res.status(200).send(data);
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    });
+
+    app.post('/upload/schoolData', fileUpload, function (req, res) {
+        var fileData = req.files.file[0];
+        var filePath = _path2.default.join(fileData.destination, fileData.filename);
+
+        (0, _save_csv_schools2.default)(filePath).then(function (data) {
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);

@@ -192,6 +192,10 @@ export default (Schema) => {
             type: Schema.Types.ObjectId,
             ref: 'College'
         },
+        firstCol: {
+            type: Schema.Types.ObjectId,
+            ref: 'College'
+        },
         mostRecentEmp: String,
         gradDate: Date,
         majorMinor: [String],
@@ -346,7 +350,6 @@ export default (Schema) => {
             type: Boolean,
             default: false
         },
-        parentPhone: String,
         // TO ADD IN
         expectedGrad: Number,
         photoReleaseForm: {

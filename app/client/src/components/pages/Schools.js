@@ -10,6 +10,7 @@ import {studentKeys} from '../../../../common/fieldKeys';
 import exportKeys from '../../../../common/exportKeys';
 import {RaisedButton} from 'material-ui';
 import {Panel, PanelGroup} from 'react-bootstrap';
+import {Card, CardHeader, CardText} from 'material-ui';
 
 class Schools extends Component {
     constructor(props) {
@@ -99,11 +100,45 @@ class Schools extends Component {
                 </Panel>
             );
         });
+        const allStudents = _.flatten(schools.map(school => school.students));
+        const hsGradYears = _(allStudents).map('hsGradYear')
+            .uniq().map(Number).compact().sort().value();
+        const exportButtonHTML = hsGradYears.map((year) => (
+            <RaisedButton
+                key={`Network-${year}`}
+                style={{marginLeft: 4, marginRight: 4}}
+                label={year}
+                onClick={() => this.exportSchool(allStudents, year)}/>
+        ));
+        const network = (
+            <Panel header='Network' eventKey={ schoolHTML.length } key={ schoolHTML.length }>
+                {exportButtonHTML.length > 0 ? exportButtonHTML : 'No students found'}
+            </Panel>
+        );
+        const note = (
+            <Card>
+                <CardHeader
+                    title='Note'
+                    actAsExpander={true}
+                    showExpandableButton={true}
+                />
+                <CardText expandable={true}>
+                    These reports can be pulled for each year and a column or two can be added/ information can be added
+                    or changed in bulk by editing the file and then using the “Upload” tab. Please note, however, that
+                    to allow that this file can be updated and then immediately uploaded again, we have had to use the
+                    abbreviations for term status used by the National student Clearinghouse records, which are as
+                    follows: F: Full time, H: Half-time, L: Less than half time, Q: Three Quarters-time, A: Leave of
+                    absence; W: Withdrawn: D: Deceased and Blank: Unknown if part or full time.
+                </CardText>
+            </Card>
+        );
         return (
-            <Content title='Schools'>
+            <Content title='High Schools'>
                 <PanelGroup activeKey={ this.state.activeKey } onSelect={ this.handleSelect.bind(this) } accordion>
                     { schoolHTML }
+                    {network}
                 </PanelGroup>
+                {note}
             </Content>
         );
     }

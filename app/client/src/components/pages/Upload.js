@@ -41,6 +41,10 @@ class Upload extends React.Component {
                 url: '/upload/collegeData'
             },
             {
+                name: 'School Data',
+                url: '/upload/schoolData'
+            },
+            {
                 name: 'NSC Term Records',
                 url: '/upload/termData'
             },

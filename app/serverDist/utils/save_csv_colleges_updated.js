@@ -67,10 +67,10 @@ exports.default = function (fileName) {
 
                 _college2.default.findOne({
                     fullName: record.fullName
-                }, function (err, doc) {
+                }, function (err, oldCollege) {
 
                     // if doesnt exist - create new record
-                    if (!doc) {
+                    if (!oldCollege) {
                         var college = new _college2.default(record);
                         college.save(function (err) {
                             if (err) {
@@ -82,19 +82,25 @@ exports.default = function (fileName) {
                             callback(null);
                         });
                     } else {
-                        modifiedCount++;
-                        (0, _merge2.default)(doc, record);
-                        doc.save(function (err) {
-                            if (err) return callback(err);
-                            callback(null);
-                        });
-                        console.log('the record exists already mate!'.red);
-                        updatedColleges.push({ fullName: record.fullName });
+                        (function () {
+                            modifiedCount++;
+                            var collegeObject = oldCollege.toObject();
+                            var newCollege = (0, _merge2.default)(collegeObject, record);
+                            (0, _forOwn2.default)(collegeObject, function (value, key) {
+                                oldCollege[key] = newCollege[key];
+                            });
+                            oldCollege.save(function (err) {
+                                if (err) return callback(err);
+                                callback(null);
+                            });
+                            console.log('the record exists already mate!'.red);
+                            updatedColleges.push({ fullName: record.fullName });
 
-                        // run some logic of updating
+                            // run some logic of updating
 
-                        // update document with rules from Molly
-                        // options: overwrite / add
+                            // update document with rules from Molly
+                            // options: overwrite / add
+                        })();
                     }
                 });
             }, function (err) {
@@ -133,6 +139,10 @@ var _async2 = _interopRequireDefault(_async);
 var _merge = require('lodash/merge');
 
 var _merge2 = _interopRequireDefault(_merge);
+
+var _forOwn = require('lodash/forOwn');
+
+var _forOwn2 = _interopRequireDefault(_forOwn);
 
 var _mongoose = require('mongoose');
 

@@ -60,14 +60,20 @@ exports.default = function (fileName) {
                             return callback(null);
                         });
                     } else {
-                        var _newStudent = (0, _merge2.default)(oldStudent, record);
-                        _newStudent.save(function (err) {
-                            if (err) {
-                                console.log('we got a validation error', err);
-                                return callback(err);
-                            }
-                            return callback(null);
-                        });
+                        (function () {
+                            var studentObject = oldStudent.toObject();
+                            var newStudent = (0, _merge2.default)(studentObject, record);
+                            (0, _forOwn2.default)(studentObject, function (value, key) {
+                                oldStudent[key] = newStudent[key];
+                            });
+                            oldStudent.save(function (err) {
+                                if (err) {
+                                    console.log('we got a validation error', err);
+                                    return callback(err);
+                                }
+                                return callback(null);
+                            });
+                        })();
                     }
                 });
             }, function (err) {
@@ -103,6 +109,10 @@ var _csvParse2 = _interopRequireDefault(_csvParse);
 var _merge = require('lodash/merge');
 
 var _merge2 = _interopRequireDefault(_merge);
+
+var _forOwn = require('lodash/forOwn');
+
+var _forOwn2 = _interopRequireDefault(_forOwn);
 
 var _streamTransform = require('stream-transform');
 

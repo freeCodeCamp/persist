@@ -216,6 +216,13 @@ export const reference = [
         type: 'college',
         editable: true
     }, {
+        fieldName: 'First College',
+        displayName: 'First College',
+        dbName: 'firstCol',
+        fieldType: 'AutoComplete',
+        type: 'college',
+        editable: true
+    }, {
         fieldName: 'Current/Most Recent Employer',
         displayName: 'Current/Most Recent Employer',
         dbName: 'mostRecentEmp',

@@ -20,6 +20,7 @@ import saveCollegeData from '../utils/save_csv_colleges_updated';
 import saveTermData from '../utils/save_csv_term_data';
 import saveGraduationData from '../utils/save_csv_graduation_data';
 import saveApplicationData from '../utils/save_csv_applications';
+import saveSchoolData from '../utils/save_csv_schools';
 
 var upload = multer({
     dest: 'uploads/'
@@ -83,11 +84,23 @@ export default (app) => {
         });
     });
 
-    app.post('/upload/collegeData', fileUpload, function (req, res) {
+    app.post('/upload/collegeData', fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
         saveCollegeData(filePath).then((data) => {
+            res.status(200).send(data);
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    });
+
+    app.post('/upload/schoolData', fileUpload, (req, res) => {
+        const fileData = req.files.file[0];
+        const filePath = path.join(fileData.destination, fileData.filename);
+
+        saveSchoolData(filePath).then((data) => {
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);

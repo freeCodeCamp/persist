@@ -1,6 +1,7 @@
 import fs from 'fs';
 import parse from 'csv-parse';
 import merge from 'lodash/merge';
+import forOwn from 'lodash/forOwn';
 import transform from 'stream-transform';
 import async from 'async';
 
@@ -67,8 +68,12 @@ export default function (fileName) {
                                 return callback(null);
                             });
                         } else {
-                            const newStudent = merge(oldStudent, record);
-                            newStudent.save((err) => {
+                            const studentObject = oldStudent.toObject();
+                            const newStudent = merge(studentObject, record);
+                            forOwn(studentObject, (value, key) => {
+                                oldStudent[key] = newStudent[key];
+                            });
+                            oldStudent.save((err) => {
                                 if (err) {
                                     console.log('we got a validation error', err);
                                     return callback(err);

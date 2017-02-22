@@ -13,6 +13,10 @@ var _sortBy = require('lodash/sortBy');
 
 var _sortBy2 = _interopRequireDefault(_sortBy);
 
+var _uniq = require('lodash/uniq');
+
+var _uniq2 = _interopRequireDefault(_uniq);
+
 var _map = require('lodash/map');
 
 var _map2 = _interopRequireDefault(_map);
@@ -50,9 +54,34 @@ Student.pre('save', true, function (next, done) {
     record.terms = (0, _sortBy2.default)(record.terms, function (obj) {
         return obj.enrolBegin;
     }).reverse();
+    var recordTerms = record.terms.reverse();
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
-    done();
+    record.firstCol = recordTerms[0].college;
+    var colleges = (0, _uniq2.default)((0, _map2.default)(recordTerms, 'college'));
+    if (colleges.length > 1) {
+        _.College.find({ _id: { $in: [colleges] } }, 'durationType', function (err, durationTypes) {
+            if (err || durationTypes.length < 2) {
+                return done();
+            }
+            if (durationTypes[0].toString() === '2 year') {
+                if (durationTypes[1].toString() === '2 year') {
+                    record.transferStatus.push('2 Year to 2 Year');
+                } else if (durationTypes[1].toString() === '4 year') {
+                    record.transferStatus.push('2 Year to 4 Year');
+                }
+            } else if (durationTypes[0].toString() === '4 year') {
+                if (durationTypes[1].toString() === '2 year') {
+                    record.transferStatus.push('4 Year to 2 Year');
+                } else if (durationTypes[1].toString() === '4 year') {
+                    record.transferStatus.push('4 Year to 4 Year');
+                }
+            }
+            return done();
+        });
+    } else {
+        done();
+    }
 });
 Student.pre('save', true, function (next, done) {
     next();
@@ -94,8 +123,9 @@ Student.pre('save', true, function (next, done) {
             }
             return done();
         });
+    } else {
+        done();
     }
-    done();
 });
 Student.pre('save', true, function (next, done) {
     next();
@@ -114,7 +144,8 @@ Student.pre('save', true, function (next, done) {
             }
             return done();
         });
+    } else {
+        done();
     }
-    done();
 });
 exports.default = mongoose.model('Student', Student);

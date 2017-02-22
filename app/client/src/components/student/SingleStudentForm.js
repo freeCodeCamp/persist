@@ -74,8 +74,10 @@ class SingleStudentForm extends React.Component {
         const renderFormGroups = (form, studentKeys) => {
             const HTML = [];
             studentKeys.map((field, i) => {
+                console.log(field);
                 field = studentKeysObj[field];
                 let disabled = !editable;
+                console.log(field);
                 if (!field.editable) {
                     disabled = true;
                 }
@@ -107,18 +109,18 @@ class SingleStudentForm extends React.Component {
 
         let basicProfile, contactInfo, academicInfo, financialInfo, colApplications, historicalInfo, hasGradDate;
         if (initialValues['hsGradDate'] && new Date(initialValues['hsGradDate']) !== 'Invalid Date') {
-            basicProfile = ['altName', 'dob', 'mostRecentCol', 'levelOfSupport', 'suffix', 'hs', 'hsGradYear', 'descriptors', 'preferredPronoun'];
+            basicProfile = ['altName', 'dob', 'mostRecentCol', 'levelOfSupport', 'suffix', 'hs', 'hsGradYear', 'nscRecordFound', 'descriptors', 'preferredPronoun', 'residency'];
             contactInfo = ['cellPhone', 'otherPhone', 'email', 'facebookName', 'address'];
-            academicInfo = ['intendedCollege', 'cumColGPA', 'remediationStatus', 'registeredForClasses', 'majorMinor', 'transferStatus', 'progressToGradAss', 'progressToGradBa', 'ferpa'];
+            academicInfo = ['postSecPlan', 'intendedCollege', 'remediationStatus', 'registeredForClasses', 'majorMinor', 'cumColGPA', 'progressToGradAss', 'progressToGradBa', 'transferStatus', 'ferpa'];
             financialInfo = ['studentSupportOrgName', 'mostRecentEmp', 'needGap', 'fsaid', 'studentSupportOrgNameOther', 'employmentStatus', 'amountOfNeedGap'];
             historicalInfo = ['hsGPA', 'SAT.math', 'SAT.cr', 'actEquiv', 'crewAdvisor', 'hsGradDate', 'cohort', 'hsDiplomaType'];
             colApplications = [];
             hasGradDate = true;
         } else {
             basicProfile = ['altName', 'dob', 'descriptors', 'preferredPronoun', 'suffix', 'hs', 'cohort', 'expectedHSGrad', 'crewAdvisor', 'levelOfSupport'];
-            contactInfo = ['cellPhone', 'otherPhone', 'email', 'facebookName', 'address', 'parentName', 'parentPhone'];
+            contactInfo = ['cellPhone', 'otherPhone', 'email', 'facebookName', 'address', 'parentName', 'parentContact'];
             academicInfo = ['hsGPA', 'psat', 'SAT.math', 'SAT.cr', 'regents.ela', 'regents.math', 'SAT.subjectTests', 'actEquiv'];
-            financialInfo = ['opportunityProgramEligible', 'startedFafsa', 'completedFafsa', 'fsaid', 'cssProfileCreated', 'startedTap', 'completedTap', 'taxDocumentsSubmitted', 'awardLetterReceived', 'studentAidReportReceived', 'needGap', 'amountOfNeedGap'];
+            financialInfo = ['opportunityProgramEligible', 'startedFafsa', 'completedFafsa', 'fsaid', 'cssProfileCreated', 'taxDocumentsSubmitted', 'awardLetterReceived', 'studentAidReportReceived', 'needGap', 'amountOfNeedGap'];
             colApplications = ['applicationWave', 'eaEdApplications', 'completedEssay', 'lettersOfRecommendation', 'cunyApp', 'sunyApp', 'commonApp', 'appliedToOtherSupportProgram', 'postSecPlan', 'intendedCollege', 'desiredFieldOfStudy', 'registeredForClasses', 'studentSupportOrgName', 'studentSupportOrgNameOther', 'ferpa'];
             historicalInfo = [];
             hasGradDate = false;

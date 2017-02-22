@@ -28,6 +28,7 @@ const filterKeys = [
     'descriptors',
     'employmentStatus',
     'mostRecentCol',
+    'intendedCollege',
     'progressToGradAss',
     'progressToGradBa',
     'opportunityProgramEligible',
@@ -35,7 +36,7 @@ const filterKeys = [
     'completedTap'
 ];
 const extraFilters = {
-    enrolLast6: 'Enrolled in last 6 months',
+    enrolLast6: 'Current Student',
     fallNotSpring: 'Enrolled in fall of most recent year but not in following spring',
     fallAndSpringNotSpring: 'Enrolled in fall and spring of year after graduation but then NOT the following fall (year 2 dropoff)',
     // '43NotAssociate': 'Earned a total of 43 credits toward an associate’s degree and have not received a degree',
