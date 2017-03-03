@@ -1,11 +1,19 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {push} from 'react-router-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import async from 'async';
-import {mapping} from '../../../../common/constants';
-import {BasicColumn} from '../admin-components/charts';
+import { mapping } from '../../../../common/constants';
+import { BasicColumn } from '../admin-components/charts';
+
+mapping.colType = {
+    ...mapping.colType,
+    1: 'CUNY 2 Year',
+    2: 'SUNY 2 Year',
+    7: 'CUNY 4 Year',
+    8: 'SUNY 4 Year'
+};
 
 class ColType extends Component {
     constructor(props) {
@@ -36,12 +44,12 @@ class ColType extends Component {
     }
 
     normalizeData(props) {
-        const {collegeObj} = this.props;
+        const { collegeObj } = this.props;
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultColTypeData = {};
-            _.times(6, (n) => {
-                defaultColTypeData[n + 1] = {count: 0, students: []}
+            _.times(8, (n) => {
+                defaultColTypeData[n + 1] = { count: 0, students: [] }
             });
             const result = {};
             const q = async.queue((student, callback) => {
@@ -51,7 +59,31 @@ class ColType extends Component {
                     let colType;
                     student.terms = _.compact(student.terms);
                     if (student.terms.length > 0) {
-                        colType = collegeObj[_.last(student.terms).college].collType;
+                        const college = collegeObj[_.last(student.terms).college];
+                        colType = college.collType;
+                        if (colType === 1) {
+                            switch (college.durationType) {
+                                case '2 year':
+                                    colType = 1;
+                                    break;
+                                case '4 year':
+                                    colType = 7;
+                                    break;
+                                default:
+                                    colType = undefined;
+                            }
+                        } else if (colType === 2) {
+                            switch (college.durationType) {
+                                case '2 year':
+                                    colType = 2;
+                                    break;
+                                case '4 year':
+                                    colType = 8;
+                                    break;
+                                default:
+                                    colType = undefined;
+                            }
+                        }
                     }
                     if (colType) {
                         result[hsGradYear][colType].count += 1;
@@ -77,15 +109,15 @@ class ColType extends Component {
             name: mapping.colType[key],
             data: _(values).map(key)
                 .map('count')
-                .map(y => ({y, key}))
+                .map(y => ({ y, key }))
                 .value()
         }));
     }
 
     chartConfig() {
         const data = this.state.data;
-        const {refer} = this;
-        const {push} = this.props;
+        const { refer } = this;
+        const { push } = this.props;
         const chartData = this.chartData(data);
         const config = {
             chart: {
@@ -105,7 +137,7 @@ class ColType extends Component {
                 }
             },
             tooltip: {
-                formatter: function () {
+                formatter: function() {
                     const percent = Math.round(this.y * 10000 / this.total) / 100;
                     return this.y + '=<b>' + percent + '%</b><br/>' + 'Total: ' + this.total;
                 }
@@ -117,8 +149,8 @@ class ColType extends Component {
                     borderWidth: 0,
                     point: {
                         events: {
-                            click: function () {
-                                const {category, key} = this;
+                            click: function() {
+                                const { category, key } = this;
                                 const students = data[category][key].students;
                                 localStorage.setItem('filtered', JSON.stringify(students));
                                 push('/filtered');
@@ -148,13 +180,13 @@ class ColType extends Component {
     }
 
     render() {
-        const hidden = this.state.loading ? {visibility: 'hidden'} : {};
+        const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
                     <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data}/>
+                                 data={this.state.data} />
                 </div>
             </div>
         )
