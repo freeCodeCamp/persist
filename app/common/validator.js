@@ -244,6 +244,14 @@ export const types = {
         'Other Program'
     ],
     'documents.types': [
+        'Award letter',
+        'HS Transcript',
+        'College Transcript',
+        'FAFSA',
+        'TAP',
+        'Tax Documents',
+        'FERPA',
+        'Student Aid Report',
         'other'
     ],
     ethnicity: transform(mapping.ethnicity, (res, val, key) => {

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import StudentTable from '../student/StudentTable';
 
@@ -8,7 +8,8 @@ class FilteredStudents extends Component {
         super(props);
         this.students = [];
         this.state = {
-            students: []
+            students: [],
+            done: false
         };
     }
 
@@ -29,13 +30,14 @@ class FilteredStudents extends Component {
         const osisStudents = JSON.parse(localStorage.getItem('filtered'));
         this.students = osisStudents.map((osis) => (props.studentsObj[osis]));
         this.setState({
-            students: this.students
+            students: this.students,
+            done: true
         });
     }
 
     render() {
         return (
-            <StudentTable students={this.state.students} noSearch={true}/>
+            <StudentTable students={this.state.students} noSearch={!this.state.done} />
         )
     }
 

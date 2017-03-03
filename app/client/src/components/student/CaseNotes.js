@@ -40,7 +40,7 @@ class CaseNotes extends Component {
             return (
                 <tr key={index}>
                     <td>{moment(date).format('ll')}</td>
-                    <td>{description}</td>
+                    <td>{description.substring(0, 100)}</td>
                     <td>{communicationType}</td>
                     <td>{fullName}</td>
                     <td>{needFollowUp ? 'Yes' : 'No'}</td>

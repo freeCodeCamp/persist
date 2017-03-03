@@ -1,9 +1,9 @@
 import React from 'react';
 import Content from '../helpers/content';
 import ChartFilter from '../charts/Filter';
-import {ChartTabs} from '../dashboard';
-import {connect} from 'react-redux';
-import {reduxForm} from 'redux-form';
+import { ChartTabs } from '../dashboard';
+import { connect } from 'react-redux';
+import { reduxForm } from 'redux-form';
 import _ from 'lodash';
 
 class DashboardMain extends React.Component {
@@ -18,7 +18,7 @@ class DashboardMain extends React.Component {
     handleSubmit(values) {
         this.update = true;
         const conditions = _(values).omitBy(_.isNil).cloneDeep();
-        const {students} = this.props;
+        const { students } = this.props;
         const hsGPA = conditions.hsGPA;
         delete conditions.hsGPA;
         const filteredStudents = _(students).filter(conditions).filter((student) => {
@@ -48,7 +48,7 @@ class DashboardMain extends React.Component {
     }
 
     componentDidMount() {
-        const {students} = this.props;
+        const { students } = this.props;
         if (students.length > 0) {
             this.update = true;
             this.setState({
@@ -60,8 +60,8 @@ class DashboardMain extends React.Component {
     render() {
         return (
             <Content title='Welcome'>
-                <ChartFilter handleFormSubmit={this.handleSubmit.bind(this)}/>
-                <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges}/>
+                <ChartFilter handleFormSubmit={this.handleSubmit.bind(this)} />
+                <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges} />
             </Content>
         );
     }

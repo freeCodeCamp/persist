@@ -41,7 +41,8 @@ const extraFilters = {
     fallAndSpringNotSpring: 'Enrolled in fall and spring of year after graduation but then NOT the following fall (year 2 dropoff)',
     // '43NotAssociate': 'Earned a total of 43 credits toward an associate’s degree and have not received a degree',
     // '103NotBachelor': 'Earned a total of 103 credits toward a bachelor’s degree and have not received a degree',
-    partTimeAfterFull: 'Enrolled part time the most recent semester after being enrolled Full time the semester before that'
+    partTimeAfterFull: 'Enrolled part time the most recent semester after being enrolled Full time the semester before that',
+    enrolAfterGraduation: 'Enrolled first semester after graduation'
 };
 const extraKeys = _.keys(extraFilters);
 
@@ -88,7 +89,7 @@ class StudentFilter extends Component {
         if (extraConditions.enrolLast6) {
             filteredStudents = filteredStudents
                 .filter((student) => {
-                    if (student.terms < 1) return false;
+                    if (student.terms.length < 1) return false;
                     return (Math.abs(moment(new Date()).diff(moment(student.terms[0].enrolEnd), 'months')) < 6);
                 });
         }
@@ -109,7 +110,7 @@ class StudentFilter extends Component {
         if (extraConditions.fallAndSpringNotSpring) {
             filteredStudents = filteredStudents
                 .filter((student) => {
-                    if (student.terms < 2 || !student.hsGradYear) return false;
+                    if (student.terms.length < 2 || !student.hsGradYear) return false;
                     const hsGradYear = student.hsGradYear;
                     const studentTermNames = _(student.terms).map('name');
                     if (
@@ -124,12 +125,20 @@ class StudentFilter extends Component {
         if (extraConditions.partTimeAfterFull) {
             filteredStudents = filteredStudents
                 .filter((student) => {
-                    if (student.terms < 2) return false;
+                    if (student.terms.length < 2) return false;
                     const studentStatus = _(student.terms).map('status');
                     if (studentStatus[0] === 'H') {
                         return studentStatus[1] === 'F';
                     }
                     return false;
+                });
+        }
+        if (extraConditions.enrolAfterGraduation) {
+            filteredStudents = filteredStudents
+                .filter((student) => {
+                    if (student.terms.length < 1 || !student.hsGradDate) return false;
+                    const totalTerms = student.terms;
+                    return Math.abs(moment(student.terms[totalTerms-1].enrolBegin).diff(moment(student.hsGradDate), 'months')) < 6;
                 });
         }
         this.setState({

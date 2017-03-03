@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Highcharts from 'highcharts';
 import classNames from 'classnames';
 import _ from 'lodash';
@@ -35,7 +35,11 @@ class BasicColumn extends Component {
     }
 
     initializeChart(config = this.props.config) {
+        console.log('initialize');
         this.initialized = true;
+        window.config = config;
+        window.chartComponent = this.component;
+        window.Highcharts = Highcharts;
         this.chart = Highcharts.chart(this.component, config);
     }
 
@@ -45,7 +49,7 @@ class BasicColumn extends Component {
             height: '300px'
         };
         return (
-            <div ref={(c) => this.component = c} className={classNames('chart tab-pane', {active: this.props.active})}
+            <div ref={(c) => this.component = c} className={classNames('chart tab-pane', { active: this.props.active })}
                  id={ this.props.id } style={ style }>
                 { this.props.children }
             </div>

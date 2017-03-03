@@ -1,20 +1,25 @@
 import React from 'react';
-import {Field, reduxForm} from 'redux-form';
-import {connect} from 'react-redux';
-
-import {Button, Form, Label, Input, Container, InputGroup, Row, Alert} from 'react-bootstrap';
-
+import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { RaisedButton, Snackbar } from 'material-ui';
+import keyBy from 'lodash/keyBy';
+import { Button, Form, Row, Alert, Col, Clearfix } from 'react-bootstrap';
 import FormGroup from '../helpers/ReduxFormGroup';
-
 import * as updateCollege from '../../actions/updateCollege';
-
-import {collegeKeys} from '../../../../common/fieldKeys';
+import CollegeAssociation from './CollegeAssociation';
+import { collegeKeys } from '../../../../common/fieldKeys';
+const collegeKeysObj = keyBy(collegeKeys, 'dbName');
 
 class SingleCollegeForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editable: false
+            editable: false,
+            notification: {
+                success: false,
+                error: false
+            },
+            filteredStudents: []
         };
 
     }
@@ -34,79 +39,124 @@ class SingleCollegeForm extends React.Component {
         })
     }
 
-    render() {
-
-        const {handleSubmit, reset} = this.props;
-
-        const returnFormGroups = (collegeKeys) => {
-
-            // initial value var
-            let initialValue;
-
-            return collegeKeys.map((field, i) => {
-
-
-                let editable = this.state.editable;
-
-                initialValue = this.props.initialValues[field.dbName];
-                if (!field.hidden) {
-                    return (
-                        <FormGroup style={{margin: '50px', textAlign: 'center'}} initValue={ initialValue } key={i}
-                                   disabled={ editable } field={ field }>
-                            { field.dbName }
-                        </FormGroup>
-                    );
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.updateCollegeStatus.error) {
+            this.setState({
+                ...this.state,
+                notification: {
+                    error: true,
+                    success: false
                 }
-
             });
-        };
+        } else if (nextProps.updateCollegeStatus.success) {
+            this.setState({
+                ...this.state,
+                notification: {
+                    error: false,
+                    success: true
+                }
+            })
+        }
+    }
 
-        const allFields = returnFormGroups(collegeKeys);
+    render() {
+        const { handleSubmit, reset, initialValues } = this.props;
+        const { editable, filteredStudents } = this.state;
+        const renderFormGroups = (form, collegeKeys) => {
+            const HTML = [];
+            collegeKeys.map((field, i) => {
+                field = collegeKeysObj[field];
+                let disabled = !editable;
+                if (!field.editable) {
+                    disabled = true;
+                }
+                const initialValue = initialValues[field.dbName];
+                HTML.push(
+                    <Col key={field.dbName}
+                         style={{ minHeight: 100, display: 'flex', justifyContent: 'center' }} xs={12}
+                         sm={6} md={6}
+                         lg={4}>
+                        <FormGroup
+                            form={form}
+                            style={ { margin: '50px', textAlign: 'center' } }
+                            initValue={ initialValue }
+                            key={ i }
+                            disabled={ disabled }
+                            field={ field }
+                        />
+                    </Col>
+                );
+                if ((i + 1) % 2 === 0) {
+                    HTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock />);
+                }
+                if ((i + 1) % 3 === 0) {
+                    HTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock />);
+                }
+            });
+            return HTML;
+        };
+        const basicCollegeInfo = ['website', 'city', 'state', 'locale', 'collType', 'predominentDegGranted', 'hbcu', 'religiousAffiliation',
+            'specialPrograms', 'otherNotes', 'womenOnly'];
+        const academicProfile = ['avgHsGpa', 'barronsRating', 'percentileCR25', 'percentileCR75', 'admissionsRate', 'testingPolicy',
+            'percentileMath25', 'percentileMath75'];
+        const percentDegrees = ['percentDegrees1', 'percentDegrees2', 'percentDegrees3', 'percentDegrees4', 'percentDegrees5',
+            'percentDegrees6', 'percentDegrees7', 'percentDegrees8', 'percentDegrees9', 'percentDegrees10', 'percentDegrees11',
+            'percentDegrees12', 'percentDegrees13', 'percentDegrees14', 'percentDegrees15', 'percentDegrees16']
+        const financialProfile = ['netPriceCalculator', 'netPrice0to30', 'netPrice30to48', 'netPrice48to75', 'netPrice75to110'];
+        const studentBody = ['numberStudents', 'percentPartTimeEnrolled', 'percentFirstGen', 'percentPellGrant', 'percentStudents.black',
+            'percentStudents.hispanic', 'percentStudents.asian', 'percentStudents.white'];
 
         return (
             <div id="single-college-page">
                 <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
-                    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-                        { allFields }
-                    </div>
-                    { this.state.editable ? <div>
-                        <Button type="submit">
-                            Submit
-                        </Button>
-                        <Button type="button" onClick={ reset }>
-                            Undo Changes
-                        </Button>
-                    </div> : <Button type="button" onClick={ () => this.toggleEdit() }>
-                        Edit
-                    </Button> }
-
-                    { this.props.updateCollegeStatus.pending ? <div>
-                        <br/>
-                        <p>
-                            Loading
-                        </p><i style={ {fontSize: '50px', textAlign: 'center'} }
-                               className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                    </div> : null }
-                    { this.props.updateCollegeStatus.error ?
-                        <div>
-                            <br/>
-                            <Alert bsStyle="warning">
-                                <strong>Sorry!</strong> We encountered an error, please check the student form for any
-                                errors.
-                            </Alert>
-                        </div>
-                        : null }
-                    { this.props.updateCollegeStatus.success ? <div>
-                        <br/>
-                        <Alert bsStyle="success">
-                            <strong>Success!</strong> We updated the student record and everything went swimmingly.
-                        </Alert>
-
-                    </div> : null }
+                    <Row className='text-right'>
+                        {editable ? <RaisedButton label='Submit' type='submit' primary={true} /> : null}
+                        {editable ?
+                            <RaisedButton label='Undo' secondary={true} onClick={reset} /> :
+                            <RaisedButton label='Edit' primary={true} onClick={() => this.toggleEdit()} />
+                        }
+                    </Row>
+                    <h2>Basic College Information</h2>
+                    <Row>
+                        {renderFormGroups(this, basicCollegeInfo)}
+                    </Row>
+                    <h2>Academic Profile</h2>
+                    <Row>
+                        {renderFormGroups(this, academicProfile)}
+                    </Row>
+                    <h2>Percentage of Degrees Earned in the Following Fields</h2>
+                    <Row>
+                        {renderFormGroups(this, percentDegrees)}
+                    </Row>
+                    <h2>Financial Profile</h2>
+                    <Row>
+                        {renderFormGroups(this, financialProfile)}
+                    </Row>
+                    <h2>Student Body</h2>
+                    <Row>
+                        {renderFormGroups(this, studentBody)}
+                    </Row>
+                    <Snackbar
+                        bodyStyle={{ backgroundColor: 'red' }}
+                        open={this.state.notification.error}
+                        message='Something went wrong. Please try again'
+                        autoHideDuration={2000}
+                        onRequestClose={() => {
+                            this.setState({ ...this.state, notification: { success: false, error: false } })
+                        }}
+                    />
+                    <Snackbar
+                        bodyStyle={{ backgroundColor: 'green' }}
+                        open={this.state.notification.success}
+                        message='College record is updated'
+                        autoHideDuration={2000}
+                        onRequestClose={() => {
+                            this.setState({ ...this.state, notification: { success: false, error: false } })
+                        }}
+                    />
                 </Form>
+                <CollegeAssociation college={initialValues} />
             </div>
-
         );
     }
 }
@@ -115,19 +165,12 @@ SingleCollegeForm = reduxForm({
     form: 'SingleCollege' // a unique name for this form
 })(SingleCollegeForm);
 
-function mapStateToProps(state) {
-    return {
-        collegeForm: state.form,
-        updateCollegeStatus: state.updateCollege
-    };
-}
+const mapStateToProps = (state) => ({
+    updateCollegeStatus: state.updateCollege,
+    students: state.students
+});
 
 // You have to connect() to any reducers that you wish to connect to yourself
 export default connect(
     mapStateToProps, updateCollege
-)(SingleCollegeForm)
-
-
-
-
-
+)(SingleCollegeForm);

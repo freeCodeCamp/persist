@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
+import {connect} from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import { Table } from 'react-bootstrap';
 
-class StudentTable extends React.Component {
+class StudentList extends React.Component {
     constructor(props) {
         super(props);
         this.updating = false;
@@ -48,8 +49,8 @@ class StudentTable extends React.Component {
     getNewStudents() {
         if (!this.mounted) return;
         const _this = this;
-        const { students } = this.props;
-        const { offset } = this.state;
+        const {students} = this.props;
+        const {offset} = this.state;
         if (this.updating || offset > this.length) return;
         this.updating = true;
         this.setState({
@@ -67,7 +68,7 @@ class StudentTable extends React.Component {
                 justifyContent: 'center',
                 paddingTop: 40
             }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
+                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
             </div>
         )
     }
@@ -78,11 +79,11 @@ class StudentTable extends React.Component {
     }
 
     render() {
-        const { students } = this.state;
-        const { noSearch } = this.props;
+        const {students} = this.state;
+        const {noSearch, schoolObj} = this.props;
         if (students.length < 1) {
             if (!noSearch) {
-                return <h2 style={{ margin: 0, padding: 20, textAlign: 'center' }}>Sorry! no results found</h2>;
+                return <h1>'Sorry! no results found'</h1>;
             }
             return this.renderLoading();
         }
@@ -97,9 +98,10 @@ class StudentTable extends React.Component {
                             { student.firstName }
                         </Link>
                     </td>
-                    <td>
-                        { student.lastName }
-                    </td>
+                    <td>{student.lastName}</td>
+                    <td>{student.hsGradYear}</td>
+                    <td>{schoolObj[student.hs].name}</td>
+                    <td>{student.status}</td>
                 </tr>
             );
         });
@@ -109,15 +111,12 @@ class StudentTable extends React.Component {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            First Name
-                        </th>
-                        <th>
-                            Last Name
-                        </th>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>HS Grad Year</th>
+                        <th>HS</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,4 +128,8 @@ class StudentTable extends React.Component {
     }
 }
 
-export default StudentTable;
+const mapStateToProps = (state) => ({
+    schoolObj: state.schools.idObj
+});
+
+export default connect(mapStateToProps)(StudentList);

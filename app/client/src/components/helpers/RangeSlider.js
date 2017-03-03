@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field} from 'redux-form';
+import { Field } from 'redux-form';
 
 export default class RangeSlider extends React.Component {
 
@@ -33,13 +33,13 @@ export default class RangeSlider extends React.Component {
     }
 
     dispatchChange(data) {
-        const {form, input: {name}} = this.props;
+        const { form, input: { name } } = this.props;
         form.props.change.bind(form, `${name}.min`, data.from)();
         form.props.change.bind(form, `${name}.max`, data.to)();
     }
 
     render() {
-        const {defaultRange, description, min, max, step, input: {name}} = this.props;
+        const { defaultRange, description, min, max, step, input: { name } } = this.props;
         const data_attr = {
             'data-type': 'double',
             'data-min': min,

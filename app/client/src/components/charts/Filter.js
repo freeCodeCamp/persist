@@ -1,12 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Row, Col, Clearfix} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Row, Col, Clearfix } from 'react-bootstrap';
 import keyBy from 'lodash/keyBy';
-import {reduxForm, Field} from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import RaisedButton from 'material-ui/RaisedButton';
-import {studentKeys} from '../../../../common/fieldKeys';
-import {ReduxFormGroup} from '../helpers';
-import {SelectField, TextField, AutoComplete} from 'redux-form-material-ui';
+import { studentKeys } from '../../../../common/fieldKeys';
+import { ReduxFormGroup } from '../helpers';
+import { SelectField, TextField, AutoComplete } from 'redux-form-material-ui';
 import RangeSlider from '../helpers/RangeSlider';
 const studentKeysObj = keyBy(studentKeys, 'dbName');
 
@@ -18,6 +18,7 @@ class ChartFilter extends React.Component {
 
     fieldsHTML(form) {
         const fields = [
+            'studentSupportOrgName',
             'hsGradYear',
             'ethnicity',
             'hs',
@@ -35,7 +36,7 @@ class ChartFilter extends React.Component {
             }
             HTML.push(
                 <Col key={ fieldObj.dbName }
-                     style={{display: 'flex', justifyContent: 'center'}} xs={12}
+                     style={{ display: 'flex', justifyContent: 'center' }} xs={12}
                      sm={6} md={6}
                      lg={4}>
                     <ReduxFormGroup
@@ -46,38 +47,38 @@ class ChartFilter extends React.Component {
                 </Col>
             );
             if ((i + 1) % 2 === 0) {
-                HTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock/>);
+                HTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock />);
             }
             if ((i + 1) % 3 === 0) {
-                HTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock/>);
+                HTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock />);
             }
         });
         return HTML;
     }
 
     render() {
-        const {handleSubmit, handleFormSubmit} = this.props;
+        const { handleSubmit, handleFormSubmit } = this.props;
         return (
             <form onSubmit={ handleSubmit(handleFormSubmit) }>
                 <Row>
                     {this.fieldsHTML(this)}
                     <Col key='hsGPA'
-                         style={{display: 'flex', justifyContent: 'center'}} xs={12}
+                         style={{ display: 'flex', justifyContent: 'center' }} xs={12}
                          sm={6} md={6}
                          lg={4}>
                         <Field name='hsGPA'
                                component={ RangeSlider }
                                description='High School GPA'
-                               defaultRange={ {minValue: 0, maxValue: 100} }
+                               defaultRange={ { minValue: 0, maxValue: 100 } }
                                min={ 0 }
                                form={this}
                                max={ 100 }
-                               step={ 1 }/>
+                               step={ 1 } />
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12} style={{marginTop: 10}}>
-                        <RaisedButton type='submit' label='Filter' primary={ true }/>
+                    <Col xs={12} style={{ marginTop: 10 }}>
+                        <RaisedButton type='submit' label='Filter' primary={ true } />
                     </Col>
                 </Row>
             </form>

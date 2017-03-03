@@ -74,10 +74,8 @@ class SingleStudentForm extends React.Component {
         const renderFormGroups = (form, studentKeys) => {
             const HTML = [];
             studentKeys.map((field, i) => {
-                console.log(field);
                 field = studentKeysObj[field];
                 let disabled = !editable;
-                console.log(field);
                 if (!field.editable) {
                     disabled = true;
                 }
@@ -225,7 +223,6 @@ SingleStudentForm = reduxForm({
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        studentForm: state.form.SingleStudent,
         updateStudentStatus: state.updateStudent
     };
 }

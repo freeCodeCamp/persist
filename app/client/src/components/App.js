@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import HeaderBar from './admin-components/header-bar/header-bar';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
     getAllSchools,
     getNotifications,
@@ -11,14 +11,14 @@ import {
     getAllCounselors,
     setSpinner
 } from '../actions'
-import {Spinner} from './helpers';
+import { Spinner } from './helpers';
 import NavigationMenu from './admin-components/navigation-menu';
 // import ControlPanel from './admin-components/control-panel';
 import Footer from './admin-components/footer';
 import '../../public/style/main2.scss';
-import {MaterialUIWrapper} from './helpers';
+import { MaterialUIWrapper } from './helpers';
 
-class Dashboard extends Component {
+class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -63,7 +63,7 @@ class Dashboard extends Component {
         this.resize();
         if (this.props.currentPage != nextProps.currentPage) {
             this.props.setSpinner(true);
-            this.setState({...this.state, load: false});
+            this.setState({ ...this.state, load: false });
         }
     }
 
@@ -94,13 +94,13 @@ class Dashboard extends Component {
     }
 
     render() {
-        const {load} = this.state;
+        const { load } = this.state;
         return (
             <div className='wrapper'>
                 <HeaderBar />
                 <NavigationMenu />
                 <section className='content-wrapper'>
-                    <Spinner/>
+                    <Spinner />
                     { load ?
                         <MaterialUIWrapper>
                             { this.props.currentPage }
@@ -127,4 +127,4 @@ const mapDispatchToProps = (dispatch) => {
     }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
