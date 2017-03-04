@@ -1,9 +1,9 @@
 import path from 'path';
 import multer from 'multer';
 import express from 'express';
-import {Student, College, School, User} from '../models';
+import { Student, College, School, User } from '../models';
 import passport from '../config/passport';
-import {getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN} from '../../common/constants';
+import { getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN } from '../../common/constants';
 import {
     DataManageController,
     AmazonController,
@@ -18,7 +18,6 @@ import {
 import saveCSV from '../utils/save_csv';
 import saveCollegeData from '../utils/save_csv_colleges_updated';
 import saveTermData from '../utils/save_csv_term_data';
-import saveGraduationData from '../utils/save_csv_graduation_data';
 import saveApplicationData from '../utils/save_csv_applications';
 import saveSchoolData from '../utils/save_csv_schools';
 
@@ -52,7 +51,7 @@ const matchSecret = (req, res, next) => {
     if (secret && secret === process.env.SECRET) {
         return next();
     }
-    res.status(402).json({error: 'You are not authorized.'});
+    res.status(402).json({ error: 'You are not authorized.' });
 };
 
 const requireLogin = (req, res, next) => {
@@ -63,7 +62,7 @@ const requireLogin = (req, res, next) => {
             return next(err);
         }
         if (!user) {
-            return res.status(403).json({message: info.error});
+            return res.status(403).json({ message: info.error });
         }
         req.user = user;
         next();
@@ -72,7 +71,7 @@ const requireLogin = (req, res, next) => {
 
 export default (app) => {
 
-    app.post('/upload/studentData', fileUpload, function (req, res) {
+    app.post('/upload/studentData', fileUpload, function(req, res) {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
@@ -130,18 +129,6 @@ export default (app) => {
             console.log(err);
             res.status(500).send(err);
         })
-    });
-
-    app.post('/upload/collegeGraduation', fileUpload, (req, res) => {
-        const fileData = req.files.file[0];
-        const filePath = path.join(fileData.destination, fileData.filename);
-
-        saveGraduationData(filePath).then((data) => {
-            res.status(200).send(data);
-        }).catch((err) => {
-            console.log(err);
-            res.status(500).send(err);
-        });
     });
 
     // main REST API for getting/adding/deleting/modifying student data
@@ -207,9 +194,9 @@ export default (app) => {
                 $set: data
             }, {
                 new: true
-            }, function (err, doc) {
+            }, function(err, doc) {
                 if (err) {
-                    res.send({err: true});
+                    res.send({ err: true });
                 }
                 res.send(doc);
             });
@@ -224,7 +211,7 @@ export default (app) => {
         if (getRole(req.user.access.role) < getRole(ROLE_COUNSELOR)) {
             return res.status(200).json([]);
         } else if (getRole(req.user.access.role) === getRole(ROLE_COUNSELOR)) {
-            query = Student.find({hs: req.user.access.school});
+            query = Student.find({ hs: req.user.access.school });
         } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {
             query = Student.find({});
         }
@@ -244,9 +231,9 @@ export default (app) => {
         } else if (getRole(req.user.access.role) === getRole(ROLE_COUNSELOR)) {
             query = User.find({
                 $or: [
-                    {access: {school: req.user.access.school}},
-                    {access: {role: ROLE_OWNER}},
-                    {access: {role: ROLE_ADMIN}}
+                    { access: { school: req.user.access.school } },
+                    { access: { role: ROLE_OWNER } },
+                    { access: { role: ROLE_ADMIN } }
                 ]
             });
         } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {

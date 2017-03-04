@@ -1,11 +1,11 @@
 import React from 'react';
 import * as uploadFile from '../../actions/uploadFile';
-import {connect} from 'react-redux';
-import {FormGroup, ControlLabel, FormControl, Button, Input, InputGroup} from 'react-bootstrap';
-import {Spinner} from '../helpers';
+import { connect } from 'react-redux';
+import { FormGroup, ControlLabel, FormControl, Button, Input, InputGroup } from 'react-bootstrap';
+import { Spinner } from '../helpers';
 import Content from '../helpers/content';
 import DropZoneUpload from '../helpers/dropzoneUpload';
-import {SelectField, MenuItem} from 'material-ui';
+import { SelectField, MenuItem } from 'material-ui';
 
 class Upload extends React.Component {
     constructor(props) {
@@ -45,12 +45,8 @@ class Upload extends React.Component {
                 url: '/upload/schoolData'
             },
             {
-                name: 'NSC Term Records',
+                name: 'College Term Records',
                 url: '/upload/termData'
-            },
-            {
-                name: 'College Graduation Records',
-                url: '/upload/collegeGraduation'
             },
             {
                 name: 'College Application Data',
@@ -63,7 +59,7 @@ class Upload extends React.Component {
                 <MenuItem key={ i }
                           name={ type.name }
                           value={ this.getUrl(fileTypes, type.name) }
-                          primaryText={ type.name }/>
+                          primaryText={ type.name } />
             );
         });
 
@@ -78,7 +74,7 @@ class Upload extends React.Component {
                         { optionsHTML }
                     </SelectField>
                 </div>
-                { this.state.chosen ? <DropZoneUpload url={ this.state.url }/> : null }
+                { this.state.chosen ? <DropZoneUpload url={ this.state.url } /> : null }
             </Content>
         );
     }
