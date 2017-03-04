@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
+import { RaisedButton } from 'material-ui';
 import async from 'async';
 import { mapping } from '../../../../common/constants';
 import { BasicColumn } from '../admin-components/charts';
@@ -20,7 +21,8 @@ class ColType extends Component {
         super(props);
         this.state = {
             loading: true,
-            data: []
+            data: [],
+            predominentDegGranted: 'all'
         }
     }
 
@@ -45,6 +47,7 @@ class ColType extends Component {
 
     normalizeData(props) {
         const { collegeObj } = this.props;
+        const { predominentDegGranted } = this.state;
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultColTypeData = {};
@@ -60,34 +63,37 @@ class ColType extends Component {
                     student.terms = _.compact(student.terms);
                     if (student.terms.length > 0) {
                         const college = collegeObj[_.last(student.terms).college];
-                        colType = college.collType;
-                        if (colType === 1) {
-                            switch (college.durationType) {
-                                case '2 year':
-                                    colType = 1;
-                                    break;
-                                case '4 year':
-                                    colType = 7;
-                                    break;
-                                default:
-                                    colType = undefined;
+                        if ((college.predominentDegGranted && college.predominentDegGranted === predominentDegGranted) ||
+                            predominentDegGranted === 'all') {
+                            colType = college.collType;
+                            if (colType === 1) {
+                                switch (college.durationType) {
+                                    case '2 year':
+                                        colType = 1;
+                                        break;
+                                    case '4 year':
+                                        colType = 7;
+                                        break;
+                                    default:
+                                        colType = undefined;
+                                }
+                            } else if (colType === 2) {
+                                switch (college.durationType) {
+                                    case '2 year':
+                                        colType = 2;
+                                        break;
+                                    case '4 year':
+                                        colType = 8;
+                                        break;
+                                    default:
+                                        colType = undefined;
+                                }
                             }
-                        } else if (colType === 2) {
-                            switch (college.durationType) {
-                                case '2 year':
-                                    colType = 2;
-                                    break;
-                                case '4 year':
-                                    colType = 8;
-                                    break;
-                                default:
-                                    colType = undefined;
+                            if (colType) {
+                                result[hsGradYear][colType].count += 1;
+                                result[hsGradYear][colType].students.push(student.osis);
                             }
                         }
-                    }
-                    if (colType) {
-                        result[hsGradYear][colType].count += 1;
-                        result[hsGradYear][colType].students.push(student.osis);
                     }
                 }
                 setTimeout(() => {
@@ -179,6 +185,13 @@ class ColType extends Component {
         )
     }
 
+    setYear(year) {
+        this.setState({
+            loading: true,
+            predominentDegGranted: year
+        }, this.updateGraph.bind(this, this.props));
+    }
+
     render() {
         const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
@@ -188,11 +201,25 @@ class ColType extends Component {
                     <BasicColumn {...this.props} config={this.chartConfig()}
                                  data={this.state.data} />
                 </div>
+                <div style={{ display: 'flex' }}>
+                    <RaisedButton style={styles.raisedButton} primary={true} label='All'
+                                  onClick={() => this.setYear('all')} />
+                    <RaisedButton style={styles.raisedButton} primary={true} label='2 Year College'
+                                  onClick={() => this.setYear('2 Year')} />
+                    <RaisedButton style={styles.raisedButton} primary={true} label='4 Year College'
+                                  onClick={() => this.setYear('4 Year')} />
+                </div>
             </div>
         )
     }
 
 }
+
+const styles = {
+    raisedButton: {
+        marginRight: '5px'
+    }
+};
 
 const mapStateToProps = (state) => ({
     collegeObj: state.colleges.idObj

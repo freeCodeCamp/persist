@@ -3,13 +3,14 @@ import parse from 'csv-parse';
 import transform from 'stream-transform';
 import async from 'async';
 import merge from 'lodash/merge';
+import isFinite from 'lodash/isFinite';
 import forOwn from 'lodash/forOwn';
 import mongoose from 'mongoose';
 
 import College from '../models/college';
-import {collegeKeys} from '../../common/fieldKeys';
+import { collegeKeys } from '../../common/fieldKeys';
 
-export default function (fileName) {
+export default function(fileName) {
 
     return new Promise((resolve, reject) => {
 
@@ -19,21 +20,17 @@ export default function (fileName) {
             auto_parse: true
         });
 
-        var transformer = transform(function (record) {
+        var transformer = transform(function(record) {
 
-            // console.log(record);
-            // let years =  {};
-            // years[2012] = record['2012 Enrolled Fall1'];
-            // years[2013] = record['2013 Enrolled Fall 1'];
-            // years[2014] = record['2014 Enrolled Fall 1'];
-            // years[2015] = record['2015 Enrolled Fall 1 '];
-
-            // record.enrollmentYears = years;
-
-            console.log(record);
-
+            forOwn(College.schema.obj, (value, key) => {
+                if (value.name && value.name.toString() === 'Number') {
+                    record[key] = Number(record[key]);
+                    if (!isFinite(record[key])) {
+                        delete record[key];
+                    }
+                }
+            });
             return record;
-
         }, (err, data) => {
             if (err) {
                 console.log(err);
@@ -49,28 +46,6 @@ export default function (fileName) {
 
             async.eachLimit(data, 10, (record, callback) => {
 
-                // college.update({
-                //   fullName: record.fullName
-                // }, record, {
-                //   upsert: true,
-                //   setDefaultsOnInsert: true
-                // }, (err, rawResponse) => {
-                //   if (err) {
-                //     callback(err);
-                //     return;
-                //   }
-
-                //   if (rawResponse.upserted) {
-                //     addedCount += 1;
-                //   } else {
-                //     modifiedCount += 1;
-                //   }
-
-                //   // console.log(rawResponse);
-                //   callback(null);
-
-                // });
-
                 College.findOne({
                     fullName: record.fullName
                 }, (err, oldCollege) => {
@@ -84,7 +59,7 @@ export default function (fileName) {
                                 return;
                             }
                             addedCount++;
-                            newColleges.push({fullName: record.fullName});
+                            newColleges.push({ fullName: record.fullName });
                             callback(null);
                         });
                     } else {
@@ -99,7 +74,7 @@ export default function (fileName) {
                             callback(null);
                         });
                         console.log('the record exists already mate!'.red);
-                        updatedColleges.push({fullName: record.fullName});
+                        updatedColleges.push({ fullName: record.fullName });
 
                         // run some logic of updating
 
