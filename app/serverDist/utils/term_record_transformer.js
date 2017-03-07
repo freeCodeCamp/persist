@@ -10,6 +10,10 @@ var _college2 = _interopRequireDefault(_college);
 
 var _mongoose = require('mongoose');
 
+var _forOwn = require('lodash/forOwn');
+
+var _forOwn2 = _interopRequireDefault(_forOwn);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (record, callback) {
@@ -36,6 +40,12 @@ exports.default = function (record, callback) {
                 // console.log('successfully transformed'.green, logObject);
                 record[dateField] = value;
             }
+        }
+    });
+
+    (0, _forOwn2.default)(record, function (value, key) {
+        if (!record[key] || typeof record[key] === 'string' && record[key].length < 1) {
+            record[key] = undefined;
         }
     });
 

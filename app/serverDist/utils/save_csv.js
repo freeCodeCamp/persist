@@ -60,20 +60,18 @@ exports.default = function (fileName) {
                             return callback(null);
                         });
                     } else {
-                        (function () {
-                            var studentObject = oldStudent.toObject();
-                            var newStudent = (0, _merge2.default)(studentObject, record);
-                            (0, _forOwn2.default)(studentObject, function (value, key) {
-                                oldStudent[key] = newStudent[key];
-                            });
-                            oldStudent.save(function (err) {
-                                if (err) {
-                                    console.log('we got a validation error', err);
-                                    return callback(err);
-                                }
-                                return callback(null);
-                            });
-                        })();
+                        var studentObject = oldStudent.toObject();
+                        var _newStudent = (0, _merge2.default)(studentObject, record);
+                        (0, _forOwn2.default)(studentObject, function (value, key) {
+                            oldStudent[key] = _newStudent[key];
+                        });
+                        oldStudent.save(function (err) {
+                            if (err) {
+                                console.log('we got a validation error', err);
+                                return callback(err);
+                            }
+                            return callback(null);
+                        });
                     }
                 });
             }, function (err) {

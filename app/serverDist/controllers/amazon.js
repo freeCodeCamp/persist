@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getSign = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _mongoose = require('mongoose');
 
 var _awsSdk = require('aws-sdk');
@@ -56,36 +54,30 @@ var getSign = exports.getSign = function getSign(req, res) {
     var Key = 'documents/' + baseName + '-' + _id.toString() + ext;
     var s3 = new _awsSdk2.default.S3();
     if (oldKey) {
-        var _ret = function () {
-            oldKey = 'documents/' + oldKey;
-            var bucketName = process.env.S3_BUCKET_NAME;
-            var params = { Bucket: bucketName, CopySource: bucketName + '/' + oldKey, Key: Key };
-            return {
-                v: s3.copyObject(params, function (err) {
-                    if (err) {
-                        console.log('copy', err);
-                        return res.status(500).send(err);
-                    }
-                    s3.deleteObject({ Key: oldKey, Bucket: bucketName }, function (err) {
-                        if (err) {
-                            console.log('delete', err);
-                            return res.status(500).send(err);
-                        }
-                        if (!file) {
-                            var returnData = {
-                                _id: _id,
-                                Key: Key,
-                                downloadLink: 'https://' + bucketName + '.s3.amazonaws.com/' + Key
-                            };
-                            return res.status(200).json(returnData);
-                        }
-                        getPutSigned(fileType, s3, _id, res, Key);
-                    });
-                })
-            };
-        }();
-
-        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+        oldKey = 'documents/' + oldKey;
+        var bucketName = process.env.S3_BUCKET_NAME;
+        var params = { Bucket: bucketName, CopySource: bucketName + '/' + oldKey, Key: Key };
+        return s3.copyObject(params, function (err) {
+            if (err) {
+                console.log('copy', err);
+                return res.status(500).send(err);
+            }
+            s3.deleteObject({ Key: oldKey, Bucket: bucketName }, function (err) {
+                if (err) {
+                    console.log('delete', err);
+                    return res.status(500).send(err);
+                }
+                if (!file) {
+                    var returnData = {
+                        _id: _id,
+                        Key: Key,
+                        downloadLink: 'https://' + bucketName + '.s3.amazonaws.com/' + Key
+                    };
+                    return res.status(200).json(returnData);
+                }
+                getPutSigned(fileType, s3, _id, res, Key);
+            });
+        });
     }
     getPutSigned(fileType, s3, _id, res, Key);
 };

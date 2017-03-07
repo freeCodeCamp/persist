@@ -1,52 +1,44 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _path = require('path');
+var _path = require("path");
 
 var _path2 = _interopRequireDefault(_path);
 
-var _multer = require('multer');
+var _multer = require("multer");
 
 var _multer2 = _interopRequireDefault(_multer);
 
-var _express = require('express');
+var _models = require("../models");
 
-var _express2 = _interopRequireDefault(_express);
-
-var _models = require('../models');
-
-var _passport = require('../config/passport');
+var _passport = require("../config/passport");
 
 var _passport2 = _interopRequireDefault(_passport);
 
-var _constants = require('../../common/constants');
+var _constants = require("../../common/constants");
 
-var _controllers = require('../controllers');
+var _controllers = require("../controllers");
 
-var _save_csv = require('../utils/save_csv');
+var _save_csv = require("../utils/save_csv");
 
 var _save_csv2 = _interopRequireDefault(_save_csv);
 
-var _save_csv_colleges_updated = require('../utils/save_csv_colleges_updated');
+var _save_csv_colleges_updated = require("../utils/save_csv_colleges_updated");
 
 var _save_csv_colleges_updated2 = _interopRequireDefault(_save_csv_colleges_updated);
 
-var _save_csv_term_data = require('../utils/save_csv_term_data');
+var _save_csv_term_data = require("../utils/save_csv_term_data");
 
 var _save_csv_term_data2 = _interopRequireDefault(_save_csv_term_data);
 
-var _save_csv_graduation_data = require('../utils/save_csv_graduation_data');
-
-var _save_csv_graduation_data2 = _interopRequireDefault(_save_csv_graduation_data);
-
-var _save_csv_applications = require('../utils/save_csv_applications');
+var _save_csv_applications = require("../utils/save_csv_applications");
 
 var _save_csv_applications2 = _interopRequireDefault(_save_csv_applications);
 
-var _save_csv_schools = require('../utils/save_csv_schools');
+var _save_csv_schools = require("../utils/save_csv_schools");
 
 var _save_csv_schools2 = _interopRequireDefault(_save_csv_schools);
 
@@ -101,74 +93,72 @@ var requireLogin = function requireLogin(req, res, next) {
 
 exports.default = function (app) {
 
-    app.post('/upload/studentData', fileUpload, function (req, res) {
+    app.post('/upload/studentData', requireAuth, fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
         (0, _save_csv2.default)(filePath).then(function (data) {
+            _controllers.UploadHistoryController.createHistory('Student Data', req.user._id, true);
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
+            _controllers.UploadHistoryController.createHistory('Student Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
 
-    app.post('/upload/collegeData', fileUpload, function (req, res) {
+    app.post('/upload/collegeData', requireAuth, fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
         (0, _save_csv_colleges_updated2.default)(filePath).then(function (data) {
+            _controllers.UploadHistoryController.createHistory('College Data', req.user._id, true);
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
+            _controllers.UploadHistoryController.createHistory('College Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
 
-    app.post('/upload/schoolData', fileUpload, function (req, res) {
+    app.post('/upload/schoolData', requireAuth, fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
         (0, _save_csv_schools2.default)(filePath).then(function (data) {
+            _controllers.UploadHistoryController.createHistory('School Data', req.user._id, true);
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
+            _controllers.UploadHistoryController.createHistory('School Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
 
-    app.post('/upload/termData', fileUpload, function (req, res) {
+    app.post('/upload/termData', requireAuth, fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
         (0, _save_csv_term_data2.default)(filePath).then(function (data) {
+            _controllers.UploadHistoryController.createHistory('Term Data', req.user._id, true);
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
+            _controllers.UploadHistoryController.createHistory('Term Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
 
-    app.post('/upload/applicationData', fileUpload, function (req, res) {
+    app.post('/upload/applicationData', requireAuth, fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
         (0, _save_csv_applications2.default)(filePath).then(function (data) {
+            _controllers.UploadHistoryController.createHistory('Application Data', req.user._id, true);
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
-            res.status(500).send(err);
-        });
-    });
-
-    app.post('/upload/collegeGraduation', fileUpload, function (req, res) {
-        var fileData = req.files.file[0];
-        var filePath = _path2.default.join(fileData.destination, fileData.filename);
-
-        (0, _save_csv_graduation_data2.default)(filePath).then(function (data) {
-            res.status(200).send(data);
-        }).catch(function (err) {
-            console.log(err);
+            _controllers.UploadHistoryController.createHistory('Application Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
@@ -346,6 +336,8 @@ exports.default = function (app) {
     app.post('/notifications', requireAuth, _controllers.NotificationController.getNotifications);
     app.get('/notifications/read/all', requireAuth, _controllers.NotificationController.allRead);
     app.post('/notifications/read', requireAuth, _controllers.NotificationController.markRead);
+
+    app.get('/getUploadHistory/:page', requireAuth, _controllers.UploadHistoryController.getHistory);
     // final route
     app.get('/*', function (req, res) {
         res.sendFile(_path2.default.join(__dirname, '../../client/public/index.html'));

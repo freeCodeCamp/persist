@@ -1,29 +1,33 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.Student = undefined;
 
-var _mongoosePaginate = require('mongoose-paginate');
+var _mongoosePaginate = require("mongoose-paginate");
 
 var _mongoosePaginate2 = _interopRequireDefault(_mongoosePaginate);
 
-var _sortBy = require('lodash/sortBy');
+var _sortBy = require("lodash/sortBy");
 
 var _sortBy2 = _interopRequireDefault(_sortBy);
 
-var _uniq = require('lodash/uniq');
+var _uniq = require("lodash/uniq");
 
 var _uniq2 = _interopRequireDefault(_uniq);
 
-var _map = require('lodash/map');
+var _map = require("lodash/map");
 
 var _map2 = _interopRequireDefault(_map);
 
-var _ = require('./');
+var _cloneDeep = require("lodash/cloneDeep");
 
-var _schemas = require('../../common/schemas');
+var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
+
+var _ = require("./");
+
+var _schemas = require("../../common/schemas");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54,7 +58,7 @@ Student.pre('save', true, function (next, done) {
     record.terms = (0, _sortBy2.default)(record.terms, function (obj) {
         return obj.enrolBegin;
     }).reverse();
-    var recordTerms = record.terms.reverse();
+    var recordTerms = (0, _cloneDeep2.default)(record.terms).reverse();
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
     record.firstCol = recordTerms[0].college;
@@ -92,7 +96,7 @@ Student.pre('save', true, function (next, done) {
         var match = myRegexp.exec(record.cohort);
         if (match && match[1]) {
             var year = Number(match[1]);
-            record.expectedHSGrad = new Date('9/15/' + (year + 4));
+            record.expectedHSGrad = new Date("9/15/" + (year + 4));
         }
     }
     done();

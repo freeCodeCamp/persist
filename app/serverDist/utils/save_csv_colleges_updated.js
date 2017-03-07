@@ -16,17 +16,14 @@ exports.default = function (fileName) {
 
         var transformer = (0, _streamTransform2.default)(function (record) {
 
-            // console.log(record);
-            // let years =  {};
-            // years[2012] = record['2012 Enrolled Fall1'];
-            // years[2013] = record['2013 Enrolled Fall 1'];
-            // years[2014] = record['2014 Enrolled Fall 1'];
-            // years[2015] = record['2015 Enrolled Fall 1 '];
-
-            // record.enrollmentYears = years;
-
-            console.log(record);
-
+            (0, _forOwn2.default)(_college2.default.schema.obj, function (value, key) {
+                if (value.name && value.name.toString() === 'Number') {
+                    record[key] = Number(record[key]);
+                    if (!(0, _isFinite2.default)(record[key])) {
+                        delete record[key];
+                    }
+                }
+            });
             return record;
         }, function (err, data) {
             if (err) {
@@ -42,28 +39,6 @@ exports.default = function (fileName) {
             var updatedColleges = [];
 
             _async2.default.eachLimit(data, 10, function (record, callback) {
-
-                // college.update({
-                //   fullName: record.fullName
-                // }, record, {
-                //   upsert: true,
-                //   setDefaultsOnInsert: true
-                // }, (err, rawResponse) => {
-                //   if (err) {
-                //     callback(err);
-                //     return;
-                //   }
-
-                //   if (rawResponse.upserted) {
-                //     addedCount += 1;
-                //   } else {
-                //     modifiedCount += 1;
-                //   }
-
-                //   // console.log(rawResponse);
-                //   callback(null);
-
-                // });
 
                 _college2.default.findOne({
                     fullName: record.fullName
@@ -82,25 +57,23 @@ exports.default = function (fileName) {
                             callback(null);
                         });
                     } else {
-                        (function () {
-                            modifiedCount++;
-                            var collegeObject = oldCollege.toObject();
-                            var newCollege = (0, _merge2.default)(collegeObject, record);
-                            (0, _forOwn2.default)(collegeObject, function (value, key) {
-                                oldCollege[key] = newCollege[key];
-                            });
-                            oldCollege.save(function (err) {
-                                if (err) return callback(err);
-                                callback(null);
-                            });
-                            console.log('the record exists already mate!'.red);
-                            updatedColleges.push({ fullName: record.fullName });
+                        modifiedCount++;
+                        var collegeObject = oldCollege.toObject();
+                        var newCollege = (0, _merge2.default)(collegeObject, record);
+                        (0, _forOwn2.default)(collegeObject, function (value, key) {
+                            oldCollege[key] = newCollege[key];
+                        });
+                        oldCollege.save(function (err) {
+                            if (err) return callback(err);
+                            callback(null);
+                        });
+                        console.log('the record exists already mate!'.red);
+                        updatedColleges.push({ fullName: record.fullName });
 
-                            // run some logic of updating
+                        // run some logic of updating
 
-                            // update document with rules from Molly
-                            // options: overwrite / add
-                        })();
+                        // update document with rules from Molly
+                        // options: overwrite / add
                     }
                 });
             }, function (err) {
@@ -139,6 +112,10 @@ var _async2 = _interopRequireDefault(_async);
 var _merge = require('lodash/merge');
 
 var _merge2 = _interopRequireDefault(_merge);
+
+var _isFinite = require('lodash/isFinite');
+
+var _isFinite2 = _interopRequireDefault(_isFinite);
 
 var _forOwn = require('lodash/forOwn');
 

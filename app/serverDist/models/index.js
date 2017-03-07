@@ -49,4 +49,13 @@ Object.defineProperty(exports, 'Student', {
   }
 });
 
+var _uploadHistory = require('./uploadHistory');
+
+Object.defineProperty(exports, 'UploadHistory', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_uploadHistory).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

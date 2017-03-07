@@ -1,40 +1,36 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _fs = require('fs');
+var _fs = require("fs");
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _csvParse = require('csv-parse');
+var _csvParse = require("csv-parse");
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
-var _streamTransform = require('stream-transform');
+var _streamTransform = require("stream-transform");
 
 var _streamTransform2 = _interopRequireDefault(_streamTransform);
 
-var _async = require('async');
+var _async = require("async");
 
 var _async2 = _interopRequireDefault(_async);
 
-var _winston = require('winston');
-
-var _winston2 = _interopRequireDefault(_winston);
-
-var _lodash = require('lodash');
+var _lodash = require("lodash");
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _student = require('../models/student');
+var _student = require("../models/student");
 
 var _student2 = _interopRequireDefault(_student);
 
-var _fieldKeys = require('../../common/fieldKeys');
+var _fieldKeys = require("../../common/fieldKeys");
 
-var _application_record_transformer = require('./application_record_transformer');
+var _application_record_transformer = require("./application_record_transformer");
 
 var _application_record_transformer2 = _interopRequireDefault(_application_record_transformer);
 
@@ -96,35 +92,33 @@ exports.default = function (fileName) {
                         return;
                     }
                     if (student) {
-                        (function () {
-                            var studentApplications = student.applications;
-                            applications.forEach(function (applicationRecord) {
-                                var application = studentApplications.find(function (elem) {
-                                    return elem.college.toString() === applicationRecord.college.toString();
-                                });
-                                if (application) {
-                                    _lodash2.default.merge(application, applicationRecord);
-                                } else {
-                                    studentApplications.push(applicationRecord);
-                                }
+                        var studentApplications = student.applications;
+                        applications.forEach(function (applicationRecord) {
+                            var application = studentApplications.find(function (elem) {
+                                return _lodash2.default.toString(elem.college) === _lodash2.default.toString(applicationRecord.college);
                             });
-                            studentApplications = studentApplications.filter(function (obj) {
-                                return !_lodash2.default.isEmpty(obj);
-                            });
-                            studentApplications = _lodash2.default.sortBy(studentApplications, function (obj) {
-                                return obj.enrolBegin;
-                            }).reverse();
-                            student.applications = studentApplications;
-                            // for now, lets just overwrite the doc
-                            student.save(function (err, updatedStudent) {
-                                if (err) {
-                                    console.log('error', studentApplications, student);
-                                    callback(err);
-                                } else {
-                                    callback(null);
-                                }
-                            });
-                        })();
+                            if (application) {
+                                _lodash2.default.merge(application, applicationRecord);
+                            } else {
+                                studentApplications.push(applicationRecord);
+                            }
+                        });
+                        studentApplications = studentApplications.filter(function (obj) {
+                            return !_lodash2.default.isEmpty(obj);
+                        });
+                        studentApplications = _lodash2.default.sortBy(studentApplications, function (obj) {
+                            return obj.enrolBegin;
+                        }).reverse();
+                        student.applications = studentApplications;
+                        // for now, lets just overwrite the doc
+                        student.save(function (err, updatedStudent) {
+                            if (err) {
+                                console.log('error', studentApplications, student);
+                                callback(err);
+                            } else {
+                                callback(null);
+                            }
+                        });
                     } else {
                         return callback(null);
                     }

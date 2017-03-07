@@ -1,40 +1,36 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _fs = require('fs');
+var _fs = require("fs");
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _csvParse = require('csv-parse');
+var _csvParse = require("csv-parse");
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
-var _streamTransform = require('stream-transform');
+var _streamTransform = require("stream-transform");
 
 var _streamTransform2 = _interopRequireDefault(_streamTransform);
 
-var _async = require('async');
+var _async = require("async");
 
 var _async2 = _interopRequireDefault(_async);
 
-var _winston = require('winston');
-
-var _winston2 = _interopRequireDefault(_winston);
-
-var _lodash = require('lodash');
+var _lodash = require("lodash");
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _student = require('../models/student');
+var _student = require("../models/student");
 
 var _student2 = _interopRequireDefault(_student);
 
-var _fieldKeys = require('../../common/fieldKeys');
+var _fieldKeys = require("../../common/fieldKeys");
 
-var _term_record_transformer = require('./term_record_transformer');
+var _term_record_transformer = require("./term_record_transformer");
 
 var _term_record_transformer2 = _interopRequireDefault(_term_record_transformer);
 
@@ -96,32 +92,30 @@ exports.default = function (fileName) {
                         return;
                     }
                     if (student) {
-                        (function () {
-                            var studentTerms = student.terms;
-                            terms.forEach(function (termRecord) {
-                                var term = studentTerms.find(function (elem) {
-                                    return elem.name === termRecord.name;
-                                });
-                                if (term) {
-                                    _lodash2.default.merge(term, termRecord);
-                                } else {
-                                    studentTerms.push(termRecord);
-                                }
+                        var studentTerms = student.terms;
+                        terms.forEach(function (termRecord) {
+                            var term = studentTerms.find(function (elem) {
+                                return _lodash2.default.toString(elem.college) === _lodash2.default.toString(termRecord.college.toString()) && _lodash2.default.toString(elem.enrolBegin) === _lodash2.default.toString(termRecord.enrolBegin) && _lodash2.default.toString(elem.enrolEnd) === _lodash2.default.toString(termRecord.enrolEnd);
                             });
-                            studentTerms = studentTerms.filter(function (obj) {
-                                return !_lodash2.default.isEmpty(obj);
-                            });
-                            student.terms = studentTerms;
-                            // for now, lets just overwrite the doc
-                            student.save(function (err, updatedStudent) {
-                                if (err) {
-                                    console.log('error', studentTerms, student);
-                                    callback(err);
-                                } else {
-                                    callback(null);
-                                }
-                            });
-                        })();
+                            if (term) {
+                                _lodash2.default.merge(term, termRecord);
+                            } else {
+                                studentTerms.push(termRecord);
+                            }
+                        });
+                        studentTerms = studentTerms.filter(function (obj) {
+                            return !_lodash2.default.isEmpty(obj);
+                        });
+                        student.terms = studentTerms;
+                        // for now, lets just overwrite the doc
+                        student.save(function (err, updatedStudent) {
+                            if (err) {
+                                console.log('error', err, studentTerms, student);
+                                callback(err);
+                            } else {
+                                callback(null);
+                            }
+                        });
                     } else {
                         return callback(null);
                     }
