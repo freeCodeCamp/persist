@@ -1,5 +1,6 @@
 import College from '../models/college';
-import {Schema} from 'mongoose';
+import { Schema } from 'mongoose';
+import forOwn from 'lodash/forOwn';
 
 export default (record, callback) => {
     if (!record.osis) {
@@ -28,13 +29,19 @@ export default (record, callback) => {
         }
     });
 
+    forOwn(record, (value, key) => {
+        if (!record[key] || (typeof record[key] === 'string' && record[key].length < 1)) {
+            record[key] = undefined;
+        }
+    });
+
 //  reference college
     College.findOne({
         $or: [
-            {fullName: record.college},
-            {shortName: record.college},
-            {navianceName: record.college},
-            {collegeScorecardName: record.college}
+            { fullName: record.college },
+            { shortName: record.college },
+            { navianceName: record.college },
+            { collegeScorecardName: record.college }
         ]
     }, (err, college) => {
         if (err) {

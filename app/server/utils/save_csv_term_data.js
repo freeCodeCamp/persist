@@ -1,13 +1,11 @@
-import fs from 'fs';
-import parse from 'csv-parse';
-import transform from 'stream-transform';
-import async from 'async'
-import winston from 'winston';
-import _ from 'lodash';
-
-import Student from '../models/student';
-import {termKeys} from '../../common/fieldKeys';
-import formatRecord from './term_record_transformer';
+import fs from "fs";
+import parse from "csv-parse";
+import transform from "stream-transform";
+import async from "async";
+import _ from "lodash";
+import Student from "../models/student";
+import {termKeys} from "../../common/fieldKeys";
+import formatRecord from "./term_record_transformer";
 
 const mapValues = (line) => {
     return line.map((key) => {
@@ -68,7 +66,9 @@ export default (fileName) => {
                         let studentTerms = student.terms;
                         terms.forEach((termRecord) => {
                             let term = studentTerms.find((elem) => {
-                                return elem.name === termRecord.name;
+                                return (_.toString(elem.college) === _.toString(termRecord.college.toString()) &&
+                                _.toString(elem.enrolBegin) === _.toString(termRecord.enrolBegin) &&
+                                _.toString(elem.enrolEnd) === _.toString(termRecord.enrolEnd));
                             });
                             if (term) {
                                 _.merge(term, termRecord);
@@ -83,7 +83,7 @@ export default (fileName) => {
                         // for now, lets just overwrite the doc
                         student.save((err, updatedStudent) => {
                             if (err) {
-                                console.log('error', studentTerms, student);
+                                console.log('error', err, studentTerms, student);
                                 callback(err);
                             } else {
                                 callback(null);

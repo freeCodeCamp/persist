@@ -1,9 +1,9 @@
 import transform from 'lodash/transform';
 import map from 'lodash/map';
 import range from 'lodash/range';
-import {studentKeys} from './fieldKeys';
+import { studentKeys } from './fieldKeys';
 import exportKeys from './exportKeys';
-import {mapping, validateArray} from './constants';
+import { mapping, validateArray } from './constants';
 
 export const messages = {
     default: 'You tried to add `{VALUE}` to `{PATH}` which is forbidden'
@@ -79,8 +79,8 @@ export const types = {
         'Seeking Employment'
     ],
     gender: [
-        {text: 'Male', value: 'M'},
-        {text: 'Female', value: 'F'}
+        { text: 'Male', value: 'M' },
+        { text: 'Female', value: 'F' }
     ],
     cohort: [
         'M (2007)',
@@ -110,6 +110,7 @@ export const types = {
         'MASTER OF EDUCATION',
         'MASTER OF SOCIAL WORK',
         'CERTIFICATE',
+        'Certificate Program',
         'Bachelors Degree',
         'Associates Degree'
     ],
@@ -202,7 +203,7 @@ export const types = {
         'Certificate'
     ],
     'terms.status': transform(mapping.termStatus, (res, val, key) => {
-        res.push({text: val, value: key});
+        res.push({ text: val, value: key });
     }, []),
     'caseNotes.communicationType': [
         'In person',
@@ -255,10 +256,10 @@ export const types = {
         'other'
     ],
     ethnicity: transform(mapping.ethnicity, (res, val, key) => {
-        res.push({text: val, value: key});
+        res.push({ text: val, value: key });
     }, []),
     colType: transform(mapping.colType, (res, val, key) => {
-        res.push({text: val, value: key});
+        res.push({ text: val, value: key });
     }, []),
     hsGradYear: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1),
     expectedGrad: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1)

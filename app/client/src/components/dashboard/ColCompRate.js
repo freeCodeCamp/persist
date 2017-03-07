@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import async from 'async';
-import {BasicColumn} from '../admin-components/charts';
+import { Card, CardText, Divider } from 'material-ui';
+import { BasicColumn } from '../admin-components/charts';
 
 class ColCompRate extends Component {
     constructor(props) {
@@ -64,7 +65,7 @@ class ColCompRate extends Component {
 
     chartData(data) {
         return [
-            {name: 'Average College Completion Rate', data: this.getRatio(data)}
+            { name: 'Average College Completion Rate', data: this.getRatio(data) }
         ]
     }
 
@@ -84,7 +85,7 @@ class ColCompRate extends Component {
                 type: 'column'
             },
             title: {
-                text: 'Average College Completion Rate'
+                text: 'Average College Completion Rate of Institutions Attended'
             },
             xAxis: {
                 categories: _(data).keys().sort().value(),
@@ -128,14 +129,20 @@ class ColCompRate extends Component {
     }
 
     render() {
-        const hidden = this.state.loading ? {visibility: 'hidden'} : {};
+        const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
                     <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data}/>
+                                 data={this.state.data} />
                 </div>
+                <Divider style={{ height: 2 }} />
+                <Card>
+                    <CardText>
+                        This metric refers to the aggregated completion rate of institutions our graduates attended after high school. The institutional completion rate is the percentage of students who graduated in 150% of the time (so 3 years for a 2 year degree and 6 years for a 4 year degree). The average completion rate nationwide is about 41%.
+                    </CardText>
+                </Card>
             </div>
         )
     }

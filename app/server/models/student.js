@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
-import mongoosePaginate from 'mongoose-paginate';
-import sortBy from 'lodash/sortBy';
-import uniq from 'lodash/uniq';
-import map from 'lodash/map';
+import mongoosePaginate from "mongoose-paginate";
+import sortBy from "lodash/sortBy";
+import uniq from "lodash/uniq";
+import map from "lodash/map";
+import cloneDeep from "lodash/cloneDeep";
+import {College} from "./";
+import {studentSchema} from "../../common/schemas";
 const Schema = mongoose.Schema;
-import {College} from './';
-import {studentSchema} from '../../common/schemas';
 export const Student = new Schema(studentSchema(Schema));
 Student.plugin(mongoosePaginate);
 
-Student.pre('save', true, function (next, done) {
+Student.pre('save', true, function(next, done) {
     next();
     const record = this;
     // handle hsGradYear
@@ -20,7 +21,7 @@ Student.pre('save', true, function (next, done) {
     }
     done();
 });
-Student.pre('save', true, function (next, done) {
+Student.pre('save', true, function(next, done) {
     next();
     const record = this;
     // handle mostRecentCol
@@ -30,13 +31,13 @@ Student.pre('save', true, function (next, done) {
     record.terms = sortBy(record.terms, (obj) => {
         return obj.enrolBegin;
     }).reverse();
-    const recordTerms = record.terms.reverse();
+    const recordTerms = cloneDeep(record.terms).reverse();
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
     record.firstCol = recordTerms[0].college;
     const colleges = uniq(map(recordTerms, 'college'));
     if (colleges.length > 1) {
-        College.find({_id: {$in: [colleges]}}, 'durationType',
+        College.find({ _id: { $in: [colleges] } }, 'durationType',
             (err, durationTypes) => {
                 if (err || durationTypes.length < 2) {
                     return done();
@@ -60,7 +61,7 @@ Student.pre('save', true, function (next, done) {
         done();
     }
 });
-Student.pre('save', true, function (next, done) {
+Student.pre('save', true, function(next, done) {
     next();
     const record = this;
     // handle expectedHSGrad
@@ -74,7 +75,7 @@ Student.pre('save', true, function (next, done) {
     }
     done();
 });
-Student.pre('save', true, function (next, done) {
+Student.pre('save', true, function(next, done) {
     next();
     const record = this;
     // nscRecordFound
@@ -83,7 +84,7 @@ Student.pre('save', true, function (next, done) {
     }
     done();
 });
-Student.pre('save', true, function (next, done) {
+Student.pre('save', true, function(next, done) {
     next();
     const record = this;
     // cuny
@@ -91,8 +92,8 @@ Student.pre('save', true, function (next, done) {
         const colList = map(record.applications, 'college');
         College.find({
             $and: [
-                {_id: {$in: colList}},
-                {collType: 1}
+                { _id: { $in: colList } },
+                { collType: 1 }
             ]
         }, (err, cunyColleges) => {
             if (err) {
@@ -107,7 +108,7 @@ Student.pre('save', true, function (next, done) {
         done();
     }
 });
-Student.pre('save', true, function (next, done) {
+Student.pre('save', true, function(next, done) {
     next();
     const record = this;
     // suny
@@ -115,8 +116,8 @@ Student.pre('save', true, function (next, done) {
         const colList = map(record.applications, 'college');
         College.find({
             $and: [
-                {_id: {$in: colList}},
-                {collType: 2}
+                { _id: { $in: colList } },
+                { collType: 2 }
             ]
         }, (err, sunyColleges) => {
             if (err) {

@@ -1,13 +1,11 @@
-import fs from 'fs';
-import parse from 'csv-parse';
-import transform from 'stream-transform';
-import async from 'async'
-import winston from 'winston';
-import _ from 'lodash';
-
-import Student from '../models/student';
-import {applicationKeys} from '../../common/fieldKeys';
-import formatRecord from './application_record_transformer';
+import fs from "fs";
+import parse from "csv-parse";
+import transform from "stream-transform";
+import async from "async";
+import _ from "lodash";
+import Student from "../models/student";
+import {applicationKeys} from "../../common/fieldKeys";
+import formatRecord from "./application_record_transformer";
 
 const mapValues = (line) => {
     return line.map((key) => {
@@ -68,7 +66,7 @@ export default (fileName) => {
                         let studentApplications = student.applications;
                         applications.forEach((applicationRecord) => {
                             let application = studentApplications.find((elem) => {
-                                return elem.college.toString() === applicationRecord.college.toString();
+                                return _.toString(elem.college) === _.toString(applicationRecord.college);
                             });
                             if (application) {
                                 _.merge(application, applicationRecord);

@@ -1,12 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {push} from 'react-router-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import async from 'async';
+import { Card, CardText, Divider } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton';
-import {BasicColumn} from '../admin-components/charts';
+import { BasicColumn } from '../admin-components/charts';
 
 class GradRate extends Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class GradRate extends Component {
     }
 
     yearEnrol(student) {
-        const {collegeObj} = this.props;
+        const { collegeObj } = this.props;
         const terms = student.terms;
         const totalTerms = terms.length;
         let factor = 1;
@@ -49,7 +50,7 @@ class GradRate extends Component {
                 if (totalTerms < 4) return false;
                 const firstCollege = collegeObj[terms[totalTerms - 1].college];
                 if (firstCollege.durationType !== '2 year') return false;
-                if (totalTerms > 4) {
+                if (totalTerms > 4 * factor) {
                     const lastTerm = terms[totalTerms - 5];
                     const firstTerm = terms[totalTerms - 1];
                     const lastEnrolDate = lastTerm.enrolBegin;
@@ -64,9 +65,9 @@ class GradRate extends Component {
                         return ['transferred', 'total'];
                     }
                 } else {
-                    const graduations = student.graduations
-                        .filter((graduation) =>
-                            (graduation.status === 'Graduated' && graduation.type === 'Associates Degree'));
+                    const graduations = student.terms
+                        .filter((term) =>
+                            (term.status === 'Graduated' && term.degreeTitle === 'Associates Degree'));
                     if (
                         graduations.length > 0 &&
                         moment(graduations[0].enrolEnd)
@@ -75,7 +76,10 @@ class GradRate extends Component {
                         return ['graduated', 'total'];
                     }
                 }
-                return ['none', 'total'];
+                if (moment(new Date()).diff(moment(terms[0].enrolBegin), 'months') < 6) {
+                    return ['Currently Enrolled', 'total']
+                }
+                return ['No longer Enrolled', 'total'];
             }
             case '4 year 150%':
                 factor = 1.5;
@@ -83,9 +87,9 @@ class GradRate extends Component {
                 if (totalTerms < 1) return false;
                 const firstCollege = collegeObj[terms[totalTerms - 1].college];
                 if (firstCollege.durationType !== '4 year') return false;
-                const graduations = student.graduations
-                    .filter((graduation) =>
-                        (graduation.status === 'Graduated' && graduation.type === 'Bachelors Degree'));
+                const graduations = student.terms
+                    .filter((term) =>
+                        (term.status === 'Graduated' && term.degreeTitle === 'Bachelors Degree'));
                 if (
                     graduations.length > 0 &&
                     moment(graduations[0].enrolEnd)
@@ -93,7 +97,10 @@ class GradRate extends Component {
                 ) {
                     return ['graduated', 'total'];
                 }
-                return ['none', 'total'];
+                if (moment(new Date()).diff(moment(terms[0].enrolBegin), 'months') < 6) {
+                    return ['Currently Enrolled', 'total']
+                }
+                return ['No longer Enrolled', 'total'];
             }
         }
     }
@@ -102,9 +109,10 @@ class GradRate extends Component {
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {
-                'transferred': {count: 0, students: []},
-                'graduated': {count: 0, students: []},
-                'none': {count: 0, students: []},
+                'transferred': { count: 0, students: [] },
+                'graduated': { count: 0, students: [] },
+                'No longer Enrolled': { count: 0, students: [] },
+                'Currently Enrolled': { count: 0, students: [] },
                 'total': 0
             };
             const result = {};
@@ -159,14 +167,23 @@ class GradRate extends Component {
                 key: 'transferred'
             }))
         }, {
-            name: 'None',
-            data: values.map((key) => ({y: key.total, key: 'none'}))
+            name: 'Currently Enrolled',
+            data: values.map((key) => ({
+                y: key.total,
+                key: 'Currently Enrolled'
+            }))
+        }, {
+            name: 'No longer Enrolled',
+            data: values.map((key) => ({
+                y: key.total,
+                key: 'No longer Enrolled'
+            }))
         }];
     }
 
     chartConfig() {
-        const {data} = this.state;
-        const {push} = this.props;
+        const { data } = this.state;
+        const { push } = this.props;
         const chartData = this.chartData(data);
         const config = {
             chart: {
@@ -186,7 +203,7 @@ class GradRate extends Component {
                 }
             },
             tooltip: {
-                formatter: function () {
+                formatter: function() {
                     const percent = Math.round(this.y * 10000 / this.total) / 100;
                     return this.y + '=<b>' + percent + '%</b><br/>' + 'Total: ' + this.total;
                 }
@@ -198,8 +215,8 @@ class GradRate extends Component {
                     borderWidth: 0,
                     point: {
                         events: {
-                            click: function () {
-                                const {category, key} = this;
+                            click: function() {
+                                const { category, key } = this;
                                 const students = data[category][key].students;
                                 localStorage.setItem('filtered', JSON.stringify(students));
                                 push('/filtered');
@@ -236,24 +253,30 @@ class GradRate extends Component {
     }
 
     render() {
-        const hidden = this.state.loading ? {visibility: 'hidden'} : {};
+        const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
                     <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data}/>
+                                 data={this.state.data} />
                 </div>
-                <div style={{display: 'flex'}}>
+                <div style={{ display: 'flex' }}>
                     <RaisedButton style={styles.raisedButton} primary={true} label='2 Year'
-                                  onClick={() => this.setType('2 year')}/>
+                                  onClick={() => this.setType('2 year')} />
                     <RaisedButton style={styles.raisedButton} primary={true} label='4 Year'
-                                  onClick={() => this.setType('4 year')}/>
+                                  onClick={() => this.setType('4 year')} />
                     <RaisedButton style={styles.raisedButton} primary={true} label='2 Year 150%'
-                                  onClick={() => this.setType('2 year 150%')}/>
+                                  onClick={() => this.setType('2 year 150%')} />
                     <RaisedButton style={styles.raisedButton} primary={true} label='4 Year 150%'
-                                  onClick={() => this.setType('4 year 150%')}/>
+                                  onClick={() => this.setType('4 year 150%')} />
                 </div>
+                <Divider style={{ height: 2 }} />
+                <Card>
+                    <CardText>
+                        Students are only listed as having graduated once we have confirmed their graduation record. Frequently there are significant delays in getting graduation records from the National Student Clearinghouse.
+                    </CardText>
+                </Card>
             </div>
         )
     }

@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {push} from 'react-router-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
+import { Card, CardText, Divider } from 'material-ui';
 import moment from 'moment';
 import async from 'async';
-import {BasicColumn} from '../admin-components/charts';
+import { BasicColumn } from '../admin-components/charts';
 
 class ColDirEnrol extends Component {
     constructor(props) {
@@ -48,9 +49,9 @@ class ColDirEnrol extends Component {
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {
-                '6m': {count: 0, students: []},
-                '12m': {count: 0, students: []},
-                '18m': {count: 0, students: []},
+                '6m': { count: 0, students: [] },
+                '12m': { count: 0, students: [] },
+                '18m': { count: 0, students: [] },
                 'total': 0,
             };
             const result = {};
@@ -95,9 +96,9 @@ class ColDirEnrol extends Component {
 
     chartData(data) {
         return [
-            {name: '6 months', data: this.getRatio(data, '6m')},
-            {name: '12 months', data: this.getRatio(data, '12m')},
-            {name: '18 months', data: this.getRatio(data, '18m')}
+            { name: '6 months', data: this.getRatio(data, '6m') },
+            { name: '12 months', data: this.getRatio(data, '12m') },
+            { name: '18 months', data: this.getRatio(data, '18m') }
         ]
     }
 
@@ -111,8 +112,8 @@ class ColDirEnrol extends Component {
 
     chartConfig() {
         const data = this.state.data;
-        const {refer} = this;
-        const {push} = this.props;
+        const { refer } = this;
+        const { push } = this.props;
         const chartData = this.chartData(data);
         const config = {
             chart: {
@@ -145,8 +146,8 @@ class ColDirEnrol extends Component {
                     borderWidth: 0,
                     point: {
                         events: {
-                            click: function () {
-                                const {category, series: {name}} = this;
+                            click: function() {
+                                const { category, series: { name } } = this;
                                 const students = data[category][refer[name]].students;
                                 localStorage.setItem('filtered', JSON.stringify(students));
                                 push('/filtered');
@@ -169,20 +170,26 @@ class ColDirEnrol extends Component {
                 position: 'absolute', top: 0, bottom: 0, width: '100%',
                 display: 'flex', justifyContent: 'center', alignItems: 'center'
             }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
             </div>
         )
     }
 
     render() {
-        const hidden = this.state.loading ? {visibility: 'hidden'} : {};
+        const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
                     <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data}/>
+                                 data={this.state.data} />
                 </div>
+                <Divider style={{ height: 2 }} />
+                <Card>
+                    <CardText>
+                        College direct enrollment refers to the percentage of all graduates within a given year (January, June, or August) that enrolled in a college or approved vocational program within 6, 12, or 18 months of graduation. For January and June graduates, 6 month enrollment means students would be enrolled by the Fall after graduation, and for August graduates 6 month enrollment would include the following Spring.
+                    </CardText>
+                </Card>
             </div>
         )
     }

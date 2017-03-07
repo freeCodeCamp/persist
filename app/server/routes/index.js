@@ -1,9 +1,8 @@
-import path from 'path';
-import multer from 'multer';
-import express from 'express';
-import { Student, College, School, User } from '../models';
-import passport from '../config/passport';
-import { getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN } from '../../common/constants';
+import path from "path";
+import multer from "multer";
+import {Student, College, School, User} from "../models";
+import passport from "../config/passport";
+import {getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN} from "../../common/constants";
 import {
     DataManageController,
     AmazonController,
@@ -13,13 +12,14 @@ import {
     UserController,
     CaseNoteController,
     ApplicationController,
-    TermController
-} from '../controllers';
-import saveCSV from '../utils/save_csv';
-import saveCollegeData from '../utils/save_csv_colleges_updated';
-import saveTermData from '../utils/save_csv_term_data';
-import saveApplicationData from '../utils/save_csv_applications';
-import saveSchoolData from '../utils/save_csv_schools';
+    TermController,
+    UploadHistoryController
+} from "../controllers";
+import saveCSV from "../utils/save_csv";
+import saveCollegeData from "../utils/save_csv_colleges_updated";
+import saveTermData from "../utils/save_csv_term_data";
+import saveApplicationData from "../utils/save_csv_applications";
+import saveSchoolData from "../utils/save_csv_schools";
 
 var upload = multer({
     dest: 'uploads/'
@@ -71,64 +71,74 @@ const requireLogin = (req, res, next) => {
 
 export default (app) => {
 
-    app.post('/upload/studentData', fileUpload, function(req, res) {
+    app.post('/upload/studentData', requireAuth, fileUpload, function(req, res) {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
         saveCSV(filePath).then((data) => {
+            UploadHistoryController.createHistory('Student Data', req.user._id, true);
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
+            UploadHistoryController.createHistory('Student Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
 
-    app.post('/upload/collegeData', fileUpload, (req, res) => {
+    app.post('/upload/collegeData', requireAuth, fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
         saveCollegeData(filePath).then((data) => {
+            UploadHistoryController.createHistory('College Data', req.user._id, true);
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
+            UploadHistoryController.createHistory('College Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
 
-    app.post('/upload/schoolData', fileUpload, (req, res) => {
+    app.post('/upload/schoolData', requireAuth, fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
         saveSchoolData(filePath).then((data) => {
+            UploadHistoryController.createHistory('School Data', req.user._id, true);
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
+            UploadHistoryController.createHistory('School Data', req.user._id, false);
             res.status(500).send(err);
         });
     });
 
-    app.post('/upload/termData', fileUpload, (req, res) => {
+    app.post('/upload/termData', requireAuth, fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
         saveTermData(filePath).then((data) => {
+            UploadHistoryController.createHistory('Term Data', req.user._id, true);
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
+            UploadHistoryController.createHistory('Term Data', req.user._id, false);
             res.status(500).send(err);
-        })
+        });
     });
 
-    app.post('/upload/applicationData', fileUpload, (req, res) => {
+    app.post('/upload/applicationData', requireAuth, fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
         saveApplicationData(filePath).then((data) => {
+            UploadHistoryController.createHistory('Application Data', req.user._id, true);
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
+            UploadHistoryController.createHistory('Application Data', req.user._id, false);
             res.status(500).send(err);
-        })
+        });
     });
 
     // main REST API for getting/adding/deleting/modifying student data
@@ -324,6 +334,8 @@ export default (app) => {
     app.post('/notifications', requireAuth, NotificationController.getNotifications);
     app.get('/notifications/read/all', requireAuth, NotificationController.allRead);
     app.post('/notifications/read', requireAuth, NotificationController.markRead);
+
+    app.get('/getUploadHistory/:page', requireAuth, UploadHistoryController.getHistory);
     // final route
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, '../../client/public/index.html'));
