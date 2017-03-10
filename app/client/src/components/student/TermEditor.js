@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field, formValueSelector, SubmissionError} from 'redux-form';
-import {Col} from 'react-bootstrap';
+import {Col, Clearfix} from 'react-bootstrap';
 import {ReduxFormGroup, DatePicker} from '../helpers'
 import {MenuItem} from 'material-ui';
 import moment from 'moment';

@@ -12,13 +12,13 @@ class DocumentEditor extends Component {
     }
 
     render() {
-        const {handleSubmit, initialValues} = this.props;
+        const { handleSubmit, initialValues } = this.props;
         const documentTypes = types['documents.types'].map((option) => (
-            <MenuItem value={ option } key={ option } primaryText={ option }/>
+            <MenuItem value={ option } key={ option } primaryText={ option } />
         ));
         return (
             <form onSubmit={handleSubmit}>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='name'
                         component={TextField}
@@ -26,7 +26,7 @@ class DocumentEditor extends Component {
                         floatingLabelText='Name'
                     />
                 </Col>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='type'
                         component={SelectField}
@@ -36,7 +36,7 @@ class DocumentEditor extends Component {
                         {documentTypes}
                     </Field>
                 </Col>
-                <Col style={{minHeight: 100, display: 'flex', alignItems: 'center'}} xs={12} sm={12} md={12} lg={12}>
+                <Col style={{ minHeight: 100, display: 'flex', alignItems: 'center' }} xs={12} sm={12} md={12} lg={12}>
                     <Field
                         type='file'
                         Key={initialValues.Key}

@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'react-router-redux';
 import async from 'async';
-import { Card, CardText, Divider } from 'material-ui';
+import {Card, CardText, Divider} from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton';
-import { BasicColumn } from '../admin-components/charts';
+import {BasicColumn} from '../admin-components/charts';
 
 class GradRate extends Component {
     constructor(props) {
@@ -62,12 +62,15 @@ class GradRate extends Component {
                             .diff(moment(firstEnrolDate), 'months') < ((24 + 2) * factor) &&
                         collegeObj[lastTerm.college].durationType === '4 year'
                     ) {
-                        return ['transferred', 'total'];
+                        if (terms.find((term) => term.status === 'Graduated')) {
+                            return ['transferred without degree', 'total'];
+                        }
+                        return ['transferred with degree', 'total'];
                     }
                 } else {
                     const graduations = student.terms
                         .filter((term) =>
-                            (term.status === 'Graduated' && term.degreeTitle === 'Associates Degree'));
+                            (term.status === 'Graduated' && _.get(collegeObj, `${term.college}.durationType`, null) === '2 year'));
                     if (
                         graduations.length > 0 &&
                         moment(graduations[0].enrolEnd)
@@ -89,7 +92,7 @@ class GradRate extends Component {
                 if (firstCollege.durationType !== '4 year') return false;
                 const graduations = student.terms
                     .filter((term) =>
-                        (term.status === 'Graduated' && term.degreeTitle === 'Bachelors Degree'));
+                        (term.status === 'Graduated' && _.get(collegeObj, `${term.college}.durationType`, null) === '4 year'));
                 if (
                     graduations.length > 0 &&
                     moment(graduations[0].enrolEnd)
@@ -111,6 +114,8 @@ class GradRate extends Component {
             const defaultEnrollmentData = {
                 'transferred': { count: 0, students: [] },
                 'graduated': { count: 0, students: [] },
+                'transferred without degree': { count: 0, students: [] },
+                'transferred with degree': { count: 0, students: [] },
                 'No longer Enrolled': { count: 0, students: [] },
                 'Currently Enrolled': { count: 0, students: [] },
                 'total': 0
@@ -152,33 +157,62 @@ class GradRate extends Component {
     }
 
     chartData(data) {
+        const { type } = this.state;
         const sortedYears = _(data).keys().sort().value();
         const values = sortedYears.map((key) => (data[key]));
-        return [{
+        const graduated = {
             name: 'Graduated',
             data: values.map((key) => ({
                 y: key.graduated.count,
                 key: 'graduated'
             }))
-        }, {
+        };
+        const transferred = {
             name: 'Transferred',
             data: values.map((key) => ({
                 y: key.transferred.count,
                 key: 'transferred'
             }))
-        }, {
+        };
+        const currentlyEnrolled = {
             name: 'Currently Enrolled',
             data: values.map((key) => ({
-                y: key.total,
+                y: key['Currently Enrolled'].count,
                 key: 'Currently Enrolled'
             }))
-        }, {
+        };
+        const noLongerEnrolled = {
             name: 'No longer Enrolled',
             data: values.map((key) => ({
-                y: key.total,
+                y: key['No longer Enrolled'].count,
                 key: 'No longer Enrolled'
             }))
-        }];
+        };
+        if (type === '2 year 150%' || type === '4 year 150%') {
+            return [graduated, transferred, {
+                name: 'Did not Graduate',
+                data: values.map((key) => ({
+                    y: key['Currently Enrolled'].count + key['No longer Enrolled'].count,
+                    key: 'Did not Graduate'
+                }))
+            }]
+        }
+        if (type === '4 year') {
+            return [graduated, transferred, currentlyEnrolled, noLongerEnrolled];
+        }
+        return [graduated, {
+            name: 'Transferred Without Degree',
+            data: values.map((key) => ({
+                y: key['transferred without degree'].count,
+                key: 'transferred without degree'
+            }))
+        }, {
+            name: 'Transferred With Degree',
+            data: values.map((key) => ({
+                y: key['transferred with degree'].count,
+                key: 'transferred with degree'
+            }))
+        }, currentlyEnrolled, noLongerEnrolled];
     }
 
     chartConfig() {
@@ -199,7 +233,7 @@ class GradRate extends Component {
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Graduated'
+                    text: 'Students'
                 }
             },
             tooltip: {

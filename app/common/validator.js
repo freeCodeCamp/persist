@@ -1,9 +1,9 @@
 import transform from 'lodash/transform';
 import map from 'lodash/map';
 import range from 'lodash/range';
-import { studentKeys } from './fieldKeys';
+import {studentKeys} from './fieldKeys';
 import exportKeys from './exportKeys';
-import { mapping, validateArray } from './constants';
+import {mapping, validateArray} from './constants';
 
 export const messages = {
     default: 'You tried to add `{VALUE}` to `{PATH}` which is forbidden'
@@ -14,6 +14,7 @@ export const types = {
         'SPED',
         'Free Lunch Eligible',
         'ELL',
+        'Former ELL',
         'IEP',
         'FRL',
         'Academic Probation',

@@ -122,7 +122,7 @@ class ColCompRate extends Component {
                 position: 'absolute', top: 0, bottom: 0, width: '100%',
                 display: 'flex', justifyContent: 'center', alignItems: 'center'
             }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw'></i>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
                 <span className='sr-only'>Loading...</span>
             </div>
         )

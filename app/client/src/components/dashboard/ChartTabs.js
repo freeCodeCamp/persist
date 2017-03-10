@@ -8,7 +8,8 @@ import {
     ColPersist,
     ColType,
     GradRate,
-    SemEnrol
+    SemEnrol,
+    AvgTimeGrad
 } from './';
 
 class ChartTabs extends Component {
@@ -23,7 +24,8 @@ class ChartTabs extends Component {
             colPersist: 'College Persistence',
             colType: 'College Type',
             gradRate: 'Graduation Rate',
-            semEnrol: 'Semester by Semester Enrollment'
+            semEnrol: 'Semester by Semester Enrollment',
+            avgTimeGrad: 'Average time to Graduation'
         };
         this.state = {
             activeId: null
@@ -40,26 +42,28 @@ class ChartTabs extends Component {
     }
 
     renderTabContent() {
-        const {students, colleges} = this.props;
+        const { students, colleges } = this.props;
         const id = this.state.activeId;
-        const props = {id, students, colleges, active: true};
+        const props = { id, students, colleges, active: true };
         switch (id) {
             case 'hsGradYear':
-                return <HSGradYear {...props}/>;
+                return <HSGradYear {...props} />;
             case 'ethnicity':
-                return <EthnicityChart {...props}/>;
+                return <EthnicityChart {...props} />;
             case 'colDirEnrol':
-                return <ColDirEnrol {...props}/>;
+                return <ColDirEnrol {...props} />;
             case 'colCompRate':
-                return <ColCompRate {...props}/>;
+                return <ColCompRate {...props} />;
             case 'colPersist':
-                return <ColPersist {...props}/>;
+                return <ColPersist {...props} />;
             case 'colType':
-                return <ColType {...props}/>;
+                return <ColType {...props} />;
             case 'gradRate':
-                return <GradRate {...props}/>;
+                return <GradRate {...props} />;
             case 'semEnrol':
-                return <SemEnrol {...props}/>;
+                return <SemEnrol {...props} />;
+            case 'avgTimeGrad':
+                return <AvgTimeGrad {...props} />;
             default:
                 return null;
         }

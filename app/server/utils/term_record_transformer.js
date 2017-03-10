@@ -1,5 +1,5 @@
 import College from '../models/college';
-import { Schema } from 'mongoose';
+import {Schema} from 'mongoose';
 import forOwn from 'lodash/forOwn';
 
 export default (record, callback) => {
@@ -17,7 +17,7 @@ export default (record, callback) => {
             // console.error('no date, deleting....'.red, logObject);
             delete record[dateField];
         } else {
-            value = value.split(/[-\/]/).join(' ');
+            value = value.toString().split(/[-\/]/).join(' ');
             value = new Date(value);
             if (value.toString() === 'Invalid Date') {
                 // console.log('invalid date, deleting...'.red, logObject);
