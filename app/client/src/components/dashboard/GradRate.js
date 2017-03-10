@@ -42,42 +42,41 @@ class GradRate extends Component {
         const { collegeObj } = this.props;
         const terms = student.terms;
         const totalTerms = terms.length;
-        let factor = 1;
+        let factor = 1, transferred, graduated;
         switch (this.state.type) {
             case '2 year 150%':
                 factor = 1.5;
             case '2 year': {
-                if (totalTerms < 4) return false;
-                const firstCollege = collegeObj[terms[totalTerms - 1].college];
-                if (firstCollege.durationType !== '2 year') return false;
-                if (totalTerms > 4 * factor) {
-                    const lastTerm = terms[totalTerms - 5];
-                    const firstTerm = terms[totalTerms - 1];
-                    const lastEnrolDate = lastTerm.enrolBegin;
-                    const firstEnrolDate = firstTerm.enrolBegin;
-                    if (
-                        lastEnrolDate &&
-                        firstEnrolDate &&
-                        moment(lastEnrolDate)
-                            .diff(moment(firstEnrolDate), 'months') < ((24 + 2) * factor) &&
-                        collegeObj[lastTerm.college].durationType === '4 year'
-                    ) {
-                        if (terms.find((term) => term.status === 'Graduated')) {
-                            return ['transferred without degree', 'total'];
-                        }
+                if (totalTerms < 1) return false;
+                const firstTerm = terms[totalTerms - 1];
+                if (collegeObj[firstTerm.college].durationType !== '2 year') return false;
+                const lastEnrolDate = terms[0].enrolBegin;
+                const firstEnrolDate = firstTerm.enrolBegin;
+                if (
+                    lastEnrolDate &&
+                    firstEnrolDate &&
+                    collegeObj[firstTerm.college] &&
+                    collegeObj[terms[0].college].durationType === '4 year'
+                ) {
+                    transferred = true;
+                }
+                const graduationTerm = terms.find(
+                    (term) => term.status === 'Graduated' &&
+                    _.get(collegeObj, `${term.college}.durationType`, null) === '2 year' &&
+                    moment(term.enrolBegin).diff(moment(firstEnrolDate), 'months') < ((24 + 2) * factor)
+                );
+                if (graduationTerm) {
+                    graduated = true;
+                }
+                if (graduated) {
+                    if (transferred) {
                         return ['transferred with degree', 'total'];
-                    }
-                } else {
-                    const graduations = student.terms
-                        .filter((term) =>
-                            (term.status === 'Graduated' && _.get(collegeObj, `${term.college}.durationType`, null) === '2 year'));
-                    if (
-                        graduations.length > 0 &&
-                        moment(graduations[0].enrolEnd)
-                            .diff(moment(graduations[0].enrolBegin), 'months') < ((24 + 2) * factor)
-                    ) {
+                    } else {
                         return ['graduated', 'total'];
                     }
+                }
+                if (transferred) {
+                    return ['transferred without degree', 'total'];
                 }
                 if (moment(new Date()).diff(moment(terms[0].enrolBegin), 'months') < 6) {
                     return ['Currently Enrolled', 'total']
@@ -90,7 +89,7 @@ class GradRate extends Component {
                 if (totalTerms < 1) return false;
                 const firstCollege = collegeObj[terms[totalTerms - 1].college];
                 if (firstCollege.durationType !== '4 year') return false;
-                const graduations = student.terms
+                const graduations = terms
                     .filter((term) =>
                         (term.status === 'Graduated' && _.get(collegeObj, `${term.college}.durationType`, null) === '4 year'));
                 if (
