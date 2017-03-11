@@ -50,21 +50,34 @@ exports.default = function (fileName) {
                         console.log('error in finding document', err);
                         return callback(err);
                     }
-                    if (!oldStudent) {
+                    if (!oldStudent && !record.alias) {
                         var newStudent = new _student2.default(record);
                         newStudent.save(function (err) {
                             if (err) {
-                                console.log('we got a validation error', err);
-                                return callback(err);
+                                if (err.code === 11000) {
+                                    return callback(null);
+                                }
+                                return callback(null);
                             }
                             return callback(null);
                         });
                     } else {
-                        var studentObject = oldStudent.toObject();
-                        var _newStudent = (0, _merge2.default)(studentObject, record);
-                        (0, _forOwn2.default)(studentObject, function (value, key) {
-                            oldStudent[key] = _newStudent[key];
-                        });
+                        if (record.alias) {
+                            var oldAlias = oldStudent.aliases.find(function (alias) {
+                                return (0, _isEqual2.default)(alias, createAlias(record));
+                            });
+                            if (!oldAlias) {
+                                oldStudent.aliases.push(createAlias(record));
+                            }
+                        } else {
+                            var studentObject = oldStudent.toObject();
+                            var _newStudent = (0, _merge2.default)(studentObject, record);
+                            (0, _forOwn2.default)(studentObject, function (value, key) {
+                                if (key !== '_id') {
+                                    oldStudent[key] = _newStudent[key];
+                                }
+                            });
+                        }
                         oldStudent.save(function (err) {
                             if (err) {
                                 console.log('we got a validation error', err);
@@ -112,6 +125,10 @@ var _forOwn = require('lodash/forOwn');
 
 var _forOwn2 = _interopRequireDefault(_forOwn);
 
+var _isEqual = require('lodash/isEqual');
+
+var _isEqual2 = _interopRequireDefault(_isEqual);
+
 var _streamTransform = require('stream-transform');
 
 var _streamTransform2 = _interopRequireDefault(_streamTransform);
@@ -132,7 +149,18 @@ var _student_record_transformer2 = _interopRequireDefault(_student_record_transf
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var createAlias = function createAlias(student) {
+    return {
+        firstName: student.firstName,
+        middleName: student.middleName,
+        lastName: student.lastName,
+        suffix: student.suffix
+    };
+};
+
 // this is the data we need for validation and transforming
+
+
 function mapValues(line) {
 
     return line.map(function (key) {

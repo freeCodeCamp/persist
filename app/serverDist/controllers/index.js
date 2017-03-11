@@ -94,4 +94,13 @@ Object.defineProperty(exports, 'UploadHistoryController', {
   }
 });
 
+var _alias = require('./alias');
+
+Object.defineProperty(exports, 'AliasController', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_alias).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

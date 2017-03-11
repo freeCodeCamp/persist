@@ -105,9 +105,8 @@ Student.pre('save', true, function (next, done) {
     next();
     var record = this;
     // nscRecordFound
-    if (record.terms.length > 0) {
-        record.nscRecordFound = true;
-    }
+    record.nscRecordFound = record.terms.length > 0;
+    record.alias = record.aliases.length > 0;
     done();
 });
 Student.pre('save', true, function (next, done) {

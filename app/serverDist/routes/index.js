@@ -319,6 +319,12 @@ exports.default = function (app) {
         _controllers.TermController.deleteTerm(req, res);
     });
 
+    app.route('/update-alias', requireAuth).post(function (req, res) {
+        _controllers.AliasController.updateAlias(req, res);
+    }).delete(function (req, res) {
+        _controllers.AliasController.deleteAlias(req, res);
+    });
+
     app.post('/register', _controllers.AuthController.register);
     app.post('/login', requireLogin, _controllers.AuthController.login);
     app.post('/forgot-password', _controllers.AuthController.forgotPassword);

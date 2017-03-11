@@ -15,10 +15,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Schema = _mongoose2.default.Schema;
 
 var College = new Schema((0, _schemas.collegeSchema)(Schema));
+College.index({ fullName: 1, shortName: 1, navianceName: 1, collegeScorecardName: 1 }, { unique: true });
 exports.default = _mongoose2.default.model('College', College);
-
-// unused at present
-// medSatMath: Number,
-// medSatCr: Number,
-// locale: String,
-// enrollmentYears: {}

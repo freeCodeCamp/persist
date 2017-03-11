@@ -49,31 +49,31 @@ exports.default = function (fileName) {
                         var college = new _college2.default(record);
                         college.save(function (err) {
                             if (err) {
-                                callback(err);
-                                return;
+                                if (err.code === 11000) {
+                                    return callback(null);
+                                }
+                                return callback(null);
                             }
-                            addedCount++;
-                            newColleges.push({ fullName: record.fullName });
-                            callback(null);
+                            return callback(null);
                         });
                     } else {
                         modifiedCount++;
                         var collegeObject = oldCollege.toObject();
                         var newCollege = (0, _merge2.default)(collegeObject, record);
                         (0, _forOwn2.default)(collegeObject, function (value, key) {
-                            oldCollege[key] = newCollege[key];
+                            if (key !== '_id') {
+                                oldCollege[key] = newCollege[key];
+                            }
                         });
                         oldCollege.save(function (err) {
-                            if (err) return callback(err);
-                            callback(null);
+                            if (err) {
+                                if (err.code === 11000) {
+                                    return callback(null);
+                                }
+                                return callback(null);
+                            }
+                            return callback(null);
                         });
-                        console.log('the record exists already mate!'.red);
-                        updatedColleges.push({ fullName: record.fullName });
-
-                        // run some logic of updating
-
-                        // update document with rules from Molly
-                        // options: overwrite / add
                     }
                 });
             }, function (err) {
