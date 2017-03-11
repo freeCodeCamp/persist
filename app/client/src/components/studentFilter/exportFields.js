@@ -12,6 +12,8 @@ import exportKeys from '../../../../common/exportKeys';
 import mapLimit from 'async/mapLimit';
 import keyBy from 'lodash/keyBy';
 import extend from 'lodash/extend';
+import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
 import pickBy from 'lodash/pickBy';
 import pick from 'lodash/pick';
 import keys from 'lodash/keys';
@@ -20,6 +22,7 @@ const studentKeysObj = keyBy(studentKeys, 'dbName');
 class ExportCSV extends Component {
     constructor(props) {
         super(props);
+        this.studentAliases = [];
         this.styles = {
             button: {
                 margin: 5
@@ -28,7 +31,7 @@ class ExportCSV extends Component {
     }
 
     referenceFields(students, fieldTypes) {
-        const {schoolObj, collegeObj} = this.props;
+        const { schoolObj, collegeObj } = this.props;
         return new Promise((resolve, reject) => {
             mapLimit(students, 100, (student, callback) => {
                 fieldTypes['college'].forEach((field) => {
@@ -58,9 +61,21 @@ class ExportCSV extends Component {
                         student[field] = dateString;
                     }
                 });
-                setTimeout(() => {
-                    callback(null, student);
-                }, 0);
+                if (false && student.aliases.length > 0) {
+                    const aliases = student.aliases.map((alias) => {
+                        const aliasStudent = cloneDeep(student);
+                        ['firstName', 'middleName', 'lastName', 'suffix'].map((aliasField) => aliasStudent[aliasField] = alias[aliasField]);
+                    });
+                    aliases.unshift(student);
+                    this.studentAliases.push(...aliases);
+                    setTimeout(() => {
+                        callback(null, null);
+                    });
+                } else {
+                    setTimeout(() => {
+                        callback(null, student);
+                    }, 0);
+                }
             }, (err, finalData) => {
                 if (err) {
                     console.log(err);
@@ -74,11 +89,15 @@ class ExportCSV extends Component {
     handleStudents(values) {
         this.props.setSpinnerPage(true);
         const selectedKeys = keys(pickBy(values, (v) => (v)));
-        const {students} = this.props;
-        const picked = students.map((student) => pick(student, selectedKeys));
+        selectedKeys.push('aliases');
+        const { students } = this.props;
+        const picked = students.map((student) => pick(student, selectedKeys))
+            .filter((student) => !(isEmpty(student)));
         const fieldTypes = exportKeys(selectedKeys, studentKeys);
+        selectedKeys.pop();
         this.referenceFields(picked, fieldTypes)
             .then((finalData) => {
+                finalData.push(...this.studentAliases);
                 this.props.exportStudents(selectedKeys, finalData);
             })
             .catch((err) => {
@@ -88,11 +107,11 @@ class ExportCSV extends Component {
 
     handleApplications() {
         this.props.setSpinnerPage(true);
-        const {students} = this.props;
+        const { students } = this.props;
         const picked = [].concat
             .apply([], students.map((student) =>
                 student.applications.map((application) => (
-                    extend({}, application, {osis: student.osis})
+                    extend({}, application, { osis: student.osis })
                 ))));
         const selectedKeys = _.map(applicationKeys, 'dbName');
         const fieldTypes = exportKeys(selectedKeys, applicationKeys);
@@ -107,11 +126,11 @@ class ExportCSV extends Component {
 
     handleTerms() {
         this.props.setSpinnerPage(true);
-        const {students} = this.props;
+        const { students } = this.props;
         const picked = [].concat
             .apply([], students.map((student) =>
                 student.terms.map((term) => (
-                    extend({}, term, {osis: student.osis})
+                    extend({}, term, { osis: student.osis })
                 ))));
         const selectedKeys = _.map(termKeys, 'dbName');
         const fieldTypes = exportKeys(selectedKeys, termKeys);
@@ -126,11 +145,11 @@ class ExportCSV extends Component {
 
     handleCaseNotes() {
         this.props.setSpinnerPage(true);
-        const {students} = this.props;
+        const { students } = this.props;
         const picked = [].concat
             .apply([], students.map((student) =>
                 student.caseNotes.map((caseNote) => (
-                    extend({}, caseNote, {osis: student.osis})
+                    extend({}, caseNote, { osis: student.osis })
                 ))));
         const selectedKeys = _.map(caseNotesKeys, 'dbName');
         const fieldTypes = exportKeys(selectedKeys, caseNotesKeys);
@@ -144,14 +163,14 @@ class ExportCSV extends Component {
     }
 
     render() {
-        const {styles} = this;
-        const {handleSubmit} = this.props;
+        const { styles } = this;
+        const { handleSubmit } = this.props;
         const exportKeys = keys(studentKeysObj);
         const exportKeysHTML = [];
         exportKeys.map((field, i) => {
             exportKeysHTML.push(
                 <Col key={field}
-                     style={{display: 'flex', justifyContent: 'center'}} xs={12}
+                     style={{ display: 'flex', justifyContent: 'center' }} xs={12}
                      sm={6} md={4}
                      lg={3}>
                     <Field
@@ -162,13 +181,13 @@ class ExportCSV extends Component {
                 </Col>
             );
             if ((i + 1) % 2 === 0) {
-                exportKeysHTML.push(<Clearfix key={`${field}-sm-${i}`} visibleSmBlock/>);
+                exportKeysHTML.push(<Clearfix key={`${field}-sm-${i}`} visibleSmBlock />);
             }
             if ((i + 1) % 3 === 0) {
-                exportKeysHTML.push(<Clearfix key={`${field}-md-${i}`} visibleMdBlock/>);
+                exportKeysHTML.push(<Clearfix key={`${field}-md-${i}`} visibleMdBlock />);
             }
             if ((i + 1) % 4 === 0) {
-                exportKeysHTML.push(<Clearfix key={`${field}-lg-${i}`} visibleLgBlock/>);
+                exportKeysHTML.push(<Clearfix key={`${field}-lg-${i}`} visibleLgBlock />);
             }
         });
         return (

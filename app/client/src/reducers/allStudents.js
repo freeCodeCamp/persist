@@ -18,10 +18,14 @@ import {
     SAVE_APPLICATION_ERROR,
     SAVE_TERM_SUCCESS,
     SAVE_TERM_ERROR,
+    SAVE_ALIAS_SUCCESS,
+    SAVE_ALIAS_ERROR,
     DELETE_APPLICATION_SUCCESS,
     DELETE_APPLICATION_ERROR,
     DELETE_TERM_SUCCESS,
-    DELETE_TERM_ERROR
+    DELETE_TERM_ERROR,
+    DELETE_ALIAS_SUCCESS,
+    DELETE_ALIAS_ERROR
 } from '../actions/types';
 
 const defaultState = {
@@ -32,7 +36,7 @@ const defaultState = {
     osisObj: {}
 };
 
-export default function (state = defaultState, action) {
+export default function(state = defaultState, action) {
     let osis, newState, index, _id;
     switch (action.type) {
         case GET_ALL_STUDENTS_PENDING:
@@ -108,6 +112,23 @@ export default function (state = defaultState, action) {
                 .filter((term) => (term._id.toString() !== _id.toString()));
             newState.osisObj[osis].terms = cloneDeep(newState.value[index].terms);
             return newState;
+        case SAVE_ALIAS_SUCCESS:
+            const aliases = action.payload;
+            osis = action.osis;
+            newState = cloneDeep(state);
+            index = findIndex(newState.value, (s) => (s.osis === osis));
+            newState.value[index].aliases = aliases;
+            newState.osisObj[osis].aliases = aliases;
+            return newState;
+        case DELETE_ALIAS_SUCCESS:
+            osis = action.osis;
+            _id = action._id;
+            newState = cloneDeep(state);
+            index = findIndex(newState.value, (s) => (s.osis === osis));
+            newState.value[index].aliases = newState.value[index].aliases
+                .filter((alias) => (alias._id.toString() !== _id.toString()));
+            newState.osisObj[osis].aliases = cloneDeep(newState.value[index].aliases);
+            return newState;
         case UPDATE_STUDENT:
             const student = action.payload;
             osis = student.osis;
@@ -125,6 +146,8 @@ export default function (state = defaultState, action) {
         case DELETE_APPLICATION_ERROR:
         case SAVE_TERM_ERROR:
         case DELETE_TERM_ERROR:
+        case SAVE_ALIAS_ERROR:
+        case DELETE_ALIAS_ERROR:
             return {
                 ...state,
                 pending: false,

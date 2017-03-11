@@ -8,7 +8,7 @@ import forOwn from 'lodash/forOwn';
 import mongoose from 'mongoose';
 
 import College from '../models/college';
-import { collegeKeys } from '../../common/fieldKeys';
+import {collegeKeys} from '../../common/fieldKeys';
 
 export default function(fileName) {
 
@@ -55,32 +55,31 @@ export default function(fileName) {
                         const college = new College(record);
                         college.save((err) => {
                             if (err) {
-                                callback(err);
-                                return;
+                                if (err.code === 11000) {
+                                    return callback(null);
+                                }
+                                return callback(null);
                             }
-                            addedCount++;
-                            newColleges.push({ fullName: record.fullName });
-                            callback(null);
+                            return callback(null);
                         });
                     } else {
                         modifiedCount++;
                         const collegeObject = oldCollege.toObject();
                         const newCollege = merge(collegeObject, record);
                         forOwn(collegeObject, (value, key) => {
-                            oldCollege[key] = newCollege[key];
+                            if (key !== '_id') {
+                                oldCollege[key] = newCollege[key];
+                            }
                         });
                         oldCollege.save((err) => {
-                            if (err) return callback(err);
-                            callback(null);
+                            if (err) {
+                                if (err.code === 11000) {
+                                    return callback(null);
+                                }
+                                return callback(null);
+                            }
+                            return callback(null);
                         });
-                        console.log('the record exists already mate!'.red);
-                        updatedColleges.push({ fullName: record.fullName });
-
-                        // run some logic of updating
-
-                        // update document with rules from Molly
-                        // options: overwrite / add
-
                     }
 
                 });

@@ -56,9 +56,10 @@ class StudentFilter extends Component {
     }
 
     filterStudents(values) {
+        console.log(values);
         this.showStudentsTable = true;
         let conditions = _(values).omitBy(_.isNil).cloneDeep();
-        const {students} = this.props;
+        const { students } = this.props;
         const hsGPA = conditions.hsGPA;
         delete conditions.hsGPA;
         const extraConditions = _.pick(conditions, extraKeys);
@@ -138,7 +139,7 @@ class StudentFilter extends Component {
                 .filter((student) => {
                     if (student.terms.length < 1 || !student.hsGradDate) return false;
                     const totalTerms = student.terms;
-                    return Math.abs(moment(student.terms[totalTerms-1].enrolBegin).diff(moment(student.hsGradDate), 'months')) < 6;
+                    return Math.abs(moment(student.terms[totalTerms - 1].enrolBegin).diff(moment(student.hsGradDate), 'months')) < 6;
                 });
         }
         this.setState({
@@ -147,15 +148,15 @@ class StudentFilter extends Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
-        const {filteredStudents} = this.state;
+        const { handleSubmit } = this.props;
+        const { filteredStudents } = this.state;
         const filterKeysHTML = (form) => {
             const fieldsHTML = [];
             filterKeys.map((filterKey, i) => {
                 const field = studentKeysObj[filterKey];
                 fieldsHTML.push(
                     <Col key={field.dbName}
-                         style={{minHeight: 100, display: 'flex', justifyContent: 'center'}}
+                         style={{ minHeight: 100, display: 'flex', justifyContent: 'center' }}
                          xs={12}
                          sm={6} md={6}
                          lg={4}>
@@ -167,23 +168,23 @@ class StudentFilter extends Component {
                     </Col>
                 );
                 if ((i + 1) % 2 === 0) {
-                    fieldsHTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock/>);
+                    fieldsHTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock />);
                 }
                 if ((i + 1) % 3 === 0) {
-                    fieldsHTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock/>);
+                    fieldsHTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock />);
                 }
             });
             // hsGPA
             fieldsHTML.push(
                 <Col key='hsGPA'
-                     style={{minHeight: 100, display: 'flex', justifyContent: 'center'}} xs={12}
+                     style={{ minHeight: 100, display: 'flex', justifyContent: 'center' }} xs={12}
                      sm={6} md={6}
                      lg={4}>
                     <Field
                         name='hsGPA'
                         component={ RangeSlider }
                         description='HS GPA'
-                        defaultRange={ {minValue: 0, maxValue: 100} }
+                        defaultRange={ { minValue: 0, maxValue: 100 } }
                         min={ 0 }
                         form={form}
                         max={ 100 }
@@ -213,13 +214,13 @@ class StudentFilter extends Component {
                     </Row>
                     <Row>
                         <Col xs={12} sm={12} md={12} lg={12}>
-                            <RaisedButton type='submit' label='Filter' primary={true}/>
+                            <RaisedButton type='submit' label='Filter' primary={true} />
                         </Col>
                     </Row>
                 </form>
-                <ExportCSV students={filteredStudents}/>
+                <ExportCSV students={filteredStudents} />
                 {this.showStudentsTable ?
-                    <StudentTable students={filteredStudents}/> : null }
+                    <StudentTable students={filteredStudents} /> : null }
             </Content>
         );
     }

@@ -102,8 +102,22 @@ const graduationsSchema = (Schema) => (
     })
 );
 
+const aliasSchema = (Schema) => (
+    new Schema({
+        firstName: String,
+        lastName: String,
+        middleName: String,
+        suffix: String
+    })
+);
+
 export default (Schema) => {
     return {
+        aliases: [aliasSchema(Schema)],
+        alias: {
+            type: Boolean,
+            default: false
+        },
         ethnicity: {
             type: Number,
             min: [
@@ -116,7 +130,10 @@ export default (Schema) => {
             enum: enums.gender
         },
         hsGradDate: Date,
-        osis: Number,
+        osis: {
+            type: Number,
+            unique: true
+        },
         nscRecordFound: {
             type: Boolean,
             default: false

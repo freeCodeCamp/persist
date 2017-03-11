@@ -1,5 +1,12 @@
 export const reference = [
     {
+        fieldName: 'Alias',
+        displayName: 'Alias',
+        dbName: 'alias',
+        hidden: false,
+        fieldType: 'Toggle',
+        editable: false
+    }, {
         fieldName: 'Ethnicity',
         displayName: 'Ethnicity',
         dbName: 'ethnicity',

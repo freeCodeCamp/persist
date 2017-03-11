@@ -1,4 +1,5 @@
 import keyBy from 'lodash/keyBy';
+import get from 'lodash/get';
 
 export default (keysList, fieldList) => {
     const keys = {
@@ -11,7 +12,7 @@ export default (keysList, fieldList) => {
     };
     const fieldListObj = keyBy(fieldList, 'dbName');
     keysList.forEach((fieldKey) => {
-        switch (fieldListObj[fieldKey].type) {
+        switch (get(fieldListObj, `${fieldKey}.type`, null)) {
             case 'college':
                 keys['college'].push(fieldKey);
                 return;
@@ -19,7 +20,7 @@ export default (keysList, fieldList) => {
                 keys['school'].push(fieldKey);
                 return;
         }
-        switch (fieldListObj[fieldKey].fieldType) {
+        switch (get(fieldListObj, `${fieldKey}.fieldType`, null)) {
             case 'Checkbox':
                 keys['checkbox'].push(fieldKey);
                 return;

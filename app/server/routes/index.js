@@ -13,7 +13,8 @@ import {
     CaseNoteController,
     ApplicationController,
     TermController,
-    UploadHistoryController
+    UploadHistoryController,
+    AliasController
 } from "../controllers";
 import saveCSV from "../utils/save_csv";
 import saveCollegeData from "../utils/save_csv_colleges_updated";
@@ -315,6 +316,14 @@ export default (app) => {
         })
         .delete((req, res) => {
             TermController.deleteTerm(req, res);
+        });
+    
+    app.route('/update-alias', requireAuth)
+        .post((req, res) => {
+            AliasController.updateAlias(req, res);
+        })
+        .delete((req, res) => {
+            AliasController.deleteAlias(req, res);
         });
 
     app.post('/register', AuthController.register);

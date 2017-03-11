@@ -17,7 +17,7 @@ class ReduxFormGroup extends React.Component {
     }
 
     updateInput(value, columnName) {
-        const {form} = this.props;
+        const { form } = this.props;
         if (value) {
             form.props.change.bind(form, columnName, value)();
         }
@@ -25,13 +25,13 @@ class ReduxFormGroup extends React.Component {
 
     checkEmpty(value, columnName, nullValue) {
         if (!isPlainObject(value) && value.length === 0 && nullValue) {
-            const {form} = this.props;
+            const { form } = this.props;
             form.props.change.bind(form, columnName, null)();
         }
     }
 
     initCollege(colId) {
-        const {collegeObj} = this.props;
+        const { collegeObj } = this.props;
         if (colId && collegeObj[colId]) {
             return collegeObj[colId].fullName || '';
         }
@@ -39,7 +39,7 @@ class ReduxFormGroup extends React.Component {
     }
 
     initSchool(school) {
-        const {schoolObj} = this.props;
+        const { schoolObj } = this.props;
         if (school && schoolObj[school]) {
             return schoolObj[school].name || '';
         }
@@ -47,8 +47,8 @@ class ReduxFormGroup extends React.Component {
     }
 
     render() {
-        const {disabled, field, form, initValue, collegeSource, schoolSource} = this.props;
-        const {fieldType, dbName, displayName} = field;
+        const { disabled, field, form, initValue, collegeSource, schoolSource } = this.props;
+        const { fieldType, dbName, displayName } = field;
 
         switch (fieldType) {
 
@@ -57,7 +57,7 @@ class ReduxFormGroup extends React.Component {
                     <Field disabled={ disabled }
                            name={ dbName.toString() }
                            component={ TextField }
-                           floatingLabelText={ displayName }/>
+                           floatingLabelText={ displayName } />
                 );
             case 'TextBox':
                 return (
@@ -66,7 +66,7 @@ class ReduxFormGroup extends React.Component {
                            component={ TextField }
                            floatingLabelText={ displayName }
                            multiLine={ true }
-                           rows={ 2 }/>
+                           rows={ 2 } />
                 );
             case 'DatePicker':
                 return (
@@ -76,7 +76,7 @@ class ReduxFormGroup extends React.Component {
                            floatingLabelText={ displayName }
                            container='inline'
                            locale='en-US'
-                           component={ DatePicker }/>
+                           component={ DatePicker } />
                 );
             case 'Checkbox':
                 return (
@@ -86,7 +86,7 @@ class ReduxFormGroup extends React.Component {
                            options={ types[dbName] || [] }
                            initValue={ initValue }
                            component={ Chips }
-                           field={ field }/>
+                           field={ field } />
                 );
             case 'Checkbox_Add':
                 return (
@@ -106,9 +106,9 @@ class ReduxFormGroup extends React.Component {
                            component={ SelectField }
                            hintText={ displayName }
                            floatingLabelText={ displayName }>
-                        <MenuItem value={ true } key='true' primaryText='True'/>
-                        <MenuItem value={ false } key='false' primaryText='False'/>
-                        <MenuItem value={ null } primaryText='None' key='none'/>
+                        <MenuItem value={ true } key='true' primaryText='True' />
+                        <MenuItem value={ false } key='false' primaryText='False' />
+                        <MenuItem value={ null } primaryText='None' key='none' />
                     </Field>
                 );
             case 'SelectField':
@@ -124,9 +124,9 @@ class ReduxFormGroup extends React.Component {
                                 />
                             )
                         }
-                        return (<MenuItem value={ option } key={ option } primaryText={ option }/>);
+                        return (<MenuItem value={ option } key={ option } primaryText={ option } />);
                     });
-                    options.unshift(<MenuItem value={ null } primaryText='None' key='none'/>);
+                    options.unshift(<MenuItem value={ null } primaryText='None' key='none' />);
                 }
                 return (
                     <Field disabled={ disabled }
@@ -140,7 +140,8 @@ class ReduxFormGroup extends React.Component {
             // case 'RadioButtonGroup':
 
             case 'AutoComplete':
-                const {nullAllowed} = this.props;
+                const { nullAllowed } = this.props;
+
                 switch (field.type) {
                     case 'college':
                         return (
@@ -150,7 +151,7 @@ class ReduxFormGroup extends React.Component {
                                 filter={MUIAutoComplete.caseInsensitiveFilter}
                                 name={dbName.toString()}
                                 searchText={this.initCollege(initValue)}
-                                onUpdateInput={(v) => this.checkEmpty(v, dbName.toString(), nullAllowed)}
+                                onUpdateInput={(v) => this.checkEmpty(v, dbName.toString(), true)}
                                 onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
                                 dataSource={collegeSource}
                                 maxSearchResults={5}
@@ -177,7 +178,7 @@ class ReduxFormGroup extends React.Component {
                     <Field disabled={ disabled }
                            name={ dbName.toString() }
                            component={ TextField }
-                           floatingLabelText={ displayName }/>
+                           floatingLabelText={ displayName } />
                 );
         }
     }

@@ -2,6 +2,7 @@ import fs from 'fs';
 import parse from 'csv-parse';
 import merge from 'lodash/merge';
 import forOwn from 'lodash/forOwn';
+import isEqual from 'lodash/isEqual';
 import transform from 'stream-transform';
 import async from 'async';
 
@@ -10,7 +11,14 @@ import Student from '../models/student';
 import {studentKeys} from '../../common/fieldKeys';
 import formatRecord from './student_record_transformer';
 
-export default function (fileName) {
+const createAlias = (student) => ({
+    firstName: student.firstName,
+    middleName: student.middleName,
+    lastName: student.lastName,
+    suffix: student.suffix
+});
+
+export default function(fileName) {
 
     return new Promise((resolve, reject) => {
 
@@ -25,7 +33,7 @@ export default function (fileName) {
         });
         var data = [];
         var row;
-        transformer.on('readable', function () {
+        transformer.on('readable', function() {
             while (row = transformer.read()) {
                 data.push(row);
             }
@@ -33,12 +41,12 @@ export default function (fileName) {
 
         let error;
 
-        transformer.on('error', function (err) {
+        transformer.on('error', function(err) {
             error = err;
             console.log(err.message);
         });
 
-        transformer.on('end', function () {
+        transformer.on('end', function() {
             if (error) return reject(error);
             // reduce data size for testing
             // data = data.splice(0, 1);
@@ -52,27 +60,38 @@ export default function (fileName) {
 
             async.eachLimit(data, 10, (record, callback) => {
                 Student.findOne(
-                    {osis: record.osis},
+                    { osis: record.osis },
                     (err, oldStudent) => {
                         if (err) {
                             console.log('error in finding document', err);
                             return callback(err);
                         }
-                        if (!oldStudent) {
+                        if (!oldStudent && !record.alias) {
                             const newStudent = new Student(record);
                             newStudent.save((err) => {
                                 if (err) {
-                                    console.log('we got a validation error', err);
-                                    return callback(err);
+                                    if (err.code === 11000) {
+                                        return callback(null);
+                                    }
+                                    return callback(null);
                                 }
                                 return callback(null);
                             });
                         } else {
-                            const studentObject = oldStudent.toObject();
-                            const newStudent = merge(studentObject, record);
-                            forOwn(studentObject, (value, key) => {
-                                oldStudent[key] = newStudent[key];
-                            });
+                            if (record.alias) {
+                                const oldAlias = oldStudent.aliases.find((alias) => (isEqual(alias, createAlias(record))));
+                                if (!oldAlias) {
+                                    oldStudent.aliases.push(createAlias(record));
+                                }
+                            } else {
+                                const studentObject = oldStudent.toObject();
+                                const newStudent = merge(studentObject, record);
+                                forOwn(studentObject, (value, key) => {
+                                    if (key !== '_id') {
+                                        oldStudent[key] = newStudent[key];
+                                    }
+                                });
+                            }
                             oldStudent.save((err) => {
                                 if (err) {
                                     console.log('we got a validation error', err);

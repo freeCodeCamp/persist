@@ -17,8 +17,8 @@ const exportStudents = (fields, students) => (
             if (studentKeysObj[field]) {
                 return studentKeysObj[field].fieldName
             }
-            return 'Field not available';
-        });
+            return 'delete';
+        }).filter((field) => (field !== 'delete'));
         const quotes = '';
         const doubleQuotes = '"';
         const csv = json2csv({
