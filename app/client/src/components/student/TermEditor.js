@@ -38,22 +38,24 @@ class TermEditor extends Component {
                         />
                     )
                 }
-                return (<MenuItem value={ option } key={ option } primaryText={ option }/>);
+                return (<MenuItem value={ option } key={ option } primaryText={ option } />);
             });
-            termStatusOptions.unshift(<MenuItem value={ null } primaryText='Unknown if Full or Part-time' key='none'/>);
+            termStatusOptions.unshift(<MenuItem value={ null } primaryText='Unknown if Full or Part-time' key='none' />);
         }
         this.termStatusOptions = termStatusOptions;
+        this.graduationTypeOptions =
+            ['2 year', '4 year'].map((option) => (<MenuItem value={ option } key={ option } primaryText={ option } />));
     }
 
     render() {
-        const {initialValues, termForm, termName, termStart, termEnd} = this.props;
+        const { initialValues, termForm, termName, termStart, termEnd } = this.props;
         let termNamesHTML = [];
         let syncErrors = {};
         if (termStart) {
             const year = new Date(termStart).getFullYear();
             ['Fall ' + year, 'Winter ' + year, 'Spring ' + year, 'Summer ' + year].forEach((name) => {
                 termNamesHTML.push(
-                    <MenuItem value={ name } primaryText={name} key={name}/>
+                    <MenuItem value={ name } primaryText={name} key={name} />
                 );
             });
         }
@@ -65,7 +67,7 @@ class TermEditor extends Component {
         }
         return (
             <form>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <ReduxFormGroup
                         form={this}
                         initValue={ initialValues.college }
@@ -76,15 +78,15 @@ class TermEditor extends Component {
                         null
                     }
                 </Col>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <ReduxFormGroup
                         form={this}
                         initValue={ initialValues.enrolBegin }
                         field={ termKeysObj.enrolBegin }
                     />
                 </Col>
-                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='enrolEnd'
                         hintText='Enrollment End'
@@ -94,7 +96,7 @@ class TermEditor extends Component {
                         component={ DatePicker }
                     />
                 </Col>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='status'
                         component={SelectField}
@@ -104,30 +106,30 @@ class TermEditor extends Component {
                         {this.termStatusOptions}
                     </Field>
                 </Col>
-                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='creditsEarned'
                         component={ TextField }
                         floatingLabelText='Credits Earned'
                     />
                 </Col>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='creditsAttempted'
                         component={ TextField }
                         floatingLabelText='Credits Attempted'
                     />
                 </Col>
-                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='gpa'
                         component={ TextField }
                         floatingLabelText='Term GPA'
                     />
                 </Col>
-                <Col style={{minHeight: 100}} xs={12} sm={6} md={6} lg={6}>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='degreeTitle'
                         component={ Chip }
@@ -139,8 +141,8 @@ class TermEditor extends Component {
                         field={termKeysObj['degreeTitle']}
                     />
                 </Col>
-                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock/>
-                <Col style={{minHeight: 100, display: nameDisplay}} xs={12} sm={6} md={6} lg={6}>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />
+                <Col style={{ minHeight: 100, display: nameDisplay }} xs={12} sm={6} md={6} lg={6}>
                     <Field
                         name='name'
                         component={SelectField}
@@ -148,6 +150,16 @@ class TermEditor extends Component {
                         floatingLabelText='Name'
                     >
                         {termNamesHTML}
+                    </Field>
+                </Col>
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                        name='graduationType'
+                        component={SelectField}
+                        hintText='Graduation Type'
+                        floatingLabelText='Graduation Type'
+                    >
+                        {this.graduationTypeOptions}
                     </Field>
                 </Col>
             </form>
@@ -174,7 +186,8 @@ const validate = (values, props) => {
         props.dispatch(props.change('name', 'Fall ' + year));
     } else if (moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 && moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0) {
         props.dispatch(props.change('name', 'Winter ' + year));
-    } else if (moment(enrolBegin).diff(moment([year, 0, 1]), 'days') > 0 && moment(enrolEnd).diff(moment([year, 3, 1]), 'days') > 0 && moment([year, 5, 30]).diff(moment(enrolEnd), 'days') > 0) {
+    } else if (moment(enrolBegin).diff(moment([year, 0, 1]), 'days') > 0 && moment(enrolEnd).diff(moment([year, 3, 1]), 'days') > 0 &&
+        moment([year, 5, 30]).diff(moment(enrolEnd), 'days') > 0) {
         props.dispatch(props.change('name', 'Spring ' + year));
     } else if (moment(enrolBegin).diff(moment([year, 4, 1]), 'days') > 0 && moment([year, 7, 30]).diff(moment(enrolEnd), 'days') > 0) {
         props.dispatch(props.change('name', 'Summer ' + year));

@@ -17,6 +17,10 @@ const termSchema = (Schema) => (
             default: 'Counselor Added'
         },
         gpa: Number,
+        graduationType: {
+            type: String,
+            lowercase: true
+        },
         degreeTitle: {
             type: [String],
             validate: {

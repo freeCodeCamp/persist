@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+import async from 'async';
 import mongoosePaginate from "mongoose-paginate";
 import sortBy from "lodash/sortBy";
 import uniq from "lodash/uniq";
@@ -9,6 +10,24 @@ import {studentSchema} from "../../common/schemas";
 const Schema = mongoose.Schema;
 export const Student = new Schema(studentSchema(Schema));
 Student.plugin(mongoosePaginate);
+
+const setGraduationType = (record, done) => {
+    async.each(record.terms, (term, callback) => {
+        if (term.status === 'Graduated') {
+            return College.findOne({ _id: term.college }, (err, college) => {
+                if (err) {
+                    console.log(err);
+                } else if (college) {
+                    term.graduationType = college.durationType;
+                }
+                callback(null);
+            });
+        }
+        callback(null);
+    }, (err) => {
+        done();
+    })
+};
 
 Student.pre('save', true, function(next, done) {
     next();
@@ -40,7 +59,7 @@ Student.pre('save', true, function(next, done) {
         College.find({ _id: { $in: [colleges] } }, 'durationType',
             (err, durationTypes) => {
                 if (err || durationTypes.length < 2) {
-                    return done();
+                    return setGraduationType(record, done);
                 }
                 if (durationTypes[0].toString() === '2 year') {
                     if (durationTypes[1].toString() === '2 year') {
@@ -55,10 +74,10 @@ Student.pre('save', true, function(next, done) {
                         record.transferStatus.push('4 Year to 4 Year');
                     }
                 }
-                return done();
+                return setGraduationType(record, done);
             });
     } else {
-        done();
+        return setGraduationType(record, done);
     }
 });
 Student.pre('save', true, function(next, done) {

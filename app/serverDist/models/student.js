@@ -1,33 +1,37 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.Student = undefined;
 
-var _mongoosePaginate = require("mongoose-paginate");
+var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
+var _mongoosePaginate = require('mongoose-paginate');
 
 var _mongoosePaginate2 = _interopRequireDefault(_mongoosePaginate);
 
-var _sortBy = require("lodash/sortBy");
+var _sortBy = require('lodash/sortBy');
 
 var _sortBy2 = _interopRequireDefault(_sortBy);
 
-var _uniq = require("lodash/uniq");
+var _uniq = require('lodash/uniq');
 
 var _uniq2 = _interopRequireDefault(_uniq);
 
-var _map = require("lodash/map");
+var _map = require('lodash/map');
 
 var _map2 = _interopRequireDefault(_map);
 
-var _cloneDeep = require("lodash/cloneDeep");
+var _cloneDeep = require('lodash/cloneDeep');
 
 var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
 
-var _ = require("./");
+var _ = require('./');
 
-var _schemas = require("../../common/schemas");
+var _schemas = require('../../common/schemas');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,6 +40,24 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Student = exports.Student = new Schema((0, _schemas.studentSchema)(Schema));
 Student.plugin(_mongoosePaginate2.default);
+
+var setGraduationType = function setGraduationType(record, done) {
+    _async2.default.each(record.terms, function (term, callback) {
+        if (term.status === 'Graduated') {
+            return _.College.findOne({ _id: term.college }, function (err, college) {
+                if (err) {
+                    console.log(err);
+                } else if (college) {
+                    term.graduationType = college.durationType;
+                }
+                callback(null);
+            });
+        }
+        callback(null);
+    }, function (err) {
+        done();
+    });
+};
 
 Student.pre('save', true, function (next, done) {
     next();
@@ -66,7 +88,7 @@ Student.pre('save', true, function (next, done) {
     if (colleges.length > 1) {
         _.College.find({ _id: { $in: [colleges] } }, 'durationType', function (err, durationTypes) {
             if (err || durationTypes.length < 2) {
-                return done();
+                return setGraduationType(record, done);
             }
             if (durationTypes[0].toString() === '2 year') {
                 if (durationTypes[1].toString() === '2 year') {
@@ -81,10 +103,10 @@ Student.pre('save', true, function (next, done) {
                     record.transferStatus.push('4 Year to 4 Year');
                 }
             }
-            return done();
+            return setGraduationType(record, done);
         });
     } else {
-        done();
+        return setGraduationType(record, done);
     }
 });
 Student.pre('save', true, function (next, done) {
@@ -96,7 +118,7 @@ Student.pre('save', true, function (next, done) {
         var match = myRegexp.exec(record.cohort);
         if (match && match[1]) {
             var year = Number(match[1]);
-            record.expectedHSGrad = new Date("9/15/" + (year + 4));
+            record.expectedHSGrad = new Date('9/15/' + (year + 4));
         }
     }
     done();

@@ -65,4 +65,10 @@ export default [{
     dbName: 'degreeTitle',
     fieldType: 'Checkbox',
     editable: true
+}, {
+    fieldName: 'Graduation Type',
+    displayName: 'Graduation Type',
+    dbName: 'graduationType',
+    fieldType: 'SelectField',
+    editable: true
 }];

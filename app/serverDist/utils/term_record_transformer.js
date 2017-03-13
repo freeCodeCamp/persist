@@ -14,6 +14,10 @@ var _forOwn = require('lodash/forOwn');
 
 var _forOwn2 = _interopRequireDefault(_forOwn);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (record, callback) {
@@ -31,8 +35,12 @@ exports.default = function (record, callback) {
             // console.error('no date, deleting....'.red, logObject);
             delete record[dateField];
         } else {
-            value = value.toString().split(/[-\/]/).join(' ');
-            value = new Date(value);
+            if (typeof value === "number") {
+                value = (0, _moment2.default)(value, 'YYYYMMDD').toDate();
+            } else {
+                value = value.toString().split(/[-\/]/).join(' ');
+                value = new Date(value);
+            }
             if (value.toString() === 'Invalid Date') {
                 // console.log('invalid date, deleting...'.red, logObject);
                 delete record[dateField];
