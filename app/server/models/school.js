@@ -6,17 +6,17 @@ const Schema = mongoose.Schema;
 
 const schoolSchemaModel = new Schema(schoolSchema(Schema));
 
-const schoolNames = ['Baldwin', 'BCS', 'Channel View', 'Hahn',
-    'Leaders', 'McCown', 'MELS', 'WHEELS'];
+const schoolNames = ['Baldwin', 'Brooklyn Collaborative', 'Channel View', 'Kurt Hahn',
+    'Leaders', 'Gaynor McCown', 'MELS', 'WHEELS'];
 const School = mongoose.model('School', schoolSchemaModel);
 
 async.each(schoolNames, (schoolName, callback) => {
-    School.findOne({name: schoolName}, (err, existingSchool) => {
+    School.findOne({ name: schoolName }, (err, existingSchool) => {
         if (err) {
             return callback(err);
         }
         if (!existingSchool) {
-            return School.create({name: schoolName}, (err, newSchool) => {
+            return School.create({ name: schoolName }, (err, newSchool) => {
                 if (err) {
                     return callback(err);
                 }

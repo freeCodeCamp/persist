@@ -1,66 +1,42 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-
-import { Button, Form, Label, Input, Container, InputGroup, Row, FormGroup } from 'react-bootstrap';
-
-import * as collegeFilter from '../../actions/collegeFilter';
-
+import {reduxForm} from 'redux-form';
+import {AutoComplete} from 'material-ui';
+import {connect} from 'react-redux';
 
 class FilterCollegeForm extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
+    }
 
-  }
+    getColleges(v) {
+        const { colleges, setColleges } = this.props;
+        const filtered = colleges.filter((college) => college.fullName === v.text);
+        setColleges(filtered);
+    }
 
-  handleFormSubmit(object) {
-
-    this.props.filterColleges(object);
-
-  }
-
-  render() {
-
-    const {handleSubmit, reset} = this.props;
-
-    return (
-
-      <Form id='college-filter' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
-        Filter
-        <FormGroup>
-          <Label htmlFor='fullName'>
-            Full Name
-          </Label>
-          <Field className='form-control'
-            name='fullName'
-            component='input'
-            type='text' />
-          <Button type='submit'>
-            Submit
-          </Button>
-        </FormGroup>
-      </Form>
-
-      );
-  }
+    render() {
+        const { collegeSource } = this.props;
+        return (
+            <AutoComplete
+                fullWidth={true}
+                floatingLabelText='Search'
+                filter={AutoComplete.caseInsensitiveFilter}
+                name='collegeSearch'
+                onNewRequest={(v) => this.getColleges(v)}
+                dataSource={collegeSource}
+                maxSearchResults={5}
+            />
+        );
+    }
 }
 
 FilterCollegeForm = reduxForm({
-  form: 'FilterCollege' // a unique name for this form
+    form: 'FilterCollege' // a unique name for this form
 })(FilterCollegeForm);
 
-/*
-function mapStateToProps(state) {
-  return { filteredStudents: state.filteredStudents };
-}
-*/
+const mapStateToProps = (state) => ({
+    collegeSource: state.colleges.collegeSource,
+    colleges: state.colleges.value
+});
 
-// You have to connect() to any reducers that you wish to connect to yourself
-export default connect(
-  null, collegeFilter
-)(FilterCollegeForm)
-
-
-
-
-
+export default connect(mapStateToProps)(FilterCollegeForm)

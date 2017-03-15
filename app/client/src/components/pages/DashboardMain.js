@@ -1,10 +1,13 @@
 import React from 'react';
 import Content from '../helpers/content';
 import ChartFilter from '../charts/Filter';
-import { ChartTabs } from '../dashboard';
-import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
+import {ChartTabs} from '../dashboard';
+import {connect} from 'react-redux';
+import {reduxForm} from 'redux-form';
+import {studentKeys} from '../../../../common/fieldKeys';
 import _ from 'lodash';
+import {validateArray} from '../../../../common/constants';
+const studentKeysObj = _.keyBy(studentKeys, 'dbName');
 
 class DashboardMain extends React.Component {
     constructor(props) {
@@ -17,14 +20,33 @@ class DashboardMain extends React.Component {
 
     handleSubmit(values) {
         this.update = true;
-        const conditions = _(values).omitBy(_.isNil).cloneDeep();
+        let conditions = _(values).omitBy(_.isNil).cloneDeep();
         const { students } = this.props;
         const hsGPA = conditions.hsGPA;
         delete conditions.hsGPA;
-        const filteredStudents = _(students).filter(conditions).filter((student) => {
-            if (hsGPA.min === 0 && hsGPA.max === 100) return true;
-            return student.hsGPA > hsGPA.min && student.hsGPA < hsGPA.max;
-        }).value();
+        const arrayConditions = _(conditions).pickBy((value, key) => (
+            studentKeysObj[key].fieldType === 'Checkbox'
+        )).value();
+        conditions = _.omit(conditions, _.keys(arrayConditions));
+        let filteredStudents = _(students)
+            .filter(conditions);
+        filteredStudents = filteredStudents
+            .filter((student) => {
+                let take = true;
+                _.forOwn(arrayConditions, (value, key) => {
+                    if (!validateArray(value, student[key])) {
+                        take = false;
+                        return false;
+                    }
+                });
+                return take;
+            });
+        if (!(hsGPA.min === 0 && hsGPA.max === 100)) {
+            filteredStudents = filteredStudents
+                .filter((student) => {
+                    return student.hsGPA > hsGPA.min && student.hsGPA < hsGPA.max;
+                });
+        }
         this.setState({
             filteredStudents
         });

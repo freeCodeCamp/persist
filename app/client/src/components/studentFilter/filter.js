@@ -56,7 +56,6 @@ class StudentFilter extends Component {
     }
 
     filterStudents(values) {
-        console.log(values);
         this.showStudentsTable = true;
         let conditions = _(values).omitBy(_.isNil).cloneDeep();
         const { students } = this.props;

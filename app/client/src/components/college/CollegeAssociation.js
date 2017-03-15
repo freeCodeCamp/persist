@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import async from 'async';
 import StudentList from './StudentList';
@@ -62,12 +62,14 @@ class CollegeAssociation extends Component {
                     const termLength = student.terms.length;
                     let enrolled = false;
                     if (termLength > 0) {
-                        student.terms.forEach((term) => {
+                        let breakOut = false;
+                        for (const term of student.terms) {
                             if (term.college === collegeId) {
                                 switch (term.status) {
                                     case 'Graduated': {
                                         enrolled = true;
                                         associated.push(associatedStudent(student, 'Graduated'));
+                                        breakOut = true;
                                         break;
                                     }
                                     case 'F': {
@@ -80,6 +82,7 @@ class CollegeAssociation extends Component {
                                         if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
                                             network[hsGradYear].push(student.osis);
                                         }
+                                        breakOut = true;
                                         break;
                                     }
                                     case 'H':
@@ -94,16 +97,19 @@ class CollegeAssociation extends Component {
                                         if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
                                             network[hsGradYear].push(student.osis);
                                         }
+                                        breakOut = true;
                                         break;
                                     }
                                     case 'W': {
                                         enrolled = true;
                                         associated.push(associatedStudent(student, 'No longer Enrolled'));
+                                        breakOut = true;
                                         break;
                                     }
                                 }
                             }
-                        });
+                            if (breakOut) break;
+                        }
                     }
                     if (!enrolled && student.intendedCollege === collegeId) {
                         associated.push(associatedStudent(student, 'Intended to Enroll'));

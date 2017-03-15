@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import { Table } from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 
 class StudentList extends React.Component {
     constructor(props) {
@@ -49,8 +49,8 @@ class StudentList extends React.Component {
     getNewStudents() {
         if (!this.mounted) return;
         const _this = this;
-        const {students} = this.props;
-        const {offset} = this.state;
+        const { students } = this.props;
+        const { offset } = this.state;
         if (this.updating || offset > this.length) return;
         this.updating = true;
         this.setState({
@@ -68,7 +68,7 @@ class StudentList extends React.Component {
                 justifyContent: 'center',
                 paddingTop: 40
             }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
             </div>
         )
     }
@@ -79,8 +79,8 @@ class StudentList extends React.Component {
     }
 
     render() {
-        const {students} = this.state;
-        const {noSearch, schoolObj} = this.props;
+        const { students } = this.state;
+        const { noSearch, schoolObj } = this.props;
         if (students.length < 1) {
             if (!noSearch) {
                 return <h1>'Sorry! no results found'</h1>;
@@ -100,7 +100,7 @@ class StudentList extends React.Component {
                     </td>
                     <td>{student.lastName}</td>
                     <td>{student.hsGradYear}</td>
-                    <td>{schoolObj[student.hs].name}</td>
+                    <td>{schoolObj[student.hs] ? schoolObj[student.hs].name : ''}</td>
                     <td>{student.status}</td>
                 </tr>
             );
