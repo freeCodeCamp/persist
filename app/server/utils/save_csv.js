@@ -31,11 +31,12 @@ export default function(fileName) {
         var transformer = transform(formatRecord, {
             parallel: 20
         });
-        var data = [];
-        var row;
-        transformer.on('readable', function() {
+        const data = {};
+        let row;
+        transformer.on('readable', () => {
             while (row = transformer.read()) {
-                data.push(row);
+                data[row.osis] = data[row.osis] || {};
+                data[row.osis] = merge(data[row.osis], row);
             }
         });
 

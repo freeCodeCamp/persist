@@ -17,11 +17,12 @@ exports.default = function (fileName) {
         var transformer = (0, _streamTransform2.default)(_student_record_transformer2.default, {
             parallel: 20
         });
-        var data = [];
-        var row;
+        var data = {};
+        var row = void 0;
         transformer.on('readable', function () {
             while (row = transformer.read()) {
-                data.push(row);
+                data[row.osis] = data[row.osis] || {};
+                data[row.osis] = (0, _merge2.default)(data[row.osis], row);
             }
         });
 

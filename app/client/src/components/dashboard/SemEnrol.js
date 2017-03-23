@@ -80,7 +80,7 @@ class SemEnrol extends Component {
                 const studentTermsObj = _.keyBy(studentTerms, 'name');
                 const hsGradYear = student.hsGradYear;
                 if (studentTerms.length > 0 && hsGradYear) {
-                    let difference = maxTermYear - hsGradYear;
+                    let difference = 2*(maxTermYear - hsGradYear);
                     if (maxTermSeason === 'Fall') {
                         difference += 1;
                     }

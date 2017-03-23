@@ -106,8 +106,8 @@ class ReduxFormGroup extends React.Component {
                            component={ SelectField }
                            hintText={ displayName }
                            floatingLabelText={ displayName }>
-                        <MenuItem value={ true } key='true' primaryText='True' />
-                        <MenuItem value={ false } key='false' primaryText='False' />
+                        <MenuItem value={ true } key='true' primaryText='Yes' />
+                        <MenuItem value={ false } key='false' primaryText='No' />
                         <MenuItem value={ null } primaryText='None' key='none' />
                     </Field>
                 );
