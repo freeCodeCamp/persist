@@ -26,15 +26,15 @@ const handleSocket = require(`./app/${serverFolder}/socket`).default;
 // connect to mongoDB database
 mongoose.Promise = global.Promise;
 const options = {
-    server: {socketOptions: {keepAlive: 300000, connectTimeoutMS: 30000}},
-    replset: {socketOptions: {keepAlive: 300000, connectTimeoutMS: 30000}}
+    server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+    replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
 };
 mongoose.connect(process.env.MONGODB_URI, options);
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, '/app/client/public')));
-app.use(bodyParser.json({limit: '20mb'}));
+app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({
     limit: '20mb',
     extended: true
@@ -78,3 +78,4 @@ server.listen(PORT, (error) => {
         console.info('==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.', PORT, PORT);
     }
 });
+server.timeout = 240000;

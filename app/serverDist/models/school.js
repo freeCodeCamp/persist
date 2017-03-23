@@ -20,7 +20,7 @@ var Schema = _mongoose2.default.Schema;
 
 var schoolSchemaModel = new Schema((0, _schemas.schoolSchema)(Schema));
 
-var schoolNames = ['Baldwin', 'BCS', 'Channel View', 'Hahn', 'Leaders', 'McCown', 'MELS', 'WHEELS'];
+var schoolNames = ['Baldwin', 'Brooklyn Collaborative', 'Channel View', 'Kurt Hahn', 'Leaders', 'Gaynor McCown', 'MELS', 'WHEELS'];
 var School = _mongoose2.default.model('School', schoolSchemaModel);
 
 _async2.default.each(schoolNames, function (schoolName, callback) {

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import { RaisedButton, Snackbar } from 'material-ui';
+import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+import {RaisedButton, Snackbar} from 'material-ui';
 import keyBy from 'lodash/keyBy';
-import { Button, Form, Row, Alert, Col, Clearfix } from 'react-bootstrap';
+import {Button, Form, Row, Alert, Col, Clearfix} from 'react-bootstrap';
 import FormGroup from '../helpers/ReduxFormGroup';
 import * as updateCollege from '../../actions/updateCollege';
 import CollegeAssociation from './CollegeAssociation';
-import { collegeKeys } from '../../../../common/fieldKeys';
+import {collegeKeys} from '../../../../common/fieldKeys';
 const collegeKeysObj = keyBy(collegeKeys, 'dbName');
 
 class SingleCollegeForm extends React.Component {
@@ -95,13 +95,13 @@ class SingleCollegeForm extends React.Component {
             });
             return HTML;
         };
-        const basicCollegeInfo = ['website', 'city', 'state', 'locale', 'collType', 'predominentDegGranted', 'hbcu', 'religiousAffiliation',
+        const basicCollegeInfo = ['website', 'city', 'state', 'locale', 'collType', 'durationType', 'hbcu', 'religiousAffiliation',
             'specialPrograms', 'otherNotes', 'womenOnly'];
         const academicProfile = ['avgHsGpa', 'barronsRating', 'percentileCR25', 'percentileCR75', 'admissionsRate', 'testingPolicy',
             'percentileMath25', 'percentileMath75'];
         const percentDegrees = ['percentDegrees1', 'percentDegrees2', 'percentDegrees3', 'percentDegrees4', 'percentDegrees5',
             'percentDegrees6', 'percentDegrees7', 'percentDegrees8', 'percentDegrees9', 'percentDegrees10', 'percentDegrees11',
-            'percentDegrees12', 'percentDegrees13', 'percentDegrees14', 'percentDegrees15', 'percentDegrees16']
+            'percentDegrees12', 'percentDegrees13', 'percentDegrees14', 'percentDegrees15', 'percentDegrees16'];
         const financialProfile = ['netPriceCalculator', 'netPrice0to30', 'netPrice30to48', 'netPrice48to75', 'netPrice75to110'];
         const studentBody = ['numberStudents', 'percentPartTimeEnrolled', 'percentFirstGen', 'percentPellGrant', 'percentStudents.black',
             'percentStudents.hispanic', 'percentStudents.asian', 'percentStudents.white'];

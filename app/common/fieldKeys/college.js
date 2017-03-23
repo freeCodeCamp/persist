@@ -35,7 +35,7 @@ export const reference = [{
     fieldName: 'Barron\'s Rating',
     displayName: 'Barron\'s Rating',
     dbName: 'barronsRating',
-    fieldType: 'SelectField',
+    fieldType: 'TextField',
     editable: true
 }, {
     fieldName: 'Average HS GPA',

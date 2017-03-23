@@ -156,6 +156,11 @@ export const types = {
         'XXL',
         'XXXL'
     ],
+    durationType: [
+        '2 year',
+        '4 year',
+        'vocational'
+    ],
     commonApp: [
         'Not started',
         'Not planning to apply via Common App',
