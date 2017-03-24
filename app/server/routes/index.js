@@ -317,7 +317,7 @@ export default (app) => {
         .delete((req, res) => {
             TermController.deleteTerm(req, res);
         });
-    
+
     app.route('/update-alias', requireAuth)
         .post((req, res) => {
             AliasController.updateAlias(req, res);

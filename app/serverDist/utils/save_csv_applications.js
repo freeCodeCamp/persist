@@ -64,7 +64,7 @@ exports.default = function (fileName) {
         var row = void 0;
         transformer.on('readable', function () {
             while (row = transformer.read()) {
-                data[row.osis] = data[row.osis] || [];
+                data[row.osis] = data[row.osis] || _lodash2.default.clone([]);
                 data[row.osis].push(row);
             }
         });

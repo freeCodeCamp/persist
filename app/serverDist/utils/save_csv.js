@@ -21,8 +21,8 @@ exports.default = function (fileName) {
         var row = void 0;
         transformer.on('readable', function () {
             while (row = transformer.read()) {
-                data[row.osis] = data[row.osis] || {};
-                data[row.osis] = (0, _merge2.default)(data[row.osis], row);
+                data[row.osis] = data[row.osis] || (0, _clone2.default)({});
+                data[row.osis] = (0, _merge4.default)(data[row.osis], row);
             }
         });
 
@@ -74,7 +74,7 @@ exports.default = function (fileName) {
                             var studentObject = oldStudent.toObject();
                             var _newStudent = (0, _merge2.default)(studentObject, record);
                             (0, _forOwn2.default)(studentObject, function (value, key) {
-                                if (key !== '_id') {
+                                if (key !== '_id' && _newStudent[key]) {
                                     oldStudent[key] = _newStudent[key];
                                 }
                             });
@@ -126,6 +126,10 @@ var _forOwn = require('lodash/forOwn');
 
 var _forOwn2 = _interopRequireDefault(_forOwn);
 
+var _clone = require('lodash/clone');
+
+var _clone2 = _interopRequireDefault(_clone);
+
 var _isEqual = require('lodash/isEqual');
 
 var _isEqual2 = _interopRequireDefault(_isEqual);
@@ -148,8 +152,13 @@ var _student_record_transformer = require('./student_record_transformer');
 
 var _student_record_transformer2 = _interopRequireDefault(_student_record_transformer);
 
+var _merge3 = require('../helpers/merge');
+
+var _merge4 = _interopRequireDefault(_merge3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// this is the data we need for validation and transforming
 var createAlias = function createAlias(student) {
     return {
         firstName: student.firstName,
@@ -158,9 +167,6 @@ var createAlias = function createAlias(student) {
         suffix: student.suffix
     };
 };
-
-// this is the data we need for validation and transforming
-
 
 function mapValues(line) {
 

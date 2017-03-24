@@ -61,7 +61,7 @@ exports.default = function (fileName) {
                         var collegeObject = oldCollege.toObject();
                         var newCollege = (0, _merge2.default)(collegeObject, record);
                         (0, _forOwn2.default)(collegeObject, function (value, key) {
-                            if (key !== '_id') {
+                            if (key !== '_id' && newCollege[key]) {
                                 oldCollege[key] = newCollege[key];
                             }
                         });

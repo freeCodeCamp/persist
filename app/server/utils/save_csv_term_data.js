@@ -35,7 +35,7 @@ export default (fileName) => {
         let row;
         transformer.on('readable', () => {
             while (row = transformer.read()) {
-                data[row.osis] = data[row.osis] || [];
+                data[row.osis] = data[row.osis] || _.clone([]);
                 data[row.osis].push(row);
             }
         });

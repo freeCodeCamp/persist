@@ -45,7 +45,7 @@ function formatRecord(record, callback) {
     }
 
     // create full Name
-    record.fullName = (record.firstName + ' ' + record.lastName).trim();
+    record.fullName = ((record.firstName || '') + ' ' + (record.lastName || '')).trim();
 
     // handle dates
     var dateFields = typeKeys['datepicker'];

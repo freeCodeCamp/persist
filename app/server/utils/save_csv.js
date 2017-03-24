@@ -2,6 +2,7 @@ import fs from 'fs';
 import parse from 'csv-parse';
 import merge from 'lodash/merge';
 import forOwn from 'lodash/forOwn';
+import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
 import transform from 'stream-transform';
 import async from 'async';
@@ -10,6 +11,7 @@ import async from 'async';
 import Student from '../models/student';
 import {studentKeys} from '../../common/fieldKeys';
 import formatRecord from './student_record_transformer';
+import myMerge from '../helpers/merge';
 
 const createAlias = (student) => ({
     firstName: student.firstName,
@@ -35,8 +37,8 @@ export default function(fileName) {
         let row;
         transformer.on('readable', () => {
             while (row = transformer.read()) {
-                data[row.osis] = data[row.osis] || {};
-                data[row.osis] = merge(data[row.osis], row);
+                data[row.osis] = data[row.osis] || clone({});
+                data[row.osis] = myMerge(data[row.osis], row);
             }
         });
 
@@ -88,7 +90,7 @@ export default function(fileName) {
                                 const studentObject = oldStudent.toObject();
                                 const newStudent = merge(studentObject, record);
                                 forOwn(studentObject, (value, key) => {
-                                    if (key !== '_id') {
+                                    if (key !== '_id' && newStudent[key]) {
                                         oldStudent[key] = newStudent[key];
                                     }
                                 });

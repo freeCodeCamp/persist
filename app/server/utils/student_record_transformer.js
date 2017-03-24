@@ -15,12 +15,12 @@ export default function formatRecord(record, callback) {
     }
 
     // create full Name
-    record.fullName = `${record.firstName} ${record.lastName}`.trim();
+    record.fullName = `${record.firstName || ''} ${record.lastName || ''}`.trim();
 
     // handle dates
     const dateFields = typeKeys['datepicker'];
 
-    dateFields.forEach(function (dateField) {
+    dateFields.forEach(function(dateField) {
 
         let value = record[dateField];
 
@@ -73,10 +73,10 @@ export default function formatRecord(record, callback) {
             // reference College
             College.findOne({
                 $or: [
-                    {fullName: record.intendedCollege},
-                    {shortName: record.intendedCollege},
-                    {navianceName: record.intendedCollege},
-                    {collegeScorecardName: record.intendedCollege}
+                    { fullName: record.intendedCollege },
+                    { shortName: record.intendedCollege },
+                    { navianceName: record.intendedCollege },
+                    { collegeScorecardName: record.intendedCollege }
                 ]
             }, (err, college) => {
                 if (err) {
