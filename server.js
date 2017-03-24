@@ -10,6 +10,10 @@ import mongoose from 'mongoose';
 // import passport from 'passport';
 // import flash from 'connect-flash';
 import bodyParser from 'body-parser';
+import timeout from 'connect-timeout';
+function haltOnTimedout(req, res, next) {
+    if (!req.timedout) next()
+}
 
 if (process.env.NODE_ENV !== 'production') {
     // get environment variables
@@ -32,14 +36,14 @@ const options = {
 mongoose.connect(process.env.MONGODB_URI, options);
 
 const app = express();
-
+app.use(timeout('240s'));
 app.use(express.static(path.join(__dirname, '/app/client/public')));
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({
     limit: '20mb',
     extended: true
 }));
-
+app.use(haltOnTimedout);
 // app.use(passport.initialize());
 
 // app.use(flash()); // use connect-flash for flash messages stored in session
@@ -78,4 +82,3 @@ server.listen(PORT, (error) => {
         console.info('==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.', PORT, PORT);
     }
 });
-server.timeout = 240000;

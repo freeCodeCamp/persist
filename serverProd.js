@@ -32,16 +32,22 @@ var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
+var _connectTimeout = require('connect-timeout');
+
+var _connectTimeout2 = _interopRequireDefault(_connectTimeout);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import passport from 'passport';
+// import flash from 'connect-flash';
+function haltOnTimedout(req, res, next) {
+    if (!req.timedout) next();
+}
 
 if (process.env.NODE_ENV !== 'production') {
     // get environment variables
     _dotenv2.default.config();
 }
-
-// import passport from 'passport';
-// import flash from 'connect-flash';
-
 var serverFolder = 'serverDist';
 if (process.env.NODE_ENV !== 'production') {
     serverFolder = 'server';
@@ -59,14 +65,14 @@ var options = {
 _mongoose2.default.connect(process.env.MONGODB_URI, options);
 
 var app = (0, _express2.default)();
-
+app.use((0, _connectTimeout2.default)('240s'));
 app.use(_express2.default.static(_path2.default.join(__dirname, '/app/client/public')));
 app.use(_bodyParser2.default.json({ limit: '20mb' }));
 app.use(_bodyParser2.default.urlencoded({
     limit: '20mb',
     extended: true
 }));
-
+app.use(haltOnTimedout);
 // app.use(passport.initialize());
 
 // app.use(flash()); // use connect-flash for flash messages stored in session
@@ -105,4 +111,3 @@ server.listen(PORT, function (error) {
         console.info('==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.', PORT, PORT);
     }
 });
-server.timeout = 240000;

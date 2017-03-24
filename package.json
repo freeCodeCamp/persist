@@ -42,6 +42,7 @@
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
     "connect-flash": "^0.1.1",
+    "connect-timeout": "^1.8.0",
     "cookie-parser": "^1.4.3",
     "crypto": "0.0.3",
     "csv": "^1.1.0",
