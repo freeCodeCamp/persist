@@ -48,7 +48,7 @@ class DashboardMain extends React.Component {
                 });
         }
         this.setState({
-            filteredStudents
+            filteredStudents: filteredStudents.value()
         });
     }
 
@@ -71,6 +71,7 @@ class DashboardMain extends React.Component {
 
     componentDidMount() {
         const { students } = this.props;
+        console.log(students.length, 'did moutn');
         if (students.length > 0) {
             this.update = true;
             this.setState({
@@ -82,7 +83,7 @@ class DashboardMain extends React.Component {
     render() {
         return (
             <Content title='Welcome'>
-                <ChartFilter handleFormSubmit={this.handleSubmit.bind(this)} />
+                <ChartFilter handleFormSubmit={(values) => this.handleSubmit(values)} />
                 <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges} />
             </Content>
         );

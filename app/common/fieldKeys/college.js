@@ -115,13 +115,13 @@ export const reference = [{
         fieldName: 'CITY',
         displayName: 'City',
         dbName: 'city',
-        fieldType: 'SelectField',
+        fieldType: 'TextField',
         editable: true
     }, {
         fieldName: 'STABBR',
         displayName: 'State',
         dbName: 'state',
-        fieldType: 'SelectField',
+        fieldType: 'TextField',
         editable: true
     }, {
         fieldName: 'ZIP',
@@ -145,7 +145,7 @@ export const reference = [{
         fieldName: 'LOCALE',
         displayName: 'Locale',
         dbName: 'locale',
-        fieldType: 'SelectField',
+        fieldType: 'TextField',
         editable: true
     }, {
         fieldName: '% Need met',

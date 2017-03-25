@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'react-router-redux';
 import moment from 'moment';
-import { CardText, Card, Divider } from 'material-ui';
+import {CardText, Card, Divider} from 'material-ui';
 import async from 'async';
 import RaisedButton from 'material-ui/RaisedButton';
-import { BasicColumn } from '../admin-components/charts';
+import {BasicColumn} from '../admin-components/charts';
 
 class ColPersist extends Component {
     constructor(props) {
@@ -38,10 +38,11 @@ class ColPersist extends Component {
         });
     }
 
-    yearEnrol(terms, enrolDate, hsGradDate, diff) {
+    yearEnrol(terms, enrolDate, hsGradDate, hsGradYear, diff) {
         const colDir = moment(enrolDate).diff(moment(hsGradDate), 'months') < diff;
         if (!colDir) return false;
         const totalTerms = terms.length;
+        const termsObj = _.keyBy(terms, 'name');
         let lastEnrolDate;
         let firstEnrolDate;
         switch (this.state.year) {
@@ -62,25 +63,19 @@ class ColPersist extends Component {
                 }
                 return false;
             case '1r':
-                if (totalTerms < 2) return false;
-                lastEnrolDate = terms[totalTerms - 2].enrolBegin;
-                firstEnrolDate = terms[totalTerms - 1].enrolBegin;
-                if (lastEnrolDate && firstEnrolDate) {
-                    return moment(lastEnrolDate).diff(moment(firstEnrolDate), 'months') < 12;
-                }
-                return false;
+                return (termsObj[`Spring ${hsGradYear + 1}`] || termsObj[`Fall ${hsGradYear + 1}`]);
             case '3r':
-                if (totalTerms < 2) return false;
-                lastEnrolDate = terms[totalTerms - 2].enrolBegin;
-                firstEnrolDate = terms[totalTerms - 1].enrolBegin;
-                if (lastEnrolDate && firstEnrolDate) {
-                    return moment(lastEnrolDate).diff(moment(firstEnrolDate), 'months') < 24;
-                }
-                return false;
+                return (termsObj[`Spring ${hsGradYear + 1}`] || termsObj[`Fall ${hsGradYear + 1}`]) &&
+                    (termsObj[`Spring ${hsGradYear + 2}`] || termsObj[`Fall ${hsGradYear + 2}`]);
         }
     }
 
     normalizeData(props) {
+        const students = props.students;
+        const { year } = this.state;
+        if (year === '1r' || year === '3r') {
+            students.filter((student) => student.nscRecordFound);
+        }
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {
@@ -98,7 +93,7 @@ class ColPersist extends Component {
                         enrolDate = _.last(terms).enrolBegin;
                     }
                     if (enrolDate && hsGradDate) {
-                        if (this.yearEnrol(terms, enrolDate, hsGradDate, 6)) {
+                        if (this.yearEnrol(terms, enrolDate, hsGradDate, hsGradYear, 6)) {
                             result[hsGradYear].count += 1;
                             result[hsGradYear].students.push(student.osis);
                         }
@@ -111,7 +106,7 @@ class ColPersist extends Component {
                     callback();
                 }, 0);
             }, 100);
-            q.push(props.students);
+            q.push(students);
             q.drain = () => {
                 resolve(result);
             }
