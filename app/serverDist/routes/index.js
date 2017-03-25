@@ -12,6 +12,10 @@ var _multer = require("multer");
 
 var _multer2 = _interopRequireDefault(_multer);
 
+var _rimraf = require("rimraf");
+
+var _rimraf2 = _interopRequireDefault(_rimraf);
+
 var _models = require("../models");
 
 var _passport = require("../config/passport");
@@ -99,10 +103,16 @@ exports.default = function (app) {
 
         (0, _save_csv2.default)(filePath).then(function (data) {
             _controllers.UploadHistoryController.createHistory('Student Data', req.user._id, true);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
             _controllers.UploadHistoryController.createHistory('Student Data', req.user._id, false);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(500).send(err);
         });
     });
@@ -113,10 +123,16 @@ exports.default = function (app) {
 
         (0, _save_csv_colleges_updated2.default)(filePath).then(function (data) {
             _controllers.UploadHistoryController.createHistory('College Data', req.user._id, true);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
             _controllers.UploadHistoryController.createHistory('College Data', req.user._id, false);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(500).send(err);
         });
     });
@@ -127,10 +143,16 @@ exports.default = function (app) {
 
         (0, _save_csv_schools2.default)(filePath).then(function (data) {
             _controllers.UploadHistoryController.createHistory('School Data', req.user._id, true);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
             _controllers.UploadHistoryController.createHistory('School Data', req.user._id, false);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(500).send(err);
         });
     });
@@ -141,10 +163,16 @@ exports.default = function (app) {
 
         (0, _save_csv_term_data2.default)(filePath).then(function (data) {
             _controllers.UploadHistoryController.createHistory('Term Data', req.user._id, true);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
             _controllers.UploadHistoryController.createHistory('Term Data', req.user._id, false);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(500).send(err);
         });
     });
@@ -155,10 +183,16 @@ exports.default = function (app) {
 
         (0, _save_csv_applications2.default)(filePath).then(function (data) {
             _controllers.UploadHistoryController.createHistory('Application Data', req.user._id, true);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(200).send(data);
         }).catch(function (err) {
             console.log(err);
             _controllers.UploadHistoryController.createHistory('Application Data', req.user._id, false);
+            (0, _rimraf2.default)('uploads/*', function () {
+                return console.log('cleared');
+            });
             res.status(500).send(err);
         });
     });

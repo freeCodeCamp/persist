@@ -1,5 +1,6 @@
 import path from "path";
 import multer from "multer";
+import rimraf from 'rimraf';
 import {Student, College, School, User} from "../models";
 import passport from "../config/passport";
 import {getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN} from "../../common/constants";
@@ -78,10 +79,12 @@ export default (app) => {
 
         saveCSV(filePath).then((data) => {
             UploadHistoryController.createHistory('Student Data', req.user._id, true);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
             UploadHistoryController.createHistory('Student Data', req.user._id, false);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(500).send(err);
         });
     });
@@ -92,10 +95,12 @@ export default (app) => {
 
         saveCollegeData(filePath).then((data) => {
             UploadHistoryController.createHistory('College Data', req.user._id, true);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
             UploadHistoryController.createHistory('College Data', req.user._id, false);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(500).send(err);
         });
     });
@@ -106,10 +111,12 @@ export default (app) => {
 
         saveSchoolData(filePath).then((data) => {
             UploadHistoryController.createHistory('School Data', req.user._id, true);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
             UploadHistoryController.createHistory('School Data', req.user._id, false);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(500).send(err);
         });
     });
@@ -120,10 +127,12 @@ export default (app) => {
 
         saveTermData(filePath).then((data) => {
             UploadHistoryController.createHistory('Term Data', req.user._id, true);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
             UploadHistoryController.createHistory('Term Data', req.user._id, false);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(500).send(err);
         });
     });
@@ -134,10 +143,12 @@ export default (app) => {
 
         saveApplicationData(filePath).then((data) => {
             UploadHistoryController.createHistory('Application Data', req.user._id, true);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(200).send(data);
         }).catch((err) => {
             console.log(err);
             UploadHistoryController.createHistory('Application Data', req.user._id, false);
+            rimraf('uploads/*', () => console.log('cleared'));
             res.status(500).send(err);
         });
     });

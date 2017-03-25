@@ -42,17 +42,17 @@ class NavigationMenu extends Component {
                 return o2.startsWith(value) ? 1 : o1.localeCompare(o2);
             }
         };
-        const {students, colleges} = this.props;
+        const { students, colleges } = this.props;
         const regex = new RegExp('.*' + value + '.*', 'i');
         const studentsObj = _(students)
             .filter((student) => (regex.test(student['fullName'])))
-            .map((student) => ({text: student['fullName'], query: {fullName: student['fullName'], model: 'student'}}))
+            .map((student) => ({ text: student['fullName'], query: { fullName: student['fullName'], model: 'student' } }))
             .uniqBy('text')
             .sort(sortingFunc)
             .take(5);
         const collegesObj = _(colleges)
             .filter((college) => ((regex.test(college['fullName']))))
-            .map((college) => ({text: college['fullName'], query: {fullName: college['fullName'], model: 'college'}}))
+            .map((college) => ({ text: college['fullName'], query: { fullName: college['fullName'], model: 'college' } }))
             .uniqBy('text')
             .sort(sortingFunc)
             .take(5);
@@ -73,7 +73,7 @@ class NavigationMenu extends Component {
     }
 
     search(e) {
-        e.preventDefault();
+        e ? e.preventDefault() : null;
         const suggestion = this.suggestionsObj
             .find((suggestion) => (suggestion.text === this.state.searchName));
         if (suggestion) {
@@ -92,10 +92,11 @@ class NavigationMenu extends Component {
             searchName: value,
             display: 'none'
         });
+        this.search();
     }
 
     render() {
-        const {user: {firstName, lastName}} = this.props;
+        const { user: { firstName, lastName } } = this.props;
         return (
             <aside className='main-sidebar'>
                 { /* sidebar: style can be found in sidebar.less */ }
@@ -103,7 +104,7 @@ class NavigationMenu extends Component {
                     { /* Sidebar user panel */ }
                     <div className='user-panel'>
                         <div className='pull-left image'>
-                            <img src='/default-profile-pic.png' className='img-circle' alt='User Image'/>
+                            <img src='/default-profile-pic.png' className='img-circle' alt='User Image' />
                         </div>
                         <div className='pull-left info'>
                             <p>
@@ -120,7 +121,7 @@ class NavigationMenu extends Component {
                                    className='form-control'
                                    value={ this.state.searchName }
                                    onChange={ this.onChange.bind(this) }
-                                   placeholder='Search...'/>
+                                   placeholder='Search...' />
                             <span className='input-group-btn'>
                                 <button
                                     type='submit'
@@ -128,12 +129,12 @@ class NavigationMenu extends Component {
                                     name='search'
                                     id='search-btn'
                                     className='btn btn-flat'>
-                                    <i className='fa fa-search'/>
+                                    <i className='fa fa-search' />
                                 </button>
                             </span>
                         </div>
-                        <div style={ {backgroundColor: 'white', display: this.state.display} }>
-                            <List listItems={ this.state.listItems } onClick={ this.onClick.bind(this) }/>
+                        <div style={ { backgroundColor: 'white', display: this.state.display } }>
+                            <List listItems={ this.state.listItems } onClick={ this.onClick.bind(this) } />
                         </div>
                     </form>
                     { /* /.search form */ }

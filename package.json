@@ -89,6 +89,7 @@
     "redux-thunk": "^2.1.0",
     "reload": "^1.0.1",
     "reselect": "^2.5.4",
+    "rimraf": "^2.6.1",
     "sanitize-html": "^1.13.0",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
