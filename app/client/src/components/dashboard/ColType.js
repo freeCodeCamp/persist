@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux';
-import { RaisedButton } from 'material-ui';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'react-router-redux';
+import {RaisedButton} from 'material-ui';
 import async from 'async';
-import { mapping } from '../../../../common/constants';
-import { BasicColumn } from '../admin-components/charts';
+import {mapping} from '../../../../common/constants';
+import {BasicColumn} from '../admin-components/charts';
 
 mapping.colType = {
-    ...mapping.colType,
+    ...mapping.collType,
     1: 'CUNY 2 Year',
     2: 'SUNY 2 Year',
     7: 'CUNY 4 Year',
@@ -179,7 +179,7 @@ class ColType extends Component {
                 position: 'absolute', top: 0, bottom: 0, width: '100%',
                 display: 'flex', justifyContent: 'center', alignItems: 'center'
             }}>
-                <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                <i className="fa fa-cog fa-spin fa-3x fa-fw" />
                 <span className="sr-only">Loading...</span>
             </div>
         )
