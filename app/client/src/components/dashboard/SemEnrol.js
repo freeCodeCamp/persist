@@ -63,13 +63,13 @@ class SemEnrol extends Component {
     }
 
     normalizeData(props) {
-        const {collegeObj} = props;
+        const { collegeObj } = props;
         return new Promise((resolve) => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {};
             const keys = _.keys(mapping.semType);
             keys.map((semType) => {
-                defaultEnrollmentData[semType] = {count: 0, students: []}
+                defaultEnrollmentData[semType] = { count: 0, students: [] }
             });
             const result = {};
             _.times(8, (n) => {
@@ -80,7 +80,7 @@ class SemEnrol extends Component {
                 const studentTermsObj = _.keyBy(studentTerms, 'name');
                 const hsGradYear = student.hsGradYear;
                 if (studentTerms.length > 0 && hsGradYear) {
-                    let difference = 2*(maxTermYear - hsGradYear);
+                    let difference = 2 * (maxTermYear - hsGradYear);
                     if (maxTermSeason === 'Fall') {
                         difference += 1;
                     }
@@ -91,7 +91,7 @@ class SemEnrol extends Component {
                             (i % 2 === 0 && studentTermsObj['Spring ' + year])
                         ) {
                             const term = i % 2 === 0 ? studentTermsObj['Spring ' + year] : studentTermsObj['Fall ' + year];
-                            const {name, status, college} = term;
+                            const { name, status, college } = term;
                             switch (status) {
                                 case 'F': {
                                     if (collegeObj[college].durationType === '4 year') {
@@ -168,14 +168,14 @@ class SemEnrol extends Component {
             name: mapping.semType[key],
             data: _(values).map(key)
                 .map('count')
-                .map(y => ({y, key}))
+                .map(y => ({ y, key }))
                 .value()
         }));
     }
 
     chartConfig() {
         const data = this.state.data;
-        const {push} = this.props;
+        const { push } = this.props;
         const chartData = this.chartData(data);
         const config = {
             chart: {
@@ -195,7 +195,7 @@ class SemEnrol extends Component {
                 }
             },
             tooltip: {
-                formatter: function () {
+                formatter: function() {
                     const percent = Math.round(this.y * 10000 / this.total) / 100;
                     return this.y + '=<b>' + percent + '%</b><br/>' + 'Total: ' + this.total;
                 }
@@ -207,8 +207,8 @@ class SemEnrol extends Component {
                     borderWidth: 0,
                     point: {
                         events: {
-                            click: function () {
-                                const {category, key} = this;
+                            click: function() {
+                                const { category, key } = this;
                                 const students = data[category][key].students;
                                 localStorage.setItem('filtered', JSON.stringify(students));
                                 push('/filtered');
@@ -231,19 +231,19 @@ class SemEnrol extends Component {
                 position: 'absolute', top: 0, bottom: 0, width: '100%',
                 display: 'flex', justifyContent: 'center', alignItems: 'center'
             }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
+                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
             </div>
         )
     }
 
     render() {
-        const hidden = this.state.loading ? {visibility: 'hidden'} : {};
+        const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
                     <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data}/>
+                                 data={this.state.data} />
                 </div>
             </div>
         )

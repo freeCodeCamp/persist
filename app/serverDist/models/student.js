@@ -9,6 +9,10 @@ var _async = require('async');
 
 var _async2 = _interopRequireDefault(_async);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _mongoosePaginate = require('mongoose-paginate');
 
 var _mongoosePaginate2 = _interopRequireDefault(_mongoosePaginate);
@@ -43,7 +47,7 @@ Student.plugin(_mongoosePaginate2.default);
 
 var setGraduationType = function setGraduationType(record, done) {
     _async2.default.each(record.terms, function (term, callback) {
-        if (term.status === 'Graduated') {
+        if (term.status === 'Graduated' && (!term.graduationType || term.graduationType.length < 1)) {
             return _.College.findOne({ _id: term.college }, function (err, college) {
                 if (err) {
                     console.log(err);
@@ -56,6 +60,25 @@ var setGraduationType = function setGraduationType(record, done) {
         callback(null);
     }, function (err) {
         done();
+    });
+};
+
+var setTermNames = function setTermNames(record) {
+    record.terms.forEach(function (term) {
+        var enrolBegin = term.enrolBegin;
+        var enrolEnd = term.enrolEnd;
+        var year = new Date(enrolBegin).getFullYear();
+        if (enrolBegin && enrolEnd && (!term.name || term.name.length < 1)) {
+            if ((0, _moment2.default)(enrolBegin).diff((0, _moment2.default)([year, 7, 10]), 'days') > 0 && (0, _moment2.default)([year, 11, 31]).diff((0, _moment2.default)(enrolEnd), 'days') > 0) {
+                term.name = 'Fall ' + year;
+            } else if ((0, _moment2.default)(enrolBegin).diff((0, _moment2.default)([year, 11, 1]), 'days') > 0 && (0, _moment2.default)([year + 1, 2, 1]).diff((0, _moment2.default)(enrolEnd), 'days') > 0) {
+                term.name = 'Winter ' + year;
+            } else if ((0, _moment2.default)(enrolBegin).diff((0, _moment2.default)([year, 0, 1]), 'days') > 0 && (0, _moment2.default)(enrolEnd).diff((0, _moment2.default)([year, 3, 1]), 'days') > 0 && (0, _moment2.default)([year, 5, 30]).diff((0, _moment2.default)(enrolEnd), 'days') > 0) {
+                term.name = 'Spring ' + year;
+            } else if ((0, _moment2.default)(enrolBegin).diff((0, _moment2.default)([year, 4, 1]), 'days') > 0 && (0, _moment2.default)([year, 7, 30]).diff((0, _moment2.default)(enrolEnd), 'days') > 0) {
+                term.name = 'Summer ' + year;
+            }
+        }
     });
 };
 
@@ -80,6 +103,7 @@ Student.pre('save', true, function (next, done) {
     record.terms = (0, _sortBy2.default)(record.terms, function (obj) {
         return obj.enrolBegin;
     }).reverse();
+    setTermNames(record);
     var recordTerms = (0, _cloneDeep2.default)(record.terms).reverse();
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;

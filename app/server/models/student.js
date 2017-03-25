@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 import async from 'async';
+import moment from 'moment';
 import mongoosePaginate from "mongoose-paginate";
 import sortBy from "lodash/sortBy";
 import uniq from "lodash/uniq";
@@ -13,7 +14,7 @@ Student.plugin(mongoosePaginate);
 
 const setGraduationType = (record, done) => {
     async.each(record.terms, (term, callback) => {
-        if (term.status === 'Graduated') {
+        if (term.status === 'Graduated' && (!term.graduationType || term.graduationType.length < 1)) {
             return College.findOne({ _id: term.college }, (err, college) => {
                 if (err) {
                     console.log(err);
@@ -26,6 +27,29 @@ const setGraduationType = (record, done) => {
         callback(null);
     }, (err) => {
         done();
+    })
+};
+
+const setTermNames = (record) => {
+    record.terms.forEach((term) => {
+        const enrolBegin = term.enrolBegin;
+        const enrolEnd = term.enrolEnd;
+        const year = new Date(enrolBegin).getFullYear();
+        if (enrolBegin && enrolEnd && (!term.name || term.name.length < 1)) {
+            if (moment(enrolBegin).diff(moment([year, 7, 10]), 'days') > 0 && moment([year, 11, 31]).diff(moment(enrolEnd), 'days') > 0) {
+                term.name = 'Fall ' + year;
+            } else if (moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 &&
+                moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0) {
+                term.name = 'Winter ' + year;
+            } else if (moment(enrolBegin).diff(moment([year, 0, 1]), 'days') > 0 &&
+                moment(enrolEnd).diff(moment([year, 3, 1]), 'days') > 0 &&
+                moment([year, 5, 30]).diff(moment(enrolEnd), 'days') > 0) {
+                term.name = 'Spring ' + year;
+            } else if (moment(enrolBegin).diff(moment([year, 4, 1]), 'days') > 0 &&
+                moment([year, 7, 30]).diff(moment(enrolEnd), 'days') > 0) {
+                term.name = 'Summer ' + year;
+            }
+        }
     })
 };
 
@@ -50,6 +74,7 @@ Student.pre('save', true, function(next, done) {
     record.terms = sortBy(record.terms, (obj) => {
         return obj.enrolBegin;
     }).reverse();
+    setTermNames(record);
     const recordTerms = cloneDeep(record.terms).reverse();
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
