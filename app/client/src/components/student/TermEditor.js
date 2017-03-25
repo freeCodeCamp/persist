@@ -181,19 +181,22 @@ const validate = (values, props) => {
         errors.enrolEnd = 'Required';
         return errors;
     }
-    const year = new Date(enrolBegin).getFullYear();
-    if (moment(enrolBegin).diff(moment([year, 7, 10]), 'days') > 0 && moment([year, 11, 31]).diff(moment(enrolEnd), 'days') > 0) {
-        props.dispatch(props.change('name', 'Fall ' + year));
-    } else if (moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 && moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0) {
-        props.dispatch(props.change('name', 'Winter ' + year));
-    } else if (moment(enrolBegin).diff(moment([year, 0, 1]), 'days') > 0 && moment(enrolEnd).diff(moment([year, 3, 1]), 'days') > 0 &&
-        moment([year, 5, 30]).diff(moment(enrolEnd), 'days') > 0) {
-        props.dispatch(props.change('name', 'Spring ' + year));
-    } else if (moment(enrolBegin).diff(moment([year, 4, 1]), 'days') > 0 && moment([year, 7, 30]).diff(moment(enrolEnd), 'days') > 0) {
-        props.dispatch(props.change('name', 'Summer ' + year));
-    } else {
-        props.dispatch(props.change('name', null));
-        errors.name = 'Required';
+    if (!values.name || !(values.name.length > 0)) {
+        const year = new Date(enrolBegin).getFullYear();
+        if (moment(enrolBegin).diff(moment([year, 7, 10]), 'days') > 0 && moment([year, 11, 31]).diff(moment(enrolEnd), 'days') > 0) {
+            props.dispatch(props.change('name', 'Fall ' + year));
+        } else if (moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 &&
+            moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0) {
+            props.dispatch(props.change('name', 'Winter ' + year));
+        } else if (moment(enrolBegin).diff(moment([year, 0, 1]), 'days') > 0 && moment(enrolEnd).diff(moment([year, 3, 1]), 'days') > 0 &&
+            moment([year, 5, 30]).diff(moment(enrolEnd), 'days') > 0) {
+            props.dispatch(props.change('name', 'Spring ' + year));
+        } else if (moment(enrolBegin).diff(moment([year, 4, 1]), 'days') > 0 && moment([year, 7, 30]).diff(moment(enrolEnd), 'days') > 0) {
+            props.dispatch(props.change('name', 'Summer ' + year));
+        } else {
+            props.dispatch(props.change('name', null));
+            errors.name = 'Required';
+        }
     }
     return errors;
 };

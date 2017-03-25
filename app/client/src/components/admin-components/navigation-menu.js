@@ -73,7 +73,9 @@ class NavigationMenu extends Component {
     }
 
     search(e) {
-        e ? e.preventDefault() : null;
+        if (e) {
+            e.preventDefault();
+        }
         const suggestion = this.suggestionsObj
             .find((suggestion) => (suggestion.text === this.state.searchName));
         if (suggestion) {
@@ -91,8 +93,7 @@ class NavigationMenu extends Component {
             listItems: [],
             searchName: value,
             display: 'none'
-        });
-        this.search();
+        }, () => this.search());
     }
 
     render() {

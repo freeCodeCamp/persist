@@ -26,7 +26,7 @@ class Terms extends Component {
     }
 
     renderTerms() {
-        const {initValue, collegeObj} = this.props;
+        const { initValue, collegeObj } = this.props;
         const termsHTML = initValue.map((term, index) => {
             const college = collegeObj[term.college];
             const {
@@ -49,7 +49,7 @@ class Terms extends Component {
                             <EditorModeEdit />
                         </IconButton>
                         <IconButton onClick={() => this.handleDelete(term)}>
-                            <ContentDeleteSweep/>
+                            <ContentDeleteSweep />
                         </IconButton>
                     </td>
                 </tr>
@@ -57,7 +57,7 @@ class Terms extends Component {
         });
         return (
             <tbody>
-            {termsHTML}
+                {termsHTML}
             </tbody>
         );
     }
@@ -88,17 +88,12 @@ class Terms extends Component {
     }
 
     saveTerm(oldTerm, newTerm) {
-        const {termForm} = this.props;
+        const { termForm } = this.props;
         if (!isEmpty(termForm.syncErrors)) {
             console.log(termForm);
             return;
         }
-        return console.log(newTerm);
-        let term;
-        term = newTerm;
-        if (oldTerm._id) {
-            term = merge(oldTerm, newTerm);
-        }
+        const term = newTerm;
         term.osis = this.osis;
         this.props.saveTerm(term)
             .then(() => (
@@ -120,7 +115,7 @@ class Terms extends Component {
     }
 
     renderDeleteDialog() {
-        const {spinner} = this.props;
+        const { spinner } = this.props;
         const open = this.state.open.delete;
         const actions = [
             <FlatButton
@@ -145,7 +140,7 @@ class Terms extends Component {
     }
 
     renderEditDialog() {
-        const {spinner} = this.props;
+        const { spinner } = this.props;
         const term = this.term;
         const open = this.state.open.edit;
         const actions = [
@@ -167,25 +162,25 @@ class Terms extends Component {
         const oldTerm = cloneDeep(term);
         return (
             <Dialog actions={actions} autoScrollBodyContent={true} open={open} title={title}>
-                <TermEditor initialValues={term} onSubmit={this.saveTerm.bind(this, oldTerm)}/>
+                <TermEditor initialValues={term} onSubmit={this.saveTerm.bind(this, oldTerm)} />
             </Dialog>
         );
     }
 
     render() {
-        const {fields} = this.props;
+        const { fields } = this.props;
 
         const tableHead = (
             <thead>
-            <tr>
-                <th>College</th>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Credits Earned</th>
-                <th>Credits Attempted</th>
-                <th>Term GPA</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>College</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Credits Earned</th>
+                    <th>Credits Attempted</th>
+                    <th>Term GPA</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
         );
         return (

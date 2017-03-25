@@ -225,7 +225,7 @@ class ColPersist extends Component {
                 <Divider style={{ height: 2 }} />
                 <Card>
                     <CardText>
-                        Our two primary ways of looking at college persistence are 1. Continuous Enrollment and 2. Year to Year Persistence. All persistence metrics are calculated from the cohort of students who graduated the fall after graduating high school.
+                        Our two primary ways of looking at college persistence are: 1. Continuous Enrollment and 2. Year to Year Persistence. All persistence metrics are calculated from the cohort of students who graduated the fall after graduating high school.
                     </CardText>
                     <CardText>
                         <b>Yr 1 Continuous Enrollment</b> calculates- of the students enrolled in the Fall after graduation, what percentage of them is also enrolled in the spring of that year.

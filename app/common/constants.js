@@ -41,7 +41,7 @@ export const mapping = {
         6: 'Unknown',
         7: 'Multiracial'
     },
-    colType: {
+    collType: {
         1: 'CUNY',
         2: 'SUNY',
         3: 'Public, Not NY',
