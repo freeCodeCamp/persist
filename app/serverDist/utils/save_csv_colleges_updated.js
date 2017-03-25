@@ -34,6 +34,15 @@ exports.default = function (fileName) {
                 data[uniqueName] = data[uniqueName] || (0, _clone2.default)({});
                 data[uniqueName] = (0, _merge4.default)(data[uniqueName], row);
             }
+        });
+
+        var error = void 0;
+        transformer.on('error', function (err) {
+            error = err;
+            console.log(err.message);
+        });
+
+        transformer.on('end', function () {
             _async2.default.eachLimit(data, 10, function (record, callback) {
 
                 _college2.default.findOne({
@@ -83,12 +92,6 @@ exports.default = function (fileName) {
                 }
                 resolve({});
             });
-        });
-
-        var error = void 0;
-        transformer.on('error', function (err) {
-            error = err;
-            console.log(err.message);
         });
 
         _fs2.default.createReadStream(fileName).pipe(parser).pipe(transformer);

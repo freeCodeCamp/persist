@@ -1,19 +1,15 @@
 export default (Schema) => ({
     fullName: {
-        type: String,
-        unique: true
+        type: String
     },
     shortName: {
-        type: String,
-        unique: true
+        type: String
     },
     navianceName: {
-        type: String,
-        unique: true
+        type: String
     },
     collegeScorecardName: {
-        type: String,
-        unique: true
+        type: String
     },
     testingPolicy: String,
     barronsRating: String,

@@ -41,6 +41,15 @@ export default function(fileName) {
                 data[uniqueName] = data[uniqueName] || clone({});
                 data[uniqueName] = myMerge(data[uniqueName], row);
             }
+        });
+
+        let error;
+        transformer.on('error', function(err) {
+            error = err;
+            console.log(err.message);
+        });
+
+        transformer.on('end', () => {
             async.eachLimit(data, 10, (record, callback) => {
 
                 College.findOne({
@@ -98,12 +107,6 @@ export default function(fileName) {
                 }
                 resolve({});
             });
-        });
-
-        let error;
-        transformer.on('error', function(err) {
-            error = err;
-            console.log(err.message);
         });
 
         fs.createReadStream(fileName).pipe(parser).pipe(transformer);
