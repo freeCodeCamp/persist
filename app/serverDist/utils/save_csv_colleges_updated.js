@@ -15,7 +15,6 @@ exports.default = function (fileName) {
         });
 
         var transformer = (0, _streamTransform2.default)(function (record) {
-
             (0, _forOwn2.default)(_college2.default.schema.obj, function (value, key) {
                 if (value.name && value.name.toString() === 'Number') {
                     record[key] = Number(record[key]);
@@ -25,26 +24,25 @@ exports.default = function (fileName) {
                 }
             });
             return record;
-        }, function (err, data) {
-            if (err) {
-                console.log(err);
-                return;
+        });
+
+        var data = {};
+        var row = void 0;
+        transformer.on('readable', function () {
+            while (row = transformer.read()) {
+                var uniqueName = '' + (row.fullName || '') + (row.navianceName || '') + (row.shortName || '') + (row.collegeScorecardName || '');
+                data[uniqueName] = data[uniqueName] || (0, _clone2.default)({});
+                data[uniqueName] = (0, _merge4.default)(data[uniqueName], row);
             }
-
-            // reduce data size for testing
-            // data = data.splice(0, 10);
-            var addedCount = 0;
-            var modifiedCount = 0;
-            var newColleges = [];
-            var updatedColleges = [];
-
             _async2.default.eachLimit(data, 10, function (record, callback) {
 
                 _college2.default.findOne({
-                    fullName: record.fullName
+                    $or: [{ fullName: record.fullName }, { shortName: record.shortName }, { navianceName: record.navianceName }, { collegeScorecardName: record.collegeScorecardName }]
                 }, function (err, oldCollege) {
-
-                    // if doesnt exist - create new record
+                    if (err) {
+                        console.log('error in finding document', err);
+                        return callback(err);
+                    }
                     if (!oldCollege) {
                         var college = new _college2.default(record);
                         college.save(function (err) {
@@ -52,14 +50,14 @@ exports.default = function (fileName) {
                                 if (err.code === 11000) {
                                     return callback(null);
                                 }
+                                console.log('we got a validation error', err);
                                 return callback(null);
                             }
                             return callback(null);
                         });
                     } else {
-                        modifiedCount++;
                         var collegeObject = oldCollege.toObject();
-                        var newCollege = (0, _merge2.default)(collegeObject, record);
+                        var newCollege = (0, _merge4.default)(collegeObject, record);
                         (0, _forOwn2.default)(collegeObject, function (value, key) {
                             if (key !== '_id' && newCollege[key]) {
                                 oldCollege[key] = newCollege[key];
@@ -70,6 +68,7 @@ exports.default = function (fileName) {
                                 if (err.code === 11000) {
                                     return callback(null);
                                 }
+                                console.log('we got a validation error', err);
                                 return callback(null);
                             }
                             return callback(null);
@@ -82,11 +81,14 @@ exports.default = function (fileName) {
                     reject(err);
                     return;
                 }
-                resolve({
-                    modifiedCount: modifiedCount,
-                    addedCount: addedCount
-                });
+                resolve({});
             });
+        });
+
+        var error = void 0;
+        transformer.on('error', function (err) {
+            error = err;
+            console.log(err.message);
         });
 
         _fs2.default.createReadStream(fileName).pipe(parser).pipe(transformer);
@@ -101,6 +103,10 @@ var _csvParse = require('csv-parse');
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
+var _csv = require('csv');
+
+var _csv2 = _interopRequireDefault(_csv);
+
 var _streamTransform = require('stream-transform');
 
 var _streamTransform2 = _interopRequireDefault(_streamTransform);
@@ -113,6 +119,14 @@ var _merge = require('lodash/merge');
 
 var _merge2 = _interopRequireDefault(_merge);
 
+var _clone = require('lodash/clone');
+
+var _clone2 = _interopRequireDefault(_clone);
+
+var _merge3 = require('../helpers/merge');
+
+var _merge4 = _interopRequireDefault(_merge3);
+
 var _isFinite = require('lodash/isFinite');
 
 var _isFinite2 = _interopRequireDefault(_isFinite);
@@ -120,10 +134,6 @@ var _isFinite2 = _interopRequireDefault(_isFinite);
 var _forOwn = require('lodash/forOwn');
 
 var _forOwn2 = _interopRequireDefault(_forOwn);
-
-var _mongoose = require('mongoose');
-
-var _mongoose2 = _interopRequireDefault(_mongoose);
 
 var _college = require('../models/college');
 

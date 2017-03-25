@@ -76,6 +76,7 @@ export default function(fileName) {
                                     if (err.code === 11000) {
                                         return callback(null);
                                     }
+                                    console.log('we got a validation error', err);
                                     return callback(null);
                                 }
                                 return callback(null);
@@ -88,7 +89,7 @@ export default function(fileName) {
                                 }
                             } else {
                                 const studentObject = oldStudent.toObject();
-                                const newStudent = merge(studentObject, record);
+                                const newStudent = myMerge(studentObject, record);
                                 forOwn(studentObject, (value, key) => {
                                     if (key !== '_id' && newStudent[key]) {
                                         oldStudent[key] = newStudent[key];
@@ -97,8 +98,11 @@ export default function(fileName) {
                             }
                             oldStudent.save((err) => {
                                 if (err) {
+                                    if (err.code === 11000) {
+                                        return callback(null);
+                                    }
                                     console.log('we got a validation error', err);
-                                    return callback(err);
+                                    return callback(null);
                                 }
                                 return callback(null);
                             })

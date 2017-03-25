@@ -1,12 +1,13 @@
 import fs from 'fs';
 import parse from 'csv-parse';
+import csv from 'csv';
 import transform from 'stream-transform';
 import async from 'async';
 import merge from 'lodash/merge';
+import clone from 'lodash/clone';
+import myMerge from '../helpers/merge';
 import isFinite from 'lodash/isFinite';
 import forOwn from 'lodash/forOwn';
-import mongoose from 'mongoose';
-
 import College from '../models/college';
 import {collegeKeys} from '../../common/fieldKeys';
 
@@ -20,8 +21,7 @@ export default function(fileName) {
             auto_parse: true
         });
 
-        var transformer = transform(function(record) {
-
+        const transformer = transform(function(record) {
             forOwn(College.schema.obj, (value, key) => {
                 if (value.name && value.name.toString() === 'Number') {
                     record[key] = Number(record[key]);
@@ -31,26 +31,30 @@ export default function(fileName) {
                 }
             });
             return record;
-        }, (err, data) => {
-            if (err) {
-                console.log(err);
-                return;
+        });
+
+        const data = {};
+        let row;
+        transformer.on('readable', () => {
+            while (row = transformer.read()) {
+                const uniqueName = `${row.fullName || ''}${row.navianceName || ''}${row.shortName || ''}${row.collegeScorecardName || ''}`;
+                data[uniqueName] = data[uniqueName] || clone({});
+                data[uniqueName] = myMerge(data[uniqueName], row);
             }
-
-            // reduce data size for testing
-            // data = data.splice(0, 10);
-            let addedCount = 0;
-            let modifiedCount = 0;
-            let newColleges = [];
-            let updatedColleges = [];
-
             async.eachLimit(data, 10, (record, callback) => {
 
                 College.findOne({
-                    fullName: record.fullName
+                    $or: [
+                        { fullName: record.fullName },
+                        { shortName: record.shortName },
+                        { navianceName: record.navianceName },
+                        { collegeScorecardName: record.collegeScorecardName }
+                    ]
                 }, (err, oldCollege) => {
-
-                    // if doesnt exist - create new record
+                    if (err) {
+                        console.log('error in finding document', err);
+                        return callback(err);
+                    }
                     if (!oldCollege) {
                         const college = new College(record);
                         college.save((err) => {
@@ -58,14 +62,14 @@ export default function(fileName) {
                                 if (err.code === 11000) {
                                     return callback(null);
                                 }
+                                console.log('we got a validation error', err);
                                 return callback(null);
                             }
                             return callback(null);
                         });
                     } else {
-                        modifiedCount++;
                         const collegeObject = oldCollege.toObject();
-                        const newCollege = merge(collegeObject, record);
+                        const newCollege = myMerge(collegeObject, record);
                         forOwn(collegeObject, (value, key) => {
                             if (key !== '_id' && newCollege[key]) {
                                 oldCollege[key] = newCollege[key];
@@ -76,6 +80,7 @@ export default function(fileName) {
                                 if (err.code === 11000) {
                                     return callback(null);
                                 }
+                                console.log('we got a validation error', err);
                                 return callback(null);
                             }
                             return callback(null);
@@ -91,11 +96,14 @@ export default function(fileName) {
                     reject(err);
                     return;
                 }
-                resolve({
-                    modifiedCount,
-                    addedCount
-                });
+                resolve({});
             });
+        });
+
+        let error;
+        transformer.on('error', function(err) {
+            error = err;
+            console.log(err.message);
         });
 
         fs.createReadStream(fileName).pipe(parser).pipe(transformer);

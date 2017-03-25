@@ -262,10 +262,10 @@ export const types = {
         'other'
     ],
     ethnicity: transform(mapping.ethnicity, (res, val, key) => {
-        res.push({ text: val, value: key });
+        res.push({ text: val, value: Number(key) });
     }, []),
-    colType: transform(mapping.colType, (res, val, key) => {
-        res.push({ text: val, value: key });
+    collType: transform(mapping.collType, (res, val, key) => {
+        res.push({ text: val, value: Number(key) });
     }, []),
     hsGradYear: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1),
     expectedGrad: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1)

@@ -58,6 +58,7 @@ exports.default = function (fileName) {
                                 if (err.code === 11000) {
                                     return callback(null);
                                 }
+                                console.log('we got a validation error', err);
                                 return callback(null);
                             }
                             return callback(null);
@@ -72,7 +73,7 @@ exports.default = function (fileName) {
                             }
                         } else {
                             var studentObject = oldStudent.toObject();
-                            var _newStudent = (0, _merge2.default)(studentObject, record);
+                            var _newStudent = (0, _merge4.default)(studentObject, record);
                             (0, _forOwn2.default)(studentObject, function (value, key) {
                                 if (key !== '_id' && _newStudent[key]) {
                                     oldStudent[key] = _newStudent[key];
@@ -81,8 +82,11 @@ exports.default = function (fileName) {
                         }
                         oldStudent.save(function (err) {
                             if (err) {
+                                if (err.code === 11000) {
+                                    return callback(null);
+                                }
                                 console.log('we got a validation error', err);
-                                return callback(err);
+                                return callback(null);
                             }
                             return callback(null);
                         });
