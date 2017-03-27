@@ -1,6 +1,6 @@
 import fs from 'fs';
 import parse from 'csv-parse';
-import merge from 'lodash/merge';
+import set from 'lodash/set';
 import forOwn from 'lodash/forOwn';
 import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
@@ -88,8 +88,12 @@ export default function(fileName) {
                                     oldStudent.aliases.push(createAlias(record));
                                 }
                             } else {
+                                const newRecord = {};
+                                forOwn(record, (value, key) => {
+                                    set(newRecord, key, value);
+                                });
                                 const studentObject = oldStudent.toObject();
-                                const newStudent = myMerge(studentObject, record);
+                                const newStudent = myMerge(studentObject, newRecord);
                                 forOwn(studentObject, (value, key) => {
                                     if (key !== '_id' && newStudent[key]) {
                                         oldStudent[key] = newStudent[key];

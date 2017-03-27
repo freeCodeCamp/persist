@@ -22,7 +22,7 @@ exports.default = function (fileName) {
         transformer.on('readable', function () {
             while (row = transformer.read()) {
                 data[row.osis] = data[row.osis] || (0, _clone2.default)({});
-                data[row.osis] = (0, _merge4.default)(data[row.osis], row);
+                data[row.osis] = (0, _merge2.default)(data[row.osis], row);
             }
         });
 
@@ -72,8 +72,12 @@ exports.default = function (fileName) {
                                 oldStudent.aliases.push(createAlias(record));
                             }
                         } else {
+                            var newRecord = {};
+                            (0, _forOwn2.default)(record, function (value, key) {
+                                (0, _set2.default)(newRecord, key, value);
+                            });
                             var studentObject = oldStudent.toObject();
-                            var _newStudent = (0, _merge4.default)(studentObject, record);
+                            var _newStudent = (0, _merge2.default)(studentObject, newRecord);
                             (0, _forOwn2.default)(studentObject, function (value, key) {
                                 if (key !== '_id' && _newStudent[key]) {
                                     oldStudent[key] = _newStudent[key];
@@ -122,9 +126,9 @@ var _csvParse = require('csv-parse');
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
-var _merge = require('lodash/merge');
+var _set = require('lodash/set');
 
-var _merge2 = _interopRequireDefault(_merge);
+var _set2 = _interopRequireDefault(_set);
 
 var _forOwn = require('lodash/forOwn');
 
@@ -156,9 +160,9 @@ var _student_record_transformer = require('./student_record_transformer');
 
 var _student_record_transformer2 = _interopRequireDefault(_student_record_transformer);
 
-var _merge3 = require('../helpers/merge');
+var _merge = require('../helpers/merge');
 
-var _merge4 = _interopRequireDefault(_merge3);
+var _merge2 = _interopRequireDefault(_merge);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

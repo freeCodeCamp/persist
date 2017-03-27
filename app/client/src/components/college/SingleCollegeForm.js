@@ -98,7 +98,7 @@ class SingleCollegeForm extends React.Component {
         const basicCollegeInfo = ['website', 'city', 'state', 'locale', 'collType', 'durationType', 'hbcu', 'religiousAffiliation',
             'specialPrograms', 'otherNotes', 'womenOnly'];
         const academicProfile = ['avgHsGpa', 'barronsRating', 'percentileCR25', 'percentileCR75', 'admissionsRate', 'testingPolicy',
-            'percentileMath25', 'percentileMath75'];
+            'percentileMath25', 'percentileMath75', 'gradRate.overall', 'gradRate.black', 'gradRate.white', 'gradRate.hispanic'];
         const percentDegrees = ['percentDegrees1', 'percentDegrees2', 'percentDegrees3', 'percentDegrees4', 'percentDegrees5',
             'percentDegrees6', 'percentDegrees7', 'percentDegrees8', 'percentDegrees9', 'percentDegrees10', 'percentDegrees11',
             'percentDegrees12', 'percentDegrees13', 'percentDegrees14', 'percentDegrees15', 'percentDegrees16'];

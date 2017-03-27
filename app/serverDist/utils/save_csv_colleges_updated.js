@@ -32,7 +32,7 @@ exports.default = function (fileName) {
             while (row = transformer.read()) {
                 var uniqueName = '' + (row.fullName || '') + (row.navianceName || '') + (row.shortName || '') + (row.collegeScorecardName || '');
                 data[uniqueName] = data[uniqueName] || (0, _clone2.default)({});
-                data[uniqueName] = (0, _merge4.default)(data[uniqueName], row);
+                data[uniqueName] = (0, _merge2.default)(data[uniqueName], row);
             }
         });
 
@@ -48,6 +48,7 @@ exports.default = function (fileName) {
                 _college2.default.findOne({
                     $or: [{ fullName: record.fullName }, { shortName: record.shortName }, { navianceName: record.navianceName }, { collegeScorecardName: record.collegeScorecardName }]
                 }, function (err, oldCollege) {
+                    console.log(oldCollege, 'oldCollege');
                     if (err) {
                         console.log('error in finding document', err);
                         return callback(err);
@@ -65,8 +66,12 @@ exports.default = function (fileName) {
                             return callback(null);
                         });
                     } else {
+                        var newRecord = {};
+                        (0, _forOwn2.default)(record, function (value, key) {
+                            (0, _set2.default)(newRecord, key, value);
+                        });
                         var collegeObject = oldCollege.toObject();
-                        var newCollege = (0, _merge4.default)(collegeObject, record);
+                        var newCollege = (0, _merge2.default)(collegeObject, newRecord);
                         (0, _forOwn2.default)(collegeObject, function (value, key) {
                             if (key !== '_id' && newCollege[key]) {
                                 oldCollege[key] = newCollege[key];
@@ -118,17 +123,17 @@ var _async = require('async');
 
 var _async2 = _interopRequireDefault(_async);
 
-var _merge = require('lodash/merge');
+var _set = require('lodash/set');
 
-var _merge2 = _interopRequireDefault(_merge);
+var _set2 = _interopRequireDefault(_set);
 
 var _clone = require('lodash/clone');
 
 var _clone2 = _interopRequireDefault(_clone);
 
-var _merge3 = require('../helpers/merge');
+var _merge = require('../helpers/merge');
 
-var _merge4 = _interopRequireDefault(_merge3);
+var _merge2 = _interopRequireDefault(_merge);
 
 var _isFinite = require('lodash/isFinite');
 

@@ -3,7 +3,7 @@ import parse from 'csv-parse';
 import csv from 'csv';
 import transform from 'stream-transform';
 import async from 'async';
-import merge from 'lodash/merge';
+import set from 'lodash/set';
 import clone from 'lodash/clone';
 import myMerge from '../helpers/merge';
 import isFinite from 'lodash/isFinite';
@@ -60,6 +60,7 @@ export default function(fileName) {
                         { collegeScorecardName: record.collegeScorecardName }
                     ]
                 }, (err, oldCollege) => {
+                    console.log(oldCollege, 'oldCollege');
                     if (err) {
                         console.log('error in finding document', err);
                         return callback(err);
@@ -77,8 +78,12 @@ export default function(fileName) {
                             return callback(null);
                         });
                     } else {
+                        const newRecord = {};
+                        forOwn(record, (value, key) => {
+                            set(newRecord, key, value);
+                        });
                         const collegeObject = oldCollege.toObject();
-                        const newCollege = myMerge(collegeObject, record);
+                        const newCollege = myMerge(collegeObject, newRecord);
                         forOwn(collegeObject, (value, key) => {
                             if (key !== '_id' && newCollege[key]) {
                                 oldCollege[key] = newCollege[key];
