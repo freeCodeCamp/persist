@@ -79,10 +79,11 @@ Student.pre('save', true, function(next, done) {
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
     record.firstCol = recordTerms[0].college;
-    const colleges = uniq(map(recordTerms, 'college'));
+    const colleges = uniq(map(recordTerms, (term) => term.college));
     if (colleges.length > 1) {
-        College.find({ _id: { $in: [colleges] } }, 'durationType',
+        College.find({ _id: { $in: colleges } }, 'durationType -_id',
             (err, durationTypes) => {
+                durationTypes = map(durationTypes, 'durationType');
                 if (err || durationTypes.length < 2) {
                     return setGraduationType(record, done);
                 }

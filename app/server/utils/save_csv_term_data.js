@@ -66,9 +66,8 @@ export default (fileName) => {
                         let studentTerms = student.terms;
                         terms.forEach((termRecord) => {
                             let term = studentTerms.find((elem) => {
-                                return (_.toString(elem.college) === _.toString(termRecord.college.toString()) &&
-                                _.toString(elem.enrolBegin) === _.toString(termRecord.enrolBegin) &&
-                                _.toString(elem.enrolEnd) === _.toString(termRecord.enrolEnd));
+                                return (elem.enrolBegin <= termRecord.enrolBegin && elem.enrolEnd >= termRecord.enrolEnd) ||
+                                    (elem.enrolBegin >= termRecord.enrolBegin && elem.enrolEnd <= termRecord.enrolEnd);
                             });
                             if (term) {
                                 _.merge(term, termRecord);

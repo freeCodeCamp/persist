@@ -108,9 +108,12 @@ Student.pre('save', true, function (next, done) {
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
     record.firstCol = recordTerms[0].college;
-    var colleges = (0, _uniq2.default)((0, _map2.default)(recordTerms, 'college'));
+    var colleges = (0, _uniq2.default)((0, _map2.default)(recordTerms, function (term) {
+        return term.college;
+    }));
     if (colleges.length > 1) {
-        _.College.find({ _id: { $in: [colleges] } }, 'durationType', function (err, durationTypes) {
+        _.College.find({ _id: { $in: colleges } }, 'durationType -_id', function (err, durationTypes) {
+            durationTypes = (0, _map2.default)(durationTypes, 'durationType');
             if (err || durationTypes.length < 2) {
                 return setGraduationType(record, done);
             }

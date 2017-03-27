@@ -2,6 +2,8 @@ import path from "path";
 import multer from "multer";
 import rimraf from 'rimraf';
 import {Student, College, School, User} from "../models";
+import forOwn from 'lodash/forOwn';
+import omit from 'lodash/omit';
 import passport from "../config/passport";
 import {getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN} from "../../common/constants";
 import {
@@ -170,20 +172,24 @@ export default (app) => {
             res.send('working on it');
         })
         .put((req, res) => {
-            const student = req.body;
-            Student.findOneAndUpdate({
+            const student = omit(req.body, '_id');
+            Student.findOne({
                 osis: student.osis
-            }, {
-                $set: student
-            }, {
-                new: true,
-                runValidators: true
-            }, (err, updatedStudent) => {
+            }, (err, oldStudent) => {
                 if (err) {
                     res.status(500).send(err);
                     return;
                 }
-                res.status(200).send(updatedStudent);
+                forOwn(student, (value, key) => {
+                    oldStudent[key] = student[key];
+                });
+                oldStudent.save((err, updatedStudent) => {
+                    if (err) {
+                        res.status(500).send(err);
+                        return;
+                    }
+                    res.status(200).send(updatedStudent);
+                });
             });
         })
         .delete((req, res) => {
@@ -207,20 +213,24 @@ export default (app) => {
             res.send('working on it');
         })
         .put((req, res) => {
-
-            const data = req.body;
-
-            College.findOneAndUpdate({
-                fullName: data.fullName
-            }, {
-                $set: data
-            }, {
-                new: true
-            }, function(err, doc) {
+            const college = omit(req.body, '_id');
+            College.findOne({
+                fullName: college.fullName
+            }, (err, oldCollege) => {
                 if (err) {
-                    res.send({ err: true });
+                    res.status(500).send(err);
+                    return;
                 }
-                res.send(doc);
+                forOwn(college, (value, key) => {
+                    oldCollege[key] = college[key];
+                });
+                oldCollege.save((err, updatedCollege) => {
+                    if (err) {
+                        res.status(500).send(err);
+                        return;
+                    }
+                    res.status(200).send(updatedCollege);
+                });
             });
         })
         .delete((req, res) => {

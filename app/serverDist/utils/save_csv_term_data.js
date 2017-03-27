@@ -95,7 +95,7 @@ exports.default = function (fileName) {
                         var studentTerms = student.terms;
                         terms.forEach(function (termRecord) {
                             var term = studentTerms.find(function (elem) {
-                                return _lodash2.default.toString(elem.college) === _lodash2.default.toString(termRecord.college.toString()) && _lodash2.default.toString(elem.enrolBegin) === _lodash2.default.toString(termRecord.enrolBegin) && _lodash2.default.toString(elem.enrolEnd) === _lodash2.default.toString(termRecord.enrolEnd);
+                                return elem.enrolBegin <= termRecord.enrolBegin && elem.enrolEnd >= termRecord.enrolEnd || elem.enrolBegin >= termRecord.enrolBegin && elem.enrolEnd <= termRecord.enrolEnd;
                             });
                             if (term) {
                                 _lodash2.default.merge(term, termRecord);

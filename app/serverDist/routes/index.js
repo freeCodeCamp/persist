@@ -18,6 +18,14 @@ var _rimraf2 = _interopRequireDefault(_rimraf);
 
 var _models = require("../models");
 
+var _forOwn = require("lodash/forOwn");
+
+var _forOwn2 = _interopRequireDefault(_forOwn);
+
+var _omit = require("lodash/omit");
+
+var _omit2 = _interopRequireDefault(_omit);
+
 var _passport = require("../config/passport");
 
 var _passport2 = _interopRequireDefault(_passport);
@@ -211,20 +219,24 @@ exports.default = function (app) {
     }).post(function (req, res) {
         res.send('working on it');
     }).put(function (req, res) {
-        var student = req.body;
-        _models.Student.findOneAndUpdate({
+        var student = (0, _omit2.default)(req.body, '_id');
+        _models.Student.findOne({
             osis: student.osis
-        }, {
-            $set: student
-        }, {
-            new: true,
-            runValidators: true
-        }, function (err, updatedStudent) {
+        }, function (err, oldStudent) {
             if (err) {
                 res.status(500).send(err);
                 return;
             }
-            res.status(200).send(updatedStudent);
+            (0, _forOwn2.default)(student, function (value, key) {
+                oldStudent[key] = student[key];
+            });
+            oldStudent.save(function (err, updatedStudent) {
+                if (err) {
+                    res.status(500).send(err);
+                    return;
+                }
+                res.status(200).send(updatedStudent);
+            });
         });
     }).delete(function (req, res) {
         res.send('working on it');
@@ -244,20 +256,24 @@ exports.default = function (app) {
     }).post(function (req, res) {
         res.send('working on it');
     }).put(function (req, res) {
-
-        var data = req.body;
-
-        _models.College.findOneAndUpdate({
-            fullName: data.fullName
-        }, {
-            $set: data
-        }, {
-            new: true
-        }, function (err, doc) {
+        var college = (0, _omit2.default)(req.body, '_id');
+        _models.College.findOne({
+            fullName: college.fullName
+        }, function (err, oldCollege) {
             if (err) {
-                res.send({ err: true });
+                res.status(500).send(err);
+                return;
             }
-            res.send(doc);
+            (0, _forOwn2.default)(college, function (value, key) {
+                oldCollege[key] = college[key];
+            });
+            oldCollege.save(function (err, updatedCollege) {
+                if (err) {
+                    res.status(500).send(err);
+                    return;
+                }
+                res.status(200).send(updatedCollege);
+            });
         });
     }).delete(function (req, res) {
         res.send('working on it');
