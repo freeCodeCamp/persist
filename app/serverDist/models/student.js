@@ -109,7 +109,7 @@ Student.pre('save', true, function (next, done) {
     record.mostRecentEnrolStatus = record.terms[0].status;
     record.firstCol = recordTerms[0].college;
     var colleges = (0, _uniq2.default)((0, _map2.default)(recordTerms, function (term) {
-        return term.college;
+        return term.college.toString();
     }));
     if (colleges.length > 1) {
         _.College.find({ _id: { $in: colleges } }, 'durationType -_id', function (err, durationTypes) {
@@ -117,16 +117,16 @@ Student.pre('save', true, function (next, done) {
             if (err || durationTypes.length < 2) {
                 return setGraduationType(record, done);
             }
-            if (durationTypes[0].toString() === '2 year') {
-                if (durationTypes[1].toString() === '2 year') {
+            if (durationTypes[0] === '2 year') {
+                if (durationTypes[1] === '2 year') {
                     record.transferStatus.push('2 Year to 2 Year');
-                } else if (durationTypes[1].toString() === '4 year') {
+                } else if (durationTypes[1] === '4 year') {
                     record.transferStatus.push('2 Year to 4 Year');
                 }
-            } else if (durationTypes[0].toString() === '4 year') {
-                if (durationTypes[1].toString() === '2 year') {
+            } else if (durationTypes[0] === '4 year') {
+                if (durationTypes[1] === '2 year') {
                     record.transferStatus.push('4 Year to 2 Year');
-                } else if (durationTypes[1].toString() === '4 year') {
+                } else if (durationTypes[1] === '4 year') {
                     record.transferStatus.push('4 Year to 4 Year');
                 }
             }
