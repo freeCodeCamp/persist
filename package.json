@@ -15,7 +15,7 @@
     "debug2": "nodemon --config nodemon.json --exec babel-node --inspect server.js",
     "build": "babel server.js --out-file serverProd.js & babel app/server --out-dir app/serverDist & webpack -p --config ./webpack.prod.config.js",
     "prestart": "babel app/common --out-dir app/common",
-    "start": "NODE_ENV=production node serverProd.js",
+    "start": "NODE_ENV=production node serverProd.js --max-old-space-size=400",
     "babel": "./node_modules/.bin/babel-node",
     "watch:test": "webpack-dev-server --progress"
   },
