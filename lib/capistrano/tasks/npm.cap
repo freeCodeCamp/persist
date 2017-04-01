@@ -1,0 +1,10 @@
+namespace :npm do
+  task :install do
+    execute "npm install --prefix #{current_path}"
+  end
+
+  task :prestart do
+    execute "npm --prefix #{current_path} run prestart"
+  end
+
+end

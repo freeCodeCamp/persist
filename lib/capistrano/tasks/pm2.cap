@@ -22,7 +22,7 @@ namespace :pm2 do
 
   def start_app
     within current_path do
-      execute :pm2, :stop, fetch(:app_command)
+      execute :pm2, :start, "#{current_path}/serverDist.js --name 'nycoutwardbound'"
     end
   end
 
@@ -46,14 +46,4 @@ namespace :pm2 do
     end
   end
 
-end
-
-namespace :deploy do
-
-  desc 'Restart application'
-  task :restart do
-    invoke 'pm2:restart'
-  end
-
-  after :publishing, :restart
 end

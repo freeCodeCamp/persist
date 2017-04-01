@@ -2,6 +2,7 @@
 lock "3.8.0"
 
 set :application, "nycoutwardbound"
+set :app_command, "nycoutwardbound"
 set :repo_url, "git@github.com:sachinmour/nyc_outward.git"
 
 # Default branch is :master
@@ -21,13 +22,17 @@ set :deploy_to, "/home/golive/nycoutwardbound"
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/secrets.json"
+append :linked_files, ".env"
 
 # Default value for linked_dirs is []
-# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
+# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "node_modules"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
+
+after 'deploy:finished', 'npm:install'
+after 'npm:install', 'npm:prestart'
+after 'npm:prestart', 'pm2:restart'

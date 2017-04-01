@@ -20,6 +20,10 @@ var _reload = require('reload');
 
 var _reload2 = _interopRequireDefault(_reload);
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
 var _socket = require('socket.io');
 
 var _socket2 = _interopRequireDefault(_socket);
@@ -44,7 +48,7 @@ function haltOnTimedout(req, res, next) {
     if (!req.timedout) next();
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (_fs2.default.existsSync('./.env')) {
     // get environment variables
     _dotenv2.default.config();
 }

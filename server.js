@@ -3,6 +3,7 @@ import path from 'path';
 import express from 'express';
 import http from 'http';
 import reload from 'reload';
+import fs from 'fs';
 import socketIO from 'socket.io';
 
 import mongoose from 'mongoose';
@@ -15,7 +16,7 @@ function haltOnTimedout(req, res, next) {
     if (!req.timedout) next()
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (fs.existsSync('./.env')) {
     // get environment variables
     dotenv.config();
 }
