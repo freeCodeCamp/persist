@@ -1,12 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Row, Col, Clearfix } from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {Row, Col, Clearfix} from 'react-bootstrap';
 import keyBy from 'lodash/keyBy';
-import { reduxForm, Field } from 'redux-form';
+import {reduxForm, Field} from 'redux-form';
 import RaisedButton from 'material-ui/RaisedButton';
-import { studentKeys } from '../../../../common/fieldKeys';
-import { ReduxFormGroup } from '../helpers';
-import { SelectField, TextField, AutoComplete } from 'redux-form-material-ui';
+import {studentKeys} from '../../../../common/fieldKeys';
+import {ReduxFormGroup} from '../helpers';
+import {MenuItem} from 'material-ui';
+import {SelectField, TextField, AutoComplete} from 'redux-form-material-ui';
 import RangeSlider from '../helpers/RangeSlider';
 const studentKeysObj = keyBy(studentKeys, 'dbName');
 
@@ -28,7 +29,7 @@ class ChartFilter extends React.Component {
         ];
         const nullValueFields = ['hs', 'intendedCollege'];
         const HTML = [];
-        fields.map((field, i) => {
+        fields.forEach((field, i) => {
             const fieldObj = studentKeysObj[field];
             let nullValue = false;
             if (nullValueFields.includes(fieldObj.dbName)) {
@@ -44,6 +45,31 @@ class ChartFilter extends React.Component {
                         form={form}
                         field={ fieldObj }
                     />
+                </Col>
+            );
+            if ((i + 1) % 2 === 0) {
+                HTML.push(<Clearfix key={`${field.dbName}-sm-md-${i}`} visibleSmBlock visibleMdBlock />);
+            }
+            if ((i + 1) % 3 === 0) {
+                HTML.push(<Clearfix key={`${field.dbName}-lg-${i}`} visibleLgBlock />);
+            }
+        });
+        const extraFields = ['gradYear4'];
+        extraFields.forEach((field, i) => {
+            i = i + 7;
+            HTML.push(
+                <Col key={field}
+                     style={{ display: 'flex', justifyContent: 'center' }}
+                     xs={12} sm={6} md={6} lg={4}
+                >
+                    <Field name={ field }
+                           component={ SelectField }
+                           hintText='4 Year Graduate'
+                           floatingLabelText='4 Year Graduate'>
+                        <MenuItem value={ true } key='true' primaryText='Yes' />
+                        {/*<MenuItem value={ false } key='false' primaryText='No' />*/}
+                        <MenuItem value={ null } primaryText='None' key='none' />
+                    </Field>
                 </Col>
             );
             if ((i + 1) % 2 === 0) {

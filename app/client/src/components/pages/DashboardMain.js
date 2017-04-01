@@ -21,9 +21,12 @@ class DashboardMain extends React.Component {
     handleSubmit(values) {
         this.update = true;
         let conditions = _(values).omitBy(_.isNil).cloneDeep();
+        console.log(conditions);
         const { students } = this.props;
         const hsGPA = conditions.hsGPA;
+        const gradYear4 = conditions.gradYear4;
         delete conditions.hsGPA;
+        delete conditions.gradYear4;
         const arrayConditions = _(conditions).pickBy((value, key) => (
             studentKeysObj[key].fieldType === 'Checkbox'
         )).value();
@@ -47,6 +50,16 @@ class DashboardMain extends React.Component {
                     return student.hsGPA > hsGPA.min && student.hsGPA < hsGPA.max;
                 });
         }
+        if (gradYear4) {
+            filteredStudents = filteredStudents
+                .filter((student) => {
+                    if (student.expectedHSGrad && student.hsGradYear) {
+                        return new Date(student.expectedHSGrad).getFullYear() === student.hsGradYear;
+                    }
+                    return false;
+                });
+        }
+        console.log(filteredStudents.value().length);
         this.setState({
             filteredStudents: filteredStudents.value()
         });
