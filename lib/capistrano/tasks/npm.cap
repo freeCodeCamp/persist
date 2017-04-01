@@ -1,10 +1,15 @@
 namespace :npm do
+
   task :install do
-    execute "npm install --prefix #{current_path}"
+    on roles(:app) do
+        execute "npm install --prefix #{current_path} --production"
+    end
   end
 
   task :prestart do
-    execute "npm --prefix #{current_path} run prestart"
+    on roles(:app) do
+        execute "npm --prefix #{current_path} run prestart"
+    end
   end
 
 end

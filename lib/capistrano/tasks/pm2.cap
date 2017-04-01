@@ -22,7 +22,7 @@ namespace :pm2 do
 
   def start_app
     within current_path do
-      execute :pm2, :start, "#{current_path}/serverDist.js --name 'nycoutwardbound'"
+      execute :pm2, :start, "#{current_path}/serverProd.js --name 'nycoutwardbound'"
     end
   end
 

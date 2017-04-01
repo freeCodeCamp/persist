@@ -6,18 +6,18 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {RaisedButton} from 'material-ui';
 import {exportStudents, setSpinnerPage, exportArray} from '../../actions';
-import {Checkbox} from 'redux-form-material-ui';
+import GroupCheckbox from './GroupCheckbox';
 import {studentKeys, applicationKeys, caseNotesKeys, termKeys} from '../../../../common/fieldKeys';
 import exportKeys from '../../../../common/exportKeys';
 import mapLimit from 'async/mapLimit';
-import keyBy from 'lodash/keyBy';
-import extend from 'lodash/extend';
-import isEmpty from 'lodash/isEmpty';
-import cloneDeep from 'lodash/cloneDeep';
-import pickBy from 'lodash/pickBy';
-import pick from 'lodash/pick';
-import keys from 'lodash/keys';
-const studentKeysObj = keyBy(studentKeys, 'dbName');
+import _ from 'lodash';
+
+const studentKeysObj = _.keyBy(studentKeys, 'dbName');
+const studentCategoryObj = _.groupBy(studentKeys, 'category');
+delete studentCategoryObj.undefined;
+_.forOwn(studentCategoryObj, (value, key) => {
+    studentCategoryObj[key] = studentCategoryObj[key].map(field => field.dbName);
+});
 
 class ExportCSV extends Component {
     constructor(props) {
@@ -28,6 +28,13 @@ class ExportCSV extends Component {
                 margin: 5
             }
         };
+        this.state = {};
+    }
+
+    changeState(name, value) {
+        this.setState({
+            [name]: value
+        });
     }
 
     referenceFields(students, fieldTypes) {
@@ -61,9 +68,9 @@ class ExportCSV extends Component {
                         student[field] = dateString;
                     }
                 });
-                if (false && student.aliases.length > 0) {
+                if (student.aliases.length > 0) {
                     const aliases = student.aliases.map((alias) => {
-                        const aliasStudent = cloneDeep(student);
+                        const aliasStudent = _.cloneDeep(student);
                         ['firstName', 'middleName', 'lastName', 'suffix'].map((aliasField) => aliasStudent[aliasField] = alias[aliasField]);
                     });
                     aliases.unshift(student);
@@ -86,13 +93,22 @@ class ExportCSV extends Component {
         });
     }
 
-    handleStudents(values) {
+    handleStudents() {
         this.props.setSpinnerPage(true);
-        const selectedKeys = keys(pickBy(values, (v) => (v)));
+        const selectedKeys = _.reduce(studentCategoryObj, (result, value, key) => {
+            if (this.state[key]) {
+                return result.concat(value);
+            }
+            return result;
+        }, []);
+        if (!selectedKeys.includes('osis')) {
+            selectedKeys.unshift('osis');
+        }
         selectedKeys.push('aliases');
+        console.log(selectedKeys);
         const { students } = this.props;
-        const picked = students.map((student) => pick(student, selectedKeys))
-            .filter((student) => !(isEmpty(student)));
+        const picked = students.map((student) => _.pick(student, selectedKeys))
+            .filter((student) => !(_.isEmpty(student)));
         const fieldTypes = exportKeys(selectedKeys, studentKeys);
         selectedKeys.pop();
         this.referenceFields(picked, fieldTypes)
@@ -111,7 +127,7 @@ class ExportCSV extends Component {
         const picked = [].concat
             .apply([], students.map((student) =>
                 student.applications.map((application) => (
-                    extend({}, application, { osis: student.osis })
+                    _.extend({}, application, { osis: student.osis })
                 ))));
         const selectedKeys = _.map(applicationKeys, 'dbName');
         const fieldTypes = exportKeys(selectedKeys, applicationKeys);
@@ -130,7 +146,7 @@ class ExportCSV extends Component {
         const picked = [].concat
             .apply([], students.map((student) =>
                 student.terms.map((term) => (
-                    extend({}, term, { osis: student.osis })
+                    _.extend({}, term, { osis: student.osis })
                 ))));
         const selectedKeys = _.map(termKeys, 'dbName');
         const fieldTypes = exportKeys(selectedKeys, termKeys);
@@ -149,7 +165,7 @@ class ExportCSV extends Component {
         const picked = [].concat
             .apply([], students.map((student) =>
                 student.caseNotes.map((caseNote) => (
-                    extend({}, caseNote, { osis: student.osis })
+                    _.extend({}, caseNote, { osis: student.osis })
                 ))));
         const selectedKeys = _.map(caseNotesKeys, 'dbName');
         const fieldTypes = exportKeys(selectedKeys, caseNotesKeys);
@@ -164,8 +180,8 @@ class ExportCSV extends Component {
 
     render() {
         const { styles } = this;
-        const { handleSubmit } = this.props;
-        const exportKeys = keys(studentKeysObj);
+        const state = this.state;
+        const exportKeys = _.keys(studentCategoryObj);
         const exportKeysHTML = [];
         exportKeys.map((field, i) => {
             exportKeysHTML.push(
@@ -173,10 +189,10 @@ class ExportCSV extends Component {
                      style={{ display: 'flex', justifyContent: 'center' }} xs={12}
                      sm={6} md={4}
                      lg={3}>
-                    <Field
-                        name={field}
-                        component={Checkbox}
-                        label={studentKeysObj[field].displayName}
+                    <GroupCheckbox
+                        changeState={(name, value) => this.changeState(name, value)}
+                        checked={!!state[field]}
+                        label={field}
                     />
                 </Col>
             );
@@ -203,7 +219,7 @@ class ExportCSV extends Component {
                                     style={styles.button}
                                     label='Students'
                                     primary={true}
-                                    onClick={handleSubmit((v) => this.handleStudents(v))}
+                                    onClick={() => this.handleStudents()}
                                 />
                                 <RaisedButton
                                     style={styles.button}
@@ -231,10 +247,6 @@ class ExportCSV extends Component {
         );
     }
 }
-
-ExportCSV = reduxForm({
-    form: 'ExportCSV'
-})(ExportCSV);
 
 const mapStateToProps = (state) => ({
     collegeObj: state.colleges.idObj,

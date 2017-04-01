@@ -95,7 +95,7 @@ class DashboardMain extends React.Component {
 
     render() {
         return (
-            <Content title='Welcome'>
+            <Content title='PERS+ST'>
                 <ChartFilter handleFormSubmit={(values) => this.handleSubmit(values)} />
                 <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges} />
             </Content>
