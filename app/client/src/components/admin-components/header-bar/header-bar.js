@@ -29,13 +29,13 @@ class HeaderBar extends Component {
     }
 
     render() {
-        const {user: {firstName, lastName}} = this.props;
+        const { user: { firstName, lastName } } = this.props;
         return (
             <header className='main-header'>
                 { /* Logo */ }
-                <a href='index2.html' className='logo'>
+                <Link to='/' className='logo'>
                     { /* mini logo for sidebar mini 50x50 pixels */ } <span className='logo-mini'><b>N</b>YC</span>
-                    { /* logo for regular state and mobile devices */ } <span className='logo-lg'><b>NYC</b>Outward Bound</span></a>
+                    { /* logo for regular state and mobile devices */ } <span className='logo-lg'><b>NYC</b> Outward Bound</span></Link>
                 { /* Header Navbar: style can be found in header.less */ }
                 <nav className='navbar navbar-static-top' role='navigation'>
                     { /* Sidebar toggle button*/ }
@@ -55,19 +55,19 @@ class HeaderBar extends Component {
                                 <a href='#' className='dropdown-toggle' data-toggle='dropdown'><img
                                     src='/default-profile-pic.png'
                                     className='user-image'
-                                    alt='User Image'/>
+                                    alt='User Image' />
                                     <span className='hidden-xs'>{`${firstName} ${lastName}`.trim()}</span></a>
                                 <ul className='dropdown-menu'>
                                     { /* User image */ }
                                     <li className='user-header'>
-                                        <img src='/default-profile-pic.png' className='img-circle' alt='User Image'/>
+                                        <img src='/default-profile-pic.png' className='img-circle' alt='User Image' />
                                         <p>
                                             {`${firstName} ${lastName}`.trim()}
                                         </p>
                                     </li>
                                     { /* Menu Footer */ }
                                     <li className='user-footer'>
-                                        <div style={{textAlign: 'center'}}>
+                                        <div style={{ textAlign: 'center' }}>
                                             <Link to='/logout' className='btn btn-default btn-flat'>Sign out</Link>
                                         </div>
                                     </li>
