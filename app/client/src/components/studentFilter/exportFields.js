@@ -68,7 +68,7 @@ class ExportCSV extends Component {
                         student[field] = dateString;
                     }
                 });
-                if (student.aliases.length > 0) {
+                if (student.aliases && student.aliases.length > 0) {
                     const aliases = student.aliases.map((alias) => {
                         const aliasStudent = _.cloneDeep(student);
                         ['firstName', 'middleName', 'lastName', 'suffix'].map((aliasField) => aliasStudent[aliasField] = alias[aliasField]);
@@ -105,7 +105,6 @@ class ExportCSV extends Component {
             selectedKeys.unshift('osis');
         }
         selectedKeys.push('aliases');
-        console.log(selectedKeys);
         const { students } = this.props;
         const picked = students.map((student) => _.pick(student, selectedKeys))
             .filter((student) => !(_.isEmpty(student)));
