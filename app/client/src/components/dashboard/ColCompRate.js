@@ -42,7 +42,7 @@ class ColCompRate extends Component {
             const q = async.queue((student, callback) => {
                 const hsGradYear = student.hsGradYear;
                 if (hsGradYear) {
-                    result[hsGradYear] = result[hsGradYear] || _.clone(colCompletionRate);
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(colCompletionRate);
                     const terms = student.terms;
                     if (terms.length > 0) {
                         const college = colleges[terms[0].college];

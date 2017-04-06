@@ -63,7 +63,7 @@ class AvgTimeGrad extends Component {
             const q = async.queue((student, callback) => {
                 const hsGradYear = student.hsGradYear;
                 if (hsGradYear) {
-                    result[hsGradYear] = result[hsGradYear] || _.clone(defaultEnrollmentData);
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
                     const hsGradDate = student.hsGradDate;
                     const terms = student.terms;
                     if (hsGradDate) {
