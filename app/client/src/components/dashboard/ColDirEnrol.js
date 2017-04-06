@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux';
-import { Card, CardText, Divider } from 'material-ui';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'react-router-redux';
+import {Card, CardText, Divider} from 'material-ui';
 import moment from 'moment';
 import async from 'async';
-import { BasicColumn } from '../admin-components/charts';
+import {BasicColumn} from '../admin-components/charts';
 
 class ColDirEnrol extends Component {
     constructor(props) {
@@ -134,8 +134,13 @@ class ColDirEnrol extends Component {
             },
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
+                pointFormatter: function() {
+                    const { category, series } = this;
+                    return `<tr>
+                                <td style="color:${series.color};padding:0">${series.name}: </td>
+                                <td style="padding:0">${data[category][refer[series.name]].count}=<b>${this.y.toFixed(3)} %</b></td>
+                            </tr>`
+                },
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
