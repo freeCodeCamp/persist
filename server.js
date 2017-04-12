@@ -3,23 +3,16 @@ import path from 'path';
 import express from 'express';
 import http from 'http';
 import reload from 'reload';
-import fs from 'fs';
 import socketIO from 'socket.io';
-
 import mongoose from 'mongoose';
-
-// import passport from 'passport';
-// import flash from 'connect-flash';
 import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
+dotenv.config({ silent: true });
+
 function haltOnTimedout(req, res, next) {
     if (!req.timedout) next()
 }
 
-if (fs.existsSync('./.env')) {
-    // get environment variables
-    dotenv.config();
-}
 let serverFolder = 'serverDist';
 if (process.env.NODE_ENV !== 'production') {
     serverFolder = 'server';

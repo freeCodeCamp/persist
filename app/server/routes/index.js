@@ -164,7 +164,6 @@ export default (app) => {
                 if (err) {
                     res.status(500).send(err);
                 }
-                console.log(student);
                 res.status(200).json(student);
             });
         })
@@ -198,7 +197,6 @@ export default (app) => {
 
     app.route('/api/college/:fullName')
         .get((req, res) => {
-            console.log(req.params.fullName);
             College.find({
                 fullName: req.params.fullName
             }, (err, college) => {
@@ -247,7 +245,7 @@ export default (app) => {
         } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {
             query = Student.find({});
         }
-        query.exec((err, students) => {
+        query.lean().exec((err, students) => {
             if (err) {
                 res.status(500).send(err);
                 return;
@@ -271,7 +269,7 @@ export default (app) => {
         } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {
             query = User.find({});
         }
-        query.select('profile email').exec((err, users) => {
+        query.select('profile email').lean().exec((err, users) => {
             if (err) {
                 res.status(500).send(err);
                 return;
@@ -284,7 +282,7 @@ export default (app) => {
     app.get('/api/colleges', requireAuth, (req, res) => {
 
         let query = College.find({});
-        query.exec((err, colleges) => {
+        query.lean().exec((err, colleges) => {
             if (err) {
                 res.status(500).send(err);
             }
@@ -295,7 +293,7 @@ export default (app) => {
     app.get('/api/schools', requireAuth, (req, res) => {
 
         let query = School.find({});
-        query.exec((err, schools) => {
+        query.lean().exec((err, schools) => {
             if (err) {
                 res.status(500).send(err);
             }

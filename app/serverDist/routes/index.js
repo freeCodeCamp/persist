@@ -213,7 +213,6 @@ exports.default = function (app) {
             if (err) {
                 res.status(500).send(err);
             }
-            console.log(student);
             res.status(200).json(student);
         });
     }).post(function (req, res) {
@@ -243,7 +242,6 @@ exports.default = function (app) {
     });
 
     app.route('/api/college/:fullName').get(function (req, res) {
-        console.log(req.params.fullName);
         _models.College.find({
             fullName: req.params.fullName
         }, function (err, college) {
@@ -289,7 +287,7 @@ exports.default = function (app) {
         } else if ((0, _constants.getRole)(req.user.access.role) > (0, _constants.getRole)(_constants.ROLE_OWNER)) {
             query = _models.Student.find({});
         }
-        query.exec(function (err, students) {
+        query.lean().exec(function (err, students) {
             if (err) {
                 res.status(500).send(err);
                 return;
@@ -309,7 +307,7 @@ exports.default = function (app) {
         } else if ((0, _constants.getRole)(req.user.access.role) > (0, _constants.getRole)(_constants.ROLE_OWNER)) {
             query = _models.User.find({});
         }
-        query.select('profile email').exec(function (err, users) {
+        query.select('profile email').lean().exec(function (err, users) {
             if (err) {
                 res.status(500).send(err);
                 return;
@@ -322,7 +320,7 @@ exports.default = function (app) {
     app.get('/api/colleges', requireAuth, function (req, res) {
 
         var query = _models.College.find({});
-        query.exec(function (err, colleges) {
+        query.lean().exec(function (err, colleges) {
             if (err) {
                 res.status(500).send(err);
             }
@@ -333,7 +331,7 @@ exports.default = function (app) {
     app.get('/api/schools', requireAuth, function (req, res) {
 
         var query = _models.School.find({});
-        query.exec(function (err, schools) {
+        query.lean().exec(function (err, schools) {
             if (err) {
                 res.status(500).send(err);
             }
