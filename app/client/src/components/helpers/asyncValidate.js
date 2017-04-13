@@ -1,23 +1,26 @@
 // validation helpers
+import {forOwn} from 'lodash';
 import {studentSchema} from '../../../../common/schemas';
 
 const asyncValidate = (values) => {
     console.log('asyncValidate');
-    var mongoose = window.mongoose;
-    var Schema = mongoose.Schema;
+    const mongoose = window.mongoose;
+    const Schema = mongoose.Schema;
 
     const Student = new Schema(studentSchema(Schema));
 
-    var student = new mongoose.Document({}, Student);
-
-    Object.keys(values).map((key) => {
-        student[key] = values[key];
+    const student = new mongoose.Document({}, Student);
+    
+    forOwn(values, (value, key) => {
+        if (key !== '_id' && values[key]) {
+            student[key] = values[key];
+        }
     });
 
     const errors = {};
 
     const isomorphicValidate = new Promise((resolve, reject) => {
-        student.validate(function (mongooseError) {
+        student.validate(function(mongooseError) {
             if (!mongooseError) {
                 resolve();
                 return;
