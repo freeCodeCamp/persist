@@ -62,7 +62,7 @@ class HeaderBar extends Component {
                                     <li className='user-header'>
                                         <img src='/default-profile-pic.png' className='img-circle' alt='User Image' />
                                         <p>
-                                            {`${firstName} ${lastName}`.trim()}
+                                            {`${firstName} ${lastName || ''}`.trim()}
                                         </p>
                                     </li>
                                     { /* Menu Footer */ }

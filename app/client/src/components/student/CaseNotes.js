@@ -26,9 +26,10 @@ class CaseNotes extends Component {
     }
 
     renderCaseNotes() {
-        const {initValue, usersObj} = this.props;
+        const { initValue, usersObj } = this.props;
         const caseNotesHTML = initValue.map((caseNote, index) => {
-            const {profile: {firstName, lastName}} = usersObj[caseNote.user];
+            const firstName = get(usersObj[caseNote.user], 'profile.firstName', '');
+            const lastName = get(usersObj[caseNote.user], 'profile.lastName', '');
             const {
                 date,
                 description,
@@ -42,7 +43,7 @@ class CaseNotes extends Component {
                     <td>{moment(date).format('ll')}</td>
                     <td>{description.substring(0, 100)}</td>
                     <td>{communicationType}</td>
-                    <td>{fullName}</td>
+                    <td>{fullName.length > 0 ? fullName : 'User Deleted'}</td>
                     <td>{needFollowUp ? 'Yes' : 'No'}</td>
                     <td>{issueResolved ? 'Yes' : ''}</td>
                     <td>
@@ -50,7 +51,7 @@ class CaseNotes extends Component {
                             <EditorModeEdit />
                         </IconButton>
                         <IconButton onClick={() => this.handleDelete(caseNote)}>
-                            <ContentDeleteSweep/>
+                            <ContentDeleteSweep />
                         </IconButton>
                     </td>
                 </tr>
@@ -58,7 +59,7 @@ class CaseNotes extends Component {
         });
         return (
             <tbody>
-            {caseNotesHTML}
+                {caseNotesHTML}
             </tbody>
         );
     }
@@ -89,7 +90,7 @@ class CaseNotes extends Component {
     }
 
     saveCaseNote(oldCaseNote, newCaseNote) {
-        const {auth: {user}} = this.props;
+        const { auth: { user } } = this.props;
         let caseNote;
         caseNote = newCaseNote;
         if (oldCaseNote._id) {
@@ -123,7 +124,7 @@ class CaseNotes extends Component {
     }
 
     renderDeleteDialog() {
-        const {spinner} = this.props;
+        const { spinner } = this.props;
         const open = this.state.open.delete;
         const actions = [
             <FlatButton
@@ -148,7 +149,7 @@ class CaseNotes extends Component {
     }
 
     renderEditDialog() {
-        const {spinner} = this.props;
+        const { spinner } = this.props;
         const caseNote = this.caseNote;
         const open = this.state.open.edit;
         const actions = [
@@ -170,25 +171,25 @@ class CaseNotes extends Component {
         const oldCaseNote = cloneDeep(caseNote);
         return (
             <Dialog actions={actions} autoScrollBodyContent={true} open={open} title={title}>
-                <CaseNoteEditor initialValues={caseNote} onSubmit={this.saveCaseNote.bind(this, oldCaseNote)}/>
+                <CaseNoteEditor initialValues={caseNote} onSubmit={this.saveCaseNote.bind(this, oldCaseNote)} />
             </Dialog>
         );
     }
 
     render() {
-        const {fields} = this.props;
+        const { fields } = this.props;
 
         const tableHead = (
             <thead>
-            <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Communication Type</th>
-                <th>Counselor</th>
-                <th>Needs Follow Up</th>
-                <th>Issue Resolved</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Communication Type</th>
+                    <th>Counselor</th>
+                    <th>Needs Follow Up</th>
+                    <th>Issue Resolved</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
         );
         return (
