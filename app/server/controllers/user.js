@@ -28,10 +28,10 @@ export const inviteUser = (req, res, next) => {
     userDetails.password = crypto.randomBytes(16).toString('hex');
     const email = userDetails.email;
 
-    User.findOne({email}, (err, existingUser) => {
+    User.findOne({ email }, (err, existingUser) => {
         // If user is not found, return error
         if (err) {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
+            res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
             return next(err);
         }
         if (!existingUser) {
@@ -47,7 +47,7 @@ export const inviteUser = (req, res, next) => {
 
                     const schoolId = userDetails.access.school;
                     if (schoolId) {
-                        School.findOne({_id: schoolId}, (err, existingSchool) => {
+                        School.findOne({ _id: schoolId }, (err, existingSchool) => {
                             if (err) return next(err);
                             existingSchool.users.push(newUser._id);
                             existingSchool.save((err) => {
@@ -61,7 +61,7 @@ export const inviteUser = (req, res, next) => {
                 });
             });
         } else {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
+            res.status(400).json({ error: 'User already exists' });
             return next(err);
         }
     });
@@ -71,12 +71,12 @@ export const inviteUser = (req, res, next) => {
 // Update User
 //= =======================================
 export const updateUser = (req, res, next) => {
-    const {email, enabled} = req.body;
+    const { email, enabled } = req.body;
 
-    User.findOne({email}, (err, existingUser) => {
+    User.findOne({ email }, (err, existingUser) => {
         // If user is not found, return error
         if (err || !existingUser) {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
+            res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
             return next(err);
         }
 
@@ -100,7 +100,7 @@ export const updateUser = (req, res, next) => {
             // send user email via Mailgun
             mailgun.sendEmail(existingUser.email, message);
 
-            return res.status(200).json({message: `Account ${status}`});
+            return res.status(200).json({ message: `Account ${status}` });
         });
     });
 };
@@ -109,15 +109,15 @@ export const updateUser = (req, res, next) => {
 // Delete User
 //= =======================================
 export const deleteUser = (req, res, next) => {
-    const {_id} = req.query;
+    const { _id } = req.query;
 
-    User.remove({_id}, (err) => {
+    User.remove({ _id }, (err) => {
         // If user is not found, return error
         if (err) {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
+            res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
             return next(err);
         }
-        return res.status(200).json({message: 'Account Deleted'});
+        return res.status(200).json({ message: 'Account Deleted' });
     });
 };
 
@@ -125,9 +125,15 @@ export const deleteUser = (req, res, next) => {
 // GET ALL USERS
 //= =======================================
 export const getUsers = (req, res, next) => {
-    User.find({'access.role': {$ne: 'Admin'}}, (err, users) => {
+
+    User.find({
+        $and: [
+            { 'access.role': { $ne: 'Admin' } },
+            { _id: { $ne: req.user._id } }
+        ]
+    }, (err, users) => {
         if (err) {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
+            res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
             return next(err);
         }
         return res.status(200).json(users);

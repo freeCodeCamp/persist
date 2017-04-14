@@ -164,11 +164,13 @@ class NavigationMenu extends Component {
                                 <i className='fa fa-graduation-cap'></i> <span>Colleges</span>
                             </Link>
                         </li>
-                        <li className=''>
-                            <Link to='/upload'>
-                                <i className='fa fa-upload'></i> <span>Upload</span>
-                            </Link>
-                        </li>
+                        <Permission role='Owner'>
+                            <li className=''>
+                                <Link to='/upload'>
+                                    <i className='fa fa-upload'></i> <span>Upload</span>
+                                </Link>
+                            </li>
+                        </Permission>
                         <Permission role='Owner'>
                             <li>
                                 <Link to='/invite-users'>

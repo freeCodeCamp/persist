@@ -80,7 +80,7 @@ var inviteUser = exports.inviteUser = function inviteUser(req, res, next) {
                 });
             });
         } else {
-            res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
+            res.status(400).json({ error: 'User already exists' });
             return next(err);
         }
     });
@@ -148,7 +148,10 @@ var deleteUser = exports.deleteUser = function deleteUser(req, res, next) {
 // GET ALL USERS
 //= =======================================
 var getUsers = exports.getUsers = function getUsers(req, res, next) {
-    _user2.default.find({ 'access.role': { $ne: 'Admin' } }, function (err, users) {
+
+    _user2.default.find({
+        $and: [{ 'access.role': { $ne: 'Admin' } }, { _id: { $ne: req.user._id } }]
+    }, function (err, users) {
         if (err) {
             res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
             return next(err);
