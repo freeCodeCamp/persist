@@ -105,7 +105,7 @@ var requireLogin = function requireLogin(req, res, next) {
 
 exports.default = function (app) {
 
-    app.post('/upload/studentData', requireAuth, fileUpload, function (req, res) {
+    app.post('/upload/studentData', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
@@ -125,7 +125,7 @@ exports.default = function (app) {
         });
     });
 
-    app.post('/upload/collegeData', requireAuth, fileUpload, function (req, res) {
+    app.post('/upload/collegeData', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
@@ -145,7 +145,7 @@ exports.default = function (app) {
         });
     });
 
-    app.post('/upload/schoolData', requireAuth, fileUpload, function (req, res) {
+    app.post('/upload/schoolData', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
@@ -165,7 +165,7 @@ exports.default = function (app) {
         });
     });
 
-    app.post('/upload/termData', requireAuth, fileUpload, function (req, res) {
+    app.post('/upload/termData', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
@@ -185,7 +185,7 @@ exports.default = function (app) {
         });
     });
 
-    app.post('/upload/applicationData', requireAuth, fileUpload, function (req, res) {
+    app.post('/upload/applicationData', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
 
@@ -284,7 +284,7 @@ exports.default = function (app) {
             return res.status(200).json([]);
         } else if ((0, _constants.getRole)(req.user.access.role) === (0, _constants.getRole)(_constants.ROLE_COUNSELOR)) {
             query = _models.Student.find({ hs: req.user.access.school });
-        } else if ((0, _constants.getRole)(req.user.access.role) > (0, _constants.getRole)(_constants.ROLE_OWNER)) {
+        } else if ((0, _constants.getRole)(req.user.access.role) >= (0, _constants.getRole)(_constants.ROLE_OWNER)) {
             query = _models.Student.find({});
         }
         query.lean().exec(function (err, students) {
@@ -304,7 +304,7 @@ exports.default = function (app) {
             query = _models.User.find({
                 $or: [{ access: { school: req.user.access.school } }, { access: { role: _constants.ROLE_OWNER } }, { access: { role: _constants.ROLE_ADMIN } }]
             });
-        } else if ((0, _constants.getRole)(req.user.access.role) > (0, _constants.getRole)(_constants.ROLE_OWNER)) {
+        } else if ((0, _constants.getRole)(req.user.access.role) >= (0, _constants.getRole)(_constants.ROLE_OWNER)) {
             query = _models.User.find({});
         }
         query.select('profile email').lean().exec(function (err, users) {

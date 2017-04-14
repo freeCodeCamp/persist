@@ -75,7 +75,7 @@ const requireLogin = (req, res, next) => {
 
 export default (app) => {
 
-    app.post('/upload/studentData', requireAuth, fileUpload, function(req, res) {
+    app.post('/upload/studentData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, function(req, res) {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
@@ -91,7 +91,7 @@ export default (app) => {
         });
     });
 
-    app.post('/upload/collegeData', requireAuth, fileUpload, (req, res) => {
+    app.post('/upload/collegeData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
@@ -107,7 +107,7 @@ export default (app) => {
         });
     });
 
-    app.post('/upload/schoolData', requireAuth, fileUpload, (req, res) => {
+    app.post('/upload/schoolData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
@@ -123,7 +123,7 @@ export default (app) => {
         });
     });
 
-    app.post('/upload/termData', requireAuth, fileUpload, (req, res) => {
+    app.post('/upload/termData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
@@ -139,7 +139,7 @@ export default (app) => {
         });
     });
 
-    app.post('/upload/applicationData', requireAuth, fileUpload, (req, res) => {
+    app.post('/upload/applicationData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
@@ -242,7 +242,7 @@ export default (app) => {
             return res.status(200).json([]);
         } else if (getRole(req.user.access.role) === getRole(ROLE_COUNSELOR)) {
             query = Student.find({ hs: req.user.access.school });
-        } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {
+        } else if (getRole(req.user.access.role) >= getRole(ROLE_OWNER)) {
             query = Student.find({});
         }
         query.lean().exec((err, students) => {
@@ -266,7 +266,7 @@ export default (app) => {
                     { access: { role: ROLE_ADMIN } }
                 ]
             });
-        } else if (getRole(req.user.access.role) > getRole(ROLE_OWNER)) {
+        } else if (getRole(req.user.access.role) >= getRole(ROLE_OWNER)) {
             query = User.find({});
         }
         query.select('profile email').lean().exec((err, users) => {

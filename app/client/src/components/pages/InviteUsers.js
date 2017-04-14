@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {Permission} from '../authentication';
 import {getUsers} from '../../actions';
 import Content from '../helpers/content';
 import {Users} from '../users';
-import {Permission} from '../authentication';
 
 class InviteUsers extends Component {
     constructor(props) {
