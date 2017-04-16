@@ -27,7 +27,7 @@ User.pre('save', function (next) {
     _bcryptNodejs2.default.genSalt(SALT_FACTOR, function (err, salt) {
         if (err) return next(err);
 
-        _bcryptNodejs2.default.hash(user.password, salt, null, function (err, hash) {
+        _bcryptNodejs2.default.hash(user.password, salt, function (err, hash) {
             if (err) return next(err);
             user.password = hash;
             next();

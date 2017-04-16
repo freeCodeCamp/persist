@@ -14,14 +14,9 @@ namespace :pm2 do
     end
   end
 
-  def restart_app
-    within current_path do
-      execute :pm2, :restart, fetch(:app_command)
-    end
-  end
-
   def start_app
     within current_path do
+      execute :pm2, :kill
       execute :pm2, :start, "#{current_path}/serverProd.js --name 'nycoutwardbound'"
     end
   end
@@ -35,10 +30,10 @@ namespace :pm2 do
         start_app
       when 'stopped'
         info 'App is stopped'
-        restart_app
+        start_app
       when 'errored'
         info 'App has errored'
-        restart_app
+        start_app
       when 'online'
         info 'App is online'
         restart_app

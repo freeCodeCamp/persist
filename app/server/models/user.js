@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 import {userSchema} from '../../common/schemas';
 import bcrypt from 'bcrypt-nodejs';
 const Schema = mongoose.Schema;
-const User = new Schema(userSchema(Schema), {timestamps: true});
+const User = new Schema(userSchema(Schema), { timestamps: true });
 
-User.pre('save', function (next) {
+User.pre('save', function(next) {
     const user = this;
     const SALT_FACTOR = 5;
     if (!user.isModified('password')) return next();
@@ -12,7 +12,7 @@ User.pre('save', function (next) {
     bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
         if (err) return next(err);
 
-        bcrypt.hash(user.password, salt, null, (err, hash) => {
+        bcrypt.hash(user.password, salt, (err, hash) => {
             if (err) return next(err);
             user.password = hash;
             next();
@@ -20,7 +20,7 @@ User.pre('save', function (next) {
     });
 });
 
-User.methods.comparePassword = function (candidatePassword, cb) {
+User.methods.comparePassword = function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
         if (err) {
             return cb(err);
@@ -44,7 +44,7 @@ const adminUser = {
     },
     enabled: true
 };
-userModel.findOne({email: adminUser.email}, (err, existingUser) => {
+userModel.findOne({ email: adminUser.email }, (err, existingUser) => {
     if (!existingUser) {
         adminUser.password = process.env.ADMIN_PASSWORD;
         userModel.create(adminUser, (err, newAdmin) => {
