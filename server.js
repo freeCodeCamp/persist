@@ -76,3 +76,21 @@ server.listen(PORT, (error) => {
         console.info('==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.', PORT, PORT);
     }
 });
+
+const CronJob = require('cron').CronJob;
+const job = new CronJob(
+    '00 00 00 * * 0-6',
+    function() {
+        /*
+         * Runs every day
+         * at 00:00:00 AM.
+         */
+        require('./scheduled-job')();
+    },
+    function() {
+        /* This function is executed when the job stops */
+        console.log('job stopped');
+    },
+    true /* Start the job right now */,
+    'America/New_York' /* Time zone of this job. */
+);

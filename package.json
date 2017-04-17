@@ -47,6 +47,7 @@
     "connect-flash": "^0.1.1",
     "connect-timeout": "^1.8.0",
     "cookie-parser": "^1.4.3",
+    "cron": "^1.2.1",
     "crypto": "0.0.3",
     "csv": "^1.1.0",
     "csvtojson": "^1.0.2",

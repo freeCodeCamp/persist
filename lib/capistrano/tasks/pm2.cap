@@ -36,7 +36,7 @@ namespace :pm2 do
         start_app
       when 'online'
         info 'App is online'
-        restart_app
+        start_app
       end
     end
   end
