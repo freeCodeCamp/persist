@@ -7,6 +7,7 @@ import socketIO from 'socket.io';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
+import ScheduledJob from './scheduled-job';
 dotenv.config({ silent: true });
 
 function haltOnTimedout(req, res, next) {
@@ -85,7 +86,7 @@ const job = new CronJob(
          * Runs every day
          * at 00:00:00 AM.
          */
-        require('./scheduled-job')();
+        ScheduledJob();
     },
     function() {
         /* This function is executed when the job stops */

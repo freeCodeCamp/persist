@@ -11,10 +11,9 @@ const saveUser = (req, res, newUser, resetToken, err) => {
 
     const message = {
         subject: 'Invitation for NYC Outward Bound',
-        text: `${'\n\n' +
-        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-        'http://'}${req.headers.host}/invite/${resetToken}\n\n` +
-        `If you did not request this, please ignore this email.\n`
+        text: `\n\nPlease click on the following link, or paste this into your browser to complete the process:\n\n
+        ${process.env.ROOT_SCHEME}://${process.env.ROOT_HOST}/invite/${resetToken}\n\n
+        If you did not request this, please ignore this email.\n`
     };
     // Otherwise, send user email via Mailgun
     console.log(message);

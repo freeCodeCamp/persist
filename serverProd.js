@@ -36,6 +36,10 @@ var _connectTimeout = require('connect-timeout');
 
 var _connectTimeout2 = _interopRequireDefault(_connectTimeout);
 
+var _scheduledJob = require('./scheduled-job');
+
+var _scheduledJob2 = _interopRequireDefault(_scheduledJob);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _dotenv2.default.config({ silent: true });
@@ -114,7 +118,7 @@ var job = new CronJob('00 00 00 * * 0-6', function () {
      * Runs every day
      * at 00:00:00 AM.
      */
-    require('./scheduled-job')();
+    (0, _scheduledJob2.default)();
 }, function () {
     /* This function is executed when the job stops */
     console.log('job stopped');

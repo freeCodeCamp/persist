@@ -58,37 +58,37 @@ export const login = (req, res, next) => {
 //= =======================================
 export const register = (req, res, next) => {
     // Check for registration errors
-    const {email, firstName, lastName, password} = req.body;
+    const { email, firstName, lastName, password } = req.body;
     // Return error if no email provided
     if (!email) {
-        return res.status(422).send({error: 'You must enter an email address.'});
+        return res.status(422).send({ error: 'You must enter an email address.' });
     }
 
     // Return error if full name not provided
     if (!firstName) {
-        return res.status(422).send({error: 'You must enter your name.'});
+        return res.status(422).send({ error: 'You must enter your name.' });
     }
 
     // Return error if no password provided
     if (!password) {
-        return res.status(422).send({error: 'You must enter a password.'});
+        return res.status(422).send({ error: 'You must enter a password.' });
     }
 
-    User.findOne({email}, (err, existingUser) => {
+    User.findOne({ email }, (err, existingUser) => {
         if (err) {
             return next(err);
         }
 
         // If user is not unique, return error
         if (existingUser) {
-            return res.status(422).send({error: 'That email address is already in use.'});
+            return res.status(422).send({ error: 'That email address is already in use.' });
         }
 
         // If email is unique and password was provided, create account
         const user = new User({
             email,
             password,
-            profile: {firstName, lastName}
+            profile: { firstName, lastName }
         });
 
         user.save((err, user) => {
@@ -121,7 +121,7 @@ export const roleAuthorization = (requiredRole) => (
         const user = req.user;
         User.findById(user._id, (err, foundUser) => {
             if (err) {
-                res.status(422).json({error: 'No user was found.'});
+                res.status(422).json({ error: 'No user was found.' });
                 return next(err);
             }
 
@@ -130,7 +130,7 @@ export const roleAuthorization = (requiredRole) => (
                 return next();
             }
 
-            return res.status(401).json({error: 'You are not authorized to view this content.'});
+            return res.status(401).json({ error: 'You are not authorized to view this content.' });
         });
     }
 );
@@ -138,10 +138,10 @@ export const roleAuthorization = (requiredRole) => (
 export const forgotPassword = (req, res, next) => {
     const email = req.body.email;
 
-    User.findOne({email}, (err, existingUser) => {
+    User.findOne({ email }, (err, existingUser) => {
         // If user is not found, return error
         if (err || !existingUser) {
-            res.status(422).json({error: 'Your request could not be processed as entered. Please try again.'});
+            res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
             return next(err);
         }
 
@@ -165,16 +165,16 @@ export const forgotPassword = (req, res, next) => {
 
                 const message = {
                     subject: 'Reset Password',
-                    text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://'}${req.headers.host}/reset-password/${resetToken}\n\n` +
-                    `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+                    text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+                    Please click on the following link, or paste this into your browser to complete the process:\n\n
+                    ${process.env.ROOT_SCHEME}://${process.env.ROOT_HOST}/reset-password/${resetToken}\n\n
+                    If you did not request this, please ignore this email and your password will remain unchanged.\n`
                 };
                 // Otherwise, send user email via Mailgun
                 console.log(message);
                 mailgun.sendEmail(existingUser.email, message);
 
-                return res.status(200).json({message: 'Please check your email for the link to reset your password.'});
+                return res.status(200).json({ message: 'Please check your email for the link to reset your password.' });
             });
         });
     });
@@ -185,10 +185,10 @@ export const forgotPassword = (req, res, next) => {
 //= =======================================
 
 export const verifyToken = (req, res, next) => {
-    User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, (err, resetUser) => {
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, (err, resetUser) => {
         // If query returned no results, token expired or was invalid. Return error.
         if (!resetUser) {
-            res.status(422).json({error: 'Your token has expired. Please attempt to reset your password again.'});
+            res.status(422).json({ error: 'Your token has expired. Please attempt to reset your password again.' });
         }
 
         // Otherwise, save new password and clear resetToken from database
@@ -211,7 +211,7 @@ export const verifyToken = (req, res, next) => {
             // Otherwise, send user email confirmation of password change via Mailgun
             mailgun.sendEmail(resetUser.email, message);
 
-            return res.status(200).json({message: 'Password changed successfully. Please login with your new password.'});
+            return res.status(200).json({ message: 'Password changed successfully. Please login with your new password.' });
         });
     });
 };
