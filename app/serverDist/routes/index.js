@@ -382,6 +382,7 @@ exports.default = function (app) {
     app.delete('/users', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), _controllers.UserController.deleteUser);
     app.post('/update-password/:token', _controllers.AuthController.verifyToken);
     app.post('/invite/:token', _controllers.AuthController.verifyToken);
+    app.post('/reset-password/:token', _controllers.AuthController.verifyToken);
 
     app.post('/backup-database', matchSecret, _controllers.DataManageController.backupDatabase);
     app.post('/restore-database', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), _controllers.DataManageController.restoreDatabase);

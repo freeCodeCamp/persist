@@ -1,6 +1,6 @@
 import React from 'react';
 import store from './store';
-import { Route, IndexRoute } from 'react-router';
+import {Route, IndexRoute} from 'react-router';
 import AppParent from './components/AppParent';
 import DashboardMain from './components/pages/DashboardMain';
 import Upload from './components/pages/Upload';
@@ -14,13 +14,14 @@ import Notifications from './components/pages/Notifications';
 import Colleges from './components/pages/Colleges';
 import Recovery from './components/pages/Recovery';
 import FilteredStudents from './components/pages/FilteredStudents';
-import { requireAuth, Login, ForgotPassword, UpdatePassword, logout } from './components/authentication';
+import {requireAuth, Login, ForgotPassword, UpdatePassword, logout} from './components/authentication';
 
 export default (
     <Route>
         <Route path='login' component={Login} />
         <Route path='forgot-password' component={ForgotPassword} />
         <Route path='update-password/:token' component={UpdatePassword} />
+        <Route path='reset-password/:token' component={UpdatePassword} />
         <Route path='invite/:token' component={UpdatePassword} />
         <Route path='logout' onEnter={logout.bind(null, store.dispatch)} />
         <Route path='/' component={ requireAuth(AppParent) }>

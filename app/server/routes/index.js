@@ -354,6 +354,7 @@ export default (app) => {
     app.delete('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.deleteUser);
     app.post('/update-password/:token', AuthController.verifyToken);
     app.post('/invite/:token', AuthController.verifyToken);
+    app.post('/reset-password/:token', AuthController.verifyToken);
 
     app.post('/backup-database', matchSecret, DataManageController.backupDatabase);
     app.post('/restore-database', requireAuth, AuthController.roleAuthorization('Owner'), DataManageController.restoreDatabase);
