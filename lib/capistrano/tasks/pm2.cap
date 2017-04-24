@@ -17,7 +17,7 @@ namespace :pm2 do
   def start_app
     within current_path do
       execute :pm2, :kill
-      execute :pm2, :start, "#{current_path}/serverProd.js --name 'nycoutwardbound'"
+      execute :pm2, :start, "#{current_path}/serverProd.js --name 'nycoutwardbound' --log-date-format 'DD-MM HH:mm:ss.SSS'"
     end
   end
 
