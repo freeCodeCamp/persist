@@ -155,7 +155,7 @@ export const forgotPassword = (req, res, next) => {
             }
 
             existingUser.resetPasswordToken = resetToken;
-            existingUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+            existingUser.resetPasswordExpires = Date.now() + 36000000; // 10 hour
 
             existingUser.save((err) => {
                 // If error in saving token, return it
@@ -188,7 +188,7 @@ export const verifyToken = (req, res, next) => {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, (err, resetUser) => {
         // If query returned no results, token expired or was invalid. Return error.
         if (!resetUser) {
-            res.status(422).json({ error: 'Your token has expired. Please attempt to reset your password again.' });
+            return res.status(422).json({ error: 'Your token has expired. Please attempt to reset your password again.' });
         }
 
         // Otherwise, save new password and clear resetToken from database

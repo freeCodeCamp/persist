@@ -62,7 +62,7 @@ var inviteUser = exports.inviteUser = function inviteUser(req, res, next) {
                 _user2.default.create(userDetails, function (err, newUser) {
                     if (err) return next(err);
                     newUser.resetPasswordToken = resetToken;
-                    newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+                    newUser.resetPasswordExpires = Date.now() + 36000000; // 10 hour
 
                     var schoolId = userDetails.access.school;
                     if (schoolId) {

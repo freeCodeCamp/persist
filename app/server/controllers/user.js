@@ -42,7 +42,7 @@ export const inviteUser = (req, res, next) => {
                 User.create(userDetails, (err, newUser) => {
                     if (err) return next(err);
                     newUser.resetPasswordToken = resetToken;
-                    newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+                    newUser.resetPasswordExpires = Date.now() + 36000000; // 10 hour
 
                     const schoolId = userDetails.access.school;
                     if (schoolId) {
