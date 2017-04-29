@@ -1,13 +1,8 @@
-import {
-    DELETE_APPLICATION_ERROR,
-    DELETE_APPLICATION_PENDING,
-    DELETE_APPLICATION_SUCCESS,
-    SPINNER_PAGE
-} from '../types';
-import {axios} from '../utils';
+import { DELETE_APPLICATION_ERROR, DELETE_APPLICATION_PENDING, DELETE_APPLICATION_SUCCESS, SPINNER_PAGE } from '../types';
+import { axios } from '../utils';
 
-const deleteApplication = (osis, _id) => (
-    (dispatch) => {
+const deleteApplication = (osis, _id) =>
+    dispatch => {
         dispatch({
             type: SPINNER_PAGE,
             payload: true
@@ -16,8 +11,9 @@ const deleteApplication = (osis, _id) => (
             osis,
             _id
         };
-        return axios().delete('/update-application', {params})
-            .then((res) => {
+        return axios()
+            .delete('/update-application', { params })
+            .then(res => {
                 dispatch({
                     type: DELETE_APPLICATION_SUCCESS,
                     osis,
@@ -28,7 +24,7 @@ const deleteApplication = (osis, _id) => (
                     payload: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 dispatch({
                     type: DELETE_APPLICATION_ERROR,
                     payload: err
@@ -38,7 +34,6 @@ const deleteApplication = (osis, _id) => (
                     payload: false
                 });
             });
-    }
-);
+    };
 
 export default deleteApplication;

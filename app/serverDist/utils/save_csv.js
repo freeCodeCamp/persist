@@ -5,9 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (fileName) {
-
     return new Promise(function (resolve, reject) {
-
         var parser = (0, _csvParse2.default)({
             delimiter: ',',
             columns: mapValues,
@@ -177,7 +175,6 @@ var createAlias = function createAlias(student) {
 };
 
 function mapValues(line) {
-
     return line.map(function (key) {
         var obj = _fieldKeys.studentKeys.find(function (field) {
             return field.fieldName === key;

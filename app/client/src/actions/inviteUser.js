@@ -1,19 +1,15 @@
-import {
-    INVITE_USER_ERROR,
-    INVITE_USER_PENDING,
-    INVITE_USER_SUCCESS,
-    SPINNER_PAGE
-} from './types';
-import {axios} from './utils';
+import { INVITE_USER_ERROR, INVITE_USER_PENDING, INVITE_USER_SUCCESS, SPINNER_PAGE } from './types';
+import { axios } from './utils';
 
-const inviteUser = (user) => (
-    (dispatch) => {
+const inviteUser = user =>
+    dispatch => {
         dispatch({
             type: SPINNER_PAGE,
             payload: true
         });
-        return axios().post('/users', user)
-            .then((res) => {
+        return axios()
+            .post('/users', user)
+            .then(res => {
                 dispatch({
                     type: INVITE_USER_SUCCESS,
                     payload: res.data
@@ -23,7 +19,7 @@ const inviteUser = (user) => (
                     payload: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 dispatch({
                     type: INVITE_USER_ERROR,
                     payload: err
@@ -32,8 +28,7 @@ const inviteUser = (user) => (
                     type: SPINNER_PAGE,
                     payload: false
                 });
-            })
-    }
-);
+            });
+    };
 
 export default inviteUser;

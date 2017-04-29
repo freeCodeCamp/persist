@@ -2,10 +2,9 @@ import React from 'react';
 import Chip from 'material-ui/Chip';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import {Field} from 'redux-form';
+import { Field } from 'redux-form';
 
 export default class Chips extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -33,7 +32,7 @@ export default class Chips extends React.Component {
     componentWillMount() {
         let options = this.props.options;
         let initValue = this.props.input.value || [];
-        options = options.filter((el) => {
+        options = options.filter(el => {
             return !initValue.includes(el);
         });
 
@@ -51,7 +50,7 @@ export default class Chips extends React.Component {
     }
 
     handleRequestDelete(key) {
-        const {form} = this.props;
+        const { form } = this.props;
         let chipData = this.state.chipData;
         const chipToDelete = Array.from(chipData, chip => chip.key).indexOf(key);
         let options = this.state.options;
@@ -68,15 +67,14 @@ export default class Chips extends React.Component {
 
     renderChip(data) {
         return (
-            <Chip key={ data.key } onRequestDelete={ this.handleRequestDelete.bind(this, data.key) }
-                  style={ this.styles.chip }>
-                { data.label }
+            <Chip key={data.key} onRequestDelete={this.handleRequestDelete.bind(this, data.key)} style={this.styles.chip}>
+                {data.label}
             </Chip>
         );
     }
 
     handleChange(event, index, value) {
-        const {form} = this.props;
+        const { form } = this.props;
         var _this = this;
         let options = this.state.options;
         options.splice(options.indexOf(value), 1);
@@ -101,22 +99,24 @@ export default class Chips extends React.Component {
     }
 
     render() {
-        const {state, styles} = this;
-        let optionsHTML = this.state.options.map((elem) => {
-            return <MenuItem key={ elem } value={ elem } primaryText={ elem }/>;
+        const { state, styles } = this;
+        let optionsHTML = this.state.options.map(elem => {
+            return <MenuItem key={elem} value={elem} primaryText={elem} />;
         });
         return (
-            <div style={ styles.wrapContainer }>
-                <div className="chips" style={ styles.wrapper }>
-                    { state.chipData.map(this.renderChip, this) }
+            <div style={styles.wrapContainer}>
+                <div className="chips" style={styles.wrapper}>
+                    {state.chipData.map(this.renderChip, this)}
                 </div>
                 <div className="selectField">
-                    <SelectField name='chips'
-                                 maxHeight={200}
-                                 disabled={ this.props.disabled }
-                                 floatingLabelText={ this.props.field.displayName }
-                                 onChange={ this.handleChange.bind(this) }>
-                        { optionsHTML }
+                    <SelectField
+                        name="chips"
+                        maxHeight={200}
+                        disabled={this.props.disabled}
+                        floatingLabelText={this.props.field.displayName}
+                        onChange={this.handleChange.bind(this)}
+                    >
+                        {optionsHTML}
                     </SelectField>
                 </div>
             </div>

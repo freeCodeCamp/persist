@@ -1,6 +1,6 @@
-import validator, {messages, enums} from '../validator';
+import validator, { messages, enums } from '../validator';
 
-const termSchema = (Schema) => (
+const termSchema = Schema =>
     new Schema({
         name: String,
         college: {
@@ -27,20 +27,18 @@ const termSchema = (Schema) => (
                 validator: validator['terms.degreeTitle'],
                 message: messages.default
             }
-        },
-    })
-);
+        }
+    });
 
-const documentSchema = (Schema) => (
+const documentSchema = Schema =>
     new Schema({
         name: String,
         type: String,
         Key: String,
         downloadLink: String
-    })
-);
+    });
 
-const caseNotesSchema = (Schema) => (
+const caseNotesSchema = Schema =>
     new Schema({
         description: String,
         communicationType: {
@@ -60,10 +58,9 @@ const caseNotesSchema = (Schema) => (
             type: Boolean,
             default: false
         }
-    })
-);
+    });
 
-const applicationsSchema = (Schema) => (
+const applicationsSchema = Schema =>
     new Schema({
         college: {
             type: Schema.Types.ObjectId,
@@ -90,10 +87,9 @@ const applicationsSchema = (Schema) => (
             default: false
         },
         notes: String
-    })
-);
+    });
 
-const graduationsSchema = (Schema) => (
+const graduationsSchema = Schema =>
     new Schema({
         college: {
             type: Schema.Types.ObjectId,
@@ -103,19 +99,17 @@ const graduationsSchema = (Schema) => (
         enrolBegin: Date,
         enrolEnd: Date,
         type: String
-    })
-);
+    });
 
-const aliasSchema = (Schema) => (
+const aliasSchema = Schema =>
     new Schema({
         firstName: String,
         lastName: String,
         middleName: String,
         suffix: String
-    })
-);
+    });
 
-export default (Schema) => {
+export default Schema => {
     return {
         aliases: [aliasSchema(Schema)],
         alias: {
@@ -124,9 +118,7 @@ export default (Schema) => {
         },
         ethnicity: {
             type: Number,
-            min: [
-                1, 'Ethnicity must be between 1 and 7'
-            ],
+            min: [1, 'Ethnicity must be between 1 and 7'],
             max: [7, 'Ethnicity must be between 1 and 7']
         },
         gender: {
@@ -348,7 +340,6 @@ export default (Schema) => {
         documents: [documentSchema(Schema)],
         caseNotes: [caseNotesSchema(Schema)],
         applications: [applicationsSchema(Schema)],
-
 
         tshirtSize: {
             type: String,

@@ -11,7 +11,7 @@ const backupToS3 = (req, res, Key, err) => {
         return res.status(500).send(err);
     }
     const bucketName = process.env.S3_BUCKET_NAME;
-    aws.config.update({region: 'us-east-1'});
+    aws.config.update({ region: 'us-east-1' });
     const s3 = new aws.S3();
     const s3Params = {
         Bucket: bucketName,
@@ -19,17 +19,17 @@ const backupToS3 = (req, res, Key, err) => {
         ACL: 'private',
         Body: fs.createReadStream(`./${Key}.tar`)
     };
-    s3.putObject(s3Params, (err) => {
+    s3.putObject(s3Params, err => {
         if (err) {
             console.log('backup', err);
             return res.status(500).send(err);
         }
-        fs.remove(`${__dirname}/../../../backups`, (err) => {
+        fs.remove(`${__dirname}/../../../backups`, err => {
             if (err) {
-                return res.status(500).send({error: 'deleting files failed'});
+                return res.status(500).send({ error: 'deleting files failed' });
             }
-            res.status(200).json({msg: 'backup successfully done'});
-        })
+            res.status(200).json({ msg: 'backup successfully done' });
+        });
     });
 };
 
@@ -47,7 +47,7 @@ export const backupDatabase = (req, res) => {
 
 const downloadFromS3 = (req, res, Key) => {
     const bucketName = process.env.S3_BUCKET_NAME;
-    aws.config.update({region: 'us-east-1'});
+    aws.config.update({ region: 'us-east-1' });
     const s3 = new aws.S3();
     const s3Params = {
         Bucket: bucketName,
@@ -55,7 +55,7 @@ const downloadFromS3 = (req, res, Key) => {
     };
     s3.getObject(s3Params, (err, data) => {
         if (err) {
-            return res.status(500).json({error: 'Not able to get the database from s3 storage'});
+            return res.status(500).json({ error: 'Not able to get the database from s3 storage' });
         }
         const databaseStream = new stream.PassThrough();
         databaseStream.end(data.Body);
@@ -63,11 +63,11 @@ const downloadFromS3 = (req, res, Key) => {
             uri: process.env.MONGODB_URI,
             stream: databaseStream,
             drop: true,
-            callback: (err) => {
+            callback: err => {
                 if (err) {
-                    return res.status(500).json({error: 'Not able to restore data on heroku'});
+                    return res.status(500).json({ error: 'Not able to restore data on heroku' });
                 }
-                res.status(200).json({message: 'Data restored'});
+                res.status(200).json({ message: 'Data restored' });
             }
         });
     });
@@ -80,7 +80,7 @@ export const restoreDatabase = (req, res) => {
 
 export const getDatabaseBackups = (req, res) => {
     const bucketName = process.env.S3_BUCKET_NAME;
-    aws.config.update({region: 'us-east-1'});
+    aws.config.update({ region: 'us-east-1' });
     const s3 = new aws.S3();
     const s3Params = {
         Bucket: bucketName,
@@ -88,10 +88,10 @@ export const getDatabaseBackups = (req, res) => {
     };
     s3.listObjectsV2(s3Params, (err, data) => {
         if (err) {
-            return res.status(500).json({error: 'Not able to get list from amazon.'});
+            return res.status(500).json({ error: 'Not able to get list from amazon.' });
         }
-        let backups = data.Contents.filter((backup) => (backup.Size > 0));
-        backups = backups.map((backup) => (backup.Key));
+        let backups = data.Contents.filter(backup => backup.Size > 0);
+        backups = backups.map(backup => backup.Key);
         res.status(200).json(backups);
     });
 };
@@ -100,4 +100,4 @@ export default {
     backupDatabase,
     restoreDatabase,
     getDatabaseBackups
-}
+};

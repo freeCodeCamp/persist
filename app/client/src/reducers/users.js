@@ -38,7 +38,7 @@ const usersReducer = (state = defaultState, action) => {
             };
         case UPDATE_USER_SUCCESS:
             user = action.payload;
-            index = findIndex(state.value, (u) => (u._id === user._id));
+            index = findIndex(state.value, u => u._id === user._id);
             newState = cloneDeep(state);
             newState.value[index] = merge(newState.value[index], user);
             return newState;
@@ -52,7 +52,7 @@ const usersReducer = (state = defaultState, action) => {
             user = action.payload;
             return {
                 ...state,
-                value: state.value.filter((u) => (u._id !== user._id))
+                value: state.value.filter(u => u._id !== user._id)
             };
         case GET_USERS_ERROR:
         case UPDATE_USER_ERROR:

@@ -1,12 +1,12 @@
 import React from 'react';
 import Content from '../helpers/content';
 import ChartFilter from '../charts/Filter';
-import {ChartTabs} from '../dashboard';
-import {connect} from 'react-redux';
-import {reduxForm} from 'redux-form';
-import {studentKeys} from '../../../../common/fieldKeys';
+import { ChartTabs } from '../dashboard';
+import { connect } from 'react-redux';
+import { reduxForm } from 'redux-form';
+import { studentKeys } from '../../../../common/fieldKeys';
 import _ from 'lodash';
-import {validateArray} from '../../../../common/constants';
+import { validateArray } from '../../../../common/constants';
 const studentKeysObj = _.keyBy(studentKeys, 'dbName');
 
 class DashboardMain extends React.Component {
@@ -27,37 +27,31 @@ class DashboardMain extends React.Component {
         const gradYear4 = conditions.gradYear4;
         delete conditions.hsGPA;
         delete conditions.gradYear4;
-        const arrayConditions = _(conditions).pickBy((value, key) => (
-            studentKeysObj[key].fieldType === 'Checkbox'
-        )).value();
+        const arrayConditions = _(conditions).pickBy((value, key) => studentKeysObj[key].fieldType === 'Checkbox').value();
         conditions = _.omit(conditions, _.keys(arrayConditions));
-        let filteredStudents = _(students)
-            .filter(conditions);
-        filteredStudents = filteredStudents
-            .filter((student) => {
-                let take = true;
-                _.forOwn(arrayConditions, (value, key) => {
-                    if (!validateArray(value, student[key])) {
-                        take = false;
-                        return false;
-                    }
-                });
-                return take;
+        let filteredStudents = _(students).filter(conditions);
+        filteredStudents = filteredStudents.filter(student => {
+            let take = true;
+            _.forOwn(arrayConditions, (value, key) => {
+                if (!validateArray(value, student[key])) {
+                    take = false;
+                    return false;
+                }
             });
+            return take;
+        });
         if (!(hsGPA.min === 0 && hsGPA.max === 100)) {
-            filteredStudents = filteredStudents
-                .filter((student) => {
-                    return student.hsGPA > hsGPA.min && student.hsGPA < hsGPA.max;
-                });
+            filteredStudents = filteredStudents.filter(student => {
+                return student.hsGPA > hsGPA.min && student.hsGPA < hsGPA.max;
+            });
         }
         if (gradYear4) {
-            filteredStudents = filteredStudents
-                .filter((student) => {
-                    if (student.expectedHSGrad && student.hsGradYear) {
-                        return new Date(student.expectedHSGrad).getFullYear() === student.hsGradYear;
-                    }
-                    return false;
-                });
+            filteredStudents = filteredStudents.filter(student => {
+                if (student.expectedHSGrad && student.hsGradYear) {
+                    return new Date(student.expectedHSGrad).getFullYear() === student.hsGradYear;
+                }
+                return false;
+            });
         }
         console.log(filteredStudents.value().length);
         this.setState({
@@ -95,8 +89,8 @@ class DashboardMain extends React.Component {
 
     render() {
         return (
-            <Content title='PERS+ST'>
-                <ChartFilter handleFormSubmit={(values) => this.handleSubmit(values)} />
+            <Content title="PERS+ST">
+                <ChartFilter handleFormSubmit={values => this.handleSubmit(values)} />
                 <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges} />
             </Content>
         );
@@ -107,7 +101,7 @@ DashboardMain = reduxForm({
     form: 'chartFilterStudents'
 })(DashboardMain);
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
         students: state.students.value,
         colleges: state.colleges.value

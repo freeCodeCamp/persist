@@ -1,11 +1,10 @@
 import React from 'react';
-import {TextField, Chip} from 'material-ui';
+import { TextField, Chip } from 'material-ui';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {Field} from 'redux-form';
+import { Field } from 'redux-form';
 
 export default class Chips extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -46,7 +45,7 @@ export default class Chips extends React.Component {
     }
 
     handleRequestDelete(key) {
-        const {form} = this.props;
+        const { form } = this.props;
         const chipData = this.state.chipData;
         const chipToDelete = Array.from(chipData, chip => chip.key).indexOf(key);
         chipData.splice(chipToDelete, 1);
@@ -61,17 +60,16 @@ export default class Chips extends React.Component {
 
     renderChip(data) {
         return (
-            <Chip key={ data.key } onRequestDelete={ this.handleRequestDelete.bind(this, data.key) }
-                  style={ this.styles.chip }>
-                { data.label }
+            <Chip key={data.key} onRequestDelete={this.handleRequestDelete.bind(this, data.key)} style={this.styles.chip}>
+                {data.label}
             </Chip>
         );
     }
 
     handleAdd() {
-        const {form} = this.props;
-        const {chipData} = this.state;
-        let {fieldValue} = this.state;
+        const { form } = this.props;
+        const { chipData } = this.state;
+        let { fieldValue } = this.state;
         fieldValue = fieldValue.trim();
         if (fieldValue.length < 1) return;
 
@@ -90,25 +88,23 @@ export default class Chips extends React.Component {
     }
 
     render() {
-        const {state, styles, props} = this;
+        const { state, styles, props } = this;
         return (
-            <div style={ styles.wrapContainer }>
-                <div className="chips" style={ styles.wrapper }>
-                    { state.chipData.map(this.renderChip, this) }
+            <div style={styles.wrapContainer}>
+                <div className="chips" style={styles.wrapper}>
+                    {state.chipData.map(this.renderChip, this)}
                 </div>
-                <div className='textField' style={{position: 'relative'}}>
+                <div className="textField" style={{ position: 'relative' }}>
                     <TextField
                         name={`${this.fieldName}-add-chips`}
-                        disabled={ props.disabled }
-                        floatingLabelText={ props.field.displayName }
+                        disabled={props.disabled}
+                        floatingLabelText={props.field.displayName}
                         value={state.fieldValue}
                         onChange={(e, v) => {
-                            this.setState({...state, fieldValue: v})
+                            this.setState({ ...state, fieldValue: v });
                         }}
                     />
-                    <FloatingActionButton
-                        style={{position: 'absolute', bottom: 10}} mini={true}
-                        onClick={() => this.handleAdd()}>
+                    <FloatingActionButton style={{ position: 'absolute', bottom: 10 }} mini={true} onClick={() => this.handleAdd()}>
                         <ContentAdd />
                     </FloatingActionButton>
                 </div>

@@ -1,9 +1,9 @@
 import transform from 'lodash/transform';
 import map from 'lodash/map';
 import range from 'lodash/range';
-import {studentKeys} from './fieldKeys';
+import { studentKeys } from './fieldKeys';
 import exportKeys from './exportKeys';
-import {mapping, validateArray} from './constants';
+import { mapping, validateArray } from './constants';
 
 export const messages = {
     default: 'You tried to add `{VALUE}` to `{PATH}` which is forbidden'
@@ -73,16 +73,8 @@ export const types = {
         'Attempted Reading Remediation (Failed)',
         'Attempted Writing Remediation (Failed)'
     ],
-    employmentStatus: [
-        'Working Less than 12 hours',
-        'Working 12-25 hours',
-        'Working more than 25 hours',
-        'Seeking Employment'
-    ],
-    gender: [
-        { text: 'Male', value: 'M' },
-        { text: 'Female', value: 'F' }
-    ],
+    employmentStatus: ['Working Less than 12 hours', 'Working 12-25 hours', 'Working more than 25 hours', 'Seeking Employment'],
+    gender: [{ text: 'Male', value: 'M' }, { text: 'Female', value: 'F' }],
     cohort: [
         'M (2007)',
         'N (2008)',
@@ -115,13 +107,7 @@ export const types = {
         'Bachelors Degree',
         'Associates Degree'
     ],
-    residency: [
-        'Lives with Family',
-        'Lives independently',
-        'Lives on Campus',
-        'Displaced',
-        'Lives on Campus, displaced during breaks'
-    ],
+    residency: ['Lives with Family', 'Lives independently', 'Lives on Campus', 'Displaced', 'Lives on Campus, displaced during breaks'],
     progressToGradAss: [
         'Confirmed Graduate',
         'Confirmed Graduated',
@@ -140,60 +126,19 @@ export const types = {
         'Unclear if Graduated or Dropped Out',
         'Dropped Out'
     ],
-    tshirtSize: [
-        'S',
-        'M',
-        'L',
-        'XL',
-        'XXL',
-        'XXXL'
-    ],
-    sweatshirtSize: [
-        'S',
-        'M',
-        'L',
-        'XL',
-        'XXL',
-        'XXXL'
-    ],
-    durationType: [
-        '2 year',
-        '4 year',
-        'vocational'
-    ],
-    commonApp: [
-        'Not started',
-        'Not planning to apply via Common App',
-        'Started, did not finish',
-        'Completed'
-    ],
-    sunyApp: [
-        'Not started',
-        'Not applying to SUNY',
-        'Started, did not finish',
-        'Completed'
-    ],
-    cunyApp: [
-        'Not started',
-        'Not applying to CUNY',
-        'Started, did not finish',
-        'Completed'
-    ],
+    tshirtSize: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+    sweatshirtSize: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+    durationType: ['2 year', '4 year', 'vocational'],
+    commonApp: ['Not started', 'Not planning to apply via Common App', 'Started, did not finish', 'Completed'],
+    sunyApp: ['Not started', 'Not applying to SUNY', 'Started, did not finish', 'Completed'],
+    cunyApp: ['Not started', 'Not applying to CUNY', 'Started, did not finish', 'Completed'],
     housingStatus: [
         'Housing form completed and deposit submitted',
         'Housing form not completed',
         'N/A: Student not planning to live on campus'
     ],
-    physImmunRecords: [
-        'Sent to School',
-        'Not Sent to School',
-        'Still needs to get immunizations'
-    ],
-    registeredForClasses: [
-        'Yes',
-        'Not yet registered',
-        'N/A'
-    ],
+    physImmunRecords: ['Sent to School', 'Not Sent to School', 'Still needs to get immunizations'],
+    registeredForClasses: ['Yes', 'Not yet registered', 'N/A'],
     postSecPlan: [
         'Planning to Enroll in the Fall',
         'Planning to Enroll in Spring',
@@ -203,22 +148,15 @@ export const types = {
         'Planning to enlist in military',
         'Not planning to attend college- other'
     ],
-    'graduations.type': [
-        'Associates Degree',
-        'Bachelors Degree',
-        'Certificate'
-    ],
-    'terms.status': transform(mapping.termStatus, (res, val, key) => {
-        res.push({ text: val, value: key });
-    }, []),
-    'caseNotes.communicationType': [
-        'In person',
-        'Text',
-        'Facebook',
-        'Phone call',
-        'Email',
-        'Other'
-    ],
+    'graduations.type': ['Associates Degree', 'Bachelors Degree', 'Certificate'],
+    'terms.status': transform(
+        mapping.termStatus,
+        (res, val, key) => {
+            res.push({ text: val, value: key });
+        },
+        []
+    ),
+    'caseNotes.communicationType': ['In person', 'Text', 'Facebook', 'Phone call', 'Email', 'Other'],
     'applications.result': [
         'Accepted',
         'Withdrawn',
@@ -232,24 +170,8 @@ export const types = {
         'Deferred',
         'Jan. Admit'
     ],
-    'applications.type': [
-        'RD',
-        'PRI',
-        'ED',
-        'EDII',
-        'EA',
-        'EAII',
-        'ROLL',
-        'REA',
-        'OTHR'
-    ],
-    'applications.heop': [
-        'HEOP',
-        'EOP',
-        'SEEK',
-        'Not Eligible',
-        'Other Program'
-    ],
+    'applications.type': ['RD', 'PRI', 'ED', 'EDII', 'EA', 'EAII', 'ROLL', 'REA', 'OTHR'],
+    'applications.heop': ['HEOP', 'EOP', 'SEEK', 'Not Eligible', 'Other Program'],
     'documents.types': [
         'Award letter',
         'HS Transcript',
@@ -261,14 +183,22 @@ export const types = {
         'Student Aid Report',
         'other'
     ],
-    ethnicity: transform(mapping.ethnicity, (res, val, key) => {
-        res.push({ text: val, value: Number(key) });
-    }, []),
-    collType: transform(mapping.collType, (res, val, key) => {
-        res.push({ text: val, value: Number(key) });
-    }, []),
-    hsGradYear: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1),
-    expectedGrad: range((new Date().getFullYear()) - 6, (new Date().getFullYear()) + 4, 1)
+    ethnicity: transform(
+        mapping.ethnicity,
+        (res, val, key) => {
+            res.push({ text: val, value: Number(key) });
+        },
+        []
+    ),
+    collType: transform(
+        mapping.collType,
+        (res, val, key) => {
+            res.push({ text: val, value: Number(key) });
+        },
+        []
+    ),
+    hsGradYear: range(new Date().getFullYear() - 6, new Date().getFullYear() + 4, 1),
+    expectedGrad: range(new Date().getFullYear() - 6, new Date().getFullYear() + 4, 1)
 };
 
 export const enums = {
@@ -334,9 +264,9 @@ const validator = {};
 const studentFieldTypes = exportKeys(map(studentKeys, 'dbName'), studentKeys);
 const arrayTypes = [...studentFieldTypes['checkbox'], ...studentFieldTypes['checkbox_add'], 'terms.degreeTitle'];
 for (const field of arrayTypes) {
-    validator[field] = (values) => {
+    validator[field] = values => {
         return validateArray(values, types[field]);
-    }
+    };
 }
 
 export default validator;

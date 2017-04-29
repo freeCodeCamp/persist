@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {push} from 'react-router-redux';
-import {Card, CardText, Divider} from 'material-ui';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
+import { Card, CardText, Divider } from 'material-ui';
 import moment from 'moment';
 import async from 'async';
-import {BasicColumn} from '../admin-components/charts';
+import { BasicColumn } from '../admin-components/charts';
 
 class ColDirEnrol extends Component {
     constructor(props) {
@@ -19,7 +19,7 @@ class ColDirEnrol extends Component {
         this.state = {
             loading: true,
             data: []
-        }
+        };
     }
 
     componentDidMount() {
@@ -27,13 +27,16 @@ class ColDirEnrol extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            loading: true
-        }, this.updateGraph.bind(this, nextProps));
+        this.setState(
+            {
+                loading: true
+            },
+            this.updateGraph.bind(this, nextProps)
+        );
     }
 
     updateGraph(props) {
-        this.normalizeData(props).then((data) => {
+        this.normalizeData(props).then(data => {
             this.setState({
                 data,
                 loading: false
@@ -46,51 +49,57 @@ class ColDirEnrol extends Component {
     }
 
     normalizeData(props) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {
                 '6m': { count: 0, students: [] },
                 '12m': { count: 0, students: [] },
                 '18m': { count: 0, students: [] },
-                'total': 0,
+                total: 0
             };
             const result = {};
-            const q = async.queue((student, callback) => {
-                const hsGradYear = student.hsGradYear;
-                if (hsGradYear) {
-                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
-                    const hsGradDate = student.hsGradDate;
-                    let enrolDate;
-                    student.terms = _.compact(student.terms);
-                    if (student.terms.length > 0) {
-                        enrolDate = _.last(student.terms).enrolBegin;
-                    }
-                    if (enrolDate && hsGradDate) {
-                        if (this.diffMonths(enrolDate, hsGradDate, 6)) {
-                            result[hsGradYear]['6m'].count += 1;
-                            result[hsGradYear]['6m'].students.push(student.osis);
+            const q = async.queue(
+                (student, callback) => {
+                    const hsGradYear = student.hsGradYear;
+                    if (hsGradYear) {
+                        result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
+                        const hsGradDate = student.hsGradDate;
+                        let enrolDate;
+                        student.terms = _.compact(student.terms);
+                        if (student.terms.length > 0) {
+                            enrolDate = _.last(student.terms).enrolBegin;
                         }
-                        if (this.diffMonths(enrolDate, hsGradDate, 12)) {
-                            result[hsGradYear]['12m'].count += 1;
-                            result[hsGradYear]['12m'].students.push(student.osis);
+                        if (enrolDate && hsGradDate) {
+                            if (this.diffMonths(enrolDate, hsGradDate, 6)) {
+                                result[hsGradYear]['6m'].count += 1;
+                                result[hsGradYear]['6m'].students.push(student.osis);
+                            }
+                            if (this.diffMonths(enrolDate, hsGradDate, 12)) {
+                                result[hsGradYear]['12m'].count += 1;
+                                result[hsGradYear]['12m'].students.push(student.osis);
+                            }
+                            if (this.diffMonths(enrolDate, hsGradDate, 18)) {
+                                result[hsGradYear]['18m'].count += 1;
+                                result[hsGradYear]['18m'].students.push(student.osis);
+                            }
                         }
-                        if (this.diffMonths(enrolDate, hsGradDate, 18)) {
-                            result[hsGradYear]['18m'].count += 1;
-                            result[hsGradYear]['18m'].students.push(student.osis);
+                        if (hsGradDate) {
+                            result[hsGradYear]['total'] += 1;
                         }
                     }
-                    if (hsGradDate) {
-                        result[hsGradYear]['total'] += 1;
-                    }
-                }
-                setTimeout(() => {
-                    callback();
-                }, 0);
-            }, 100);
+                    setTimeout(
+                        () => {
+                            callback();
+                        },
+                        0
+                    );
+                },
+                100
+            );
             q.push(props.students);
             q.drain = () => {
                 resolve(result);
-            }
+            };
         });
     }
 
@@ -99,7 +108,7 @@ class ColDirEnrol extends Component {
             { name: '6 months', data: this.getRatio(data, '6m') },
             { name: '12 months', data: this.getRatio(data, '12m') },
             { name: '18 months', data: this.getRatio(data, '18m') }
-        ]
+        ];
     }
 
     getRatio(data, constant) {
@@ -139,7 +148,7 @@ class ColDirEnrol extends Component {
                     return `<tr>
                                 <td style="color:${series.color};padding:0">${series.name}: </td>
                                 <td style="padding:0">${data[category][refer[series.name]].count}=<b>${this.y.toFixed(3)} %</b></td>
-                            </tr>`
+                            </tr>`;
                 },
                 footerFormat: '</table>',
                 shared: true,
@@ -171,13 +180,20 @@ class ColDirEnrol extends Component {
 
     renderLoading() {
         return (
-            <div style={{
-                position: 'absolute', top: 0, bottom: 0, width: '100%',
-                display: 'flex', justifyContent: 'center', alignItems: 'center'
-            }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <i className="fa fa-cog fa-spin fa-3x fa-fw" />
             </div>
-        )
+        );
     }
 
     render() {
@@ -186,8 +202,7 @@ class ColDirEnrol extends Component {
             <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
-                    <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data} />
+                    <BasicColumn {...this.props} config={this.chartConfig()} data={this.state.data} />
                 </div>
                 <Divider style={{ height: 2 }} />
                 <Card>
@@ -196,15 +211,17 @@ class ColDirEnrol extends Component {
                     </CardText>
                 </Card>
             </div>
-        )
+        );
     }
-
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        push
-    }, dispatch);
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators(
+        {
+            push
+        },
+        dispatch
+    );
 };
 
 export default connect(null, mapDispatchToProps)(ColDirEnrol);

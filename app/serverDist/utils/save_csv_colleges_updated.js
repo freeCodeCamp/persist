@@ -5,9 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (fileName) {
-
     return new Promise(function (resolve, reject) {
-
         var parser = (0, _csvParse2.default)({
             delimiter: ',',
             columns: mapValues,
@@ -44,7 +42,6 @@ exports.default = function (fileName) {
 
         transformer.on('end', function () {
             _async2.default.eachLimit(data, 10, function (record, callback) {
-
                 _college2.default.findOne({
                     $or: [{ fullName: record.fullName }, { shortName: record.shortName }, { navianceName: record.navianceName }, { collegeScorecardName: record.collegeScorecardName }]
                 }, function (err, oldCollege) {
@@ -90,7 +87,6 @@ exports.default = function (fileName) {
                     }
                 });
             }, function (err) {
-
                 if (err) {
                     reject(err);
                     return;
@@ -152,7 +148,6 @@ var _fieldKeys = require('../../common/fieldKeys');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function mapValues(line) {
-
     return line.map(function (key) {
         var obj = _fieldKeys.collegeKeys.find(function (field) {
             return field.fieldName === key;

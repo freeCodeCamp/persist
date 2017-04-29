@@ -1,4 +1,4 @@
-export default (Schema) => ({
+export default Schema => ({
     fullName: {
         type: String
     },

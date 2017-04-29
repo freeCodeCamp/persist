@@ -1,13 +1,8 @@
-import {
-    DELETE_TERM_ERROR,
-    DELETE_TERM_PENDING,
-    DELETE_TERM_SUCCESS,
-    SPINNER_PAGE
-} from '../types';
-import {axios} from '../utils';
+import { DELETE_TERM_ERROR, DELETE_TERM_PENDING, DELETE_TERM_SUCCESS, SPINNER_PAGE } from '../types';
+import { axios } from '../utils';
 
-const deleteTerm = (osis, _id) => (
-    (dispatch) => {
+const deleteTerm = (osis, _id) =>
+    dispatch => {
         dispatch({
             type: SPINNER_PAGE,
             payload: true
@@ -16,8 +11,9 @@ const deleteTerm = (osis, _id) => (
             osis,
             _id
         };
-        return axios().delete('/update-term', {params})
-            .then((res) => {
+        return axios()
+            .delete('/update-term', { params })
+            .then(res => {
                 dispatch({
                     type: DELETE_TERM_SUCCESS,
                     osis,
@@ -28,7 +24,7 @@ const deleteTerm = (osis, _id) => (
                     payload: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 dispatch({
                     type: DELETE_TERM_ERROR,
                     payload: err
@@ -38,7 +34,6 @@ const deleteTerm = (osis, _id) => (
                     payload: false
                 });
             });
-    }
-);
+    };
 
 export default deleteTerm;

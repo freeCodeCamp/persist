@@ -6,7 +6,6 @@ import { push } from 'react-router-redux';
 import { Table } from 'react-bootstrap';
 
 class Network extends Component {
-
     loadFiltered(students) {
         const { push } = this.props;
         localStorage.setItem('filtered', JSON.stringify(students));
@@ -18,9 +17,9 @@ class Network extends Component {
         const years = keys(students).sort();
         const yearsHTML = years.map((year, i) => {
             return (
-                <tr key={ i }>
+                <tr key={i}>
                     <td>
-                        { i + 1 }
+                        {i + 1}
                     </td>
                     <td>{year}</td>
                     <td onClick={() => this.loadFiltered(students[year])}>{students[year].length}</td>
@@ -40,19 +39,21 @@ class Network extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { yearsHTML }
+                        {yearsHTML}
                     </tbody>
                 </Table>
             </div>
-        )
+        );
     }
-
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        push
-    }, dispatch);
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators(
+        {
+            push
+        },
+        dispatch
+    );
 };
 
 export default connect(null, mapDispatchToProps)(Network);

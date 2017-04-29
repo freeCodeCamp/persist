@@ -1,9 +1,4 @@
-import {
-    UPDATE_NOTIFICATIONS,
-    GET_NOTIFICATIONS,
-    MARK_READ_NOTIFICATION,
-    MARK_READ_ALL_NOTIFICATION
-}  from '../actions/types';
+import { UPDATE_NOTIFICATIONS, GET_NOTIFICATIONS, MARK_READ_NOTIFICATION, MARK_READ_ALL_NOTIFICATION } from '../actions/types';
 import cloneDeep from 'lodash/cloneDeep';
 
 const defaultState = {
@@ -52,7 +47,7 @@ const notificationsReducer = (state = defaultState, action) => {
             };
         case MARK_READ_NOTIFICATION:
             newState = cloneDeep(state);
-            newState.value.forEach((notification) => {
+            newState.value.forEach(notification => {
                 if (notification.notifId._id === action.payload) {
                     notification.read = true;
                     newState.unread--;

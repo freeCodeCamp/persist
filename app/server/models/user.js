@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {userSchema} from '../../common/schemas';
+import { userSchema } from '../../common/schemas';
 import bcrypt from 'bcrypt-nodejs';
 const Schema = mongoose.Schema;
 const User = new Schema(userSchema(Schema), { timestamps: true });

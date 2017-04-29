@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {Permission} from '../authentication';
-import {getUsers} from '../../actions';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Permission } from '../authentication';
+import { getUsers } from '../../actions';
 import Content from '../helpers/content';
-import {Users} from '../users';
+import { Users } from '../users';
 
 class InviteUsers extends Component {
     constructor(props) {
@@ -17,8 +17,8 @@ class InviteUsers extends Component {
 
     render() {
         return (
-            <Permission role='Owner'>
-                <Content title='Invite Users'>
+            <Permission role="Owner">
+                <Content title="Invite Users">
                     <Users />
                 </Content>
             </Permission>
@@ -26,10 +26,12 @@ class InviteUsers extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => (
-    bindActionCreators({
-        getUsers
-    }, dispatch)
-);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            getUsers
+        },
+        dispatch
+    );
 
 export default connect(null, mapDispatchToProps)(InviteUsers);

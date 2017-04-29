@@ -1,17 +1,16 @@
 import React from 'react';
-import {Field} from 'redux-form';
+import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
-import {AutoComplete, Checkbox, SelectField, TextField, Toggle} from 'redux-form-material-ui';
+import { AutoComplete, Checkbox, SelectField, TextField, Toggle } from 'redux-form-material-ui';
 import Chips from './Chip';
 import ChipsAdd from './ChipAdd';
-import {connect} from 'react-redux';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
+import { connect } from 'react-redux';
+import { AutoComplete as MUIAutoComplete } from 'material-ui';
 import DatePicker from './DatePicker';
 import isPlainObject from 'lodash/isPlainObject';
-import {types} from '../../../../common/validator';
+import { types } from '../../../../common/validator';
 
 class ReduxFormGroup extends React.Component {
-
     constructor(props) {
         super(props);
     }
@@ -51,90 +50,79 @@ class ReduxFormGroup extends React.Component {
         const { fieldType, dbName, displayName } = field;
 
         switch (fieldType) {
-
             case 'TextField':
-                return (
-                    <Field disabled={ disabled }
-                           name={ dbName.toString() }
-                           component={ TextField }
-                           floatingLabelText={ displayName } />
-                );
+                return <Field disabled={disabled} name={dbName.toString()} component={TextField} floatingLabelText={displayName} />;
             case 'TextBox':
                 return (
-                    <Field disabled={ disabled }
-                           name={ dbName.toString() }
-                           component={ TextField }
-                           floatingLabelText={ displayName }
-                           multiLine={ true }
-                           rows={ 2 } />
+                    <Field
+                        disabled={disabled}
+                        name={dbName.toString()}
+                        component={TextField}
+                        floatingLabelText={displayName}
+                        multiLine={true}
+                        rows={2}
+                    />
                 );
             case 'DatePicker':
                 return (
-                    <Field disabled={ disabled }
-                           name={ dbName }
-                           hintText={ displayName }
-                           floatingLabelText={ displayName }
-                           container='inline'
-                           locale='en-US'
-                           component={ DatePicker } />
+                    <Field
+                        disabled={disabled}
+                        name={dbName}
+                        hintText={displayName}
+                        floatingLabelText={displayName}
+                        container="inline"
+                        locale="en-US"
+                        component={DatePicker}
+                    />
                 );
             case 'Checkbox':
-                return (
-                    <Field disabled={ disabled }
-                           name={ dbName }
-                           form={ form }
-                           options={ types[dbName] || [] }
-                           initValue={ initValue }
-                           component={ Chips }
-                           field={ field } />
-                );
-            case 'Checkbox_Add':
                 return (
                     <Field
                         disabled={disabled}
                         name={dbName}
                         form={form}
+                        options={types[dbName] || []}
                         initValue={initValue}
-                        component={ChipsAdd}
+                        component={Chips}
                         field={field}
                     />
                 );
+            case 'Checkbox_Add':
+                return <Field disabled={disabled} name={dbName} form={form} initValue={initValue} component={ChipsAdd} field={field} />;
             case 'Toggle':
                 return (
-                    <Field disabled={ disabled }
-                           name={ dbName.toString() }
-                           component={ SelectField }
-                           hintText={ displayName }
-                           floatingLabelText={ displayName }>
-                        <MenuItem value={ true } key='true' primaryText='Yes' />
-                        <MenuItem value={ false } key='false' primaryText='No' />
-                        <MenuItem value={ null } primaryText='None' key='none' />
+                    <Field
+                        disabled={disabled}
+                        name={dbName.toString()}
+                        component={SelectField}
+                        hintText={displayName}
+                        floatingLabelText={displayName}
+                    >
+                        <MenuItem value={true} key="true" primaryText="Yes" />
+                        <MenuItem value={false} key="false" primaryText="No" />
+                        <MenuItem value={null} primaryText="None" key="none" />
                     </Field>
                 );
             case 'SelectField':
                 let options = types[dbName];
                 if (options) {
-                    options = options.map((option) => {
+                    options = options.map(option => {
                         if (isPlainObject(option)) {
-                            return (
-                                <MenuItem
-                                    value={option.value}
-                                    key={option.value}
-                                    primaryText={option.text}
-                                />
-                            )
+                            return <MenuItem value={option.value} key={option.value} primaryText={option.text} />;
                         }
-                        return (<MenuItem value={ option } key={ option } primaryText={ option } />);
+                        return <MenuItem value={option} key={option} primaryText={option} />;
                     });
-                    options.unshift(<MenuItem value={ null } primaryText='None' key='none' />);
+                    options.unshift(<MenuItem value={null} primaryText="None" key="none" />);
                 }
                 return (
-                    <Field disabled={ disabled }
-                           name={ dbName.toString() }
-                           component={ SelectField }
-                           hintText={ displayName }
-                           floatingLabelText={ displayName }>
-                        { options }
+                    <Field
+                        disabled={disabled}
+                        name={dbName.toString()}
+                        component={SelectField}
+                        hintText={displayName}
+                        floatingLabelText={displayName}
+                    >
+                        {options}
                     </Field>
                 );
             // case 'RadioButtonGroup':
@@ -146,13 +134,13 @@ class ReduxFormGroup extends React.Component {
                     case 'college':
                         return (
                             <MUIAutoComplete
-                                floatingLabelText={ displayName }
+                                floatingLabelText={displayName}
                                 disabled={disabled}
                                 filter={MUIAutoComplete.caseInsensitiveFilter}
                                 name={dbName.toString()}
                                 searchText={this.initCollege(initValue)}
-                                onUpdateInput={(v) => this.checkEmpty(v, dbName.toString(), true)}
-                                onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
+                                onUpdateInput={v => this.checkEmpty(v, dbName.toString(), true)}
+                                onNewRequest={v => this.updateInput(v.value, dbName.toString())}
                                 dataSource={collegeSource}
                                 maxSearchResults={5}
                             />
@@ -163,28 +151,23 @@ class ReduxFormGroup extends React.Component {
                                 name={dbName.toString()}
                                 hintText={displayName}
                                 floatingLabelText={displayName}
-                                filter={ MUIAutoComplete.caseInsensitiveFilter }
+                                filter={MUIAutoComplete.caseInsensitiveFilter}
                                 disabled={disabled}
                                 searchText={this.initSchool(initValue)}
-                                onUpdateInput={(v) => this.checkEmpty(v, dbName.toString(), nullAllowed)}
-                                onNewRequest={(v) => this.updateInput(v.value, dbName.toString())}
+                                onUpdateInput={v => this.checkEmpty(v, dbName.toString(), nullAllowed)}
+                                onNewRequest={v => this.updateInput(v.value, dbName.toString())}
                                 dataSource={schoolSource}
                                 maxSearchResults={5}
                             />
                         );
                 }
             default:
-                return (
-                    <Field disabled={ disabled }
-                           name={ dbName.toString() }
-                           component={ TextField }
-                           floatingLabelText={ displayName } />
-                );
+                return <Field disabled={disabled} name={dbName.toString()} component={TextField} floatingLabelText={displayName} />;
         }
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     collegeSource: state.colleges.collegeSource,
     collegeObj: state.colleges.idObj,
     schoolSource: state.schools.schoolSource,

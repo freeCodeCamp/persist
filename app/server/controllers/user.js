@@ -49,7 +49,7 @@ export const inviteUser = (req, res, next) => {
                         School.findOne({ _id: schoolId }, (err, existingSchool) => {
                             if (err) return next(err);
                             existingSchool.users.push(newUser._id);
-                            existingSchool.save((err) => {
+                            existingSchool.save(err => {
                                 if (err) return next(err);
                                 newUser.save(saveUser.bind(null, req, res, newUser, resetToken));
                             });
@@ -80,7 +80,7 @@ export const updateUser = (req, res, next) => {
         }
 
         existingUser.enabled = enabled;
-        existingUser.save((err) => {
+        existingUser.save(err => {
             // If error in saving token, return it
             if (err) {
                 return next(err);
@@ -110,7 +110,7 @@ export const updateUser = (req, res, next) => {
 export const deleteUser = (req, res, next) => {
     const { _id } = req.query;
 
-    User.remove({ _id }, (err) => {
+    User.remove({ _id }, err => {
         // If user is not found, return error
         if (err) {
             res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
@@ -124,19 +124,18 @@ export const deleteUser = (req, res, next) => {
 // GET ALL USERS
 //= =======================================
 export const getUsers = (req, res, next) => {
-
-    User.find({
-        $and: [
-            { 'access.role': { $ne: 'Admin' } },
-            { _id: { $ne: req.user._id } }
-        ]
-    }, (err, users) => {
-        if (err) {
-            res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
-            return next(err);
+    User.find(
+        {
+            $and: [{ 'access.role': { $ne: 'Admin' } }, { _id: { $ne: req.user._id } }]
+        },
+        (err, users) => {
+            if (err) {
+                res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
+                return next(err);
+            }
+            return res.status(200).json(users);
         }
-        return res.status(200).json(users);
-    });
+    );
 };
 
 export default {
@@ -145,4 +144,3 @@ export default {
     deleteUser,
     getUsers
 };
-

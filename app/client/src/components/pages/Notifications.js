@@ -1,10 +1,10 @@
 import React from 'react';
 import Content from '../helpers/content';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
-import {bindActionCreators} from 'redux';
-import {Notification} from '../notification';
-import {getNotifications} from '../../actions';
+import { bindActionCreators } from 'redux';
+import { Notification } from '../notification';
+import { getNotifications } from '../../actions';
 
 class Notifications extends React.Component {
     constructor(props) {
@@ -17,8 +17,7 @@ class Notifications extends React.Component {
     }
 
     componentDidUpdate(oldProps) {
-        if (oldProps.notifications.value.length === 0 &&
-            this.props.notifications.value.length > 0) {
+        if (oldProps.notifications.value.length === 0 && this.props.notifications.value.length > 0) {
             this.populateNotifications();
         }
     }
@@ -38,59 +37,58 @@ class Notifications extends React.Component {
         if (!this.wait && $(window).scrollTop() + $(window).height() > $(document).height() - 50) {
             this.populateNotifications();
             this.wait = true;
-            setTimeout(() => {
-                if (this.wait) this.wait = false;
-            }, this.throttle);
+            setTimeout(
+                () => {
+                    if (this.wait) this.wait = false;
+                },
+                this.throttle
+            );
         }
     }
 
     populateNotifications() {
         if (this.state.loaded) return;
-        const {notifications: {value}} = this.props;
+        const { notifications: { value } } = this.props;
         const offset = value.length;
         const limit = 15;
-        this.props.getNotifications(offset, limit)
-            .then((notifications) => {
-                if (notifications.length < limit) {
-                    this.setState({
-                        loaded: true
-                    });
-                }
-            });
+        this.props.getNotifications(offset, limit).then(notifications => {
+            if (notifications.length < limit) {
+                this.setState({
+                    loaded: true
+                });
+            }
+        });
     }
 
     notificationList() {
-        const {notifications: {value, lastAllRead}} = this.props;
+        const { notifications: { value, lastAllRead } } = this.props;
         return value.map((notification, i) => {
-            return (
-                <Notification
-                    key={i}
-                    notification={notification}
-                    lastAllRead={lastAllRead}/>
-            )
-        })
+            return <Notification key={i} notification={notification} lastAllRead={lastAllRead} />;
+        });
     }
 
     render() {
         return (
-            <Content title='Notifications'>
-                <ul className='menu'>
-                    { this.notificationList() }
+            <Content title="Notifications">
+                <ul className="menu">
+                    {this.notificationList()}
                 </ul>
             </Content>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     notifications: state.notifications,
     loading: state.loading
 });
 
-const mapDispatchToProps = (dispatch) => (
-    bindActionCreators({
-        getNotifications
-    }, dispatch)
-);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            getNotifications
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

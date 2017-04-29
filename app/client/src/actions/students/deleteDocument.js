@@ -1,13 +1,8 @@
-import {
-    DELETE_DOCUMENT_ERROR,
-    DELETE_DOCUMENT_PENDING,
-    DELETE_DOCUMENT_SUCCESS,
-    SPINNER_PAGE
-} from '../types';
-import {axios} from '../utils';
+import { DELETE_DOCUMENT_ERROR, DELETE_DOCUMENT_PENDING, DELETE_DOCUMENT_SUCCESS, SPINNER_PAGE } from '../types';
+import { axios } from '../utils';
 
-const deleteDocument = (doc, osis) => (
-    (dispatch) => {
+const deleteDocument = (doc, osis) =>
+    dispatch => {
         dispatch({
             type: SPINNER_PAGE,
             payload: true
@@ -17,8 +12,9 @@ const deleteDocument = (doc, osis) => (
             deleteId: doc._id,
             Key: doc.Key
         };
-        return axios().delete('/update-document', {params})
-            .then((res) => {
+        return axios()
+            .delete('/update-document', { params })
+            .then(res => {
                 dispatch({
                     type: DELETE_DOCUMENT_SUCCESS,
                     payload: res.data,
@@ -29,7 +25,7 @@ const deleteDocument = (doc, osis) => (
                     payload: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 dispatch({
                     type: DELETE_DOCUMENT_ERROR,
                     payload: err
@@ -39,7 +35,6 @@ const deleteDocument = (doc, osis) => (
                     payload: false
                 });
             });
-    }
-);
+    };
 
 export default deleteDocument;

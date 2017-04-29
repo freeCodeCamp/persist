@@ -1,9 +1,9 @@
 import React from 'react';
-import {Field, FieldArray, reduxForm} from 'redux-form';
-import {connect} from 'react-redux';
-import {Button, Form, Row, Alert, Col, Clearfix} from 'react-bootstrap';
-import {socket} from '../utils';
-import {RaisedButton, Snackbar} from 'material-ui';
+import { Field, FieldArray, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { Button, Form, Row, Alert, Col, Clearfix } from 'react-bootstrap';
+import { socket } from '../utils';
+import { RaisedButton, Snackbar } from 'material-ui';
 import FormGroup from '../helpers/ReduxFormGroup';
 import renderDocuments from './Documents';
 import renderTerms from './Terms';
@@ -11,7 +11,7 @@ import renderApplications from './Applications';
 import renderCaseNotes from './CaseNotes';
 import renderAliases from './Aliases';
 import * as updateStudent from '../../actions/updateStudent';
-import {studentKeys} from '../../../../common/fieldKeys';
+import { studentKeys } from '../../../../common/fieldKeys';
 import asyncValidate from '../helpers/asyncValidate';
 import keyBy from 'lodash/keyBy';
 const studentKeysObj = keyBy(studentKeys, 'dbName');
@@ -59,7 +59,7 @@ class SingleStudentForm extends React.Component {
                     error: false,
                     success: true
                 }
-            })
+            });
         }
     }
 
@@ -82,17 +82,21 @@ class SingleStudentForm extends React.Component {
                 }
                 const initialValue = initialValues[field.dbName];
                 HTML.push(
-                    <Col key={field.dbName}
-                         style={{ minHeight: 100, display: 'flex', justifyContent: 'center' }} xs={12}
-                         sm={6} md={6}
-                         lg={4}>
+                    <Col
+                        key={field.dbName}
+                        style={{ minHeight: 100, display: 'flex', justifyContent: 'center' }}
+                        xs={12}
+                        sm={6}
+                        md={6}
+                        lg={4}
+                    >
                         <FormGroup
                             form={form}
-                            style={ { margin: '50px', textAlign: 'center' } }
-                            initValue={ initialValue }
-                            key={ i }
-                            disabled={ disabled }
-                            field={ field }
+                            style={{ margin: '50px', textAlign: 'center' }}
+                            initValue={initialValue}
+                            key={i}
+                            disabled={disabled}
+                            field={field}
                         />
                     </Col>
                 );
@@ -108,55 +112,112 @@ class SingleStudentForm extends React.Component {
 
         let basicProfile, contactInfo, academicInfo, financialInfo, colApplications, historicalInfo, hasGradDate;
         if (initialValues['hsGradDate'] && new Date(initialValues['hsGradDate']) !== 'Invalid Date') {
-            basicProfile =
-                ['altName', 'dob', 'mostRecentCol', 'levelOfSupport', 'suffix', 'hs', 'hsGradYear', 'nscRecordFound', 'descriptors',
-                    'preferredPronoun', 'residency'];
+            basicProfile = [
+                'altName',
+                'dob',
+                'mostRecentCol',
+                'levelOfSupport',
+                'suffix',
+                'hs',
+                'hsGradYear',
+                'nscRecordFound',
+                'descriptors',
+                'preferredPronoun',
+                'residency'
+            ];
             contactInfo = ['cellPhone', 'otherPhone', 'email', 'facebookName', 'address'];
-            academicInfo = ['postSecPlan', 'intendedCollege', 'remediationStatus', 'registeredForClasses', 'majorMinor', 'cumColGPA',
-                'progressToGradAss', 'progressToGradBa', 'transferStatus', 'ferpa'];
-            financialInfo = ['studentSupportOrgName', 'mostRecentEmp', 'needGap', 'fsaid', 'studentSupportOrgNameOther', 'employmentStatus',
-                'amountOfNeedGap'];
+            academicInfo = [
+                'postSecPlan',
+                'intendedCollege',
+                'remediationStatus',
+                'registeredForClasses',
+                'majorMinor',
+                'cumColGPA',
+                'progressToGradAss',
+                'progressToGradBa',
+                'transferStatus',
+                'ferpa'
+            ];
+            financialInfo = [
+                'studentSupportOrgName',
+                'mostRecentEmp',
+                'needGap',
+                'fsaid',
+                'studentSupportOrgNameOther',
+                'employmentStatus',
+                'amountOfNeedGap'
+            ];
             historicalInfo = ['hsGPA', 'SAT.math', 'SAT.cr', 'actEquiv', 'crewAdvisor', 'hsGradDate', 'cohort', 'hsDiplomaType'];
             colApplications = [];
             hasGradDate = true;
         } else {
-            basicProfile = ['altName', 'dob', 'descriptors', 'preferredPronoun', 'suffix', 'hs', 'cohort', 'expectedHSGrad', 'crewAdvisor',
-                'levelOfSupport'];
+            basicProfile = [
+                'altName',
+                'dob',
+                'descriptors',
+                'preferredPronoun',
+                'suffix',
+                'hs',
+                'cohort',
+                'expectedHSGrad',
+                'crewAdvisor',
+                'levelOfSupport'
+            ];
             contactInfo = ['cellPhone', 'otherPhone', 'email', 'facebookName', 'address', 'parentName', 'parentContact'];
             academicInfo = ['hsGPA', 'psat', 'SAT.math', 'SAT.cr', 'regents.ela', 'regents.math', 'SAT.subjectTests', 'actEquiv'];
-            financialInfo =
-                ['opportunityProgramEligible', 'startedFafsa', 'completedFafsa', 'fsaid', 'cssProfileCreated', 'taxDocumentsSubmitted',
-                    'awardLetterReceived', 'studentAidReportReceived', 'needGap', 'amountOfNeedGap'];
-            colApplications =
-                ['applicationWave', 'eaEdApplications', 'completedEssay', 'lettersOfRecommendation', 'cunyApp', 'sunyApp', 'commonApp',
-                    'appliedToOtherSupportProgram', 'postSecPlan', 'intendedCollege', 'desiredFieldOfStudy', 'registeredForClasses',
-                    'studentSupportOrgName', 'studentSupportOrgNameOther', 'ferpa'];
+            financialInfo = [
+                'opportunityProgramEligible',
+                'startedFafsa',
+                'completedFafsa',
+                'fsaid',
+                'cssProfileCreated',
+                'taxDocumentsSubmitted',
+                'awardLetterReceived',
+                'studentAidReportReceived',
+                'needGap',
+                'amountOfNeedGap'
+            ];
+            colApplications = [
+                'applicationWave',
+                'eaEdApplications',
+                'completedEssay',
+                'lettersOfRecommendation',
+                'cunyApp',
+                'sunyApp',
+                'commonApp',
+                'appliedToOtherSupportProgram',
+                'postSecPlan',
+                'intendedCollege',
+                'desiredFieldOfStudy',
+                'registeredForClasses',
+                'studentSupportOrgName',
+                'studentSupportOrgNameOther',
+                'ferpa'
+            ];
             historicalInfo = [];
             hasGradDate = false;
         }
 
         return (
             <div id="single-student-page">
-                <Form className='single-student-form'
-                      onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
-                    <Row className='text-right'>
-                        {editable ? <RaisedButton label='Submit' type='submit' primary={true} /> : null}
-                        {editable ?
-                            <RaisedButton label='Undo' secondary={true} onClick={reset} /> :
-                            <RaisedButton label='Edit' primary={true} onClick={() => this.toggleEdit()} />
-                        }
+                <Form className="single-student-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+                    <Row className="text-right">
+                        {editable ? <RaisedButton label="Submit" type="submit" primary={true} /> : null}
+                        {editable
+                            ? <RaisedButton label="Undo" secondary={true} onClick={reset} />
+                            : <RaisedButton label="Edit" primary={true} onClick={() => this.toggleEdit()} />}
                     </Row>
                     <Row>
                         <FieldArray
-                            name='documents'
+                            name="documents"
                             osis={initialValues.osis}
-                            disabled={ !editable }
+                            disabled={!editable}
                             form={this}
                             component={renderDocuments}
                             initValue={initialValues['documents']}
                         />
                         <FieldArray
-                            name='aliases'
+                            name="aliases"
                             osis={initialValues.osis}
                             disabled={!editable}
                             form={this}
@@ -179,53 +240,51 @@ class SingleStudentForm extends React.Component {
                         <Row>
                             {renderFormGroups(this, financialInfo)}
                         </Row>
-                        {hasGradDate ?
-                            <h2>College Applications</h2> :
-                            <h2>Historical Information</h2>
-                        }
+                        {hasGradDate ? <h2>College Applications</h2> : <h2>Historical Information</h2>}
                         <Row>
                             {renderFormGroups(this, colApplications)}
                             {renderFormGroups(this, historicalInfo)}
                         </Row>
                         <FieldArray
-                            name='applications'
+                            name="applications"
                             osis={initialValues.osis}
                             form={this}
                             component={renderApplications}
                             initValue={initialValues['applications']}
                         />
                         <FieldArray
-                            name='caseNotes'
+                            name="caseNotes"
                             osis={initialValues.osis}
                             form={this}
                             component={renderCaseNotes}
                             initValue={initialValues['caseNotes']}
                         />
-                        { hasGradDate ?
-                            <FieldArray
-                                name='terms'
-                                osis={initialValues.osis}
-                                form={this}
-                                component={renderTerms}
-                                initValue={initialValues['terms']}
-                            /> : null }
+                        {hasGradDate
+                            ? <FieldArray
+                                  name="terms"
+                                  osis={initialValues.osis}
+                                  form={this}
+                                  component={renderTerms}
+                                  initValue={initialValues['terms']}
+                              />
+                            : null}
                     </Row>
                     <Snackbar
                         bodyStyle={{ backgroundColor: 'red' }}
                         open={this.state.notification.error}
-                        message='Something went wrong. Please try again'
+                        message="Something went wrong. Please try again"
                         autoHideDuration={2000}
                         onRequestClose={() => {
-                            this.setState({ ...this.state, notification: { success: false, error: false } })
+                            this.setState({ ...this.state, notification: { success: false, error: false } });
                         }}
                     />
                     <Snackbar
                         bodyStyle={{ backgroundColor: 'green' }}
                         open={this.state.notification.success}
-                        message='Student record is updated'
+                        message="Student record is updated"
                         autoHideDuration={2000}
                         onRequestClose={() => {
-                            this.setState({ ...this.state, notification: { success: false, error: false } })
+                            this.setState({ ...this.state, notification: { success: false, error: false } });
                         }}
                     />
                 </Form>
@@ -246,6 +305,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps, updateStudent
-)(SingleStudentForm)
+export default connect(mapStateToProps, updateStudent)(SingleStudentForm);

@@ -8,11 +8,11 @@ const merge = (A = {}, B = {}) => {
             }
         } else if (_.isArray(A[key])) {
             if (_.isArray[B[key]]) {
-                B[key].forEach((value) => {
+                B[key].forEach(value => {
                     if (!A[key].includes[value]) {
                         A[key].push(value);
                     }
-                })
+                });
             }
         } else {
             if (B[key]) {

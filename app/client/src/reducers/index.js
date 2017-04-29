@@ -1,7 +1,7 @@
-import {LOGOUT} from '../actions/types';
-import {combineReducers} from 'redux';
-import {routerReducer} from 'react-router-redux';
-import {reducer as formReducer} from 'redux-form';
+import { LOGOUT } from '../actions/types';
+import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 
 import uploadReducer from './upload';
 import singleStudentReducer from './singleStudent';
@@ -19,7 +19,7 @@ import allCollegesReducer from './allColleges';
 import allSchoolsReducer from './allSchools';
 import allCounselorsReducer from './allCounselors';
 import authReducer from './auth';
-import usersReducer from './users'
+import usersReducer from './users';
 import notificationsReducer from './notifications';
 
 const appReducer = combineReducers({

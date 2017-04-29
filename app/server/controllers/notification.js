@@ -4,10 +4,7 @@ const getNotifications = (req, res) => {
     const offset = req.body.offset;
     const limit = req.body.limit;
     const user = req.user;
-    User.findOne(
-        {_id: user._id},
-        {'notifications': {$slice: [offset, limit]}}
-    )
+    User.findOne({ _id: user._id }, { notifications: { $slice: [offset, limit] } })
         .populate({
             path: 'notifications.notifId',
             populate: {
@@ -29,36 +26,40 @@ const getNotifications = (req, res) => {
 const markRead = (req, res) => {
     const user = req.user;
     const notifId = req.body.notifId;
-    User.findOne({_id: user._id})
-        .update({'notifications.notifId': notifId},
+    User.findOne({ _id: user._id })
+        .update(
+            { 'notifications.notifId': notifId },
             {
-                '$set': {
+                $set: {
                     'notifications.$.read': true
                 }
-            })
+            }
+        )
         .exec((err, status) => {
             if (err) {
                 return res.status(500).send(err);
             }
             console.log(notifId, status);
-            return res.status(200).json({status: 'done'});
+            return res.status(200).json({ status: 'done' });
         });
 };
 
 const allRead = (req, res) => {
     const user = req.user;
-    User.findOne({_id: user._id})
-        .update({},
+    User.findOne({ _id: user._id })
+        .update(
+            {},
             {
-                '$set': {
+                $set: {
                     lastAllRead: new Date()
                 }
-            })
+            }
+        )
         .exec((err, status) => {
             if (err) {
                 return res.status(500).send(err);
             }
-            return res.status(200).json({lastAllRead: user.lastAllRead});
+            return res.status(200).json({ lastAllRead: user.lastAllRead });
         });
 };
 

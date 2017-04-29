@@ -19,7 +19,6 @@ var _school2 = _interopRequireDefault(_school);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var handleNotifications = function handleNotifications(io, socket) {
-
     socket.on('subscribe', function (data) {
         socket.join(data.room);
     });

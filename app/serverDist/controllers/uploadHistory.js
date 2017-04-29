@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.getHistory = exports.createHistory = undefined;
 
-var _uploadHistory = require("../models/uploadHistory");
+var _uploadHistory = require('../models/uploadHistory');
 
 var _uploadHistory2 = _interopRequireDefault(_uploadHistory);
 

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import _ from 'lodash';
 
 class BasicColumn extends Component {
-
     constructor(props) {
         super(props);
         this.initialized = false;
@@ -49,9 +48,13 @@ class BasicColumn extends Component {
             height: '300px'
         };
         return (
-            <div ref={(c) => this.component = c} className={classNames('chart tab-pane', { active: this.props.active })}
-                 id={ this.props.id } style={ style }>
-                { this.props.children }
+            <div
+                ref={c => this.component = c}
+                className={classNames('chart tab-pane', { active: this.props.active })}
+                id={this.props.id}
+                style={style}
+            >
+                {this.props.children}
             </div>
         );
     }

@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import {FloatingActionButton} from 'material-ui';
-import {FileAttachment} from 'material-ui/svg-icons';
+import React, { Component } from 'react';
+import { FloatingActionButton } from 'material-ui';
+import { FileAttachment } from 'material-ui/svg-icons';
 
 class FileInput extends Component {
     constructor(props) {
         super(props);
-        const {Key, fileLink} = this.props;
+        const { Key, fileLink } = this.props;
         let downloadLink;
         if (Key && fileLink) {
-            downloadLink = (<a href={fileLink}>{Key}</a>);
+            downloadLink = <a href={fileLink}>{Key}</a>;
         }
         this.state = {
             inputFile: downloadLink || 'No file chosen'
@@ -17,7 +17,7 @@ class FileInput extends Component {
     }
 
     onChange(e) {
-        const {input: {onChange}} = this.props;
+        const { input: { onChange } } = this.props;
         const file = e.target.files[0];
         onChange(file);
         this.inputFile(file);
@@ -34,17 +34,17 @@ class FileInput extends Component {
     }
 
     render() {
-        const {input: {value}, name} = this.props;
+        const { input: { value }, name } = this.props;
 
         return (
             <div>
                 <FloatingActionButton onClick={() => this.input.click()} mini={true}>
-                    <FileAttachment/>
+                    <FileAttachment />
                 </FloatingActionButton>
                 {this.state.inputFile}
                 <input
-                    ref={(c) => this.input = c}
-                    style={{width: 0, height: 0}}
+                    ref={c => this.input = c}
+                    style={{ width: 0, height: 0 }}
                     id={name}
                     type="file"
                     value={value}

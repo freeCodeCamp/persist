@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import Content from '../helpers/content';
-import {Table} from 'react-bootstrap';
-import {Link} from 'react-router';
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 class SearchResult extends Component {
     constructor(props) {
@@ -22,12 +22,12 @@ class SearchResult extends Component {
     }
 
     getSearchResults(props) {
-        const {location: {query}, students, colleges} = props;
+        const { location: { query }, students, colleges } = props;
         let results = [];
         if (query.model === 'student') {
             results = _(students)
-                .filter((student) => (student.fullName === query.fullName))
-                .map((student) => ({
+                .filter(student => student.fullName === query.fullName)
+                .map(student => ({
                     link: `/student/${student.osis}`,
                     fullName: student.fullName,
                     model: 'Student'
@@ -35,8 +35,8 @@ class SearchResult extends Component {
                 .value();
         } else if (query.model === 'college') {
             results = _(colleges)
-                .filter((college) => (college.fullName === query.fullName))
-                .map((college) => ({
+                .filter(college => college.fullName === query.fullName)
+                .map(college => ({
                     link: `/college/${college._id}`,
                     model: 'College',
                     fullName: college.fullName
@@ -49,15 +49,15 @@ class SearchResult extends Component {
     }
 
     renderResults() {
-        const {results} = this.state;
+        const { results } = this.state;
         return results.map((result, i) => (
             <tr key={_.uniqueId(result.fullName)}>
                 <th>
-                    { i + 1 }
+                    {i + 1}
                 </th>
                 <th>
                     <Link to={result.link}>
-                        { result.fullName }
+                        {result.fullName}
                     </Link>
                 </th>
                 <th>
@@ -68,28 +68,28 @@ class SearchResult extends Component {
     }
 
     render() {
-        const {results} = this.state;
+        const { results } = this.state;
         if (results.length < 1) {
             return <h1>'Sorry! no results found'</h1>;
         }
         return (
-            <Content title='Search Results'>
+            <Content title="Search Results">
                 <Table striped bordered hover>
                     <thead>
-                    <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            Full Name
-                        </th>
-                        <th>
-                            Type
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Full Name
+                            </th>
+                            <th>
+                                Type
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {this.renderResults()}
+                        {this.renderResults()}
                     </tbody>
                 </Table>
             </Content>
@@ -97,11 +97,11 @@ class SearchResult extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
         students: state.students.value,
         colleges: state.colleges.value
-    }
+    };
 };
 
 export default connect(mapStateToProps)(SearchResult);

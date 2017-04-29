@@ -1,19 +1,15 @@
-import {
-    SAVE_TERM_ERROR,
-    SAVE_TERM_PENDING,
-    SAVE_TERM_SUCCESS,
-    SPINNER_PAGE
-} from '../types';
-import {axios} from '../utils';
+import { SAVE_TERM_ERROR, SAVE_TERM_PENDING, SAVE_TERM_SUCCESS, SPINNER_PAGE } from '../types';
+import { axios } from '../utils';
 
-const saveTerm = (term) => (
-    (dispatch) => {
+const saveTerm = term =>
+    dispatch => {
         dispatch({
             type: SPINNER_PAGE,
             payload: true
         });
-        return axios().post('/update-term', {term})
-            .then((res) => {
+        return axios()
+            .post('/update-term', { term })
+            .then(res => {
                 dispatch({
                     type: SAVE_TERM_SUCCESS,
                     payload: res.data,
@@ -24,7 +20,7 @@ const saveTerm = (term) => (
                     payload: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 dispatch({
                     type: SAVE_TERM_ERROR,
                     payload: err
@@ -32,9 +28,8 @@ const saveTerm = (term) => (
                 dispatch({
                     type: SPINNER_PAGE,
                     payload: false
-                })
+                });
             });
-    }
-);
+    };
 
 export default saveTerm;

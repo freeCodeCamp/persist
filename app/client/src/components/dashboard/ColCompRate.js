@@ -11,7 +11,7 @@ class ColCompRate extends Component {
             loading: true,
             year: '1c',
             data: []
-        }
+        };
     }
 
     componentDidMount() {
@@ -19,13 +19,16 @@ class ColCompRate extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            loading: true
-        }, this.updateGraph.bind(this, nextProps));
+        this.setState(
+            {
+                loading: true
+            },
+            this.updateGraph.bind(this, nextProps)
+        );
     }
 
     updateGraph(props) {
-        this.normalizeData(props).then((data) => {
+        this.normalizeData(props).then(data => {
             this.setState({
                 data,
                 loading: false
@@ -34,45 +37,49 @@ class ColCompRate extends Component {
     }
 
     normalizeData(props) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             if (props.colleges.length < 1 || props.students.length < 1) resolve({});
             const colleges = _.keyBy(props.colleges, '_id');
             const colCompletionRate = [];
             const result = {};
-            const q = async.queue((student, callback) => {
-                const hsGradYear = student.hsGradYear;
-                if (hsGradYear) {
-                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(colCompletionRate);
-                    const terms = student.terms;
-                    if (terms.length > 0) {
-                        const college = colleges[terms[0].college];
-                        const gradRate = college.gradRate;
-                        if (college && gradRate && gradRate.overall) {
-                            result[hsGradYear].push(gradRate.overall);
+            const q = async.queue(
+                (student, callback) => {
+                    const hsGradYear = student.hsGradYear;
+                    if (hsGradYear) {
+                        result[hsGradYear] = result[hsGradYear] || _.cloneDeep(colCompletionRate);
+                        const terms = student.terms;
+                        if (terms.length > 0) {
+                            const college = colleges[terms[0].college];
+                            const gradRate = college.gradRate;
+                            if (college && gradRate && gradRate.overall) {
+                                result[hsGradYear].push(gradRate.overall);
+                            }
                         }
                     }
-                }
-                setTimeout(() => {
-                    callback();
-                }, 0);
-            }, 100);
+                    setTimeout(
+                        () => {
+                            callback();
+                        },
+                        0
+                    );
+                },
+                100
+            );
             q.push(props.students);
             q.drain = () => {
                 resolve(result);
-            }
+            };
         });
     }
 
     chartData(data) {
-        return [
-            { name: 'Average College Completion Rate', data: this.getRatio(data) }
-        ]
+        return [{ name: 'Average College Completion Rate', data: this.getRatio(data) }];
     }
 
     getRatio(data) {
         const yearlyData = [];
         _(data).keys().sort().forEach(key => {
-            yearlyData.push(_.mean(data[key]) * 100)
+            yearlyData.push(_.mean(data[key]) * 100);
         });
         return yearlyData;
     }
@@ -100,7 +107,7 @@ class ColCompRate extends Component {
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -118,14 +125,21 @@ class ColCompRate extends Component {
 
     renderLoading() {
         return (
-            <div style={{
-                position: 'absolute', top: 0, bottom: 0, width: '100%',
-                display: 'flex', justifyContent: 'center', alignItems: 'center'
-            }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw'/>
-                <span className='sr-only'>Loading...</span>
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <i className="fa fa-cog fa-spin fa-3x fa-fw" />
+                <span className="sr-only">Loading...</span>
             </div>
-        )
+        );
     }
 
     render() {
@@ -134,8 +148,7 @@ class ColCompRate extends Component {
             <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
-                    <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data} />
+                    <BasicColumn {...this.props} config={this.chartConfig()} data={this.state.data} />
                 </div>
                 <Divider style={{ height: 2 }} />
                 <Card>
@@ -144,9 +157,8 @@ class ColCompRate extends Component {
                     </CardText>
                 </Card>
             </div>
-        )
+        );
     }
-
 }
 
 const styles = {

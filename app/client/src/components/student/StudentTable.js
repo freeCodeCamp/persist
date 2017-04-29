@@ -52,24 +52,29 @@ class StudentTable extends React.Component {
         const { offset } = this.state;
         if (this.updating || offset > this.length) return;
         this.updating = true;
-        this.setState({
-            offset: offset + 20,
-            students: students.slice(0, offset + 20)
-        }, () => {
-            _this.updating = false;
-        });
+        this.setState(
+            {
+                offset: offset + 20,
+                students: students.slice(0, offset + 20)
+            },
+            () => {
+                _this.updating = false;
+            }
+        );
     }
 
     renderLoading() {
         return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: 40
-            }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingTop: 40
+                }}
+            >
+                <i className="fa fa-cog fa-spin fa-3x fa-fw" />
             </div>
-        )
+        );
     }
 
     componentWillUnmount() {
@@ -88,22 +93,21 @@ class StudentTable extends React.Component {
         }
         const studentsHTML = students.map((student, i) => {
             return (
-                <tr key={ i }>
+                <tr key={i}>
                     <td>
-                        { i + 1 }
+                        {i + 1}
                     </td>
                     <td>
-                        <Link to={ `/student/${student.osis}` }>
-                            { student.firstName }
+                        <Link to={`/student/${student.osis}`}>
+                            {student.firstName}
                         </Link>
                     </td>
                     <td>
-                        { student.lastName }
+                        {student.lastName}
                     </td>
                 </tr>
             );
         });
-
 
         return (
             <Table striped bordered hover>
@@ -121,10 +125,9 @@ class StudentTable extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    { studentsHTML }
+                    {studentsHTML}
                 </tbody>
             </Table>
-
         );
     }
 }

@@ -1,56 +1,56 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _path = require("path");
+var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
-var _multer = require("multer");
+var _multer = require('multer');
 
 var _multer2 = _interopRequireDefault(_multer);
 
-var _rimraf = require("rimraf");
+var _rimraf = require('rimraf');
 
 var _rimraf2 = _interopRequireDefault(_rimraf);
 
-var _models = require("../models");
+var _models = require('../models');
 
-var _forOwn = require("lodash/forOwn");
+var _forOwn = require('lodash/forOwn');
 
 var _forOwn2 = _interopRequireDefault(_forOwn);
 
-var _omit = require("lodash/omit");
+var _omit = require('lodash/omit');
 
 var _omit2 = _interopRequireDefault(_omit);
 
-var _passport = require("../config/passport");
+var _passport = require('../config/passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
-var _constants = require("../../common/constants");
+var _constants = require('../../common/constants');
 
-var _controllers = require("../controllers");
+var _controllers = require('../controllers');
 
-var _save_csv = require("../utils/save_csv");
+var _save_csv = require('../utils/save_csv');
 
 var _save_csv2 = _interopRequireDefault(_save_csv);
 
-var _save_csv_colleges_updated = require("../utils/save_csv_colleges_updated");
+var _save_csv_colleges_updated = require('../utils/save_csv_colleges_updated');
 
 var _save_csv_colleges_updated2 = _interopRequireDefault(_save_csv_colleges_updated);
 
-var _save_csv_term_data = require("../utils/save_csv_term_data");
+var _save_csv_term_data = require('../utils/save_csv_term_data');
 
 var _save_csv_term_data2 = _interopRequireDefault(_save_csv_term_data);
 
-var _save_csv_applications = require("../utils/save_csv_applications");
+var _save_csv_applications = require('../utils/save_csv_applications');
 
 var _save_csv_applications2 = _interopRequireDefault(_save_csv_applications);
 
-var _save_csv_schools = require("../utils/save_csv_schools");
+var _save_csv_schools = require('../utils/save_csv_schools');
 
 var _save_csv_schools2 = _interopRequireDefault(_save_csv_schools);
 
@@ -104,7 +104,6 @@ var requireLogin = function requireLogin(req, res, next) {
 };
 
 exports.default = function (app) {
-
     app.post('/upload/studentData', requireAuth, _controllers.AuthController.roleAuthorization('Owner'), fileUpload, function (req, res) {
         var fileData = req.files.file[0];
         var filePath = _path2.default.join(fileData.destination, fileData.filename);
@@ -318,7 +317,6 @@ exports.default = function (app) {
 
     // main route for to get colleges db
     app.get('/api/colleges', requireAuth, function (req, res) {
-
         var query = _models.College.find({});
         query.lean().exec(function (err, colleges) {
             if (err) {
@@ -329,7 +327,6 @@ exports.default = function (app) {
     });
 
     app.get('/api/schools', requireAuth, function (req, res) {
-
         var query = _models.School.find({});
         query.lean().exec(function (err, schools) {
             if (err) {

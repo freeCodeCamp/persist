@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import async from 'async';
 import StudentList from './StudentList';
@@ -24,7 +24,7 @@ class CollegeAssociation extends Component {
                 associated: [],
                 network: {}
             }
-        }
+        };
     }
 
     componentDidMount() {
@@ -32,13 +32,16 @@ class CollegeAssociation extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            loading: true
-        }, this.updateGraph.bind(this, nextProps));
+        this.setState(
+            {
+                loading: true
+            },
+            this.updateGraph.bind(this, nextProps)
+        );
     }
 
     updateGraph(props) {
-        this.normalizeData(props).then((data) => {
+        this.normalizeData(props).then(data => {
             this.setState({
                 data,
                 loading: false
@@ -49,93 +52,106 @@ class CollegeAssociation extends Component {
     normalizeData(props) {
         const { students, college } = props;
         const collegeId = college._id;
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             const network = {};
             const associated = [];
             if (students.length < 1) resolve({ network, associated });
-            const q = async.queue((student, callback) => {
-                const hsGradYear = student.hsGradYear;
-                const hsGradDate = student.hsGradDate;
-                if (hsGradDate && hsGradYear) {
-                    network[hsGradYear] = network[hsGradYear] || [];
-                    student.terms = _.compact(student.terms);
-                    const termLength = student.terms.length;
-                    let enrolled = false;
-                    if (termLength > 0) {
-                        let breakOut = false;
-                        for (const term of student.terms) {
-                            if (term.college === collegeId) {
-                                switch (term.status) {
-                                    case 'Graduated': {
-                                        enrolled = true;
-                                        associated.push(associatedStudent(student, 'Graduated'));
-                                        breakOut = true;
-                                        break;
-                                    }
-                                    case 'F': {
-                                        enrolled = true;
-                                        if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
-                                            associated.push(associatedStudent(student, 'Currently Enrolled Full-time'));
-                                        } else {
+            const q = async.queue(
+                (student, callback) => {
+                    const hsGradYear = student.hsGradYear;
+                    const hsGradDate = student.hsGradDate;
+                    if (hsGradDate && hsGradYear) {
+                        network[hsGradYear] = network[hsGradYear] || [];
+                        student.terms = _.compact(student.terms);
+                        const termLength = student.terms.length;
+                        let enrolled = false;
+                        if (termLength > 0) {
+                            let breakOut = false;
+                            for (const term of student.terms) {
+                                if (term.college === collegeId) {
+                                    switch (term.status) {
+                                        case 'Graduated': {
+                                            enrolled = true;
+                                            associated.push(associatedStudent(student, 'Graduated'));
+                                            breakOut = true;
+                                            break;
+                                        }
+                                        case 'F': {
+                                            enrolled = true;
+                                            if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
+                                                associated.push(associatedStudent(student, 'Currently Enrolled Full-time'));
+                                            } else {
+                                                associated.push(associatedStudent(student, 'No longer Enrolled'));
+                                            }
+                                            if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
+                                                network[hsGradYear].push(student.osis);
+                                            }
+                                            breakOut = true;
+                                            break;
+                                        }
+                                        case 'H':
+                                        case 'L':
+                                        case 'Q': {
+                                            enrolled = true;
+                                            if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
+                                                associated.push(associatedStudent(student, 'Currently Enrolled Part-time'));
+                                            } else {
+                                                associated.push(associatedStudent(student, 'No longer Enrolled'));
+                                            }
+                                            if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
+                                                network[hsGradYear].push(student.osis);
+                                            }
+                                            breakOut = true;
+                                            break;
+                                        }
+                                        case 'W': {
+                                            enrolled = true;
                                             associated.push(associatedStudent(student, 'No longer Enrolled'));
+                                            breakOut = true;
+                                            break;
                                         }
-                                        if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
-                                            network[hsGradYear].push(student.osis);
-                                        }
-                                        breakOut = true;
-                                        break;
-                                    }
-                                    case 'H':
-                                    case 'L':
-                                    case 'Q': {
-                                        enrolled = true;
-                                        if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
-                                            associated.push(associatedStudent(student, 'Currently Enrolled Part-time'));
-                                        } else {
-                                            associated.push(associatedStudent(student, 'No longer Enrolled'));
-                                        }
-                                        if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
-                                            network[hsGradYear].push(student.osis);
-                                        }
-                                        breakOut = true;
-                                        break;
-                                    }
-                                    case 'W': {
-                                        enrolled = true;
-                                        associated.push(associatedStudent(student, 'No longer Enrolled'));
-                                        breakOut = true;
-                                        break;
                                     }
                                 }
+                                if (breakOut) break;
                             }
-                            if (breakOut) break;
+                        }
+                        if (!enrolled && student.intendedCollege === collegeId) {
+                            associated.push(associatedStudent(student, 'Intended to Enroll'));
                         }
                     }
-                    if (!enrolled && student.intendedCollege === collegeId) {
-                        associated.push(associatedStudent(student, 'Intended to Enroll'));
-                    }
-                }
-                setTimeout(() => {
-                    callback();
-                }, 0);
-            }, 20);
+                    setTimeout(
+                        () => {
+                            callback();
+                        },
+                        0
+                    );
+                },
+                20
+            );
             q.push(students);
             q.drain = () => {
                 resolve({ network, associated });
-            }
+            };
         });
     }
 
     renderLoading() {
         return (
-            <div style={{
-                position: 'absolute', top: 0, bottom: 0, width: '100%',
-                display: 'flex', justifyContent: 'center', alignItems: 'center'
-            }}>
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
                 <i className="fa fa-cog fa-spin fa-3x fa-fw" />
                 <span className="sr-only">Loading...</span>
             </div>
-        )
+        );
     }
 
     render() {
@@ -152,12 +168,11 @@ class CollegeAssociation extends Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
-
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     students: state.students.value
 });
 

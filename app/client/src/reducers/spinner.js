@@ -1,11 +1,11 @@
-import {SPINNER, SPINNER_PAGE} from '../actions/types';
+import { SPINNER, SPINNER_PAGE } from '../actions/types';
 
 const defaultState = {
     main: true,
     page: false
 };
 
-export default function (state = defaultState, action) {
+export default function(state = defaultState, action) {
     switch (action.type) {
         case SPINNER:
             return {

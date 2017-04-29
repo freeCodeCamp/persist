@@ -1,25 +1,28 @@
-import UploadHistory from "../models/uploadHistory";
+import UploadHistory from '../models/uploadHistory';
 
 export const createHistory = (type, user, success) => {
-    UploadHistory.create({
-        type,
-        user,
-        when: new Date(),
-        success
-    }, (err) => {
-        if (err) {
-            return console.log(err);
+    UploadHistory.create(
+        {
+            type,
+            user,
+            when: new Date(),
+            success
+        },
+        err => {
+            if (err) {
+                return console.log(err);
+            }
         }
-    })
+    );
 };
 
 export const getHistory = (req, res) => {
     const page = req.params.page || 1;
     UploadHistory.paginate({}, { sort: { when: -1 }, page, limit: 10 })
-        .then((result) => {
+        .then(result => {
             res.status(200).json(result);
         })
-        .catch((err) => {
+        .catch(err => {
             res.status(500).send(err);
         });
 };
@@ -27,4 +30,4 @@ export const getHistory = (req, res) => {
 export default {
     createHistory,
     getHistory
-}
+};

@@ -1,10 +1,6 @@
-import {
-    ROLE_ADMIN,
-    ROLE_OWNER,
-    ROLE_COUNSELOR
-} from '../constants';
+import { ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR } from '../constants';
 
-const accessSchema = (Schema) => ({
+const accessSchema = Schema => ({
     role: {
         type: String,
         enum: [ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR]
@@ -15,7 +11,7 @@ const accessSchema = (Schema) => ({
     }
 });
 
-const notificationSchema = (Schema) => ({
+const notificationSchema = Schema => ({
     read: {
         type: Boolean,
         default: false
@@ -26,11 +22,9 @@ const notificationSchema = (Schema) => ({
     }
 });
 
-const checkAccess = (access) => (
-    access.role === ROLE_COUNSELOR ? !!access.school : true
-);
+const checkAccess = access => access.role === ROLE_COUNSELOR ? !!access.school : true;
 
-export default (Schema) => ({
+export default Schema => ({
     email: {
         type: String,
         lowercase: true,

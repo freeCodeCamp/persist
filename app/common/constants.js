@@ -13,7 +13,7 @@ export const validateArray = (inputArray, optionsArray) => {
     return true;
 };
 
-export const getRole = (checkRole) => {
+export const getRole = checkRole => {
     let role;
     switch (checkRole) {
         case ROLE_ADMIN:
@@ -59,6 +59,6 @@ export const mapping = {
         D: 'Deceased',
         Military: 'Military',
         'Not Enrolled': 'Not Enrolled',
-        'Graduated': 'Graduated'
+        Graduated: 'Graduated'
     }
 };

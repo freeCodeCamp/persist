@@ -1,4 +1,4 @@
-import {collegeSchema} from '../../common/schemas';
+import { collegeSchema } from '../../common/schemas';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 

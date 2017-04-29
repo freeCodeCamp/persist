@@ -1,14 +1,10 @@
-import {
-    ROLE_ADMIN,
-    ROLE_OWNER,
-    ROLE_COUNSELOR
-} from '../../common/constants';
+import { ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR } from '../../common/constants';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import crypto from 'crypto';
 import * as mailgun from '../config/mailgun';
 
-const setUserInfo = (user) => ({
+const setUserInfo = user => ({
     _id: user._id,
     firstName: user.profile.firstName,
     lastName: user.profile.lastName,
@@ -17,7 +13,7 @@ const setUserInfo = (user) => ({
     school: user.access.school
 });
 
-const getRole = (checkRole) => {
+const getRole = checkRole => {
     let role;
     switch (checkRole) {
         case ROLE_ADMIN:
@@ -36,11 +32,10 @@ const getRole = (checkRole) => {
 };
 
 // Generate JWT
-const generateToken = (user) => (
+const generateToken = user =>
     jwt.sign(user, process.env.SECRET, {
         expiresIn: 100080
-    })
-);
+    });
 
 //= =======================================
 // Login Route
@@ -116,7 +111,7 @@ export const register = (req, res, next) => {
 //= =======================================
 
 // Role authorization check
-export const roleAuthorization = (requiredRole) => (
+export const roleAuthorization = requiredRole =>
     (req, res, next) => {
         const user = req.user;
         User.findById(user._id, (err, foundUser) => {
@@ -132,8 +127,7 @@ export const roleAuthorization = (requiredRole) => (
 
             return res.status(401).json({ error: 'You are not authorized to view this content.' });
         });
-    }
-);
+    };
 
 export const forgotPassword = (req, res, next) => {
     const email = req.body.email;
@@ -157,7 +151,7 @@ export const forgotPassword = (req, res, next) => {
             existingUser.resetPasswordToken = resetToken;
             existingUser.resetPasswordExpires = Date.now() + 36000000; // 10 hour
 
-            existingUser.save((err) => {
+            existingUser.save(err => {
                 // If error in saving token, return it
                 if (err) {
                     return next(err);
@@ -196,7 +190,7 @@ export const verifyToken = (req, res, next) => {
         resetUser.resetPasswordToken = undefined;
         resetUser.resetPasswordExpires = undefined;
 
-        resetUser.save((err) => {
+        resetUser.save(err => {
             if (err) {
                 return next(err);
             }
@@ -205,7 +199,7 @@ export const verifyToken = (req, res, next) => {
             const message = {
                 subject: 'Password Changed',
                 text: 'You are receiving this email because you changed your password. \n\n' +
-                'If you did not request this change, please contact us immediately.'
+                    'If you did not request this change, please contact us immediately.'
             };
 
             // Otherwise, send user email confirmation of password change via Mailgun

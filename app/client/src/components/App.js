@@ -3,14 +3,7 @@ import axios from 'axios';
 import HeaderBar from './admin-components/header-bar/header-bar';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-    getAllSchools,
-    getNotifications,
-    getAllStudents,
-    getAllColleges,
-    getAllCounselors,
-    setSpinner
-} from '../actions'
+import { getAllSchools, getNotifications, getAllStudents, getAllColleges, getAllCounselors, setSpinner } from '../actions';
 import { Spinner } from './helpers';
 import NavigationMenu from './admin-components/navigation-menu';
 // import ControlPanel from './admin-components/control-panel';
@@ -24,27 +17,32 @@ class App extends Component {
         this.state = {
             load: false,
             initialLoad: false
-        }
+        };
     }
 
     componentWillMount() {
-        axios.all([
-            this.props.getAllStudents(),
-            this.props.getAllSchools(),
-            this.props.getAllColleges(),
-            this.props.getAllCounselors(),
-            this.props.getNotifications(0, 5)
-        ]).then((results) => {
-            results.map((result) => {
-                if (result && result.response && result.response.status === 401) {
-                    window.location = '/logout';
-                }
+        axios
+            .all([
+                this.props.getAllStudents(),
+                this.props.getAllSchools(),
+                this.props.getAllColleges(),
+                this.props.getAllCounselors(),
+                this.props.getNotifications(0, 5)
+            ])
+            .then(results => {
+                results.map(result => {
+                    if (result && result.response && result.response.status === 401) {
+                        window.location = '/logout';
+                    }
+                });
+                this.setState(
+                    {
+                        ...this.state,
+                        initialLoad: true
+                    },
+                    this.removeSpinner
+                );
             });
-            this.setState({
-                ...this.state,
-                initialLoad: true
-            }, this.removeSpinner);
-        });
     }
 
     componentDidMount() {
@@ -54,7 +52,7 @@ class App extends Component {
 
     resize() {
         // triggering resize event
-        const evt = document.createEvent("HTMLEvents");
+        const evt = document.createEvent('HTMLEvents');
         evt.initEvent('resize', true, false);
         window.dispatchEvent(evt);
     }
@@ -68,20 +66,20 @@ class App extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return (
-            nextProps.spinner !== this.props.spinner ||
-            nextState.load !== this.state.load
-        )
+        return nextProps.spinner !== this.props.spinner || nextState.load !== this.state.load;
     }
 
     componentDidUpdate() {
         if (!this.state.load && this.state.initialLoad) {
-            setTimeout(() => {
-                this.setState({
-                    ...this.state,
-                    load: true
-                });
-            }, 500);
+            setTimeout(
+                () => {
+                    this.setState({
+                        ...this.state,
+                        load: true
+                    });
+                },
+                500
+            );
         } else if (this.state.load) {
             this.removeSpinner();
         }
@@ -96,15 +94,16 @@ class App extends Component {
     render() {
         const { load } = this.state;
         return (
-            <div className='wrapper'>
+            <div className="wrapper">
                 <HeaderBar />
                 <NavigationMenu />
-                <section className='content-wrapper'>
+                <section className="content-wrapper">
                     <Spinner />
-                    { load ?
-                        <MaterialUIWrapper>
-                            { this.props.currentPage }
-                        </MaterialUIWrapper> : null }
+                    {load
+                        ? <MaterialUIWrapper>
+                              {this.props.currentPage}
+                          </MaterialUIWrapper>
+                        : null}
                 </section>
                 <Footer />
             </div>
@@ -112,19 +111,22 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     spinner: state.spinner.main
 });
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        getAllStudents,
-        getAllColleges,
-        getAllSchools,
-        getAllCounselors,
-        getNotifications,
-        setSpinner
-    }, dispatch);
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators(
+        {
+            getAllStudents,
+            getAllColleges,
+            getAllSchools,
+            getAllCounselors,
+            getNotifications,
+            setSpinner
+        },
+        dispatch
+    );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

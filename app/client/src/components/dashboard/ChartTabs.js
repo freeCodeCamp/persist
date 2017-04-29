@@ -1,17 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
-import {
-    ColDirEnrol,
-    ColCompRate,
-    ColPersist,
-    ColType,
-    GradRate,
-    SemEnrol,
-    AvgTimeGrad
-} from './';
+import { ColDirEnrol, ColCompRate, ColPersist, ColType, GradRate, SemEnrol, AvgTimeGrad } from './';
 
 class ChartTabs extends Component {
-
     constructor(props) {
         super(props);
         this.tabList = {
@@ -72,8 +63,9 @@ class ChartTabs extends Component {
         const keys = _.keys(this.tabList);
         return keys.map(tab => {
             return (
-                <li key={tab} data-toggle='tab' data-id={tab} onClick={(e) => this.handleClicked(e)}>
-                    <a>{this.tabList[tab]}</a></li>
+                <li key={tab} data-toggle="tab" data-id={tab} onClick={e => this.handleClicked(e)}>
+                    <a>{this.tabList[tab]}</a>
+                </li>
             );
         });
     }
@@ -82,9 +74,9 @@ class ChartTabs extends Component {
         return (
             <div className="nav-tabs-custom">
                 {/* Tabs within a box */}
-                <ul className="nav nav-tabs pull-right ui-sortable-handle" ref={(c) => this.tabs = c}>
+                <ul className="nav nav-tabs pull-right ui-sortable-handle" ref={c => this.tabs = c}>
                     {this.renderTabs()}
-                    <li className="pull-left header"><i className="fa fa-inbox"></i>Filters</li>
+                    <li className="pull-left header"><i className="fa fa-inbox" />Filters</li>
                 </ul>
                 <div className="tab-content no-padding">
                     {/* Charts */}

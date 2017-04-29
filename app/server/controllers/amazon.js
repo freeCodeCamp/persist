@@ -1,4 +1,4 @@
-import {Types} from 'mongoose';
+import { Types } from 'mongoose';
 import aws from 'aws-sdk';
 import path from 'path';
 
@@ -27,7 +27,7 @@ const getPutSigned = (fileType, s3, _id, res, Key) => {
 };
 
 export const getSign = (req, res) => {
-    aws.config.update({region: 'us-east-1'});
+    aws.config.update({ region: 'us-east-1' });
     const file = req.query['file'];
     const fileType = req.query['fileType'];
     const fileName = req.query['fileName'] || 'provide-file-name';
@@ -41,13 +41,13 @@ export const getSign = (req, res) => {
     if (oldKey) {
         oldKey = `documents/${oldKey}`;
         const bucketName = process.env.S3_BUCKET_NAME;
-        const params = {Bucket: bucketName, CopySource: `${bucketName}/${oldKey}`, Key: Key};
-        return s3.copyObject(params, (err) => {
+        const params = { Bucket: bucketName, CopySource: `${bucketName}/${oldKey}`, Key: Key };
+        return s3.copyObject(params, err => {
             if (err) {
                 console.log('copy', err);
                 return res.status(500).send(err);
             }
-            s3.deleteObject({Key: oldKey, Bucket: bucketName}, (err) => {
+            s3.deleteObject({ Key: oldKey, Bucket: bucketName }, err => {
                 if (err) {
                     console.log('delete', err);
                     return res.status(500).send(err);
@@ -61,8 +61,8 @@ export const getSign = (req, res) => {
                     return res.status(200).json(returnData);
                 }
                 getPutSigned(fileType, s3, _id, res, Key);
-            })
-        })
+            });
+        });
     }
     getPutSigned(fileType, s3, _id, res, Key);
 };

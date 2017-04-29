@@ -39,9 +39,7 @@ var mapValues = function mapValues(line) {
 };
 
 exports.default = function (fileName) {
-
     return new Promise(function (resolve, reject) {
-
         var parser = (0, _csvParse2.default)({
             delimiter: ',',
             columns: mapValues,

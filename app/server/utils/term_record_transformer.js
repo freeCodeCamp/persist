@@ -1,5 +1,5 @@
 import College from '../models/college';
-import {Schema} from 'mongoose';
+import { Schema } from 'mongoose';
 import forOwn from 'lodash/forOwn';
 import moment from 'moment';
 
@@ -11,14 +11,14 @@ export default (record, callback) => {
 
     const dateFields = ['enrolBegin', 'enrolEnd'];
 
-    dateFields.forEach((dateField) => {
+    dateFields.forEach(dateField => {
         let value = record[dateField];
 
         if (!value) {
             // console.error('no date, deleting....'.red, logObject);
             delete record[dateField];
         } else {
-            if (typeof value === "number") {
+            if (typeof value === 'number') {
                 value = moment(value, 'YYYYMMDD').toDate();
             } else {
                 value = value.toString().split(/[-\/]/).join(' ');
@@ -40,26 +40,28 @@ export default (record, callback) => {
         }
     });
 
-//  reference college
-    College.findOne({
-        $or: [
-            { fullName: record.college },
-            { shortName: record.college },
-            { navianceName: record.college },
-            { collegeScorecardName: record.college }
-        ]
-    }, (err, college) => {
-        if (err) {
-            console.log('college not found', err);
-            callback(err);
-            return;
+    //  reference college
+    College.findOne(
+        {
+            $or: [
+                { fullName: record.college },
+                { shortName: record.college },
+                { navianceName: record.college },
+                { collegeScorecardName: record.college }
+            ]
+        },
+        (err, college) => {
+            if (err) {
+                console.log('college not found', err);
+                callback(err);
+                return;
+            }
+            if (college) {
+                record.college = college._id;
+                callback(null, record);
+                return;
+            }
+            callback(null, null);
         }
-        if (college) {
-            record.college = college._id;
-            callback(null, record);
-            return;
-        }
-        callback(null, null);
-    });
-
-}
+    );
+};

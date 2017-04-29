@@ -1,8 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import {Table} from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 class StudentList extends React.Component {
     constructor(props) {
@@ -53,24 +53,29 @@ class StudentList extends React.Component {
         const { offset } = this.state;
         if (this.updating || offset > this.length) return;
         this.updating = true;
-        this.setState({
-            offset: offset + 20,
-            students: students.slice(0, offset + 20)
-        }, () => {
-            _this.updating = false;
-        });
+        this.setState(
+            {
+                offset: offset + 20,
+                students: students.slice(0, offset + 20)
+            },
+            () => {
+                _this.updating = false;
+            }
+        );
     }
 
     renderLoading() {
         return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: 40
-            }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingTop: 40
+                }}
+            >
+                <i className="fa fa-cog fa-spin fa-3x fa-fw" />
             </div>
-        )
+        );
     }
 
     componentWillUnmount() {
@@ -89,13 +94,13 @@ class StudentList extends React.Component {
         }
         const studentsHTML = students.map((student, i) => {
             return (
-                <tr key={ i }>
+                <tr key={i}>
                     <td>
-                        { i + 1 }
+                        {i + 1}
                     </td>
                     <td>
-                        <Link to={ `/student/${student.osis}` }>
-                            { student.firstName }
+                        <Link to={`/student/${student.osis}`}>
+                            {student.firstName}
                         </Link>
                     </td>
                     <td>{student.lastName}</td>
@@ -105,7 +110,6 @@ class StudentList extends React.Component {
                 </tr>
             );
         });
-
 
         return (
             <Table striped bordered hover>
@@ -120,15 +124,14 @@ class StudentList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    { studentsHTML }
+                    {studentsHTML}
                 </tbody>
             </Table>
-
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     schoolObj: state.schools.idObj
 });
 

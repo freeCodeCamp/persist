@@ -11,7 +11,7 @@ import ScheduledJob from './scheduled-job';
 dotenv.config({ silent: true });
 
 function haltOnTimedout(req, res, next) {
-    if (!req.timedout) next()
+    if (!req.timedout) next();
 }
 
 let serverFolder = 'serverDist';
@@ -34,10 +34,12 @@ const app = express();
 app.use(timeout('240s'));
 app.use(express.static(path.join(__dirname, '/app/client/public')));
 app.use(bodyParser.json({ limit: '20mb' }));
-app.use(bodyParser.urlencoded({
-    limit: '20mb',
-    extended: true
-}));
+app.use(
+    bodyParser.urlencoded({
+        limit: '20mb',
+        extended: true
+    })
+);
 app.use(haltOnTimedout);
 // app.use(passport.initialize());
 
@@ -59,10 +61,12 @@ if (process.env.NODE_ENV !== 'production') {
     const morgan = require('morgan');
 
     app.use(morgan('dev'));
-    app.use(webpackDevMiddleware(compiler, {
-        noInfo: true,
-        publicPath: config.output.publicPath
-    }));
+    app.use(
+        webpackDevMiddleware(compiler, {
+            noInfo: true,
+            publicPath: config.output.publicPath
+        })
+    );
     app.use(webpackHotMiddleware(compiler));
     reload(server, app);
 }
@@ -70,7 +74,7 @@ if (process.env.NODE_ENV !== 'production') {
 serverRoutes(app);
 
 const PORT = process.env.PORT || 4545;
-server.listen(PORT, (error) => {
+server.listen(PORT, error => {
     if (error) {
         console.error(error);
     } else {

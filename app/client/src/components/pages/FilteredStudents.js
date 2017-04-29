@@ -28,7 +28,7 @@ class FilteredStudents extends Component {
     updateStudents(props) {
         if (isEmpty(props.studentsObj)) return;
         const osisStudents = JSON.parse(localStorage.getItem('filtered'));
-        this.students = osisStudents.map((osis) => (props.studentsObj[osis]));
+        this.students = osisStudents.map(osis => props.studentsObj[osis]);
         this.setState({
             students: this.students,
             done: true
@@ -36,14 +36,11 @@ class FilteredStudents extends Component {
     }
 
     render() {
-        return (
-            <StudentTable students={this.state.students} noSearch={!this.state.done} />
-        )
+        return <StudentTable students={this.state.students} noSearch={!this.state.done} />;
     }
-
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     studentsObj: state.students.osisObj
 });
 

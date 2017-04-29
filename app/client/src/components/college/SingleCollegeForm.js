@@ -1,13 +1,13 @@
 import React from 'react';
-import {Field, reduxForm} from 'redux-form';
-import {connect} from 'react-redux';
-import {RaisedButton, Snackbar} from 'material-ui';
+import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { RaisedButton, Snackbar } from 'material-ui';
 import keyBy from 'lodash/keyBy';
-import {Button, Form, Row, Alert, Col, Clearfix} from 'react-bootstrap';
+import { Button, Form, Row, Alert, Col, Clearfix } from 'react-bootstrap';
 import FormGroup from '../helpers/ReduxFormGroup';
 import * as updateCollege from '../../actions/updateCollege';
 import CollegeAssociation from './CollegeAssociation';
-import {collegeKeys} from '../../../../common/fieldKeys';
+import { collegeKeys } from '../../../../common/fieldKeys';
 const collegeKeysObj = keyBy(collegeKeys, 'dbName');
 
 class SingleCollegeForm extends React.Component {
@@ -21,7 +21,6 @@ class SingleCollegeForm extends React.Component {
             },
             filteredStudents: []
         };
-
     }
 
     handleFormSubmit(collegeRecord) {
@@ -36,7 +35,7 @@ class SingleCollegeForm extends React.Component {
     toggleEdit() {
         this.setState({
             editable: !this.state.editable
-        })
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -55,7 +54,7 @@ class SingleCollegeForm extends React.Component {
                     error: false,
                     success: true
                 }
-            })
+            });
         }
     }
 
@@ -72,17 +71,21 @@ class SingleCollegeForm extends React.Component {
                 }
                 const initialValue = initialValues[field.dbName];
                 HTML.push(
-                    <Col key={field.dbName}
-                         style={{ minHeight: 100, display: 'flex', justifyContent: 'center' }} xs={12}
-                         sm={6} md={6}
-                         lg={4}>
+                    <Col
+                        key={field.dbName}
+                        style={{ minHeight: 100, display: 'flex', justifyContent: 'center' }}
+                        xs={12}
+                        sm={6}
+                        md={6}
+                        lg={4}
+                    >
                         <FormGroup
                             form={form}
-                            style={ { margin: '50px', textAlign: 'center' } }
-                            initValue={ initialValue }
-                            key={ i }
-                            disabled={ disabled }
-                            field={ field }
+                            style={{ margin: '50px', textAlign: 'center' }}
+                            initValue={initialValue}
+                            key={i}
+                            disabled={disabled}
+                            field={field}
                         />
                     </Col>
                 );
@@ -95,26 +98,71 @@ class SingleCollegeForm extends React.Component {
             });
             return HTML;
         };
-        const basicCollegeInfo = ['website', 'city', 'state', 'locale', 'collType', 'durationType', 'hbcu', 'religiousAffiliation',
-            'specialPrograms', 'otherNotes', 'womenOnly'];
-        const academicProfile = ['avgHsGpa', 'barronsRating', 'percentileCR25', 'percentileCR75', 'admissionsRate', 'testingPolicy',
-            'percentileMath25', 'percentileMath75', 'gradRate.overall', 'gradRate.black', 'gradRate.white', 'gradRate.hispanic'];
-        const percentDegrees = ['percentDegrees1', 'percentDegrees2', 'percentDegrees3', 'percentDegrees4', 'percentDegrees5',
-            'percentDegrees6', 'percentDegrees7', 'percentDegrees8', 'percentDegrees9', 'percentDegrees10', 'percentDegrees11',
-            'percentDegrees12', 'percentDegrees13', 'percentDegrees14', 'percentDegrees15', 'percentDegrees16'];
+        const basicCollegeInfo = [
+            'website',
+            'city',
+            'state',
+            'locale',
+            'collType',
+            'durationType',
+            'hbcu',
+            'religiousAffiliation',
+            'specialPrograms',
+            'otherNotes',
+            'womenOnly'
+        ];
+        const academicProfile = [
+            'avgHsGpa',
+            'barronsRating',
+            'percentileCR25',
+            'percentileCR75',
+            'admissionsRate',
+            'testingPolicy',
+            'percentileMath25',
+            'percentileMath75',
+            'gradRate.overall',
+            'gradRate.black',
+            'gradRate.white',
+            'gradRate.hispanic'
+        ];
+        const percentDegrees = [
+            'percentDegrees1',
+            'percentDegrees2',
+            'percentDegrees3',
+            'percentDegrees4',
+            'percentDegrees5',
+            'percentDegrees6',
+            'percentDegrees7',
+            'percentDegrees8',
+            'percentDegrees9',
+            'percentDegrees10',
+            'percentDegrees11',
+            'percentDegrees12',
+            'percentDegrees13',
+            'percentDegrees14',
+            'percentDegrees15',
+            'percentDegrees16'
+        ];
         const financialProfile = ['netPriceCalculator', 'netPrice0to30', 'netPrice30to48', 'netPrice48to75', 'netPrice75to110'];
-        const studentBody = ['numberStudents', 'percentPartTimeEnrolled', 'percentFirstGen', 'percentPellGrant', 'percentStudents.black',
-            'percentStudents.hispanic', 'percentStudents.asian', 'percentStudents.white'];
+        const studentBody = [
+            'numberStudents',
+            'percentPartTimeEnrolled',
+            'percentFirstGen',
+            'percentPellGrant',
+            'percentStudents.black',
+            'percentStudents.hispanic',
+            'percentStudents.asian',
+            'percentStudents.white'
+        ];
 
         return (
             <div id="single-college-page">
-                <Form className='single-student-form' onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
-                    <Row className='text-right'>
-                        {editable ? <RaisedButton label='Submit' type='submit' primary={true} /> : null}
-                        {editable ?
-                            <RaisedButton label='Undo' secondary={true} onClick={reset} /> :
-                            <RaisedButton label='Edit' primary={true} onClick={() => this.toggleEdit()} />
-                        }
+                <Form className="single-student-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+                    <Row className="text-right">
+                        {editable ? <RaisedButton label="Submit" type="submit" primary={true} /> : null}
+                        {editable
+                            ? <RaisedButton label="Undo" secondary={true} onClick={reset} />
+                            : <RaisedButton label="Edit" primary={true} onClick={() => this.toggleEdit()} />}
                     </Row>
                     <h2>Basic College Information</h2>
                     <Row>
@@ -139,19 +187,19 @@ class SingleCollegeForm extends React.Component {
                     <Snackbar
                         bodyStyle={{ backgroundColor: 'red' }}
                         open={this.state.notification.error}
-                        message='Something went wrong. Please try again'
+                        message="Something went wrong. Please try again"
                         autoHideDuration={2000}
                         onRequestClose={() => {
-                            this.setState({ ...this.state, notification: { success: false, error: false } })
+                            this.setState({ ...this.state, notification: { success: false, error: false } });
                         }}
                     />
                     <Snackbar
                         bodyStyle={{ backgroundColor: 'green' }}
                         open={this.state.notification.success}
-                        message='College record is updated'
+                        message="College record is updated"
                         autoHideDuration={2000}
                         onRequestClose={() => {
-                            this.setState({ ...this.state, notification: { success: false, error: false } })
+                            this.setState({ ...this.state, notification: { success: false, error: false } });
                         }}
                     />
                 </Form>
@@ -165,12 +213,10 @@ SingleCollegeForm = reduxForm({
     form: 'SingleCollege' // a unique name for this form
 })(SingleCollegeForm);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     updateCollegeStatus: state.updateCollege,
     students: state.students
 });
 
 // You have to connect() to any reducers that you wish to connect to yourself
-export default connect(
-    mapStateToProps, updateCollege
-)(SingleCollegeForm);
+export default connect(mapStateToProps, updateCollege)(SingleCollegeForm);

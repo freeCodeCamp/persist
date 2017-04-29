@@ -38,7 +38,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var typeKeys = (0, _exportKeys2.default)((0, _map2.default)(_fieldKeys.studentKeys, 'dbName'), _fieldKeys.studentKeys);
 
 function formatRecord(record, callback) {
-
     if (!record.osis) {
         callback(null, null);
         return;
@@ -51,7 +50,6 @@ function formatRecord(record, callback) {
     var dateFields = typeKeys['datepicker'];
 
     dateFields.forEach(function (dateField) {
-
         var value = record[dateField];
 
         if (!value) {

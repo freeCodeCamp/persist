@@ -1,19 +1,15 @@
-import {
-    SAVE_APPLICATION_ERROR,
-    SAVE_APPLICATION_PENDING,
-    SAVE_APPLICATION_SUCCESS,
-    SPINNER_PAGE
-} from '../types';
-import {axios} from '../utils';
+import { SAVE_APPLICATION_ERROR, SAVE_APPLICATION_PENDING, SAVE_APPLICATION_SUCCESS, SPINNER_PAGE } from '../types';
+import { axios } from '../utils';
 
-const saveApplication = (application) => (
-    (dispatch) => {
+const saveApplication = application =>
+    dispatch => {
         dispatch({
             type: SPINNER_PAGE,
             payload: true
         });
-        return axios().post('/update-application', {application})
-            .then((res) => {
+        return axios()
+            .post('/update-application', { application })
+            .then(res => {
                 dispatch({
                     type: SAVE_APPLICATION_SUCCESS,
                     payload: res.data,
@@ -24,7 +20,7 @@ const saveApplication = (application) => (
                     payload: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 dispatch({
                     type: SAVE_APPLICATION_ERROR,
                     payload: err
@@ -32,9 +28,8 @@ const saveApplication = (application) => (
                 dispatch({
                     type: SPINNER_PAGE,
                     payload: false
-                })
+                });
             });
-    }
-);
+    };
 
 export default saveApplication;

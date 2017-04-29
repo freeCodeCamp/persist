@@ -14,7 +14,7 @@ var getNotifications = function getNotifications(req, res) {
     var offset = req.body.offset;
     var limit = req.body.limit;
     var user = req.user;
-    _user2.default.findOne({ _id: user._id }, { 'notifications': { $slice: [offset, limit] } }).populate({
+    _user2.default.findOne({ _id: user._id }, { notifications: { $slice: [offset, limit] } }).populate({
         path: 'notifications.notifId',
         populate: {
             path: 'user student',
@@ -35,7 +35,7 @@ var markRead = function markRead(req, res) {
     var user = req.user;
     var notifId = req.body.notifId;
     _user2.default.findOne({ _id: user._id }).update({ 'notifications.notifId': notifId }, {
-        '$set': {
+        $set: {
             'notifications.$.read': true
         }
     }).exec(function (err, status) {
@@ -50,7 +50,7 @@ var markRead = function markRead(req, res) {
 var allRead = function allRead(req, res) {
     var user = req.user;
     _user2.default.findOne({ _id: user._id }).update({}, {
-        '$set': {
+        $set: {
             lastAllRead: new Date()
         }
     }).exec(function (err, status) {

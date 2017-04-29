@@ -5,7 +5,7 @@ import {
     FORGOT_PASSWORD_SUCCESS,
     UPDATE_PASSWORD_PENDING,
     UPDATE_PASSWORD_SUCCESS
-}  from '../actions/types';
+} from '../actions/types';
 
 const defaultState = {
     authenticated: false,

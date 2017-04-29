@@ -1,11 +1,11 @@
-import path from "path";
-import multer from "multer";
+import path from 'path';
+import multer from 'multer';
 import rimraf from 'rimraf';
-import {Student, College, School, User} from "../models";
+import { Student, College, School, User } from '../models';
 import forOwn from 'lodash/forOwn';
 import omit from 'lodash/omit';
-import passport from "../config/passport";
-import {getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN} from "../../common/constants";
+import passport from '../config/passport';
+import { getRole, ROLE_COUNSELOR, ROLE_OWNER, ROLE_ADMIN } from '../../common/constants';
 import {
     DataManageController,
     AmazonController,
@@ -18,12 +18,12 @@ import {
     TermController,
     UploadHistoryController,
     AliasController
-} from "../controllers";
-import saveCSV from "../utils/save_csv";
-import saveCollegeData from "../utils/save_csv_colleges_updated";
-import saveTermData from "../utils/save_csv_term_data";
-import saveApplicationData from "../utils/save_csv_applications";
-import saveSchoolData from "../utils/save_csv_schools";
+} from '../controllers';
+import saveCSV from '../utils/save_csv';
+import saveCollegeData from '../utils/save_csv_colleges_updated';
+import saveTermData from '../utils/save_csv_term_data';
+import saveApplicationData from '../utils/save_csv_applications';
+import saveSchoolData from '../utils/save_csv_schools';
 
 var upload = multer({
     dest: 'uploads/'
@@ -41,10 +41,12 @@ var storage = multer.diskStorage({
 });
 
 // configure multer middleware
-var fileUpload = upload.fields([{
-    name: 'file',
-    maxCount: 1
-}]);
+var fileUpload = upload.fields([
+    {
+        name: 'file',
+        maxCount: 1
+    }
+]);
 
 const requireAuth = passport.authenticate('jwt', {
     session: false
@@ -59,177 +61,204 @@ const matchSecret = (req, res, next) => {
 };
 
 const requireLogin = (req, res, next) => {
-    passport.authenticate('local', {
-        session: false
-    }, (err, user, info) => {
-        if (err) {
-            return next(err);
+    passport.authenticate(
+        'local',
+        {
+            session: false
+        },
+        (err, user, info) => {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.status(403).json({ message: info.error });
+            }
+            req.user = user;
+            next();
         }
-        if (!user) {
-            return res.status(403).json({ message: info.error });
-        }
-        req.user = user;
-        next();
-    })(req, res, next);
+    )(req, res, next);
 };
 
-export default (app) => {
-
+export default app => {
     app.post('/upload/studentData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, function(req, res) {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
-        saveCSV(filePath).then((data) => {
-            UploadHistoryController.createHistory('Student Data', req.user._id, true);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(200).send(data);
-        }).catch((err) => {
-            console.log(err);
-            UploadHistoryController.createHistory('Student Data', req.user._id, false);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(500).send(err);
-        });
+        saveCSV(filePath)
+            .then(data => {
+                UploadHistoryController.createHistory('Student Data', req.user._id, true);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(200).send(data);
+            })
+            .catch(err => {
+                console.log(err);
+                UploadHistoryController.createHistory('Student Data', req.user._id, false);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(500).send(err);
+            });
     });
 
     app.post('/upload/collegeData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
-        saveCollegeData(filePath).then((data) => {
-            UploadHistoryController.createHistory('College Data', req.user._id, true);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(200).send(data);
-        }).catch((err) => {
-            console.log(err);
-            UploadHistoryController.createHistory('College Data', req.user._id, false);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(500).send(err);
-        });
+        saveCollegeData(filePath)
+            .then(data => {
+                UploadHistoryController.createHistory('College Data', req.user._id, true);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(200).send(data);
+            })
+            .catch(err => {
+                console.log(err);
+                UploadHistoryController.createHistory('College Data', req.user._id, false);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(500).send(err);
+            });
     });
 
     app.post('/upload/schoolData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
-        saveSchoolData(filePath).then((data) => {
-            UploadHistoryController.createHistory('School Data', req.user._id, true);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(200).send(data);
-        }).catch((err) => {
-            console.log(err);
-            UploadHistoryController.createHistory('School Data', req.user._id, false);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(500).send(err);
-        });
+        saveSchoolData(filePath)
+            .then(data => {
+                UploadHistoryController.createHistory('School Data', req.user._id, true);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(200).send(data);
+            })
+            .catch(err => {
+                console.log(err);
+                UploadHistoryController.createHistory('School Data', req.user._id, false);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(500).send(err);
+            });
     });
 
     app.post('/upload/termData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
-        saveTermData(filePath).then((data) => {
-            UploadHistoryController.createHistory('Term Data', req.user._id, true);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(200).send(data);
-        }).catch((err) => {
-            console.log(err);
-            UploadHistoryController.createHistory('Term Data', req.user._id, false);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(500).send(err);
-        });
+        saveTermData(filePath)
+            .then(data => {
+                UploadHistoryController.createHistory('Term Data', req.user._id, true);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(200).send(data);
+            })
+            .catch(err => {
+                console.log(err);
+                UploadHistoryController.createHistory('Term Data', req.user._id, false);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(500).send(err);
+            });
     });
 
     app.post('/upload/applicationData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
 
-        saveApplicationData(filePath).then((data) => {
-            UploadHistoryController.createHistory('Application Data', req.user._id, true);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(200).send(data);
-        }).catch((err) => {
-            console.log(err);
-            UploadHistoryController.createHistory('Application Data', req.user._id, false);
-            rimraf('uploads/*', () => console.log('cleared'));
-            res.status(500).send(err);
-        });
+        saveApplicationData(filePath)
+            .then(data => {
+                UploadHistoryController.createHistory('Application Data', req.user._id, true);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(200).send(data);
+            })
+            .catch(err => {
+                console.log(err);
+                UploadHistoryController.createHistory('Application Data', req.user._id, false);
+                rimraf('uploads/*', () => console.log('cleared'));
+                res.status(500).send(err);
+            });
     });
 
     // main REST API for getting/adding/deleting/modifying student data
-    app.route('/api/student/:osis')
+    app
+        .route('/api/student/:osis')
         .get((req, res) => {
-            Student.findOne({
-                osis: req.params.osis
-            }, (err, student) => {
-                if (err) {
-                    res.status(500).send(err);
+            Student.findOne(
+                {
+                    osis: req.params.osis
+                },
+                (err, student) => {
+                    if (err) {
+                        res.status(500).send(err);
+                    }
+                    res.status(200).json(student);
                 }
-                res.status(200).json(student);
-            });
+            );
         })
         .post((req, res) => {
             res.send('working on it');
         })
         .put((req, res) => {
             const student = omit(req.body, '_id');
-            Student.findOne({
-                osis: student.osis
-            }, (err, oldStudent) => {
-                if (err) {
-                    res.status(500).send(err);
-                    return;
-                }
-                forOwn(student, (value, key) => {
-                    oldStudent[key] = student[key];
-                });
-                oldStudent.save((err, updatedStudent) => {
+            Student.findOne(
+                {
+                    osis: student.osis
+                },
+                (err, oldStudent) => {
                     if (err) {
                         res.status(500).send(err);
                         return;
                     }
-                    res.status(200).send(updatedStudent);
-                });
-            });
+                    forOwn(student, (value, key) => {
+                        oldStudent[key] = student[key];
+                    });
+                    oldStudent.save((err, updatedStudent) => {
+                        if (err) {
+                            res.status(500).send(err);
+                            return;
+                        }
+                        res.status(200).send(updatedStudent);
+                    });
+                }
+            );
         })
         .delete((req, res) => {
             res.send('working on it');
         });
 
-    app.route('/api/college/:fullName')
+    app
+        .route('/api/college/:fullName')
         .get((req, res) => {
-            College.find({
-                fullName: req.params.fullName
-            }, (err, college) => {
-                if (err) {
-                    res.status(500).send(err);
-                    return;
+            College.find(
+                {
+                    fullName: req.params.fullName
+                },
+                (err, college) => {
+                    if (err) {
+                        res.status(500).send(err);
+                        return;
+                    }
+                    res.status(200).json(college);
                 }
-                res.status(200).json(college);
-            });
+            );
         })
         .post((req, res) => {
             res.send('working on it');
         })
         .put((req, res) => {
             const college = omit(req.body, '_id');
-            College.findOne({
-                fullName: college.fullName
-            }, (err, oldCollege) => {
-                if (err) {
-                    res.status(500).send(err);
-                    return;
-                }
-                forOwn(college, (value, key) => {
-                    oldCollege[key] = college[key];
-                });
-                oldCollege.save((err, updatedCollege) => {
+            College.findOne(
+                {
+                    fullName: college.fullName
+                },
+                (err, oldCollege) => {
                     if (err) {
                         res.status(500).send(err);
                         return;
                     }
-                    res.status(200).send(updatedCollege);
-                });
-            });
+                    forOwn(college, (value, key) => {
+                        oldCollege[key] = college[key];
+                    });
+                    oldCollege.save((err, updatedCollege) => {
+                        if (err) {
+                            res.status(500).send(err);
+                            return;
+                        }
+                        res.status(200).send(updatedCollege);
+                    });
+                }
+            );
         })
         .delete((req, res) => {
             res.send('working on it');
@@ -260,11 +289,7 @@ export default (app) => {
             return res.status(200).json([]);
         } else if (getRole(req.user.access.role) === getRole(ROLE_COUNSELOR)) {
             query = User.find({
-                $or: [
-                    { access: { school: req.user.access.school } },
-                    { access: { role: ROLE_OWNER } },
-                    { access: { role: ROLE_ADMIN } }
-                ]
+                $or: [{ access: { school: req.user.access.school } }, { access: { role: ROLE_OWNER } }, { access: { role: ROLE_ADMIN } }]
             });
         } else if (getRole(req.user.access.role) >= getRole(ROLE_OWNER)) {
             query = User.find({});
@@ -280,7 +305,6 @@ export default (app) => {
 
     // main route for to get colleges db
     app.get('/api/colleges', requireAuth, (req, res) => {
-
         let query = College.find({});
         query.lean().exec((err, colleges) => {
             if (err) {
@@ -291,7 +315,6 @@ export default (app) => {
     });
 
     app.get('/api/schools', requireAuth, (req, res) => {
-
         let query = School.find({});
         query.lean().exec((err, schools) => {
             if (err) {
@@ -305,7 +328,8 @@ export default (app) => {
         AmazonController.getSign(req, res);
     });
 
-    app.route('/update-document', requireAuth)
+    app
+        .route('/update-document', requireAuth)
         .post((req, res) => {
             DocController.updateDocument(req, res);
         })
@@ -313,7 +337,8 @@ export default (app) => {
             DocController.deleteDocument(req, res);
         });
 
-    app.route('/update-caseNote', requireAuth)
+    app
+        .route('/update-caseNote', requireAuth)
         .post((req, res) => {
             CaseNoteController.updateCaseNote(req, res);
         })
@@ -321,7 +346,8 @@ export default (app) => {
             CaseNoteController.deleteCaseNote(req, res);
         });
 
-    app.route('/update-application', requireAuth)
+    app
+        .route('/update-application', requireAuth)
         .post((req, res) => {
             ApplicationController.updateApplication(req, res);
         })
@@ -329,7 +355,8 @@ export default (app) => {
             ApplicationController.deleteApplication(req, res);
         });
 
-    app.route('/update-term', requireAuth)
+    app
+        .route('/update-term', requireAuth)
         .post((req, res) => {
             TermController.updateTerm(req, res);
         })
@@ -337,7 +364,8 @@ export default (app) => {
             TermController.deleteTerm(req, res);
         });
 
-    app.route('/update-alias', requireAuth)
+    app
+        .route('/update-alias', requireAuth)
         .post((req, res) => {
             AliasController.updateAlias(req, res);
         })

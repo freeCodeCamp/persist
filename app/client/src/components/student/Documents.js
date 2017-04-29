@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import {Accordion, Panel, Table} from 'react-bootstrap';
-import {IconButton, FloatingActionButton, Dialog, FlatButton} from 'material-ui';
-import {submit} from 'redux-form';
-import {saveDocument, deleteDocument} from '../../actions';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Accordion, Panel, Table } from 'react-bootstrap';
+import { IconButton, FloatingActionButton, Dialog, FlatButton } from 'material-ui';
+import { submit } from 'redux-form';
+import { saveDocument, deleteDocument } from '../../actions';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
 import DocumentEditor from './DocumentEditor';
-import {EditorModeEdit, ContentDeleteSweep, FileFileDownload, ContentAdd} from 'material-ui/svg-icons';
+import { EditorModeEdit, ContentDeleteSweep, FileFileDownload, ContentAdd } from 'material-ui/svg-icons';
 
 class Documents extends Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class Documents extends Component {
     }
 
     renderDocuments() {
-        const {initValue} = this.props;
+        const { initValue } = this.props;
         const documentsHTML = initValue.map((document, index) => {
             return (
                 <tr key={index}>
@@ -35,18 +35,18 @@ class Documents extends Component {
                             <EditorModeEdit />
                         </IconButton>
                         <IconButton href={document.downloadLink}>
-                            <FileFileDownload/>
+                            <FileFileDownload />
                         </IconButton>
                         <IconButton onClick={() => this.handleDelete(document)}>
-                            <ContentDeleteSweep/>
+                            <ContentDeleteSweep />
                         </IconButton>
                     </td>
                 </tr>
-            )
+            );
         });
         return (
             <tbody>
-            {documentsHTML}
+                {documentsHTML}
             </tbody>
         );
     }
@@ -62,8 +62,7 @@ class Documents extends Component {
     }
 
     deleteDocument() {
-        this.props.deleteDocument(this.document, this.osis)
-            .then(() => (this.handleClose()));
+        this.props.deleteDocument(this.document, this.osis).then(() => this.handleClose());
     }
 
     handleEdit(document) {
@@ -77,10 +76,7 @@ class Documents extends Component {
     }
 
     saveDocument(oldDocument, newDocument) {
-        this.props.saveDocument(oldDocument, newDocument, this.osis)
-            .then(() => (
-                this.handleClose()
-            ));
+        this.props.saveDocument(oldDocument, newDocument, this.osis).then(() => this.handleClose());
     }
 
     handleSave() {
@@ -97,22 +93,11 @@ class Documents extends Component {
     }
 
     renderDeleteDialog() {
-        const {spinner} = this.props;
+        const { spinner } = this.props;
         const open = this.state.open.delete;
         const actions = [
-            <FlatButton
-                label="Cancel"
-                disabled={spinner}
-                primary={true}
-                keyboardFocused={true}
-                onTouchTap={() => this.handleClose()}
-            />,
-            <FlatButton
-                label="Delete"
-                disabled={spinner}
-                primary={true}
-                onTouchTap={() => this.deleteDocument()}
-            />
+            <FlatButton label="Cancel" disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleClose()} />,
+            <FlatButton label="Delete" disabled={spinner} primary={true} onTouchTap={() => this.deleteDocument()} />
         ];
         return (
             <Dialog actions={actions} open={open}>
@@ -122,54 +107,43 @@ class Documents extends Component {
     }
 
     renderEditDialog() {
-        const {spinner} = this.props;
+        const { spinner } = this.props;
         const document = this.document;
         const open = this.state.open.edit;
         const actions = [
-            <FlatButton
-                label="Cancel"
-                disabled={spinner}
-                primary={true}
-                onTouchTap={() => this.handleClose()}
-            />,
-            <FlatButton
-                label="Save"
-                disabled={spinner}
-                primary={true}
-                keyboardFocused={true}
-                onTouchTap={() => this.handleSave()}
-            />
+            <FlatButton label="Cancel" disabled={spinner} primary={true} onTouchTap={() => this.handleClose()} />,
+            <FlatButton label="Save" disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleSave()} />
         ];
         const title = isEmpty(document) ? 'Add new document' : 'Edit Document';
         const oldDocument = cloneDeep(document);
         return (
             <Dialog actions={actions} open={open} title={title}>
-                <DocumentEditor initialValues={document} onSubmit={this.saveDocument.bind(this, oldDocument)}/>
+                <DocumentEditor initialValues={document} onSubmit={this.saveDocument.bind(this, oldDocument)} />
             </Dialog>
         );
     }
 
     render() {
-        const {fields} = this.props;
+        const { fields } = this.props;
 
         const tableHead = (
             <thead>
-            <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
         );
         return (
             <Accordion>
-                <Panel header='Documents' eventKey='1'>
-                    {fields.length > 0 ?
-                        <Table responsive condensed>
-                            {tableHead}
-                            {this.renderDocuments()}
-                        </Table> : null
-                    }
+                <Panel header="Documents" eventKey="1">
+                    {fields.length > 0
+                        ? <Table responsive condensed>
+                              {tableHead}
+                              {this.renderDocuments()}
+                          </Table>
+                        : null}
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                         <ContentAdd />
                     </FloatingActionButton>
@@ -181,16 +155,18 @@ class Documents extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     spinner: state.spinner.page
 });
 
-const mapDispatchToProps = (dispatch) => (
-    bindActionCreators({
-        saveDocument,
-        deleteDocument,
-        submit
-    }, dispatch)
-);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            saveDocument,
+            deleteDocument,
+            submit
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Documents);

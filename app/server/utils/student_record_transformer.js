@@ -2,13 +2,12 @@ import College from '../models/college';
 import compact from 'lodash/compact';
 import async from 'async';
 import School from '../models/school';
-import {studentKeys} from '../../common/fieldKeys';
+import { studentKeys } from '../../common/fieldKeys';
 import exportKeys from '../../common/exportKeys';
 import map from 'lodash/map';
 const typeKeys = exportKeys(map(studentKeys, 'dbName'), studentKeys);
 
 export default function formatRecord(record, callback) {
-
     if (!record.osis) {
         callback(null, null);
         return;
@@ -21,7 +20,6 @@ export default function formatRecord(record, callback) {
     const dateFields = typeKeys['datepicker'];
 
     dateFields.forEach(function(dateField) {
-
         let value = record[dateField];
 
         if (!value) {
@@ -40,7 +38,6 @@ export default function formatRecord(record, callback) {
         }
     });
 
-
     // handle things that should be arrays
     const shouldBeArrays = [...typeKeys['checkbox'], ...typeKeys['checkbox_add']];
 
@@ -55,60 +52,66 @@ export default function formatRecord(record, callback) {
                 record[key] = record[key].replace(/,\s+/g, ',');
                 record[key] = record[key].split(/[;,]/);
                 record[key] = compact(record[key]);
-                record[key] = record[key].map((str) => (str.trim()));
+                record[key] = record[key].map(str => str.trim());
             }
             continue;
         }
-
 
         // sort out empty strings
         if (!record[key] || (typeof record[key] === 'string' && record[key].length < 1)) {
             record[key] = undefined;
         }
-
     }
 
-    async.parallel([
-        (callback2) => {
-            // reference College
-            College.findOne({
-                $or: [
-                    { fullName: record.intendedCollege },
-                    { shortName: record.intendedCollege },
-                    { navianceName: record.intendedCollege },
-                    { collegeScorecardName: record.intendedCollege }
-                ]
-            }, (err, college) => {
-                if (err) {
-                    console.log('college not found', err);
-                    callback2(err);
-                    return;
-                }
-                record.intendedCollege = undefined;
-                if (college) {
-                    record.intendedCollege = college._id;
-                }
-                callback2(null);
-            });
-        },
-        (callback2) => {
-            // reference school
-            School.findOne({
-                name: record.hs
-            }, (err, school) => {
-                if (err) {
-                    console.log('school not found', err);
-                    return callback2(err);
-                }
-                record.hs = school;
-                callback2(null);
-            });
+    async.parallel(
+        [
+            callback2 => {
+                // reference College
+                College.findOne(
+                    {
+                        $or: [
+                            { fullName: record.intendedCollege },
+                            { shortName: record.intendedCollege },
+                            { navianceName: record.intendedCollege },
+                            { collegeScorecardName: record.intendedCollege }
+                        ]
+                    },
+                    (err, college) => {
+                        if (err) {
+                            console.log('college not found', err);
+                            callback2(err);
+                            return;
+                        }
+                        record.intendedCollege = undefined;
+                        if (college) {
+                            record.intendedCollege = college._id;
+                        }
+                        callback2(null);
+                    }
+                );
+            },
+            callback2 => {
+                // reference school
+                School.findOne(
+                    {
+                        name: record.hs
+                    },
+                    (err, school) => {
+                        if (err) {
+                            console.log('school not found', err);
+                            return callback2(err);
+                        }
+                        record.hs = school;
+                        callback2(null);
+                    }
+                );
+            }
+        ],
+        err => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, record);
         }
-    ], (err) => {
-        if (err) {
-            return callback(err);
-        }
-        callback(null, record);
-    });
-
+    );
 }

@@ -35,7 +35,7 @@ exports.default = function (record, callback) {
             // console.error('no date, deleting....'.red, logObject);
             delete record[dateField];
         } else {
-            if (typeof value === "number") {
+            if (typeof value === 'number') {
                 value = (0, _moment2.default)(value, 'YYYYMMDD').toDate();
             } else {
                 value = value.toString().split(/[-\/]/).join(' ');

@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import {Accordion, Panel, Table} from 'react-bootstrap';
-import {IconButton, FloatingActionButton, Dialog, FlatButton} from 'material-ui';
-import {submit} from 'redux-form';
-import {saveTerm, deleteTerm} from '../../actions';
-import {mapping} from '../../../../common/constants';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Accordion, Panel, Table } from 'react-bootstrap';
+import { IconButton, FloatingActionButton, Dialog, FlatButton } from 'material-ui';
+import { submit } from 'redux-form';
+import { saveTerm, deleteTerm } from '../../actions';
+import { mapping } from '../../../../common/constants';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import TermEditor from './TermEditor';
-import {EditorModeEdit, ContentDeleteSweep, ContentAdd} from 'material-ui/svg-icons';
+import { EditorModeEdit, ContentDeleteSweep, ContentAdd } from 'material-ui/svg-icons';
 
 class Terms extends Component {
     constructor(props) {
@@ -53,7 +53,7 @@ class Terms extends Component {
                         </IconButton>
                     </td>
                 </tr>
-            )
+            );
         });
         return (
             <tbody>
@@ -73,8 +73,7 @@ class Terms extends Component {
     }
 
     deleteTerm() {
-        this.props.deleteTerm(this.osis, this.term._id)
-            .then(() => (this.handleClose()));
+        this.props.deleteTerm(this.osis, this.term._id).then(() => this.handleClose());
     }
 
     handleEdit(term) {
@@ -95,10 +94,7 @@ class Terms extends Component {
         }
         const term = newTerm;
         term.osis = this.osis;
-        this.props.saveTerm(term)
-            .then(() => (
-                this.handleClose()
-            ));
+        this.props.saveTerm(term).then(() => this.handleClose());
     }
 
     handleSave() {
@@ -118,19 +114,8 @@ class Terms extends Component {
         const { spinner } = this.props;
         const open = this.state.open.delete;
         const actions = [
-            <FlatButton
-                label='Cancel'
-                disabled={spinner}
-                primary={true}
-                keyboardFocused={true}
-                onTouchTap={() => this.handleClose()}
-            />,
-            <FlatButton
-                label='Delete'
-                disabled={spinner}
-                primary={true}
-                onTouchTap={() => this.deleteTerm()}
-            />
+            <FlatButton label="Cancel" disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleClose()} />,
+            <FlatButton label="Delete" disabled={spinner} primary={true} onTouchTap={() => this.deleteTerm()} />
         ];
         return (
             <Dialog actions={actions} open={open}>
@@ -144,19 +129,8 @@ class Terms extends Component {
         const term = this.term;
         const open = this.state.open.edit;
         const actions = [
-            <FlatButton
-                label='Cancel'
-                disabled={spinner}
-                primary={true}
-                onTouchTap={() => this.handleClose()}
-            />,
-            <FlatButton
-                label='Save'
-                disabled={spinner}
-                primary={true}
-                keyboardFocused={true}
-                onTouchTap={() => this.handleSave()}
-            />
+            <FlatButton label="Cancel" disabled={spinner} primary={true} onTouchTap={() => this.handleClose()} />,
+            <FlatButton label="Save" disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleSave()} />
         ];
         const title = isEmpty(term) ? 'Add new Term' : 'Edit Term';
         const oldTerm = cloneDeep(term);
@@ -185,13 +159,13 @@ class Terms extends Component {
         );
         return (
             <Accordion>
-                <Panel header='Terms' eventKey='1'>
-                    {fields.length > 0 ?
-                        <Table responsive condensed>
-                            {tableHead}
-                            {this.renderTerms()}
-                        </Table> : null
-                    }
+                <Panel header="Terms" eventKey="1">
+                    {fields.length > 0
+                        ? <Table responsive condensed>
+                              {tableHead}
+                              {this.renderTerms()}
+                          </Table>
+                        : null}
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                         <ContentAdd />
                     </FloatingActionButton>
@@ -203,19 +177,21 @@ class Terms extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     spinner: state.spinner.page,
     auth: state.auth,
     collegeObj: state.colleges.idObj,
     termForm: state.form['TermEditor']
 });
 
-const mapDispatchToProps = (dispatch) => (
-    bindActionCreators({
-        saveTerm,
-        deleteTerm,
-        submit
-    }, dispatch)
-);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            saveTerm,
+            deleteTerm,
+            submit
+        },
+        dispatch
+    );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Terms);

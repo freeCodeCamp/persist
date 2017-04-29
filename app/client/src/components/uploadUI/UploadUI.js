@@ -5,7 +5,6 @@ import Spinner from '../helpers/loadingScreen';
 import { Button, Input, InputGroup } from 'react-bootstrap';
 
 class UploadUI extends Component {
-
     constructor(props) {
         super(props);
     }
@@ -23,33 +22,32 @@ class UploadUI extends Component {
 
     render() {
         return (
-
             <div>
-                <h1>Upload { this.props.type }</h1>
+                <h1>Upload {this.props.type}</h1>
                 <p>
-                    { JSON.stringify(this.props.url) }
+                    {JSON.stringify(this.props.url)}
                 </p>
                 <InputGroup>
-                    <Input className='btn'
-                           type='file'
-                           name='photo'
-                           onChange={ this.addFile.bind(this) } />
+                    <Input className="btn" type="file" name="photo" onChange={this.addFile.bind(this)} />
                 </InputGroup>
-                <Button onClick={ this.addItem.bind(this) }>
+                <Button onClick={this.addItem.bind(this)}>
                     Submit
                 </Button>
                 <Spinner />
-                { this.props.upload.error ? <p>
-                        Error Found
-                    </p> : null }
-                { this.props.upload.success ? <p>
-                        { this.props.upload.message }
-                    </p> : null }
+                {this.props.upload.error
+                    ? <p>
+                          Error Found
+                      </p>
+                    : null}
+                {this.props.upload.success
+                    ? <p>
+                          {this.props.upload.message}
+                      </p>
+                    : null}
             </div>
         );
     }
 }
-
 
 function mapStateToProps(store) {
     return {

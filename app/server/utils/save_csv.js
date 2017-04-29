@@ -9,11 +9,11 @@ import async from 'async';
 
 // this is the data we need for validation and transforming
 import Student from '../models/student';
-import {studentKeys} from '../../common/fieldKeys';
+import { studentKeys } from '../../common/fieldKeys';
 import formatRecord from './student_record_transformer';
 import myMerge from '../helpers/merge';
 
-const createAlias = (student) => ({
+const createAlias = student => ({
     firstName: student.firstName,
     middleName: student.middleName,
     lastName: student.lastName,
@@ -21,9 +21,7 @@ const createAlias = (student) => ({
 });
 
 export default function(fileName) {
-
     return new Promise((resolve, reject) => {
-
         var parser = parse({
             delimiter: ',',
             columns: mapValues,
@@ -36,7 +34,7 @@ export default function(fileName) {
         const data = {};
         let row;
         transformer.on('readable', () => {
-            while (row = transformer.read()) {
+            while ((row = transformer.read())) {
                 data[row.osis] = data[row.osis] || clone({});
                 data[row.osis] = myMerge(data[row.osis], row);
             }
@@ -61,17 +59,18 @@ export default function(fileName) {
             let errorCount = 0;
             console.time('dbSave');
 
-            async.eachLimit(data, 10, (record, callback) => {
-                Student.findOne(
-                    { osis: record.osis },
-                    (err, oldStudent) => {
+            async.eachLimit(
+                data,
+                10,
+                (record, callback) => {
+                    Student.findOne({ osis: record.osis }, (err, oldStudent) => {
                         if (err) {
                             console.log('error in finding document', err);
                             return callback(err);
                         }
                         if (!oldStudent && !record.alias) {
                             const newStudent = new Student(record);
-                            newStudent.save((err) => {
+                            newStudent.save(err => {
                                 if (err) {
                                     if (err.code === 11000) {
                                         return callback(null);
@@ -83,7 +82,7 @@ export default function(fileName) {
                             });
                         } else {
                             if (record.alias) {
-                                const oldAlias = oldStudent.aliases.find((alias) => (isEqual(alias, createAlias(record))));
+                                const oldAlias = oldStudent.aliases.find(alias => isEqual(alias, createAlias(record)));
                                 if (!oldAlias) {
                                     oldStudent.aliases.push(createAlias(record));
                                 }
@@ -100,7 +99,7 @@ export default function(fileName) {
                                     }
                                 });
                             }
-                            oldStudent.save((err) => {
+                            oldStudent.save(err => {
                                 if (err) {
                                     if (err.code === 11000) {
                                         return callback(null);
@@ -109,37 +108,36 @@ export default function(fileName) {
                                     return callback(null);
                                 }
                                 return callback(null);
-                            })
+                            });
                         }
                     });
-            }, (err) => {
-                console.log('getting through to here'.blue);
-                if (err) {
-                    reject(err);
-                    return;
+                },
+                err => {
+                    console.log('getting through to here'.blue);
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    console.timeEnd('dbSave');
+                    resolve({
+                        modifiedCount,
+                        addedCount,
+                        newStudents,
+                        updatedStudents,
+                        errorStudents,
+                        errorCount
+                    });
                 }
-                console.timeEnd('dbSave');
-                resolve({
-                    modifiedCount,
-                    addedCount,
-                    newStudents,
-                    updatedStudents,
-                    errorStudents,
-                    errorCount
-                });
-            });
+            );
         });
 
         fs.createReadStream(fileName).pipe(parser).pipe(transformer);
-
     });
 }
 
-
 function mapValues(line) {
-
-    return line.map((key) => {
-        var obj = studentKeys.find((field) => {
+    return line.map(key => {
+        var obj = studentKeys.find(field => {
             return field.fieldName === key;
         });
         if (obj) {

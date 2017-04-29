@@ -1,11 +1,6 @@
-import {
-    SAVE_DOCUMENT_ERROR,
-    SAVE_DOCUMENT_PENDING,
-    SAVE_DOCUMENT_SUCCESS,
-    SPINNER_PAGE
-} from '../types';
+import { SAVE_DOCUMENT_ERROR, SAVE_DOCUMENT_PENDING, SAVE_DOCUMENT_SUCCESS, SPINNER_PAGE } from '../types';
 import oaxios from 'axios';
-import {axios} from '../utils';
+import { axios } from '../utils';
 
 const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
     const document = doc;
@@ -13,8 +8,9 @@ const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
     document.name = newDocument.name;
     document.type = newDocument.type;
     document.osis = osis;
-    return axios().post('/update-document', document)
-        .then((res) => {
+    return axios()
+        .post('/update-document', document)
+        .then(res => {
             dispatch({
                 type: SAVE_DOCUMENT_SUCCESS,
                 payload: res.data,
@@ -37,8 +33,8 @@ const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
         });
 };
 
-const saveDocument = (oldDocument, newDocument, osis) => (
-    (dispatch) => {
+const saveDocument = (oldDocument, newDocument, osis) =>
+    dispatch => {
         const file = newDocument.document;
         const oldKey = oldDocument.Key;
         const params = {};
@@ -52,18 +48,20 @@ const saveDocument = (oldDocument, newDocument, osis) => (
             type: SPINNER_PAGE,
             payload: true
         });
-        return axios().get('/sign-s3', {params})
-            .then((res) => {
+        return axios()
+            .get('/sign-s3', { params })
+            .then(res => {
                 return res.data;
             })
-            .then((doc) => {
+            .then(doc => {
                 if (file) {
                     const signedUrl = doc.signedRequest;
-                    return oaxios.put(signedUrl, file)
+                    return oaxios
+                        .put(signedUrl, file)
                         .then(() => {
                             updateDocument(doc, newDocument, oldDocument._id, osis, dispatch);
                         })
-                        .catch((err) => {
+                        .catch(err => {
                             dispatch({
                                 type: SAVE_DOCUMENT_ERROR,
                                 payload: err
@@ -76,7 +74,6 @@ const saveDocument = (oldDocument, newDocument, osis) => (
                 }
                 return updateDocument(doc, newDocument, oldDocument._id, osis, dispatch);
             });
-    }
-);
+    };
 
 export default saveDocument;

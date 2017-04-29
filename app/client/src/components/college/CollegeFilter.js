@@ -1,7 +1,7 @@
 import React from 'react';
-import {reduxForm} from 'redux-form';
-import {AutoComplete} from 'material-ui';
-import {connect} from 'react-redux';
+import { reduxForm } from 'redux-form';
+import { AutoComplete } from 'material-ui';
+import { connect } from 'react-redux';
 
 class FilterCollegeForm extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class FilterCollegeForm extends React.Component {
 
     getColleges(v) {
         const { colleges, setColleges } = this.props;
-        const filtered = colleges.filter((college) => college.fullName === v.text);
+        const filtered = colleges.filter(college => college.fullName === v.text);
         setColleges(filtered);
     }
 
@@ -19,10 +19,10 @@ class FilterCollegeForm extends React.Component {
         return (
             <AutoComplete
                 fullWidth={true}
-                floatingLabelText='Search'
+                floatingLabelText="Search"
                 filter={AutoComplete.caseInsensitiveFilter}
-                name='collegeSearch'
-                onNewRequest={(v) => this.getColleges(v)}
+                name="collegeSearch"
+                onNewRequest={v => this.getColleges(v)}
                 dataSource={collegeSource}
                 maxSearchResults={5}
             />
@@ -34,9 +34,9 @@ FilterCollegeForm = reduxForm({
     form: 'FilterCollege' // a unique name for this form
 })(FilterCollegeForm);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     collegeSource: state.colleges.collegeSource,
     colleges: state.colleges.value
 });
 
-export default connect(mapStateToProps)(FilterCollegeForm)
+export default connect(mapStateToProps)(FilterCollegeForm);

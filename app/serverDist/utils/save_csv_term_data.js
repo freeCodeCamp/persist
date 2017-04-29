@@ -1,40 +1,40 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _fs = require("fs");
+var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _csvParse = require("csv-parse");
+var _csvParse = require('csv-parse');
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
-var _moment = require("moment");
+var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _streamTransform = require("stream-transform");
+var _streamTransform = require('stream-transform');
 
 var _streamTransform2 = _interopRequireDefault(_streamTransform);
 
-var _async = require("async");
+var _async = require('async');
 
 var _async2 = _interopRequireDefault(_async);
 
-var _lodash = require("lodash");
+var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _student = require("../models/student");
+var _student = require('../models/student');
 
 var _student2 = _interopRequireDefault(_student);
 
-var _fieldKeys = require("../../common/fieldKeys");
+var _fieldKeys = require('../../common/fieldKeys');
 
-var _term_record_transformer = require("./term_record_transformer");
+var _term_record_transformer = require('./term_record_transformer');
 
 var _term_record_transformer2 = _interopRequireDefault(_term_record_transformer);
 
@@ -54,7 +54,6 @@ var mapValues = function mapValues(line) {
 
 exports.default = function (fileName) {
     return new Promise(function (resolve, reject) {
-
         var parser = (0, _csvParse2.default)({
             delimiter: ',',
             columns: mapValues,

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class FullScreenLoader extends Component {
     render() {
@@ -25,14 +25,14 @@ class FullScreenLoader extends Component {
             textAlign: 'center'
         };
         return (
-            <div style={ fullPageStyle }>
-                <i style={ loaderStyle } className='fa fa-refresh fa-spin'></i>
+            <div style={fullPageStyle}>
+                <i style={loaderStyle} className="fa fa-refresh fa-spin" />
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
         spinner: state.spinner.main || state.spinner.page
     };

@@ -3,15 +3,15 @@ import get from 'lodash/get';
 
 export default (keysList, fieldList) => {
     const keys = {
-        'college': [],
-        'school': [],
-        'checkbox': [],
-        'checkbox_add': [],
-        'datepicker': [],
-        'normal': []
+        college: [],
+        school: [],
+        checkbox: [],
+        checkbox_add: [],
+        datepicker: [],
+        normal: []
     };
     const fieldListObj = keyBy(fieldList, 'dbName');
-    keysList.forEach((fieldKey) => {
+    keysList.forEach(fieldKey => {
         switch (get(fieldListObj, `${fieldKey}.type`, null)) {
             case 'college':
                 keys['college'].push(fieldKey);

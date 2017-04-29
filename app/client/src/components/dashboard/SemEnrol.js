@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {push} from 'react-router-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import async from 'async';
 import moment from 'moment';
-import {BasicColumn} from '../admin-components/charts';
+import { BasicColumn } from '../admin-components/charts';
 
 const mapping = {
     semType: {
@@ -40,7 +40,7 @@ class SemEnrol extends Component {
         this.state = {
             loading: true,
             data: []
-        }
+        };
     }
 
     componentDidMount() {
@@ -48,13 +48,16 @@ class SemEnrol extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            loading: true
-        }, this.updateGraph.bind(this, nextProps));
+        this.setState(
+            {
+                loading: true
+            },
+            this.updateGraph.bind(this, nextProps)
+        );
     }
 
     updateGraph(props) {
-        this.normalizeData(props).then((data) => {
+        this.normalizeData(props).then(data => {
             this.setState({
                 data,
                 loading: false
@@ -64,112 +67,113 @@ class SemEnrol extends Component {
 
     normalizeData(props) {
         const { collegeObj } = props;
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             if (props.students.length < 1) resolve({});
             const defaultEnrollmentData = {};
             const keys = _.keys(mapping.semType);
-            keys.map((semType) => {
-                defaultEnrollmentData[semType] = { count: 0, students: [] }
+            keys.map(semType => {
+                defaultEnrollmentData[semType] = { count: 0, students: [] };
             });
             const result = {};
-            _.times(8, (n) => {
+            _.times(8, n => {
                 result[`Semester ${n + 1}`] = _.cloneDeep(defaultEnrollmentData);
             });
-            const q = async.queue((student, callback) => {
-                const studentTerms = student.terms;
-                const studentTermsObj = _.keyBy(studentTerms, 'name');
-                const hsGradYear = student.hsGradYear;
-                if (studentTerms.length > 0 && hsGradYear) {
-                    let difference = 2 * (maxTermYear - hsGradYear);
-                    if (maxTermSeason === 'Fall') {
-                        difference += 1;
-                    }
-                    const maxTerms = Math.min(8, difference);
-                    for (let i = 1; i <= maxTerms; i++) {
-                        const year = hsGradYear + Math.floor(i / 2);
-                        if ((i % 2 !== 0 && studentTermsObj['Fall ' + year]) ||
-                            (i % 2 === 0 && studentTermsObj['Spring ' + year])
-                        ) {
-                            const term = i % 2 === 0 ? studentTermsObj['Spring ' + year] : studentTermsObj['Fall ' + year];
-                            const { name, status, college } = term;
-                            switch (status) {
-                                case 'F': {
-                                    if (collegeObj[college].durationType === '4 year') {
-                                        result['Semester ' + i][1].count += 1;
-                                        result['Semester ' + i][1].students.push(student.osis);
-                                    } else if (collegeObj[college].durationType === '2 year') {
-                                        result['Semester ' + i][3].count += 1;
-                                        result['Semester ' + i][3].students.push(student.osis);
+            const q = async.queue(
+                (student, callback) => {
+                    const studentTerms = student.terms;
+                    const studentTermsObj = _.keyBy(studentTerms, 'name');
+                    const hsGradYear = student.hsGradYear;
+                    if (studentTerms.length > 0 && hsGradYear) {
+                        let difference = 2 * (maxTermYear - hsGradYear);
+                        if (maxTermSeason === 'Fall') {
+                            difference += 1;
+                        }
+                        const maxTerms = Math.min(8, difference);
+                        for (let i = 1; i <= maxTerms; i++) {
+                            const year = hsGradYear + Math.floor(i / 2);
+                            if ((i % 2 !== 0 && studentTermsObj['Fall ' + year]) || (i % 2 === 0 && studentTermsObj['Spring ' + year])) {
+                                const term = i % 2 === 0 ? studentTermsObj['Spring ' + year] : studentTermsObj['Fall ' + year];
+                                const { name, status, college } = term;
+                                switch (status) {
+                                    case 'F': {
+                                        if (collegeObj[college].durationType === '4 year') {
+                                            result['Semester ' + i][1].count += 1;
+                                            result['Semester ' + i][1].students.push(student.osis);
+                                        } else if (collegeObj[college].durationType === '2 year') {
+                                            result['Semester ' + i][3].count += 1;
+                                            result['Semester ' + i][3].students.push(student.osis);
+                                        }
+                                        break;
                                     }
-                                    break;
-                                }
-                                case 'H':
-                                case 'L':
-                                case 'Q': {
-                                    if (collegeObj[college].durationType === '4 year') {
-                                        result['Semester ' + i][2].count += 1;
-                                        result['Semester ' + i][2].students.push(student.osis);
-                                    } else if (collegeObj[college].durationType === '2 year') {
-                                        result['Semester ' + i][4].count += 1;
-                                        result['Semester ' + i][4].students.push(student.osis);
+                                    case 'H':
+                                    case 'L':
+                                    case 'Q': {
+                                        if (collegeObj[college].durationType === '4 year') {
+                                            result['Semester ' + i][2].count += 1;
+                                            result['Semester ' + i][2].students.push(student.osis);
+                                        } else if (collegeObj[college].durationType === '2 year') {
+                                            result['Semester ' + i][4].count += 1;
+                                            result['Semester ' + i][4].students.push(student.osis);
+                                        }
+                                        break;
                                     }
-                                    break;
+                                    case 'Military': {
+                                        result['Semester ' + i][5].count += 1;
+                                        result['Semester ' + i][5].students.push(student.osis);
+                                        break;
+                                    }
+                                    case 'A':
+                                    case 'Not Enrolled': {
+                                        result['Semester ' + i][6].count += 1;
+                                        result['Semester ' + i][6].students.push(student.osis);
+                                        break;
+                                    }
+                                    case 'W':
+                                    case 'D': {
+                                        result['Semester ' + i][7].count += 1;
+                                        result['Semester ' + i][7].students.push(student.osis);
+                                        break;
+                                    }
+                                    case 'Graduated': {
+                                        result['Semester ' + i][8].count += 1;
+                                        result['Semester ' + i][8].students.push(student.osis);
+                                        break;
+                                    }
+                                    default: {
+                                        result['Semester ' + i][9].count += 1;
+                                        result['Semester ' + i][9].students.push(student.osis);
+                                        break;
+                                    }
                                 }
-                                case 'Military': {
-                                    result['Semester ' + i][5].count += 1;
-                                    result['Semester ' + i][5].students.push(student.osis);
-                                    break;
-                                }
-                                case 'A':
-                                case 'Not Enrolled': {
-                                    result['Semester ' + i][6].count += 1;
-                                    result['Semester ' + i][6].students.push(student.osis);
-                                    break;
-                                }
-                                case 'W':
-                                case 'D': {
-                                    result['Semester ' + i][7].count += 1;
-                                    result['Semester ' + i][7].students.push(student.osis);
-                                    break;
-                                }
-                                case 'Graduated': {
-                                    result['Semester ' + i][8].count += 1;
-                                    result['Semester ' + i][8].students.push(student.osis);
-                                    break;
-                                }
-                                default: {
-                                    result['Semester ' + i][9].count += 1;
-                                    result['Semester ' + i][9].students.push(student.osis);
-                                    break;
-                                }
+                            } else {
+                                result['Semester ' + i][9].count += 1;
+                                result['Semester ' + i][9].students.push(student.osis);
                             }
-                        } else {
-                            result['Semester ' + i][9].count += 1;
-                            result['Semester ' + i][9].students.push(student.osis);
                         }
                     }
-                }
-                setTimeout(() => {
-                    callback();
-                }, 0);
-            }, 20);
+                    setTimeout(
+                        () => {
+                            callback();
+                        },
+                        0
+                    );
+                },
+                20
+            );
             q.push(props.students);
             q.drain = () => {
                 resolve(result);
-            }
+            };
         });
     }
 
     chartData(data) {
         const sortedYears = _(data).keys().sort().value();
-        const values = sortedYears.map((key) => (data[key]));
+        const values = sortedYears.map(key => data[key]);
         const keys = _.keys(values[0]);
         return keys.map(key => ({
             name: mapping.semType[key],
-            data: _(values).map(key)
-                .map('count')
-                .map(y => ({ y, key }))
-                .value()
+            data: _(values).map(key).map('count').map(y => ({ y, key })).value()
         }));
     }
 
@@ -227,13 +231,20 @@ class SemEnrol extends Component {
 
     renderLoading() {
         return (
-            <div style={{
-                position: 'absolute', top: 0, bottom: 0, width: '100%',
-                display: 'flex', justifyContent: 'center', alignItems: 'center'
-            }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <i className="fa fa-cog fa-spin fa-3x fa-fw" />
             </div>
-        )
+        );
     }
 
     render() {
@@ -242,23 +253,24 @@ class SemEnrol extends Component {
             <div style={{ position: 'relative' }}>
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
-                    <BasicColumn {...this.props} config={this.chartConfig()}
-                                 data={this.state.data} />
+                    <BasicColumn {...this.props} config={this.chartConfig()} data={this.state.data} />
                 </div>
             </div>
-        )
+        );
     }
-
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     collegeObj: state.colleges.idObj
 });
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        push
-    }, dispatch);
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators(
+        {
+            push
+        },
+        dispatch
+    );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SemEnrol);

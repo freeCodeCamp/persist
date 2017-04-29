@@ -148,7 +148,6 @@ var deleteUser = exports.deleteUser = function deleteUser(req, res, next) {
 // GET ALL USERS
 //= =======================================
 var getUsers = exports.getUsers = function getUsers(req, res, next) {
-
     _user2.default.find({
         $and: [{ 'access.role': { $ne: 'Admin' } }, { _id: { $ne: req.user._id } }]
     }, function (err, users) {

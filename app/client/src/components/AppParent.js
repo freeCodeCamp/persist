@@ -4,7 +4,6 @@ import { socket } from './utils';
 import { connect } from 'react-redux';
 
 class AppParent extends Component {
-
     componentDidMount() {
         const { auth } = this.props;
         socket.emit('subscribe', { room: auth.user._id });
@@ -23,13 +22,11 @@ class AppParent extends Component {
             currentPage = React.cloneElement(this.props.children, ...this.props);
         }
 
-        return (
-            <App currentPage={ currentPage } />
-        );
+        return <App currentPage={currentPage} />;
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     auth: state.auth
 });
 

@@ -1,10 +1,10 @@
-import React from "react";
-import {Input} from "react-bootstrap";
-import Content from "../helpers/content";
-import {Permission} from '../authentication';
-import DropZoneUpload from "../helpers/dropzoneUpload";
-import UploadHistory from "../uploadUI/UploadHistory";
-import {SelectField, MenuItem} from "material-ui";
+import React from 'react';
+import { Input } from 'react-bootstrap';
+import Content from '../helpers/content';
+import { Permission } from '../authentication';
+import DropZoneUpload from '../helpers/dropzoneUpload';
+import UploadHistory from '../uploadUI/UploadHistory';
+import { SelectField, MenuItem } from 'material-ui';
 
 class Upload extends React.Component {
     constructor(props) {
@@ -14,7 +14,6 @@ class Upload extends React.Component {
             url: null,
             name: null
         };
-
     }
 
     chooseData(event, index, value) {
@@ -54,27 +53,21 @@ class Upload extends React.Component {
         ];
 
         const optionsHTML = fileTypes.map((type, i) => {
-            return (
-                <MenuItem key={ i }
-                          name={ type.name }
-                          value={ this.getUrl(fileTypes, type.name) }
-                          primaryText={ type.name } />
-            );
+            return <MenuItem key={i} name={type.name} value={this.getUrl(fileTypes, type.name)} primaryText={type.name} />;
         });
 
         return (
-            <Permission role='Owner'>
-                <Content title='Upload'>
+            <Permission role="Owner">
+                <Content title="Upload">
                     <p>
                         Which data would you like to upload?
                     </p>
                     <div>
-                        <SelectField onChange={ this.chooseData.bind(this) } hintText='Select Data'
-                                     value={ this.state.url }>
-                            { optionsHTML }
+                        <SelectField onChange={this.chooseData.bind(this)} hintText="Select Data" value={this.state.url}>
+                            {optionsHTML}
                         </SelectField>
                     </div>
-                    { this.state.chosen ? <DropZoneUpload url={ this.state.url } /> : null }
+                    {this.state.chosen ? <DropZoneUpload url={this.state.url} /> : null}
                     <UploadHistory noSearch={true} />
                 </Content>
             </Permission>

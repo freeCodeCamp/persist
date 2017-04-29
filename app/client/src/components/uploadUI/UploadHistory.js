@@ -1,10 +1,10 @@
-import React, {Component} from "react";
-import {axios} from "../../actions/utils";
-import {Table} from "react-bootstrap";
-import {connect} from "react-redux";
-import moment from "moment";
-import {ActionOfflinePin, AlertError} from "material-ui/svg-icons";
-import {bindActionCreators} from "redux";
+import React, { Component } from 'react';
+import { axios } from '../../actions/utils';
+import { Table } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import moment from 'moment';
+import { ActionOfflinePin, AlertError } from 'material-ui/svg-icons';
+import { bindActionCreators } from 'redux';
 
 class UploadHistory extends Component {
     constructor(props) {
@@ -38,27 +38,32 @@ class UploadHistory extends Component {
         const { page, history, pages } = this.state;
         if (this.updating || page > pages) return;
         this.updating = true;
-        axios().get(`/getUploadHistory/${page}`).then((res) => {
-            _this.setState({
-                page: page + 1,
-                history: [...history, ...res.data.docs],
-                pages: res.data.pages
-            }, () => {
-                _this.updating = false;
-            });
-        })
+        axios().get(`/getUploadHistory/${page}`).then(res => {
+            _this.setState(
+                {
+                    page: page + 1,
+                    history: [...history, ...res.data.docs],
+                    pages: res.data.pages
+                },
+                () => {
+                    _this.updating = false;
+                }
+            );
+        });
     }
 
     renderLoading() {
         return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: 40
-            }}>
-                <i className='fa fa-cog fa-spin fa-3x fa-fw' />
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingTop: 40
+                }}
+            >
+                <i className="fa fa-cog fa-spin fa-3x fa-fw" />
             </div>
-        )
+        );
     }
 
     componentWillUnmount() {
@@ -78,26 +83,25 @@ class UploadHistory extends Component {
         const historyHTML = history.map((hist, i) => {
             const { firstName, lastName } = counselors[hist.user].profile;
             return (
-                <tr key={ i }>
+                <tr key={i}>
                     <td>
-                        { i + 1 }
+                        {i + 1}
                     </td>
                     <td>
                         {hist.type}
                     </td>
                     <td>
-                        { moment(hist.when).fromNow() }
+                        {moment(hist.when).fromNow()}
                     </td>
                     <td>
                         {`${firstName} ${lastName}`.trim()}
                     </td>
                     <td>
-                        {hist.success ? <ActionOfflinePin color='green' /> : <AlertError color='red' />}
+                        {hist.success ? <ActionOfflinePin color="green" /> : <AlertError color="red" />}
                     </td>
                 </tr>
             );
         });
-
 
         return (
             <Table striped bordered hover>
@@ -121,20 +125,17 @@ class UploadHistory extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    { historyHTML }
+                    {historyHTML}
                 </tbody>
             </Table>
-
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     counselors: state.counselors.idObj
 });
 
-const mapDispatchToProps = (dispatch) => (
-    bindActionCreators({}, dispatch)
-);
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default connect(mapStateToProps)(UploadHistory);
