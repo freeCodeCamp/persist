@@ -12,6 +12,10 @@ var _csvParse = require("csv-parse");
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
+var _moment = require("moment");
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _streamTransform = require("stream-transform");
 
 var _streamTransform2 = _interopRequireDefault(_streamTransform);
@@ -95,7 +99,26 @@ exports.default = function (fileName) {
                         var studentTerms = student.terms;
                         terms.forEach(function (termRecord) {
                             var term = studentTerms.find(function (elem) {
-                                return elem.enrolBegin <= termRecord.enrolBegin && elem.enrolEnd >= termRecord.enrolEnd || elem.enrolBegin >= termRecord.enrolBegin && elem.enrolEnd <= termRecord.enrolEnd;
+                                var overlap = elem.enrolBegin <= termRecord.enrolBegin && elem.enrolEnd >= termRecord.enrolBegin || elem.enrolBegin <= termRecord.enrolEnd && elem.enrolEnd >= termRecord.enrolEnd;
+                                if (overlap) {
+                                    var overlapStart = void 0,
+                                        overlapEnd = void 0;
+                                    if ((0, _moment2.default)(elem.enrolBegin).diff((0, _moment2.default)(termRecord.enrolBegin), 'days') >= 0) {
+                                        overlapStart = elem.enrolBegin;
+                                    } else if ((0, _moment2.default)(elem.enrolEnd).diff((0, _moment2.default)(termRecord.enrolBegin), 'days') >= 0) {
+                                        overlapStart = termRecord.enrolBegin;
+                                    }
+                                    overlapEnd = (0, _moment2.default)(termRecord.enrolEnd).diff((0, _moment2.default)(elem.enrolEnd), 'days') >= 0 ? elem.enrolEnd : termRecord.enrolEnd;
+                                    if (overlapStart && overlapEnd) {
+                                        var overlappingDays = (0, _moment2.default)(overlapEnd).diff((0, _moment2.default)(overlapStart), 'days');
+                                        var elemDays = (0, _moment2.default)(elem.enrolEnd).diff((0, _moment2.default)(elem.enrolBegin), 'days');
+                                        var termRecordDays = (0, _moment2.default)(termRecord.enrolEnd).diff((0, _moment2.default)(termRecord.enrolBegin), 'days');
+                                        if (overlappingDays / elemDays >= 0.85 && overlappingDays / termRecordDays >= 0.85) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                                return false;
                             });
                             if (term) {
                                 _lodash2.default.merge(term, termRecord);

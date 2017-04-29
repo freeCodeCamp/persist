@@ -1,5 +1,6 @@
 import fs from "fs";
 import parse from "csv-parse";
+import moment from 'moment';
 import transform from "stream-transform";
 import async from "async";
 import _ from "lodash";
@@ -66,8 +67,26 @@ export default (fileName) => {
                         let studentTerms = student.terms;
                         terms.forEach((termRecord) => {
                             let term = studentTerms.find((elem) => {
-                                return (elem.enrolBegin <= termRecord.enrolBegin && elem.enrolEnd >= termRecord.enrolEnd) ||
-                                    (elem.enrolBegin >= termRecord.enrolBegin && elem.enrolEnd <= termRecord.enrolEnd);
+                                const overlap = (elem.enrolBegin <= termRecord.enrolBegin && elem.enrolEnd >= termRecord.enrolBegin) ||
+                                    (elem.enrolBegin <= termRecord.enrolEnd && elem.enrolEnd >= termRecord.enrolEnd);
+                                if (overlap) {
+                                    let overlapStart, overlapEnd;
+                                    if (moment(elem.enrolBegin).diff(moment(termRecord.enrolBegin), 'days') >= 0) {
+                                        overlapStart = elem.enrolBegin;
+                                    } else if (moment(elem.enrolEnd).diff(moment(termRecord.enrolBegin), 'days') >= 0) {
+                                        overlapStart = termRecord.enrolBegin;
+                                    }
+                                    overlapEnd = moment(termRecord.enrolEnd).diff(moment(elem.enrolEnd), 'days') >= 0 ? elem.enrolEnd : termRecord.enrolEnd;
+                                    if (overlapStart && overlapEnd) {
+                                        const overlappingDays = moment(overlapEnd).diff(moment(overlapStart), 'days');
+                                        const elemDays = moment(elem.enrolEnd).diff(moment(elem.enrolBegin), 'days');
+                                        const termRecordDays = moment(termRecord.enrolEnd).diff(moment(termRecord.enrolBegin), 'days');
+                                        if (overlappingDays/elemDays >= 0.85 && overlappingDays/termRecordDays >= 0.85) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                                return false;
                             });
                             if (term) {
                                 _.merge(term, termRecord);
