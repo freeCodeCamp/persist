@@ -98,7 +98,7 @@ exports.default = function (fileName) {
                         var studentTerms = student.terms;
                         terms.forEach(function (termRecord) {
                             var term = studentTerms.find(function (elem) {
-                                var overlap = elem.enrolBegin <= termRecord.enrolBegin && elem.enrolEnd >= termRecord.enrolBegin || elem.enrolBegin <= termRecord.enrolEnd && elem.enrolEnd >= termRecord.enrolEnd;
+                                var overlap = elem.enrolBegin >= termRecord.enrolBegin && elem.enrolBegin <= termRecord.enrolBegin || elem.enrolEnd >= termRecord.enrolBegin && elem.enrolEnd <= termRecord.enrolEnd;
                                 if (overlap) {
                                     var overlapStart = void 0,
                                         overlapEnd = void 0;

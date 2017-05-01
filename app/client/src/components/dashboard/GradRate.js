@@ -203,7 +203,10 @@ class GradRate extends Component {
                 {
                     name: 'Did not Graduate',
                     data: values.map(key => ({
-                        y: key['Currently Enrolled'].count + key['No longer Enrolled'].count,
+                        y: key['Currently Enrolled'].count +
+                            key['No longer Enrolled'].count +
+                            key['transferred with degree'].count +
+                            key['transferred without degree'].count,
                         key: 'Did not Graduate'
                     }))
                 }

@@ -17,21 +17,7 @@ var _mongoosePaginate = require('mongoose-paginate');
 
 var _mongoosePaginate2 = _interopRequireDefault(_mongoosePaginate);
 
-var _sortBy = require('lodash/sortBy');
-
-var _sortBy2 = _interopRequireDefault(_sortBy);
-
-var _uniq = require('lodash/uniq');
-
-var _uniq2 = _interopRequireDefault(_uniq);
-
-var _map = require('lodash/map');
-
-var _map2 = _interopRequireDefault(_map);
-
-var _cloneDeep = require('lodash/cloneDeep');
-
-var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
+var _lodash = require('lodash');
 
 var _ = require('./');
 
@@ -100,20 +86,20 @@ Student.pre('save', true, function (next, done) {
     if (record.terms.length < 1) {
         return done();
     }
-    record.terms = (0, _sortBy2.default)(record.terms, function (obj) {
+    record.terms = (0, _lodash.sortBy)(record.terms, function (obj) {
         return obj.enrolBegin;
     }).reverse();
     setTermNames(record);
-    var recordTerms = (0, _cloneDeep2.default)(record.terms).reverse();
+    var recordTerms = (0, _lodash.cloneDeep)(record.terms).reverse();
     record.mostRecentCol = record.terms[0].college;
     record.mostRecentEnrolStatus = record.terms[0].status;
     record.firstCol = recordTerms[0].college;
-    var colleges = (0, _uniq2.default)((0, _map2.default)(recordTerms, function (term) {
+    var colleges = (0, _lodash.uniq)((0, _lodash.map)(recordTerms, function (term) {
         return term.college.toString();
     }));
     if (colleges.length > 1) {
         _.College.find({ _id: { $in: colleges } }, 'durationType -_id', function (err, durationTypes) {
-            durationTypes = (0, _map2.default)(durationTypes, 'durationType');
+            durationTypes = (0, _lodash.map)(durationTypes, 'durationType');
             if (err || durationTypes.length < 2) {
                 return setGraduationType(record, done);
             }
@@ -130,6 +116,7 @@ Student.pre('save', true, function (next, done) {
                     record.transferStatus.push('4 Year to 4 Year');
                 }
             }
+            record.transferStatus = (0, _lodash.uniq)(record.transferStatus);
             return setGraduationType(record, done);
         });
     } else {
@@ -163,7 +150,7 @@ Student.pre('save', true, function (next, done) {
     var record = this;
     // cuny
     if (record.applications.length > 0) {
-        var colList = (0, _map2.default)(record.applications, 'college');
+        var colList = (0, _lodash.map)(record.applications, 'college');
         _.College.find({
             $and: [{ _id: { $in: colList } }, { collType: 1 }]
         }, function (err, cunyColleges) {
@@ -184,7 +171,7 @@ Student.pre('save', true, function (next, done) {
     var record = this;
     // suny
     if (record.applications.length > 0) {
-        var colList = (0, _map2.default)(record.applications, 'college');
+        var colList = (0, _lodash.map)(record.applications, 'college');
         _.College.find({
             $and: [{ _id: { $in: colList } }, { collType: 2 }]
         }, function (err, sunyColleges) {

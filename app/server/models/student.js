@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 import async from 'async';
 import moment from 'moment';
 import mongoosePaginate from 'mongoose-paginate';
-import sortBy from 'lodash/sortBy';
-import uniq from 'lodash/uniq';
-import map from 'lodash/map';
-import cloneDeep from 'lodash/cloneDeep';
+import {sortBy, uniq, map, cloneDeep} from 'lodash';
 import { College } from './';
 import { studentSchema } from '../../common/schemas';
 const Schema = mongoose.Schema;
@@ -107,6 +104,7 @@ Student.pre('save', true, function(next, done) {
                     record.transferStatus.push('4 Year to 4 Year');
                 }
             }
+            record.transferStatus = uniq(record.transferStatus);
             return setGraduationType(record, done);
         });
     } else {

@@ -71,9 +71,8 @@ export default fileName => {
                                 let studentTerms = student.terms;
                                 terms.forEach(termRecord => {
                                     let term = studentTerms.find(elem => {
-                                        const overlap = (elem.enrolBegin <= termRecord.enrolBegin &&
-                                            elem.enrolEnd >= termRecord.enrolBegin) ||
-                                            (elem.enrolBegin <= termRecord.enrolEnd && elem.enrolEnd >= termRecord.enrolEnd);
+                                        const overlap = (elem.enrolBegin >= termRecord.enrolBegin && elem.enrolBegin <= termRecord.enrolBegin) ||
+                                            (elem.enrolEnd >= termRecord.enrolBegin && elem.enrolEnd <= termRecord.enrolEnd);
                                         if (overlap) {
                                             let overlapStart, overlapEnd;
                                             if (moment(elem.enrolBegin).diff(moment(termRecord.enrolBegin), 'days') >= 0) {

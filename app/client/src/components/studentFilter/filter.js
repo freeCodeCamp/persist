@@ -123,7 +123,7 @@ class StudentFilter extends Component {
         if (extraConditions.enrolAfterGraduation) {
             filteredStudents = filteredStudents.filter(student => {
                 if (student.terms.length < 1 || !student.hsGradDate) return false;
-                const totalTerms = student.terms;
+                const totalTerms = student.terms.length;
                 return Math.abs(moment(student.terms[totalTerms - 1].enrolBegin).diff(moment(student.hsGradDate), 'months')) < 6;
             });
         }

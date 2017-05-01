@@ -66,6 +66,7 @@ class ExportCSV extends Component {
                     });
                     fieldTypes['datepicker'].forEach(field => {
                         const studentField = student[field];
+                        if (!studentField) return;
                         const dateString = moment(studentField).format('l');
                         if (dateString !== 'Invalid Date') {
                             student[field] = dateString;
