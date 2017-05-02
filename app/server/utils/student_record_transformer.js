@@ -66,6 +66,10 @@ export default function formatRecord(record, callback) {
     async.parallel(
         [
             callback2 => {
+                if (!record.intendedCollege) {
+                    record.intendedCollege = 'set undefined';
+                    return callback2(null);
+                }
                 // reference College
                 College.findOne(
                     {

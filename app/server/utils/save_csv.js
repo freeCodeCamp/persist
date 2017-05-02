@@ -94,8 +94,12 @@ export default function(fileName) {
                                 const studentObject = oldStudent.toObject();
                                 const newStudent = myMerge(studentObject, newRecord);
                                 forOwn(studentObject, (value, key) => {
-                                    if (key !== '_id' && newStudent[key]) {
-                                        oldStudent[key] = newStudent[key];
+                                    if (key !== '_id') {
+                                        if (newStudent[key] === 'set undefined') {
+                                            oldStudent[key] = undefined;
+                                        } else if (newStudent[key]) {
+                                            oldStudent[key] = newStudent[key];
+                                        }
                                     }
                                 });
                             }
