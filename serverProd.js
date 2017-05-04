@@ -40,9 +40,7 @@ var _scheduledJob = require('./scheduled-job');
 
 var _scheduledJob2 = _interopRequireDefault(_scheduledJob);
 
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _dotenv2.default.config({ silent: true });
 
@@ -70,12 +68,10 @@ var app = (0, _express2.default)();
 app.use((0, _connectTimeout2.default)('240s'));
 app.use(_express2.default.static(_path2.default.join(__dirname, '/app/client/public')));
 app.use(_bodyParser2.default.json({ limit: '20mb' }));
-app.use(
-    _bodyParser2.default.urlencoded({
-        limit: '20mb',
-        extended: true
-    })
-);
+app.use(_bodyParser2.default.urlencoded({
+    limit: '20mb',
+    extended: true
+}));
 app.use(haltOnTimedout);
 // app.use(passport.initialize());
 
@@ -97,12 +93,10 @@ if (process.env.NODE_ENV !== 'production') {
     var morgan = require('morgan');
 
     app.use(morgan('dev'));
-    app.use(
-        webpackDevMiddleware(compiler, {
-            noInfo: true,
-            publicPath: config.output.publicPath
-        })
-    );
+    app.use(webpackDevMiddleware(compiler, {
+        noInfo: true,
+        publicPath: config.output.publicPath
+    }));
     app.use(webpackHotMiddleware(compiler));
     (0, _reload2.default)(server, app);
 }
@@ -110,7 +104,7 @@ if (process.env.NODE_ENV !== 'production') {
 serverRoutes(app);
 
 var PORT = process.env.PORT || 4545;
-server.listen(PORT, function(error) {
+server.listen(PORT, function (error) {
     if (error) {
         console.error(error);
     } else {
@@ -119,19 +113,15 @@ server.listen(PORT, function(error) {
 });
 
 var CronJob = require('cron').CronJob;
-var job = new CronJob(
-    '00 00 00 * * 0-6',
-    function() {
-        /*
+var job = new CronJob('00 00 00 * * 0-6', function () {
+    /*
      * Runs every day
      * at 00:00:00 AM.
      */
-        (0, _scheduledJob2.default)();
-    },
-    function() {
-        /* This function is executed when the job stops */
-        console.log('job stopped');
-    },
-    true /* Start the job right now */,
-    'America/New_York' /* Time zone of this job. */
+    (0, _scheduledJob2.default)();
+}, function () {
+    /* This function is executed when the job stops */
+    console.log('job stopped');
+}, true /* Start the job right now */
+, 'America/New_York' /* Time zone of this job. */
 );

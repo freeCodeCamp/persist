@@ -77,8 +77,12 @@ exports.default = function (fileName) {
                             var studentObject = oldStudent.toObject();
                             var _newStudent = (0, _merge2.default)(studentObject, newRecord);
                             (0, _forOwn2.default)(studentObject, function (value, key) {
-                                if (key !== '_id' && _newStudent[key]) {
-                                    oldStudent[key] = _newStudent[key];
+                                if (key !== '_id') {
+                                    if (_newStudent[key] === 'set undefined') {
+                                        oldStudent[key] = undefined;
+                                    } else if (_newStudent[key]) {
+                                        oldStudent[key] = _newStudent[key];
+                                    }
                                 }
                             });
                         }

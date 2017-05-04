@@ -62,12 +62,18 @@ var adminUser = {
 userModel.findOne({ email: adminUser.email }, function (err, existingUser) {
     if (!existingUser) {
         adminUser.password = process.env.ADMIN_PASSWORD;
-        userModel.create(adminUser, function (err, newAdmin) {
+        return userModel.create(adminUser, function (err, newAdmin) {
             if (err) {
                 return console.log('admin not created', err);
             }
         });
     }
+    existingUser.password = process.env.ADMIN_PASSWORD;
+    return existingUser.save(function (err) {
+        if (err) {
+            console.log('admin not created', err);
+        }
+    });
 });
 
 exports.default = userModel;

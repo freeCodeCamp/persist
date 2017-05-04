@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 import async from 'async';
 import moment from 'moment';
 import mongoosePaginate from 'mongoose-paginate';
-import {sortBy, uniq, map, cloneDeep} from 'lodash';
+import { sortBy, uniq, map, cloneDeep } from 'lodash';
 import { College } from './';
 import { studentSchema } from '../../common/schemas';
 const Schema = mongoose.Schema;

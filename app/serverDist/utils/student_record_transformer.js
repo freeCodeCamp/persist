@@ -96,6 +96,10 @@ function formatRecord(record, callback) {
     }
 
     _async2.default.parallel([function (callback2) {
+        if (!record.intendedCollege) {
+            record.intendedCollege = 'set undefined';
+            return callback2(null);
+        }
         // reference College
         _college2.default.findOne({
             $or: [{ fullName: record.intendedCollege }, { shortName: record.intendedCollege }, { navianceName: record.intendedCollege }, { collegeScorecardName: record.intendedCollege }]
