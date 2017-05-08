@@ -39,11 +39,15 @@ export default (record, callback) => {
             record[key] = undefined;
         }
     });
-
+    if (!record.college) {
+        record.college = 'set undefined';
+        return callback(null);
+    }
     //  reference college
     College.findOne(
         {
             $or: [
+                { opeid: record.opeid },
                 { fullName: record.college },
                 { shortName: record.college },
                 { navianceName: record.college },

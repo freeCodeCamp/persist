@@ -28,9 +28,11 @@ exports.default = function (fileName) {
         var row = void 0;
         transformer.on('readable', function () {
             while (row = transformer.read()) {
-                var uniqueName = '' + (row.fullName || '') + (row.navianceName || '') + (row.shortName || '') + (row.collegeScorecardName || '');
-                data[uniqueName] = data[uniqueName] || (0, _clone2.default)({});
-                data[uniqueName] = (0, _merge2.default)(data[uniqueName], row);
+                var uniqueName = ('' + (row.opeid || '')).trim();
+                if (uniqueName.length > 0) {
+                    data[uniqueName] = data[uniqueName] || (0, _clone2.default)({});
+                    data[uniqueName] = (0, _merge2.default)(data[uniqueName], row);
+                }
             }
         });
 
@@ -42,10 +44,7 @@ exports.default = function (fileName) {
 
         transformer.on('end', function () {
             _async2.default.eachLimit(data, 10, function (record, callback) {
-                _college2.default.findOne({
-                    $or: [{ fullName: record.fullName }, { shortName: record.shortName }, { navianceName: record.navianceName }, { collegeScorecardName: record.collegeScorecardName }]
-                }, function (err, oldCollege) {
-                    console.log(oldCollege, 'oldCollege');
+                _college2.default.findOne({ opeid: record.opeid }, function (err, oldCollege) {
                     if (err) {
                         console.log('error in finding document', err);
                         return callback(err);

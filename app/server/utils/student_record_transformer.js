@@ -74,6 +74,7 @@ export default function formatRecord(record, callback) {
                 College.findOne(
                     {
                         $or: [
+                            { opeid: record.opeid },
                             { fullName: record.intendedCollege },
                             { shortName: record.intendedCollege },
                             { navianceName: record.intendedCollege },

@@ -35,9 +35,11 @@ export default function(fileName) {
         let row;
         transformer.on('readable', () => {
             while ((row = transformer.read())) {
-                const uniqueName = `${row.fullName || ''}${row.navianceName || ''}${row.shortName || ''}${row.collegeScorecardName || ''}`;
-                data[uniqueName] = data[uniqueName] || clone({});
-                data[uniqueName] = myMerge(data[uniqueName], row);
+                const uniqueName = `${row.opeid || ''}`.trim();
+                if (uniqueName.length > 0) {
+                    data[uniqueName] = data[uniqueName] || clone({});
+                    data[uniqueName] = myMerge(data[uniqueName], row);
+                }
             }
         });
 
@@ -52,58 +54,47 @@ export default function(fileName) {
                 data,
                 10,
                 (record, callback) => {
-                    College.findOne(
-                        {
-                            $or: [
-                                { fullName: record.fullName },
-                                { shortName: record.shortName },
-                                { navianceName: record.navianceName },
-                                { collegeScorecardName: record.collegeScorecardName }
-                            ]
-                        },
-                        (err, oldCollege) => {
-                            console.log(oldCollege, 'oldCollege');
-                            if (err) {
-                                console.log('error in finding document', err);
-                                return callback(err);
-                            }
-                            if (!oldCollege) {
-                                const college = new College(record);
-                                college.save(err => {
-                                    if (err) {
-                                        if (err.code === 11000) {
-                                            return callback(null);
-                                        }
-                                        console.log('we got a validation error', err);
-                                        return callback(null);
-                                    }
-                                    return callback(null);
-                                });
-                            } else {
-                                const newRecord = {};
-                                forOwn(record, (value, key) => {
-                                    set(newRecord, key, value);
-                                });
-                                const collegeObject = oldCollege.toObject();
-                                const newCollege = myMerge(collegeObject, newRecord);
-                                forOwn(collegeObject, (value, key) => {
-                                    if (key !== '_id' && newCollege[key]) {
-                                        oldCollege[key] = newCollege[key];
-                                    }
-                                });
-                                oldCollege.save(err => {
-                                    if (err) {
-                                        if (err.code === 11000) {
-                                            return callback(null);
-                                        }
-                                        console.log('we got a validation error', err);
-                                        return callback(null);
-                                    }
-                                    return callback(null);
-                                });
-                            }
+                    College.findOne({ opeid: record.opeid }, (err, oldCollege) => {
+                        if (err) {
+                            console.log('error in finding document', err);
+                            return callback(err);
                         }
-                    );
+                        if (!oldCollege) {
+                            const college = new College(record);
+                            college.save(err => {
+                                if (err) {
+                                    if (err.code === 11000) {
+                                        return callback(null);
+                                    }
+                                    console.log('we got a validation error', err);
+                                    return callback(null);
+                                }
+                                return callback(null);
+                            });
+                        } else {
+                            const newRecord = {};
+                            forOwn(record, (value, key) => {
+                                set(newRecord, key, value);
+                            });
+                            const collegeObject = oldCollege.toObject();
+                            const newCollege = myMerge(collegeObject, newRecord);
+                            forOwn(collegeObject, (value, key) => {
+                                if (key !== '_id' && newCollege[key]) {
+                                    oldCollege[key] = newCollege[key];
+                                }
+                            });
+                            oldCollege.save(err => {
+                                if (err) {
+                                    if (err.code === 11000) {
+                                        return callback(null);
+                                    }
+                                    console.log('we got a validation error', err);
+                                    return callback(null);
+                                }
+                                return callback(null);
+                            });
+                        }
+                    });
                 },
                 err => {
                     if (err) {

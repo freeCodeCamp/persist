@@ -15,10 +15,13 @@ exports.default = function (record, callback) {
         callback(null, null);
         return;
     }
-
+    if (!record.college) {
+        record.college = 'set undefined';
+        return callback(null);
+    }
     //  reference college
     _college2.default.findOne({
-        $or: [{ fullName: record.college }, { shortName: record.college }, { navianceName: record.college }, { collegeScorecardName: record.college }]
+        $or: [{ opeid: record.opeid }, { fullName: record.college }, { shortName: record.college }, { navianceName: record.college }, { collegeScorecardName: record.college }]
     }, function (err, college) {
         if (err) {
             console.log('college not found', err);

@@ -1,4 +1,9 @@
 export default Schema => ({
+    opeid: {
+        type: String,
+        unique: true,
+        required: true
+    },
     fullName: {
         type: String
     },

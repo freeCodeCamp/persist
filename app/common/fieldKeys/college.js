@@ -1,5 +1,13 @@
 export const reference = [
     {
+        fieldName: 'OPEID',
+        displayName: 'OPEID',
+        dbName: 'opeid',
+        hidden: true,
+        fieldType: 'TextField',
+        editable: false
+    },
+    {
         fieldName: 'COLLEGE_NAME',
         displayName: 'NSC Official College Name',
         dbName: 'fullName',

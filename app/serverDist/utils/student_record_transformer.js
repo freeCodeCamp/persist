@@ -102,7 +102,7 @@ function formatRecord(record, callback) {
         }
         // reference College
         _college2.default.findOne({
-            $or: [{ fullName: record.intendedCollege }, { shortName: record.intendedCollege }, { navianceName: record.intendedCollege }, { collegeScorecardName: record.intendedCollege }]
+            $or: [{ opeid: record.opeid }, { fullName: record.intendedCollege }, { shortName: record.intendedCollege }, { navianceName: record.intendedCollege }, { collegeScorecardName: record.intendedCollege }]
         }, function (err, college) {
             if (err) {
                 console.log('college not found', err);
