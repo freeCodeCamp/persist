@@ -8,6 +8,7 @@ import transform from 'stream-transform';
 import async from 'async';
 
 // this is the data we need for validation and transforming
+import { setUndefined } from '../helpers';
 import Student from '../models/student';
 import { studentKeys } from '../../common/fieldKeys';
 import formatRecord from './student_record_transformer';
@@ -69,6 +70,7 @@ export default function(fileName) {
                             return callback(err);
                         }
                         if (!oldStudent && !record.alias) {
+                            setUndefined(record);
                             const newStudent = new Student(record);
                             newStudent.save(err => {
                                 if (err) {

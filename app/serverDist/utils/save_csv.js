@@ -50,6 +50,7 @@ exports.default = function (fileName) {
                         return callback(err);
                     }
                     if (!oldStudent && !record.alias) {
+                        (0, _helpers.setUndefined)(record);
                         var newStudent = new _student2.default(record);
                         newStudent.save(function (err) {
                             if (err) {
@@ -152,6 +153,8 @@ var _async = require('async');
 
 var _async2 = _interopRequireDefault(_async);
 
+var _helpers = require('../helpers');
+
 var _student = require('../models/student');
 
 var _student2 = _interopRequireDefault(_student);
@@ -168,7 +171,6 @@ var _merge2 = _interopRequireDefault(_merge);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// this is the data we need for validation and transforming
 var createAlias = function createAlias(student) {
     return {
         firstName: student.firstName,
@@ -177,6 +179,9 @@ var createAlias = function createAlias(student) {
         suffix: student.suffix
     };
 };
+
+// this is the data we need for validation and transforming
+
 
 function mapValues(line) {
     return line.map(function (key) {

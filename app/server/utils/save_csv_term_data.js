@@ -4,6 +4,7 @@ import moment from 'moment';
 import transform from 'stream-transform';
 import async from 'async';
 import _ from 'lodash';
+import { setUndefined } from '../helpers';
 import Student from '../models/student';
 import { termKeys } from '../../common/fieldKeys';
 import formatRecord from './term_record_transformer';
@@ -100,7 +101,9 @@ export default fileName => {
                                     });
                                     if (term) {
                                         _.merge(term, termRecord);
+                                        setUndefined(term);
                                     } else {
+                                        setUndefined(termRecord);
                                         studentTerms.push(termRecord);
                                     }
                                 });

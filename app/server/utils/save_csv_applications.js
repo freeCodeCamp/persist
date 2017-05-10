@@ -3,6 +3,7 @@ import parse from 'csv-parse';
 import transform from 'stream-transform';
 import async from 'async';
 import _ from 'lodash';
+import { setUndefined } from '../helpers';
 import Student from '../models/student';
 import { applicationKeys } from '../../common/fieldKeys';
 import formatRecord from './application_record_transformer';
@@ -74,7 +75,9 @@ export default fileName => {
                                     });
                                     if (application) {
                                         _.merge(application, applicationRecord);
+                                        setUndefined(application);
                                     } else {
+                                        setUndefined(applicationRecord);
                                         studentApplications.push(applicationRecord);
                                     }
                                 });
@@ -83,7 +86,6 @@ export default fileName => {
                                     return obj.enrolBegin;
                                 }).reverse();
                                 student.applications = studentApplications;
-                                // for now, lets just overwrite the doc
                                 student.save((err, updatedStudent) => {
                                     if (err) {
                                         console.log('error', studentApplications, student);

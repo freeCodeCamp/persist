@@ -28,6 +28,8 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _helpers = require('../helpers');
+
 var _student = require('../models/student');
 
 var _student2 = _interopRequireDefault(_student);
@@ -121,7 +123,9 @@ exports.default = function (fileName) {
                             });
                             if (term) {
                                 _lodash2.default.merge(term, termRecord);
+                                (0, _helpers.setUndefined)(term);
                             } else {
+                                (0, _helpers.setUndefined)(termRecord);
                                 studentTerms.push(termRecord);
                             }
                         });

@@ -24,6 +24,8 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _helpers = require('../helpers');
+
 var _student = require('../models/student');
 
 var _student2 = _interopRequireDefault(_student);
@@ -98,7 +100,9 @@ exports.default = function (fileName) {
                             });
                             if (application) {
                                 _lodash2.default.merge(application, applicationRecord);
+                                (0, _helpers.setUndefined)(application);
                             } else {
+                                (0, _helpers.setUndefined)(applicationRecord);
                                 studentApplications.push(applicationRecord);
                             }
                         });
@@ -109,7 +113,6 @@ exports.default = function (fileName) {
                             return obj.enrolBegin;
                         }).reverse();
                         student.applications = studentApplications;
-                        // for now, lets just overwrite the doc
                         student.save(function (err, updatedStudent) {
                             if (err) {
                                 console.log('error', studentApplications, student);
