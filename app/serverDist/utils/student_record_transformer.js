@@ -31,6 +31,10 @@ var _map = require('lodash/map');
 
 var _map2 = _interopRequireDefault(_map);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -56,8 +60,12 @@ function formatRecord(record, callback) {
             // console.error('no date, deleting....'.red, logObject);
             delete record[dateField];
         } else {
-            value = value.split(/[-\/]/).join(' ');
-            value = new Date(value);
+            if (typeof value === 'number') {
+                value = (0, _moment2.default)(value, 'YYYYMMDD').toDate();
+            } else {
+                value = value.toString().split(/[-\/]/).join(' ');
+                value = new Date(value);
+            }
             if (value.toString() === 'Invalid Date') {
                 // console.log('invalid date, deleting...'.red, logObject);
                 delete record[dateField];

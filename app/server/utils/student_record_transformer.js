@@ -5,6 +5,7 @@ import School from '../models/school';
 import { studentKeys } from '../../common/fieldKeys';
 import exportKeys from '../../common/exportKeys';
 import map from 'lodash/map';
+import moment from 'moment';
 const typeKeys = exportKeys(map(studentKeys, 'dbName'), studentKeys);
 
 export default function formatRecord(record, callback) {
@@ -26,8 +27,12 @@ export default function formatRecord(record, callback) {
             // console.error('no date, deleting....'.red, logObject);
             delete record[dateField];
         } else {
-            value = value.split(/[-\/]/).join(' ');
-            value = new Date(value);
+            if (typeof value === 'number') {
+                value = moment(value, 'YYYYMMDD').toDate();
+            } else {
+                value = value.toString().split(/[-\/]/).join(' ');
+                value = new Date(value);
+            }
             if (value.toString() === 'Invalid Date') {
                 // console.log('invalid date, deleting...'.red, logObject);
                 delete record[dateField];
