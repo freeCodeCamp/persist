@@ -1,19 +1,15 @@
 import fs from 'fs';
 import parse from 'csv-parse';
-import csv from 'csv';
 import transform from 'stream-transform';
 import async from 'async';
-import set from 'lodash/set';
-import clone from 'lodash/clone';
+import { set, clone, isFinite, forOwn, uniqWith, isEqual } from 'lodash';
 import myMerge from '../helpers/merge';
-import isFinite from 'lodash/isFinite';
-import forOwn from 'lodash/forOwn';
 import College from '../models/college';
 import { collegeKeys } from '../../common/fieldKeys';
 
 export default function(fileName) {
     return new Promise((resolve, reject) => {
-        var parser = parse({
+        const parser = parse({
             delimiter: ',',
             columns: mapValues,
             auto_parse: true
@@ -43,13 +39,15 @@ export default function(fileName) {
             }
         });
 
-        let error;
-        transformer.on('error', function(err) {
-            error = err;
+        const error = [];
+
+        transformer.on('error', err => {
+            error.push(err);
             console.log(err.message);
         });
 
         transformer.on('end', () => {
+            if (error.length > 0) return reject(uniqWith(error, isEqual));
             async.eachLimit(
                 data,
                 10,
@@ -67,7 +65,7 @@ export default function(fileName) {
                                         return callback(null);
                                     }
                                     console.log('we got a validation error', err);
-                                    return callback(null);
+                                    return callback(err);
                                 }
                                 return callback(null);
                             });
@@ -89,7 +87,7 @@ export default function(fileName) {
                                         return callback(null);
                                     }
                                     console.log('we got a validation error', err);
-                                    return callback(null);
+                                    return callback(err);
                                 }
                                 return callback(null);
                             });
@@ -101,7 +99,7 @@ export default function(fileName) {
                         reject(err);
                         return;
                     }
-                    resolve({});
+                    resolve(true);
                 }
             );
         });
@@ -112,7 +110,7 @@ export default function(fileName) {
 
 function mapValues(line) {
     return line.map(key => {
-        var obj = collegeKeys.find(field => {
+        const obj = collegeKeys.find(field => {
             return field.fieldName === key;
         });
         if (obj) {

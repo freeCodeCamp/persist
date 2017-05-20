@@ -4,6 +4,7 @@ import moment from 'moment';
 import transform from 'stream-transform';
 import async from 'async';
 import _ from 'lodash';
+import { uniqWith, isEqual, clone, merge, isEmpty } from 'lodash';
 import { setUndefined } from '../helpers';
 import Student from '../models/student';
 import { termKeys } from '../../common/fieldKeys';
@@ -11,7 +12,7 @@ import formatRecord from './term_record_transformer';
 
 const mapValues = line => {
     return line.map(key => {
-        var obj = termKeys.find(field => {
+        const obj = termKeys.find(field => {
             return field.fieldName === key;
         });
         if (obj) {
@@ -36,18 +37,19 @@ export default fileName => {
         let row;
         transformer.on('readable', () => {
             while ((row = transformer.read())) {
-                data[row.osis] = data[row.osis] || _.clone([]);
+                data[row.osis] = data[row.osis] || clone([]);
                 data[row.osis].push(row);
             }
         });
-        let error;
+        const error = [];
+
         transformer.on('error', err => {
-            error = err;
+            error.push(err);
             console.log(err.message);
         });
 
         transformer.on('end', () => {
-            if (error) return reject(error);
+            if (error.length > 0) return reject(uniqWith(error, isEqual));
             async.eachLimit(
                 data,
                 10,
@@ -65,8 +67,7 @@ export default fileName => {
                         },
                         (err, student) => {
                             if (err) {
-                                callback(err);
-                                return;
+                                return callback(err);
                             }
                             if (student) {
                                 let studentTerms = student.terms;
@@ -100,14 +101,14 @@ export default fileName => {
                                         return false;
                                     });
                                     if (term) {
-                                        _.merge(term, termRecord);
+                                        merge(term, termRecord);
                                         setUndefined(term);
                                     } else {
                                         setUndefined(termRecord);
                                         studentTerms.push(termRecord);
                                     }
                                 });
-                                studentTerms = studentTerms.filter(obj => !_.isEmpty(obj));
+                                studentTerms = studentTerms.filter(obj => !isEmpty(obj));
                                 student.terms = studentTerms;
                                 // for now, lets just overwrite the doc
                                 student.save((err, updatedStudent) => {
@@ -126,8 +127,7 @@ export default fileName => {
                 },
                 err => {
                     if (err) {
-                        reject(err);
-                        return;
+                        return reject(err);
                     }
                     resolve(true);
                 }

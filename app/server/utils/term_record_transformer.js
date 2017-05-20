@@ -5,7 +5,7 @@ import moment from 'moment';
 
 export default (record, callback) => {
     if (!record.osis) {
-        callback(null, null);
+        callback(null);
         return;
     }
 

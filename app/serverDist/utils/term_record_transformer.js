@@ -22,7 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (record, callback) {
     if (!record.osis) {
-        callback(null, null);
+        callback(null);
         return;
     }
 

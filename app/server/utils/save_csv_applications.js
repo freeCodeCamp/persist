@@ -2,7 +2,7 @@ import fs from 'fs';
 import parse from 'csv-parse';
 import transform from 'stream-transform';
 import async from 'async';
-import _ from 'lodash';
+import { toString, merge, sortBy, isEmpty, clone, uniqWith, isEqual } from 'lodash';
 import { setUndefined } from '../helpers';
 import Student from '../models/student';
 import { applicationKeys } from '../../common/fieldKeys';
@@ -35,18 +35,19 @@ export default fileName => {
         let row;
         transformer.on('readable', () => {
             while ((row = transformer.read())) {
-                data[row.osis] = data[row.osis] || _.clone([]);
+                data[row.osis] = data[row.osis] || clone([]);
                 data[row.osis].push(row);
             }
         });
-        let error;
+        const error = [];
+
         transformer.on('error', err => {
-            error = err;
-            console.log(err.message, 'error');
+            error.push(err);
+            console.log(err.message);
         });
 
         transformer.on('end', () => {
-            if (error) return reject(error);
+            if (error.length > 0) return reject(uniqWith(error, isEqual));
             async.eachLimit(
                 data,
                 10,
@@ -71,18 +72,18 @@ export default fileName => {
                                 let studentApplications = student.applications;
                                 applications.forEach(applicationRecord => {
                                     let application = studentApplications.find(elem => {
-                                        return _.toString(elem.college) === _.toString(applicationRecord.college);
+                                        return toString(elem.college) === toString(applicationRecord.college);
                                     });
                                     if (application) {
-                                        _.merge(application, applicationRecord);
+                                        merge(application, applicationRecord);
                                         setUndefined(application);
                                     } else {
                                         setUndefined(applicationRecord);
                                         studentApplications.push(applicationRecord);
                                     }
                                 });
-                                studentApplications = studentApplications.filter(obj => !_.isEmpty(obj));
-                                studentApplications = _.sortBy(studentApplications, obj => {
+                                studentApplications = studentApplications.filter(obj => !isEmpty(obj));
+                                studentApplications = sortBy(studentApplications, obj => {
                                     return obj.enrolBegin;
                                 }).reverse();
                                 student.applications = studentApplications;

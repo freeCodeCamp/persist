@@ -29,7 +29,7 @@ export default fileName => {
             record => record,
             (err, data) => {
                 if (err) {
-                    return console.log(err);
+                    return reject(err);
                 }
 
                 async.eachLimit(

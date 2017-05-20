@@ -50,7 +50,7 @@ exports.default = function (fileName) {
             return record;
         }, function (err, data) {
             if (err) {
-                return console.log(err);
+                return reject(err);
             }
 
             _async2.default.eachLimit(data, 10, function (record, callback) {

@@ -10,7 +10,7 @@ const typeKeys = exportKeys(map(studentKeys, 'dbName'), studentKeys);
 
 export default function formatRecord(record, callback) {
     if (!record.osis) {
-        callback(null, null);
+        callback(null);
         return;
     }
 
@@ -35,7 +35,8 @@ export default function formatRecord(record, callback) {
             }
             if (value.toString() === 'Invalid Date') {
                 // console.log('invalid date, deleting...'.red, logObject);
-                delete record[dateField];
+                // delete record[dateField];
+                record[dateField] = 'set undefined';
             } else {
                 // console.log('successfully transformed'.green, logObject);
                 record[dateField] = value;

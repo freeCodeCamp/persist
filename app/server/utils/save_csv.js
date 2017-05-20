@@ -1,9 +1,6 @@
 import fs from 'fs';
 import parse from 'csv-parse';
-import set from 'lodash/set';
-import forOwn from 'lodash/forOwn';
-import clone from 'lodash/clone';
-import isEqual from 'lodash/isEqual';
+import { set, forOwn, clone, isEqual, uniqWith } from 'lodash';
 import transform from 'stream-transform';
 import async from 'async';
 
@@ -23,13 +20,13 @@ const createAlias = student => ({
 
 export default function(fileName) {
     return new Promise((resolve, reject) => {
-        var parser = parse({
+        const parser = parse({
             delimiter: ',',
             columns: mapValues,
             auto_parse: true
         });
 
-        var transformer = transform(formatRecord, {
+        const transformer = transform(formatRecord, {
             parallel: 20
         });
         const data = {};
@@ -41,23 +38,17 @@ export default function(fileName) {
             }
         });
 
-        let error;
+        const error = [];
 
-        transformer.on('error', function(err) {
-            error = err;
+        transformer.on('error', err => {
+            error.push(err);
             console.log(err.message);
         });
 
         transformer.on('end', function() {
-            if (error) return reject(error);
+            if (error.length > 0) return reject(uniqWith(error, isEqual));
             // reduce data size for testing
             // data = data.splice(0, 1);
-            let addedCount = 0;
-            let modifiedCount = 0;
-            let newStudents = [];
-            let updatedStudents = [];
-            let errorStudents = [];
-            let errorCount = 0;
             console.time('dbSave');
 
             async.eachLimit(
@@ -78,7 +69,7 @@ export default function(fileName) {
                                         return callback(null);
                                     }
                                     console.log('we got a validation error', err);
-                                    return callback(null);
+                                    return callback(err);
                                 }
                                 return callback(null);
                             });
@@ -111,7 +102,7 @@ export default function(fileName) {
                                         return callback(null);
                                     }
                                     console.log('we got a validation error', err);
-                                    return callback(null);
+                                    return callback(err);
                                 }
                                 return callback(null);
                             });
@@ -119,20 +110,12 @@ export default function(fileName) {
                     });
                 },
                 err => {
-                    console.log('getting through to here'.blue);
                     if (err) {
                         reject(err);
                         return;
                     }
                     console.timeEnd('dbSave');
-                    resolve({
-                        modifiedCount,
-                        addedCount,
-                        newStudents,
-                        updatedStudents,
-                        errorStudents,
-                        errorCount
-                    });
+                    resolve(true);
                 }
             );
         });
@@ -143,7 +126,7 @@ export default function(fileName) {
 
 function mapValues(line) {
     return line.map(key => {
-        var obj = studentKeys.find(field => {
+        const obj = studentKeys.find(field => {
             return field.fieldName === key;
         });
         if (obj) {

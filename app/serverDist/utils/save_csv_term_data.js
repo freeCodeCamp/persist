@@ -69,18 +69,19 @@ exports.default = function (fileName) {
         var row = void 0;
         transformer.on('readable', function () {
             while (row = transformer.read()) {
-                data[row.osis] = data[row.osis] || _lodash2.default.clone([]);
+                data[row.osis] = data[row.osis] || (0, _lodash.clone)([]);
                 data[row.osis].push(row);
             }
         });
-        var error = void 0;
+        var error = [];
+
         transformer.on('error', function (err) {
-            error = err;
+            error.push(err);
             console.log(err.message);
         });
 
         transformer.on('end', function () {
-            if (error) return reject(error);
+            if (error.length > 0) return reject((0, _lodash.uniqWith)(error, _lodash.isEqual));
             _async2.default.eachLimit(data, 10, function (terms, callback) {
                 if (!terms || terms.length < 1) {
                     callback(null);
@@ -93,8 +94,7 @@ exports.default = function (fileName) {
                     osis: osis
                 }, function (err, student) {
                     if (err) {
-                        callback(err);
-                        return;
+                        return callback(err);
                     }
                     if (student) {
                         var studentTerms = student.terms;
@@ -122,7 +122,7 @@ exports.default = function (fileName) {
                                 return false;
                             });
                             if (term) {
-                                _lodash2.default.merge(term, termRecord);
+                                (0, _lodash.merge)(term, termRecord);
                                 (0, _helpers.setUndefined)(term);
                             } else {
                                 (0, _helpers.setUndefined)(termRecord);
@@ -130,7 +130,7 @@ exports.default = function (fileName) {
                             }
                         });
                         studentTerms = studentTerms.filter(function (obj) {
-                            return !_lodash2.default.isEmpty(obj);
+                            return !(0, _lodash.isEmpty)(obj);
                         });
                         student.terms = studentTerms;
                         // for now, lets just overwrite the doc
@@ -148,8 +148,7 @@ exports.default = function (fileName) {
                 });
             }, function (err) {
                 if (err) {
-                    reject(err);
-                    return;
+                    return reject(err);
                 }
                 resolve(true);
             });

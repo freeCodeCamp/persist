@@ -19,28 +19,22 @@ exports.default = function (fileName) {
         var row = void 0;
         transformer.on('readable', function () {
             while (row = transformer.read()) {
-                data[row.osis] = data[row.osis] || (0, _clone2.default)({});
+                data[row.osis] = data[row.osis] || (0, _lodash.clone)({});
                 data[row.osis] = (0, _merge2.default)(data[row.osis], row);
             }
         });
 
-        var error = void 0;
+        var error = [];
 
         transformer.on('error', function (err) {
-            error = err;
+            error.push(err);
             console.log(err.message);
         });
 
         transformer.on('end', function () {
-            if (error) return reject(error);
+            if (error.length > 0) return reject((0, _lodash.uniqWith)(error, _lodash.isEqual));
             // reduce data size for testing
             // data = data.splice(0, 1);
-            var addedCount = 0;
-            var modifiedCount = 0;
-            var newStudents = [];
-            var updatedStudents = [];
-            var errorStudents = [];
-            var errorCount = 0;
             console.time('dbSave');
 
             _async2.default.eachLimit(data, 10, function (record, callback) {
@@ -58,26 +52,26 @@ exports.default = function (fileName) {
                                     return callback(null);
                                 }
                                 console.log('we got a validation error', err);
-                                return callback(null);
+                                return callback(err);
                             }
                             return callback(null);
                         });
                     } else {
                         if (record.alias) {
                             var oldAlias = oldStudent.aliases.find(function (alias) {
-                                return (0, _isEqual2.default)(alias, createAlias(record));
+                                return (0, _lodash.isEqual)(alias, createAlias(record));
                             });
                             if (!oldAlias) {
                                 oldStudent.aliases.push(createAlias(record));
                             }
                         } else {
                             var newRecord = {};
-                            (0, _forOwn2.default)(record, function (value, key) {
-                                (0, _set2.default)(newRecord, key, value);
+                            (0, _lodash.forOwn)(record, function (value, key) {
+                                (0, _lodash.set)(newRecord, key, value);
                             });
                             var studentObject = oldStudent.toObject();
                             var _newStudent = (0, _merge2.default)(studentObject, newRecord);
-                            (0, _forOwn2.default)(studentObject, function (value, key) {
+                            (0, _lodash.forOwn)(studentObject, function (value, key) {
                                 if (key !== '_id') {
                                     if (_newStudent[key] === 'set undefined') {
                                         oldStudent[key] = undefined;
@@ -93,27 +87,19 @@ exports.default = function (fileName) {
                                     return callback(null);
                                 }
                                 console.log('we got a validation error', err);
-                                return callback(null);
+                                return callback(err);
                             }
                             return callback(null);
                         });
                     }
                 });
             }, function (err) {
-                console.log('getting through to here'.blue);
                 if (err) {
                     reject(err);
                     return;
                 }
                 console.timeEnd('dbSave');
-                resolve({
-                    modifiedCount: modifiedCount,
-                    addedCount: addedCount,
-                    newStudents: newStudents,
-                    updatedStudents: updatedStudents,
-                    errorStudents: errorStudents,
-                    errorCount: errorCount
-                });
+                resolve(true);
             });
         });
 
@@ -129,21 +115,7 @@ var _csvParse = require('csv-parse');
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
-var _set = require('lodash/set');
-
-var _set2 = _interopRequireDefault(_set);
-
-var _forOwn = require('lodash/forOwn');
-
-var _forOwn2 = _interopRequireDefault(_forOwn);
-
-var _clone = require('lodash/clone');
-
-var _clone2 = _interopRequireDefault(_clone);
-
-var _isEqual = require('lodash/isEqual');
-
-var _isEqual2 = _interopRequireDefault(_isEqual);
+var _lodash = require('lodash');
 
 var _streamTransform = require('stream-transform');
 

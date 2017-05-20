@@ -2,7 +2,7 @@ import College from '../models/college';
 
 export default (record, callback) => {
     if (!record.osis) {
-        callback(null, null);
+        callback(null);
         return;
     }
     if (!record.college) {
@@ -31,7 +31,7 @@ export default (record, callback) => {
                 callback(null, record);
                 return;
             }
-            callback(null, null);
+            callback(null);
         }
     );
 };

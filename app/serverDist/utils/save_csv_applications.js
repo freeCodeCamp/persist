@@ -22,8 +22,6 @@ var _async2 = _interopRequireDefault(_async);
 
 var _lodash = require('lodash');
 
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var _helpers = require('../helpers');
 
 var _student = require('../models/student');
@@ -65,18 +63,19 @@ exports.default = function (fileName) {
         var row = void 0;
         transformer.on('readable', function () {
             while (row = transformer.read()) {
-                data[row.osis] = data[row.osis] || _lodash2.default.clone([]);
+                data[row.osis] = data[row.osis] || (0, _lodash.clone)([]);
                 data[row.osis].push(row);
             }
         });
-        var error = void 0;
+        var error = [];
+
         transformer.on('error', function (err) {
-            error = err;
-            console.log(err.message, 'error');
+            error.push(err);
+            console.log(err.message);
         });
 
         transformer.on('end', function () {
-            if (error) return reject(error);
+            if (error.length > 0) return reject((0, _lodash.uniqWith)(error, _lodash.isEqual));
             _async2.default.eachLimit(data, 10, function (applications, callback) {
                 if (!applications || applications.length < 1) {
                     callback(null);
@@ -96,10 +95,10 @@ exports.default = function (fileName) {
                         var studentApplications = student.applications;
                         applications.forEach(function (applicationRecord) {
                             var application = studentApplications.find(function (elem) {
-                                return _lodash2.default.toString(elem.college) === _lodash2.default.toString(applicationRecord.college);
+                                return (0, _lodash.toString)(elem.college) === (0, _lodash.toString)(applicationRecord.college);
                             });
                             if (application) {
-                                _lodash2.default.merge(application, applicationRecord);
+                                (0, _lodash.merge)(application, applicationRecord);
                                 (0, _helpers.setUndefined)(application);
                             } else {
                                 (0, _helpers.setUndefined)(applicationRecord);
@@ -107,9 +106,9 @@ exports.default = function (fileName) {
                             }
                         });
                         studentApplications = studentApplications.filter(function (obj) {
-                            return !_lodash2.default.isEmpty(obj);
+                            return !(0, _lodash.isEmpty)(obj);
                         });
-                        studentApplications = _lodash2.default.sortBy(studentApplications, function (obj) {
+                        studentApplications = (0, _lodash.sortBy)(studentApplications, function (obj) {
                             return obj.enrolBegin;
                         }).reverse();
                         student.applications = studentApplications;

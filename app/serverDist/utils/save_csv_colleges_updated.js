@@ -13,10 +13,10 @@ exports.default = function (fileName) {
         });
 
         var transformer = (0, _streamTransform2.default)(function (record) {
-            (0, _forOwn2.default)(_college2.default.schema.obj, function (value, key) {
+            (0, _lodash.forOwn)(_college2.default.schema.obj, function (value, key) {
                 if (value.name && value.name.toString() === 'Number') {
                     record[key] = Number(record[key]);
-                    if (!(0, _isFinite2.default)(record[key])) {
+                    if (!(0, _lodash.isFinite)(record[key])) {
                         delete record[key];
                     }
                 }
@@ -30,19 +30,21 @@ exports.default = function (fileName) {
             while (row = transformer.read()) {
                 var uniqueName = ('' + (row.opeid || '')).trim();
                 if (uniqueName.length > 0) {
-                    data[uniqueName] = data[uniqueName] || (0, _clone2.default)({});
+                    data[uniqueName] = data[uniqueName] || (0, _lodash.clone)({});
                     data[uniqueName] = (0, _merge2.default)(data[uniqueName], row);
                 }
             }
         });
 
-        var error = void 0;
+        var error = [];
+
         transformer.on('error', function (err) {
-            error = err;
+            error.push(err);
             console.log(err.message);
         });
 
         transformer.on('end', function () {
+            if (error.length > 0) return reject((0, _lodash.uniqWith)(error, _lodash.isEqual));
             _async2.default.eachLimit(data, 10, function (record, callback) {
                 _college2.default.findOne({ opeid: record.opeid }, function (err, oldCollege) {
                     if (err) {
@@ -57,18 +59,18 @@ exports.default = function (fileName) {
                                     return callback(null);
                                 }
                                 console.log('we got a validation error', err);
-                                return callback(null);
+                                return callback(err);
                             }
                             return callback(null);
                         });
                     } else {
                         var newRecord = {};
-                        (0, _forOwn2.default)(record, function (value, key) {
-                            (0, _set2.default)(newRecord, key, value);
+                        (0, _lodash.forOwn)(record, function (value, key) {
+                            (0, _lodash.set)(newRecord, key, value);
                         });
                         var collegeObject = oldCollege.toObject();
                         var newCollege = (0, _merge2.default)(collegeObject, newRecord);
-                        (0, _forOwn2.default)(collegeObject, function (value, key) {
+                        (0, _lodash.forOwn)(collegeObject, function (value, key) {
                             if (key !== '_id' && newCollege[key]) {
                                 oldCollege[key] = newCollege[key];
                             }
@@ -79,7 +81,7 @@ exports.default = function (fileName) {
                                     return callback(null);
                                 }
                                 console.log('we got a validation error', err);
-                                return callback(null);
+                                return callback(err);
                             }
                             return callback(null);
                         });
@@ -90,7 +92,7 @@ exports.default = function (fileName) {
                     reject(err);
                     return;
                 }
-                resolve({});
+                resolve(true);
             });
         });
 
@@ -106,10 +108,6 @@ var _csvParse = require('csv-parse');
 
 var _csvParse2 = _interopRequireDefault(_csvParse);
 
-var _csv = require('csv');
-
-var _csv2 = _interopRequireDefault(_csv);
-
 var _streamTransform = require('stream-transform');
 
 var _streamTransform2 = _interopRequireDefault(_streamTransform);
@@ -118,25 +116,11 @@ var _async = require('async');
 
 var _async2 = _interopRequireDefault(_async);
 
-var _set = require('lodash/set');
-
-var _set2 = _interopRequireDefault(_set);
-
-var _clone = require('lodash/clone');
-
-var _clone2 = _interopRequireDefault(_clone);
+var _lodash = require('lodash');
 
 var _merge = require('../helpers/merge');
 
 var _merge2 = _interopRequireDefault(_merge);
-
-var _isFinite = require('lodash/isFinite');
-
-var _isFinite2 = _interopRequireDefault(_isFinite);
-
-var _forOwn = require('lodash/forOwn');
-
-var _forOwn2 = _interopRequireDefault(_forOwn);
 
 var _college = require('../models/college');
 

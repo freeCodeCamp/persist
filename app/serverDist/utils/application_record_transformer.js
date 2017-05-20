@@ -12,7 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (record, callback) {
     if (!record.osis) {
-        callback(null, null);
+        callback(null);
         return;
     }
     if (!record.college) {
@@ -33,6 +33,6 @@ exports.default = function (record, callback) {
             callback(null, record);
             return;
         }
-        callback(null, null);
+        callback(null);
     });
 };
