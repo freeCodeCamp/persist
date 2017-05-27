@@ -97,3 +97,5 @@ const job = new CronJob(
     true /* Start the job right now */,
     'America/New_York' /* Time zone of this job. */
 );
+
+export default app;
