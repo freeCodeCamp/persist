@@ -12,13 +12,17 @@ const bcrypt = require('bcrypt-nodejs');
 const SALT_FACTOR = 5; //should match value in models/user.js
 const pwdSalt = bcrypt.genSaltSync(SALT_FACTOR);
 
+<<<<<<< HEAD
 const adminID = new ObjectID();
+=======
+>>>>>>> Initial restructuring of code tests:
 const userOneID = new ObjectID();
 const schoolOneID = new ObjectID();
 const userTwoID = new ObjectID();
 const userThreeID = new ObjectID();
 const users = [
   {
+<<<<<<< HEAD
     profile: {
         firstName: 'Sachin',
         lastName: 'Mour'
@@ -30,6 +34,8 @@ const users = [
     },
     enabled: true
   }, {
+=======
+>>>>>>> Initial restructuring of code tests:
     _id: userOneID,
     email: 'userone@test.com',
     password: bcrypt.hashSync('userOnePass', pwdSalt),
@@ -72,6 +78,7 @@ const users = [
 ];
 
 const populateServer = (done) => {
+<<<<<<< HEAD
   done();
 };
 
@@ -83,14 +90,27 @@ const populateServer = (done) => {
  *
  * @param  {function} done callback function for async tests in mocha
  */
+=======
+
+};
+
+>>>>>>> Initial restructuring of code tests:
 const populateUsers = (done) => {
   User
     .remove({})
     .then(() => {
+<<<<<<< HEAD
       return Promise.all(
         users.map((user) => {
           return new User(user).save();
       }));
+=======
+      let userOne = new User(users[0]).save();
+      let userTwo = new User(users[1]).save();
+      let userThree = new User(users[2]).save();
+
+      return Promise.all([userOne, userTwo, userThree]);
+>>>>>>> Initial restructuring of code tests:
     }).then(() => done());
 };
 
