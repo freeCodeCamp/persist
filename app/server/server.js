@@ -57,7 +57,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 io.on('connection', handleSocket.bind(null, io));
 
-if (process.env.NODE_ENV !== 'production') {
+if (NODE_ENV !== 'production') {
     const webpackDevMiddleware = require('webpack-dev-middleware');
     const webpackHotMiddleware = require('webpack-hot-middleware');
     const webpack = require('webpack');
