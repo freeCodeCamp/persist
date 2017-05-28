@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import moxios from 'moxios';
 
 import * as types from '../../../app/client/src/actions/types';
-import {registerUser, getForgotPasswordToken, updatePassword} from '../../../app/client/src/actions/authentication';
+import {loginUser, registerUser, getForgotPasswordToken, updatePassword} from '../../../app/client/src/actions/authentication';
 
 describe('Authentication Actions', () => {
   beforeEach(() => {
