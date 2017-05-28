@@ -120,7 +120,11 @@
     "expect": "^1.20.2",
     "extract-text-webpack-plugin": "^1.0.1",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "html-webpack-plugin": "^2.28.0",
+=======
+    "istanbul-instrumenter-loader": "^2.0.0",
+>>>>>>> Devdependencies, karma.conf.js and webpack.conf.js changes necessary
 =======
     "istanbul-instrumenter-loader": "^2.0.0",
 >>>>>>> Devdependencies, karma.conf.js and webpack.conf.js changes necessary
@@ -129,9 +133,13 @@
     "karma": "^1.7.0",
     "karma-coverage": "^1.1.1",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "karma-coverage-istanbul-reporter": "^1.3.0",
 =======
 >>>>>>> Added test coverage reports to test/server using istanbul.
+=======
+    "karma-coverage-istanbul-reporter": "^1.3.0",
+>>>>>>> Devdependencies, karma.conf.js and webpack.conf.js changes necessary
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.3",
     "karma-phantomjs-launcher": "^1.0.4",
