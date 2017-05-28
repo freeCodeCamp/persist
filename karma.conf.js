@@ -8,7 +8,7 @@ module.exports = function(config) {
     browserNoActivityTimeout: 10000,
     browserConsoleLogOptions: {
       terminal: true,
-      level: '',
+      level: ''
     },
     client: {
       captureConsole: true,
@@ -29,9 +29,7 @@ module.exports = function(config) {
       ]
     },
     files: [
-      'node_modules/jquery/dist/jquery.min.js',
-      'test/client/**/*_test.js',
-      'tests/client/**/*_test.jsx'
+      'node_modules/jquery/dist/jquery.min.js', 'test/client/**/*_test.js', 'tests/client/**/*_test.jsx'
     ],
     frameworks: [
       'mocha', 'sinon'
@@ -43,19 +41,33 @@ module.exports = function(config) {
       'karma-webpack',
       'karma-coverage',
       'karma-mocha-reporter',
-      'karma-sinon'
+      'karma-sinon',
+      'karma-coverage-istanbul-reporter'
     ],
     preprocessors: {
       'test/client/**/*_test.js': [
-        'webpack', 'sourcemap', //'coverage',
+        'webpack', 'sourcemap',
       ],
       'test/client/**/*_test.jsx': [
-        'webpack', 'sourcemap', //'coverage',
+        'webpack', 'sourcemap',
       ]
     },
     reporters: [
-      'mocha', 'coverage'
+      'mocha', 'coverage-istanbul'
     ],
+    coverageIstanbulReporter: {
+      reports: [
+        'html', 'text-summary'
+      ],
+      dir: 'test/client/coverage',
+      fixWebpackSourcePaths: true,
+      skipFilesWithNoCoverage: true,
+      'report-config': {
+        html: {
+          subdir: 'html'
+        }
+      }
+    },
     singleRun: true,
     webpack: webpackConfig,
     webpackServer: {
