@@ -12,12 +12,24 @@ const bcrypt = require('bcrypt-nodejs');
 const SALT_FACTOR = 5; //should match value in models/user.js
 const pwdSalt = bcrypt.genSaltSync(SALT_FACTOR);
 
+const adminID = new ObjectID();
 const userOneID = new ObjectID();
 const schoolOneID = new ObjectID();
 const userTwoID = new ObjectID();
 const userThreeID = new ObjectID();
 const users = [
   {
+    profile: {
+        firstName: 'Sachin',
+        lastName: 'Mour'
+    },
+    email: 'rtr.sachinmour@gmail.com',
+    password: bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'admin', pwdSalt),
+    access: {
+        role: 'Admin' // Why is this not ROLE_ADMIN?
+    },
+    enabled: true
+  }, {
     _id: userOneID,
     email: 'userone@test.com',
     password: bcrypt.hashSync('userOnePass', pwdSalt),
@@ -60,18 +72,25 @@ const users = [
 ];
 
 const populateServer = (done) => {
-
+  done();
 };
 
+
+/**
+ * populateUsers - clears users collection from mongoDB database and replaces it
+ *                with array of users above.  Used in beforeEach mocha test hook
+ *                to allow tests to run against a fixed DB.
+ *
+ * @param  {function} done callback function for async tests in mocha
+ */
 const populateUsers = (done) => {
   User
     .remove({})
     .then(() => {
-      let userOne = new User(users[0]).save();
-      let userTwo = new User(users[1]).save();
-      let userThree = new User(users[2]).save();
-
-      return Promise.all([userOne, userTwo, userThree]);
+      return Promise.all(
+        users.map((user) => {
+          return new User(user).save();
+      }));
     }).then(() => done());
 };
 

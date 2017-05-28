@@ -32,33 +32,34 @@ User.methods.comparePassword = function(candidatePassword, cb) {
 
 const userModel = mongoose.model('User', User);
 
-// create admin user
-const adminUser = {
-    profile: {
-        firstName: 'Sachin',
-        lastName: 'Mour'
-    },
-    email: 'rtr.sachinmour@gmail.com',
-    access: {
-        role: 'Admin'
-    },
-    enabled: true
-};
-userModel.findOne({ email: adminUser.email }, (err, existingUser) => {
-    if (!existingUser) {
-        adminUser.password = process.env.ADMIN_PASSWORD;
-        return userModel.create(adminUser, (err, newAdmin) => {
-            if (err) {
-                return console.log('admin not created', err);
-            }
-        });
-    }
-    existingUser.password = process.env.ADMIN_PASSWORD;
-    return existingUser.save(err => {
-        if (err) {
-            console.log('admin not created', err);
-        }
-    });
-});
+// TODO Delete these comments. Comments left here to explain changes in this commit only.
+// create admin user -- MOVED TO test/server/dbseed/seed.js
+// const adminUser = {
+//     profile: {
+//         firstName: 'Sachin',
+//         lastName: 'Mour'
+//     },
+//     email: 'rtr.sachinmour@gmail.com',
+//     access: {
+//         role: 'Admin'
+//     },
+//     enabled: true
+// };
+// userModel.findOne({ email: adminUser.email }, (err, existingUser) => {
+//     if (!existingUser) {
+//         adminUser.password = process.env.ADMIN_PASSWORD;
+//         return userModel.create(adminUser, (err, newAdmin) => {
+//             if (err) {
+//                 return console.log('admin not created', err);
+//             }
+//         });
+//     }
+//     existingUser.password = process.env.ADMIN_PASSWORD;
+//     return existingUser.save(err => {
+//         if (err) {
+//             console.log('admin not created', err);
+//         }
+//     });
+// });
 
 export default userModel;
