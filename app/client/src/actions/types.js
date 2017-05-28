@@ -1,3 +1,4 @@
+// TODO Fix inconsistent casing of action types
 // uploads
 export const UPLOAD_FILE_SUCCESS = 'upload_file_success';
 export const UPLOAD_FILE_ERROR = 'upload_file_error';
@@ -119,7 +120,7 @@ export const DELETE_ALIAS_SUCCESS = 'delete_alias_success',
     DELETE_ALIAS_PENDING = 'delete_alias_pending';
 
 // authentication
-export const LOGIN_SUCCESS = 'login_success', LOGIN_PENDING = 'login_pending', LOGOUT = 'logout';
+export const LOGIN_SUCCESS = 'login_success', LOGIN_PENDING = 'login_pending', LOGIN_ERROR='login_error', LOGOUT = 'logout';
 
 export const FORGOT_PASSWORD_SUCCESS = 'forgot_password_success', FORGOT_PASSWORD_PENDING = 'forgot_password_pending';
 
