@@ -17,7 +17,8 @@
     "prestart": "babel app/common --out-dir app/common",
     "start": "NODE_ENV=production node serverProd.js --max-old-space-size=1000",
     "babel": "./node_modules/.bin/babel-node",
-    "watch:test": "webpack-dev-server --progress"
+    "watch:test": "webpack-dev-server --progress",
+    "import": "babel-node ./utils/import_data.js"
   },
   "repository": {
     "type": "git",
@@ -119,6 +120,7 @@
     "nock": "^9.0.2",
     "node-inspector": "^0.12.8",
     "node-sass": "^4.1.1",
+    "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.4",
     "redux-devtools-extension": "^1.0.0",

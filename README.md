@@ -17,6 +17,10 @@ to allow them to track their leavers.
    * install nodemon as global - npm install -g nodemon
    * Start server - "npm run watch"
 
+### Import production data
+
+Run `npm run import YOUR_TAR_FILE_NAME`
+
 
 #### Notes:-
  * Use node < 7, for node-inspector to work properly (See:- https://github.com/node-inspector/v8-debug/issues/33)
