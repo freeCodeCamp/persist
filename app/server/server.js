@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
 import ScheduledJob from '../../scheduled-job';
 
+
 dotenv.config({ silent: true });
 const {MONGODB_URI, TEST_MONGODB_URI, NODE_ENV} = process.env;
 
@@ -16,14 +17,6 @@ function haltOnTimedout(req, res, next) {
     if (!req.timedout) next();
 }
 
-<<<<<<< HEAD:app/server/server.js
-
-=======
-let serverFolder = 'serverDist';
-if (NODE_ENV !== 'production') {
-    serverFolder = 'server';
-}
->>>>>>> Added check for NODE_ENV === 'test' to decide mongodb uri.:server.js
 // https://github.com/motdotla/dotenv/issues/114
 const serverRoutes = require('./routes/index').default;
 const handleSocket = require('./socket').default;
