@@ -2,11 +2,10 @@ const expect = require('expect');
 const sinon = require('sinon');
 const path = require('path');
 
-const {populateUsers} = require('./dbseed/seed');
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 const {populateUsers} = require('./dbseed/seed');
 
-const app = require('../../server.js')
+const app = require('../../app/server/server.js')
 
 beforeEach(populateUsers);
 
@@ -32,4 +31,5 @@ describe('Testing Setup', () => {
           }
         });
     });
+  });
 });
