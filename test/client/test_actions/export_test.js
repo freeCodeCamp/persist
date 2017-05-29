@@ -1,15 +1,12 @@
 import expect from 'expect';
 import sinon from 'sinon';
 import moxios from 'moxios';
-import _ from 'lodash'; // This seems to do nothing.  Possibly a karma issue.
 
 import * as types from '../../../app/client/src/actions/types';
 import {exportArray, exportStudents} from '../../../app/client/src/actions/export';
 import { applicationKeys, collegeGraduationKeys, collegeKeys, termKeys, caseNotesKeys } from '../../../app/common/fieldKeys';
 
-let jsonCsvStub, mapStub;
-
-describe.only('Export Actions', () => {
+describe('Export Actions', () => {
 
   describe('exportArray', () => {
 
@@ -24,11 +21,11 @@ describe.only('Export Actions', () => {
     });
 
     it.skip('should call json2csv CANNOT STUB JSON2CSV THE WAY EXPORTARRAY IS CURRENTLY IMPLEMENTED', () => {
-      // TODO exportArray has an instance of json2csv hidden a closure that cannot be stubbed from here
-      // changing the function to use an instance of json2csv from the global context
+      // TODO exportArray has an instance of json2csv hidden in a closure that cannot be stubbed
+      // from here changing the function to use an instance of json2csv from the global context
       // would allow for better testing but MAY cause other issues.
       const dispatch = sinon.spy();
-      jsonCsvStub = sinon.stub(global, 'json2csv');
+      const jsonCsvStub = sinon.stub(global, 'json2csv');
 
       const students = ['a', 'b', 'c'];
       const type = 'application';
@@ -62,6 +59,33 @@ describe.only('Export Actions', () => {
         }
       });
       mapStub.restore();
+    });
+  });
+
+  describe('exportStudents', () => {
+    it('should dispatch SPINNER_PAGE with payload: true', () => {
+      const dispatch = sinon.spy();
+
+      const fields = ['a', 'b', 'c'];
+      const students = [1, 2, 3];
+
+      exportStudents(fields, students)(dispatch);
+      sinon.assert.calledWith(dispatch, {type: types.SPINNER_PAGE, payload: true});
+    });
+
+    it.skip('should call json2csv CANNOT STUB JSON2CSV THE WAY EXPORTSTUDENTS IS CURRENTLY IMPLEMENTED', () => {
+      // TODO exportStudents has an instance of json2csv hidden in a closure that cannot be stubbed
+      // from here changing the function to use an instance of json2csv from the global context
+      // would allow for better testing but MAY cause other issues.
+      const dispatch = sinon.spy();
+      const jsonCsvStub = sinon.stub(global, 'json2csv');
+
+      const fields = ['a', 'b', 'c'];
+      const students = [1, 2, 3];
+
+      exportStudents(fields, students)(dispatch);
+      sinon.assert.calledOnce(jsonCsvStub);
+      jsonCsvStub.restore();
     });
   });
 });
