@@ -7,7 +7,8 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
     browserNoActivityTimeout: 10000,
     browserConsoleLogOptions: {
-      terminal: true,
+      terminal: false,
+      path: 'karma.log',
       level: ''
     },
     client: {
@@ -29,7 +30,10 @@ module.exports = function(config) {
       ]
     },
     files: [
-      'node_modules/jquery/dist/jquery.min.js', 'test/client/**/*_test.js', 'tests/client/**/*_test.jsx'
+      'node_modules/jquery/dist/jquery.min.js',
+      'node_modules/json2csv/dist/json2csv.js',
+      'test/client/**/*_test.js',
+      'test/client/**/*_test.jsx'
     ],
     frameworks: [
       'mocha', 'sinon'
