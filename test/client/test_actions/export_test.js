@@ -1,7 +1,6 @@
 import expect from 'expect';
 import sinon from 'sinon';
 import moxios from 'moxios';
-import _ from 'lodash'; // This seems to do nothing.  Possibly a karma issue.
 
 import * as types from '../../../app/client/src/actions/types';
 import {exportArray, exportStudents} from '../../../app/client/src/actions/export';
@@ -89,5 +88,4 @@ describe('Export Actions', () => {
       jsonCsvStub.restore();
     });
   });
-
 });
