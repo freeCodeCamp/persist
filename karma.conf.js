@@ -33,7 +33,6 @@ module.exports = function(config) {
       'node_modules/jquery/dist/jquery.min.js',
       'node_modules/json2csv/dist/json2csv.js',
       'test/client/**/*_test.js',
-      'test/client/**/*_test.jsx'
     ],
     frameworks: [
       'mocha', 'sinon'
