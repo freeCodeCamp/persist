@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/server_test.js && node_modules/.bin/karma start",
+    "test": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/app_test.js && node_modules/.bin/karma start",
     "test:watch": "npm run test -- --watch",
     "watch": "nodemon --exec babel-node app/server/server.js",
     "postinstall": "npm run build",
