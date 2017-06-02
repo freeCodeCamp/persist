@@ -6,7 +6,7 @@ import sinon from 'sinon';
 
 (function polyfills() {
   // Because PhantomJS is way behind on basic ES6 features, include polyfills as
-  // needed for tests to execute.
+  // needed for some tests to execute.
   if (!window.Promise) {
     require('es6-promise/auto');
   }
