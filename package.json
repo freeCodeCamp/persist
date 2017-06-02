@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/server_test.js && node_modules/.bin/karma start",
+    "test": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/app_test.js && node_modules/.bin/karma start",
     "test:watch": "npm run test -- --watch",
-    "test-server": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/server_test.js",
+    "test-server": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/app_test.js",
     "test-client": "node_modules/.bin/karma start",
     "watch": "nodemon --config nodemon.json --exec babel-node server.js",
     "debug": "node-inspector --web-port=8888 & nodemon --config nodemon.json --exec babel-node --debug-brk server.js",
