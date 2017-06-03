@@ -7,20 +7,17 @@ import socketIO from 'socket.io';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
-import ScheduledJob from './scheduled-job';
+import ScheduledJob from '../../scheduled-job';
 dotenv.config({ silent: true });
 
 function haltOnTimedout(req, res, next) {
     if (!req.timedout) next();
 }
 
-let serverFolder = 'serverDist';
-if (process.env.NODE_ENV !== 'production') {
-    serverFolder = 'server';
-}
+
 // https://github.com/motdotla/dotenv/issues/114
-const serverRoutes = require(`./app/${serverFolder}/routes/index`).default;
-const handleSocket = require(`./app/${serverFolder}/socket`).default;
+const serverRoutes = require('./routes/index').default;
+const handleSocket = require('./socket').default;
 
 // connect to mongoDB database
 mongoose.Promise = global.Promise;
@@ -32,7 +29,8 @@ mongoose.connect(process.env.MONGODB_URI, options);
 
 const app = express();
 app.use(timeout('240s'));
-app.use(express.static(path.join(__dirname, '/app/client/public')));
+app.use(express.static('app/client/public'));
+app.use(express.static('appDist/client'));
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(
     bodyParser.urlencoded({
@@ -54,7 +52,7 @@ if (process.env.NODE_ENV !== 'production') {
     const webpackDevMiddleware = require('webpack-dev-middleware');
     const webpackHotMiddleware = require('webpack-hot-middleware');
     const webpack = require('webpack');
-    const config = require('./webpack.config.js');
+    const config = require('../../webpack.config.js');
 
     const compiler = webpack(config);
 

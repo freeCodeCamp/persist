@@ -1,6 +1,8 @@
 {
   "verbose": true,
   "ignore": [
+    "data",
+    "appDist",
     "/app/client/src/components",
     "/app/client/src/reducers",
     "/app/client/src/actions",
