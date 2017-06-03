@@ -7,6 +7,7 @@ const {populateUsers} = require('./dbseed/seed');
 
 const app = require('../../app/server/server.js')
 
+
 beforeEach(populateUsers);
 
 describe('Testing Setup', () => {

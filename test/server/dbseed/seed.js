@@ -12,7 +12,6 @@ const bcrypt = require('bcrypt-nodejs');
 const SALT_FACTOR = 5; //should match value in models/user.js
 const pwdSalt = bcrypt.genSaltSync(SALT_FACTOR);
 
-
 const adminID = new ObjectID();
 const userOneID = new ObjectID();
 const schoolOneID = new ObjectID();
