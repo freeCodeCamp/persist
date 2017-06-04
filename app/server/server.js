@@ -8,12 +8,14 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
 import ScheduledJob from '../../scheduled-job';
+
+
 dotenv.config({ silent: true });
+const {MONGODB_URI, TEST_MONGODB_URI, NODE_ENV} = process.env;
 
 function haltOnTimedout(req, res, next) {
     if (!req.timedout) next();
 }
-
 
 // https://github.com/motdotla/dotenv/issues/114
 const serverRoutes = require('./routes/index').default;
@@ -25,7 +27,7 @@ const options = {
     server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
     replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
 };
-mongoose.connect(process.env.MONGODB_URI, options);
+mongoose.connect(NODE_ENV === 'test' ? TEST_MONGODB_URI : MONGODB_URI, options);
 
 const app = express();
 app.use(timeout('240s'));
@@ -48,7 +50,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 io.on('connection', handleSocket.bind(null, io));
 
-if (process.env.NODE_ENV !== 'production') {
+if (NODE_ENV !== 'production') {
     const webpackDevMiddleware = require('webpack-dev-middleware');
     const webpackHotMiddleware = require('webpack-hot-middleware');
     const webpack = require('webpack');
@@ -97,3 +99,5 @@ const job = new CronJob(
     true /* Start the job right now */,
     'America/New_York' /* Time zone of this job. */
 );
+
+export default app;

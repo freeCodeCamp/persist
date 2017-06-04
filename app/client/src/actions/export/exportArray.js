@@ -1,9 +1,10 @@
+import _ from 'lodash';
 import moment from 'moment';
 import json2csv from 'json2csv';
 import { SPINNER_PAGE } from '../types';
 import { applicationKeys, collegeGraduationKeys, collegeKeys, termKeys, caseNotesKeys } from '../../../../common/fieldKeys';
 
-const exportArrays = (students, type) =>
+const exportArray = (students, type) =>
     dispatch => {
         dispatch({
             type: SPINNER_PAGE,
@@ -50,4 +51,4 @@ const exportArrays = (students, type) =>
         );
     };
 
-export default exportArrays;
+export default exportArray;
