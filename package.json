@@ -11,7 +11,7 @@
     "test:watch": "npm run test -- --watch",
     "watch": "nodemon --exec babel-node app/server/server.js",
     "postinstall": "npm run build",
-    "test-server": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/server_test.js",
+    "test-server": "export NODE_ENV=test && babel-istanbul cover _mocha test/server/app_test.js",
     "test-client": "node_modules/.bin/karma start",
     "debug": "node-inspector --web-port=8888 & nodemon --config nodemon.json --exec babel-node --debug-brk server.js",
     "debug3": "node-inspector",

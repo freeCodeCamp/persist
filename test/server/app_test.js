@@ -3,12 +3,12 @@ const sinon = require('sinon');
 const path = require('path');
 
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
-const {populateUsers} = require('./dbseed/seed');
+const {populateUsers, populateColleges} = require('./dbseed/seed');
 
 const app = require('../../app/server/server.js')
 
-
 beforeEach(populateUsers);
+beforeEach(populateColleges);
 
 describe('Testing Setup', () => {
   it('should seed database with user accounts for testing', (done) => {
@@ -34,3 +34,5 @@ describe('Testing Setup', () => {
     });
   });
 });
+
+require('./test_models');
