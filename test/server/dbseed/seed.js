@@ -1,14 +1,7 @@
 const path = require('path');
 
 const modelsDir = path.join(process.env.PWD, 'app/server/models/');
-const {
-  College,
-  Notification,
-  School,
-  Student,
-  UploadHistory,
-  User
-} = require(modelsDir);
+const models = require(modelsDir);
 
 const commonDir = path.join(process.env.PWD, 'app/common/');
 const {ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR} = require(path.join(commonDir, 'constants'));
@@ -192,39 +185,288 @@ const colleges = [
   }
 ];
 
-/**
- * populateUsers - clears users collection from mongoDB database and replaces it
- *                with array of users above.  Used in beforeEach mocha test hook
- *                to allow tests to run against a fixed DB.
- *
- * @param  {function} done callback function for async tests in mocha
- */
-const populateUsers = (done) => {
-  User.remove({}).then(() => {
-    return Promise.all(users.map((user) => {
-      return new User(user).save();
-    }));
-  }).then(() => done());
-};
+const schools = [
+  {
+    "_id": ObjectID("58d453aa97fb3c001846f4ce"),
+    "name": "Baldwin",
+    "users": [],
+    "__v": 0
+  }, {
+    "_id": ObjectID("58d453aa97fb3c001846f4cf"),
+    "name": "Brooklyn Collaborative",
+    "users": [],
+    "__v": 0
+  }, {
+    "_id": ObjectID("58d453aa97fb3c001846f4d0"),
+    "name": "Channel View",
+    "users": [],
+    "__v": 0
+  }
+];
+
+const students = [
+  {
+    "_id": ObjectID("591477f37066b1747ff9e94a"),
+    "hsGradYear": 2015,
+    "expectedHSGrad": Date("2014-09-15T00:00:00.000Z"),
+    "hs": ObjectID("58d453aa97fb3c001846f4d5"),
+    "osis": 200205492,
+    "lastName": "Jonson",
+    "firstName": "Jon",
+    "dob": Date("1996-07-06T00:00:00.000Z"),
+    "cohort": "P (2010)",
+    "hsGradDate": Date("2014-07-01T00:00:00.000Z"),
+    "ethnicity": 3,
+    "hsDiplomaType": "REGENTS",
+    "fullName": "Jon Jonson",
+    "photoReleaseForm": false,
+    "needsFollowup": false,
+    "applications": [
+      {
+        "college": ObjectID("5912330b53b2a665af3d069f"),
+        "type": "RD",
+        "result": "Unknown",
+        "notes": "LIFL, MIN",
+        "_id": ObjectID("591479067066b1747ff9fc4b"),
+        "defer": false,
+        "attending": false
+      }, {
+        "college": ObjectID("5912330b53b2a665af3d06a1"),
+        "type": "RD",
+        "result": "Unknown",
+        "notes": "LIFL, MIN",
+        "_id": ObjectID("591479067066b1747ff9fc4c"),
+        "defer": false,
+        "attending": false
+      }, {
+        "college": ObjectID("5912330b53b2a665af3d06a4"),
+        "type": "RD",
+        "result": "Unknown",
+        "notes": "LIFL, MIN",
+        "_id": ObjectID("591479067066b1747ff9fc4d"),
+        "defer": false,
+        "attending": false
+      }, {
+        "college": ObjectID("5912330b53b2a665af3d06a2"),
+        "type": "RD",
+        "result": "Unknown",
+        "notes": "LIFL, MIN",
+        "_id": ObjectID("591479067066b1747ff9fc4e"),
+        "defer": false,
+        "attending": false
+      }, {
+        "college": ObjectID("5912330b53b2a665af3d069a"),
+        "type": "RD",
+        "result": "Unknown",
+        "notes": "LIFL, MIN",
+        "_id": ObjectID("591479067066b1747ff9fc4f"),
+        "defer": false,
+        "attending": false
+      }
+    ],
+    "caseNotes": [],
+    "documents": [],
+    "graduations": [],
+    "terms": [
+      {
+        "college": ObjectID("5912330b53b2a665af3d06a2"),
+        "_id": ObjectID("59149e028ecd43144d9241e8"),
+        "degreeTitle": [],
+        "recordType": "NSC"
+      }, {
+        "college": ObjectID("5912330b53b2a665af3d06a2"),
+        "_id": ObjectID("59149e028ecd43144d9241e7"),
+        "degreeTitle": [],
+        "recordType": "NSC"
+      }, {
+        "college": ObjectID("5912330b53b2a665af3d06a2"),
+        "name": "Fall 2015",
+        "enrolBegin": Date("2015-08-27T00:00:00.000Z"),
+        "enrolEnd": Date("2015-11-09T00:00:00.000Z"),
+        "_id": ObjectID("591ce136c74a7865d5f5d6bf"),
+        "degreeTitle": [],
+        "recordType": "NSC"
+      }, {
+        "college": ObjectID("5912330b53b2a665af3d06a2"),
+        "name": "Spring 2015",
+        "enrolBegin": Date("2015-01-28T00:00:00.000Z"),
+        "enrolEnd": Date("2015-05-24T00:00:00.000Z"),
+        "_id": ObjectID("591ce136c74a7865d5f5d6c0"),
+        "degreeTitle": [],
+        "recordType": "NSC"
+      }
+    ],
+    "taxDocumentsSubmitted": false,
+    "studentAidReportReceived": false,
+    "startedFafsa": false,
+    "parentName": [],
+    "parentContact": [],
+    "opportunityProgramEligible": false,
+    "lettersOfRecommendation": false,
+    "eaEdApplications": false,
+    "cssProfileCreated": false,
+    "completedTap": false,
+    "completedFafsa": false,
+    "completedEssay": false,
+    "awardLetterReceived": false,
+    "attendingMeetupDay": false,
+    "appliedToOtherSupportProgram": false,
+    "transferStatus": [],
+    "remediationStatus": [],
+    "majorMinor": [],
+    "employmentStatus": [],
+    "studentSupportOrgName": [],
+    "descriptors": [],
+    "otherPhone": [],
+    "needGap": false,
+    "ferpa": false,
+    "email": [],
+    "nscRecordFound": true,
+    "alias": false,
+    "aliases": [],
+    "__v": 20,
+    "SAT": {
+      "cr": 350,
+      "math": 440
+    },
+    "actEquiv": 14,
+    "hsGPA": 72.19,
+    "psat": 1190,
+    "cunyApp": "Completed",
+    "firstCol": ObjectID("5912330b53b2a665af3d06a2"),
+    "mostRecentCol": ObjectID("5912330b53b2a665af3d06a2"),
+    "cellPhone": "(555) 555-5555",
+    "gender": "M",
+    "address": "86 Nowheresville, NA 75309"
+  },
+  {
+    "_id" : ObjectID("591477f47066b1747ff9e9ae"),
+    "hsGradYear" : 2016,
+    "expectedHSGrad" : Date("2015-09-15T00:00:00.000Z"),
+    "hs" : ObjectID("58d453aa97fb3c001846f4d1"),
+    "osis" : 209287145,
+    "lastName" : "Ymous",
+    "firstName" : "Anon",
+    "dob" : Date("1997-02-20T00:00:00.000Z"),
+    "cohort" : "Q (2011)",
+    "hsGradDate" : Date("2015-07-01T00:00:00.000Z"),
+    "ethnicity" : 4,
+    "hsDiplomaType" : "REGENTS",
+    "fullName" : "Anon Ymous",
+    "photoReleaseForm" : false,
+    "needsFollowup" : false,
+    "applications" : [],
+    "caseNotes" : [],
+    "documents" : [],
+    "graduations" : [],
+    "terms" : [
+        {
+            "college" : ObjectID("5912332753b2a665af3d1784"),
+            "enrolBegin" : Date("2017-01-01T00:00:00.000Z"),
+            "enrolEnd" : Date("2017-05-12T00:00:00.000Z"),
+            "_id" : ObjectID("591490557066b1747ffa28c4"),
+            "degreeTitle" : [],
+            "recordType" : "Counselor Added"
+        },
+        {
+            "name" : "Fall 2016",
+            "college" : ObjectID("5912332753b2a665af3d1784"),
+            "enrolBegin" : Date("2016-09-01T00:00:00.000Z"),
+            "enrolEnd" : Date("2016-12-15T00:00:00.000Z"),
+            "_id" : ObjectID("591490557066b1747ffa28c3"),
+            "degreeTitle" : [],
+            "recordType" : "Counselor Added"
+        },
+        {
+            "college" : ObjectID("5912332753b2a665af3d1784"),
+            "enrolBegin" : Date("2016-01-01T00:00:00.000Z"),
+            "enrolEnd" : Date("2016-05-14T00:00:00.000Z"),
+            "_id" : ObjectID("591490557066b1747ffa28c5"),
+            "degreeTitle" : [],
+            "recordType" : "Counselor Added"
+        }
+    ],
+    "taxDocumentsSubmitted" : false,
+    "studentAidReportReceived" : false,
+    "startedFafsa" : false,
+    "parentName" : [],
+    "parentContact" : [],
+    "opportunityProgramEligible" : false,
+    "lettersOfRecommendation" : false,
+    "eaEdApplications" : false,
+    "cssProfileCreated" : false,
+    "completedTap" : false,
+    "completedFafsa" : false,
+    "completedEssay" : false,
+    "awardLetterReceived" : false,
+    "attendingMeetupDay" : false,
+    "appliedToOtherSupportProgram" : false,
+    "transferStatus" : [],
+    "remediationStatus" : [],
+    "majorMinor" : [],
+    "employmentStatus" : [],
+    "studentSupportOrgName" : [],
+    "descriptors" : [],
+    "otherPhone" : [],
+    "needGap" : false,
+    "ferpa" : false,
+    "email" : [],
+    "nscRecordFound" : true,
+    "alias" : false,
+    "aliases" : [],
+    "__v" : 1,
+    "firstCol" : ObjectID("5912332753b2a665af3d1784"),
+    "mostRecentCol" : ObjectID("5912332753b2a665af3d1784"),
+    "cellPhone" : "(555) 555-5555",
+    "gender" : "F",
+    "studentSupportOrgNameOther" : "No answer, emailed 8/16",
+    "SAT" : {
+        "math" : 370,
+        "cr" : 380
+    },
+    "hsGPA" : 79.71,
+    "intendedCollege" : ObjectID("5912330b53b2a665af3d06a4")
+}
+];
+
+const collections = [
+  {
+    model: models.User,
+    collection: users
+  }, {
+    model: models.College,
+    collection: colleges
+  }, {
+    model: models.School,
+    collection: schools
+  }, {
+    model: models.Student,
+    collection: students
+  }
+];
 
 /**
- * populateColleges - clears colleges collection from mongoDB database and replaces it
- *                with array of colleges above.  Used in beforeEach mocha test hook
+ * populateServer - clears all collections from mongoDB database and replaces them
+ *                with collections listed above.  Used in beforeEach mocha test hook
  *                to allow tests to run against a fixed DB.
  *
  * @param  {function} done callback function for async tests in mocha
  */
-const populateColleges = (done) => {
-  College.remove({}).then(() => {
-    return Promise.all(colleges.map((college) => {
-      return new College(college).save();
-    }));
-  }).then(() => done());
+const populateServer = (done) => {
+  Promise.all(collections.map(({model, collection}) => {
+      return model.remove({}).then(() => {
+        return collection.map((doc) => {
+          return new model(doc).save();
+        });
+      });
+    })).then(() => done());
 };
+
 
 module.exports = {
   users,
   colleges,
-  populateUsers,
-  populateColleges
+  schools,
+  students,
+  populateServer
 };
