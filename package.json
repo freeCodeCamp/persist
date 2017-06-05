@@ -100,6 +100,7 @@
     "sanitize-html": "^1.13.0",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
+    "supertest": "^3.0.0",
     "winston": "^2.3.0",
     "zip-local": "^0.3.4"
   },

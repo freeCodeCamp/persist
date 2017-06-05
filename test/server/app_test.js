@@ -36,4 +36,8 @@ describe('Testing Setup', () => {
 });
 
 require('./test_models');
-require('./test_routes');
+
+describe('Server Routes', () => {
+  require('./test_routes/upload');
+
+});
