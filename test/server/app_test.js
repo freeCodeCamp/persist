@@ -10,7 +10,7 @@ const app = require('../../app/server/server.js')
 beforeEach(populateServer);
 
 describe('Testing Setup', () => {
-  it('should seed database with user accounts for testing', (done) => {
+  it('should seed database for testing', (done) => {
     dbModels.User.find({}).then((users) => {
       try {
         expect(users.length).toBe(4);
@@ -39,10 +39,4 @@ describe('Testing Setup', () => {
 });
 
 require('./test_models');
-
-describe('Server Routes', () => {
-  require('./test_routes/upload/applicationData');
-  require('./test_routes/upload/collegeData');
-  require('./test_routes/upload/schoolData');
-  require('./test_routes/upload/termData');
-});
+require('./test_routes');
