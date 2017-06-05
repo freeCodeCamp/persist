@@ -4,8 +4,16 @@ import Content from '../helpers/content';
 import { Permission } from '../authentication';
 import DropZoneUpload from '../helpers/dropzoneUpload';
 import UploadHistory from '../uploadUI/UploadHistory';
-import { SelectField, MenuItem } from 'material-ui';
+import { SelectField, MenuItem, Card, CardHeader, CardText } from 'material-ui';
 
+const note = (
+    <Card>
+        <CardHeader title='Note' actAsExpander={true} showExpandableButton={true} />
+        <CardText expandable={true}>
+            Refresh the page after each time you upload a file so you can assure changes have been processed to the server
+        </CardText>
+    </Card>
+);
 class Upload extends React.Component {
     constructor(props) {
         super(props);
@@ -57,8 +65,8 @@ class Upload extends React.Component {
         });
 
         return (
-            <Permission role="Owner">
-                <Content title="Upload">
+            <Permission role='Owner'>
+                <Content title='Upload'>
                     <p>
                         Which data would you like to upload?
                     </p>
@@ -68,6 +76,7 @@ class Upload extends React.Component {
                         </SelectField>
                     </div>
                     {this.state.chosen ? <DropZoneUpload url={this.state.url} /> : null}
+                    {note}
                     <UploadHistory noSearch={true} />
                 </Content>
             </Permission>
