@@ -1,6 +1,8 @@
 const expect = require('expect');
 const sinon = require('sinon');
 const path = require('path');
+const {ObjectID} = require('mongodb');
+
 
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 
@@ -32,11 +34,52 @@ describe('MongoDB models', () => {
     });
   });
 
-  describe('notification', () => {});
+  describe('notification', () => {
+    // Not sure what to test here as no values are required or validated in the DB model
+  });
 
-  describe('school', () => {});
+  describe('school', () => {
+    it('should require a name field', (done) => {
+      const validSchool = new dbModels.School({name: 'Generic High School'});
 
-  describe('student', () => {});
+      const invalidSchools = [
+        new dbModels.School({_id: new ObjectID()})
+      ];
+
+      validSchool.save((err, school) => {
+        if (err) {
+          done(err);
+        }
+
+        invalidSchools.forEach((school) => {
+          school.save((err, success) => {
+            if(success) {
+              done(new Error(`School model should not save ${success}`));
+            }
+          });
+        });
+      }).then(() => done());
+    });
+
+    it('should accept an array of users ids', (done) => {
+      const users = [
+        new ObjectID(),
+        new ObjectID(),
+        new ObjectID(),
+      ];
+      const validSchool = new dbModels.School({name: 'Generic High School', users});
+
+      validSchool.save((err, success) => {
+        if(err) {
+          done(err)
+        }
+      }).then(() => done());
+    });
+  });
+
+  describe('student', () => {
+
+  });
 
   describe('uploadHistory', () => {});
 
