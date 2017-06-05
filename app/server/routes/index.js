@@ -80,6 +80,17 @@ const requireLogin = (req, res, next) => {
 };
 
 export default app => {
+
+    // TODO There's a lot of repeated code here in the /upload routes that can probably
+    // be refactored into a single reusable method after tests are done for these routes.
+    // Something like:
+    // function handleUpload(type) {
+    //    ... logic ...
+    //    return function (req, res) {
+    //      ...
+    //    }
+    // }
+
     app.post('/upload/studentData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, function(req, res) {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
