@@ -3,17 +3,20 @@ const sinon = require('sinon');
 const path = require('path');
 
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
-const {populateUsers, populateColleges} = require('./dbseed/seed');
+const {populateServer} = require('./dbseed/seed');
 
 const app = require('../../app/server/server.js')
 
-beforeEach(populateUsers);
-beforeEach(populateColleges);
+beforeEach(populateServer);
 
 describe('Testing Setup', () => {
   it('should seed database with user accounts for testing', (done) => {
     dbModels.User.find({}).then((users) => {
-      expect(users.length).toBe(4);
+      try {
+        expect(users.length).toBe(4);
+      } catch (err) {
+        return done(err);
+      }
 
       const validators = [
         ({profile: {firstName}}) => typeof firstName === 'string',
@@ -38,6 +41,8 @@ describe('Testing Setup', () => {
 require('./test_models');
 
 describe('Server Routes', () => {
-  require('./test_routes/upload');
-
+  require('./test_routes/upload/applicationData');
+  require('./test_routes/upload/collegeData');
+  require('./test_routes/upload/schoolData');
+  require('./test_routes/upload/termData');
 });
