@@ -31,13 +31,13 @@ class UserEditor extends Component {
         const access = initialValues.access;
         const roles = [ROLE_COUNSELOR, ROLE_OWNER].map(option => <MenuItem value={option} key={option} primaryText={option} />);
         return (
-            <form onSubmit={handleSubmit}>
-                <Field name='profile.firstName' component={TextField} hintText='First Name' floatingLabelText='First Name' />
-                <Field name='profile.lastName' component={TextField} hintText='Last Name' floatingLabelText='Last Name' />
-                <Field name='email' component={TextField} hintText='Email' floatingLabelText='Email' />
+            <form onSubmit={handleSubmit} style={{display: 'flex', flexWrap: 'wrap'}}>
+                <Field name='profile.firstName' component={TextField} hintText='First Name' floatingLabelText='First Name' /><br />
+                <Field name='profile.lastName' component={TextField} hintText='Last Name' floatingLabelText='Last Name' /><br />
+                <Field name='email' component={TextField} hintText='Email' floatingLabelText='Email' /><br />
                 <Field name='access.role' component={SelectField} hintText='Role' floatingLabelText='Role'>
                     {roles}
-                </Field>
+                </Field><br />
                 {roleValue === 'Counselor'
                     ? <Field
                           name='access.school'
