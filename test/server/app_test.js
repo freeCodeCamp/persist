@@ -3,21 +3,49 @@ const sinon = require('sinon');
 const path = require('path');
 
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
-const {populateServer} = require('./dbseed/seed');
+const seed = require('./dbseed/seed');
+const {populateServer, clearServer} = require('./dbseed/seed');
 
 const app = require('../../app/server/server.js')
 
 beforeEach(populateServer);
 
 describe('Testing Setup', () => {
-  it('should seed database for testing', (done) => {
-    dbModels.User.find({}).then((users) => {
-      try {
-        expect(users.length).toBe(4);
-      } catch (err) {
-        return done(err);
-      }
+  it('should seed database with college data for testing', (done) => {
+    dbModels.College.find({}).then((colleges) => {
+      const validators = [
+        ({opeid}) => typeof opeid === 'string',
+      ];
 
+      verify(colleges, seed.colleges.length, validators, done);
+    });
+  });
+
+  it('should seed database with student data for testing', (done) => {
+    dbModels.Student.find({}).then((students) => {
+      const validators = [
+        ({firstName}) => typeof firstName === 'string',
+        ({lastName}) => typeof lastName === 'string',
+        ({ethnicity}) => typeof ethnicity === 'number',
+        ({gender}) => typeof gender === 'string',
+      ];
+
+      verify(students, seed.students.length, validators, done);
+    });
+  });
+
+  it('should seed database with school data for testing', (done) => {
+    dbModels.School.find({}).then((schools) => {
+      const validators = [
+        ({name}) => typeof name === 'string',
+      ];
+
+      verify(schools, seed.schools.length, validators, done);
+    });
+  });
+
+  it('should seed database with user accounts for testing', (done) => {
+    dbModels.User.find({}).then((users) => {
       const validators = [
         ({profile: {firstName}}) => typeof firstName === 'string',
         ({email}) => typeof email === 'string',
@@ -25,18 +53,27 @@ describe('Testing Setup', () => {
         ({enabled}) => typeof enabled === 'boolean',
       ];
 
-      Promise.all(users.map(user => validators.every(valid => valid(user))))
-        .then(results => {
-          try {
-            expect(results.every(result => result === true)).toBe(true);
-            done();
-          } catch (err) {
-            done(err);
-          }
-        });
+      verify(users, seed.users.length, validators, done);
     });
   });
 });
 
 require('./test_models');
 require('./test_routes');
+
+function verify (collection, expectedCount, validators, done) {
+  try {
+    expect(collection.length).toBe(expectedCount);
+  } catch (err) {
+    return done(err);
+  }
+  Promise.all(collection.map(doc => validators.every(valid => valid(doc))))
+    .then(results => {
+      try {
+        expect(results.every(result => result === true)).toBe(true);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+}

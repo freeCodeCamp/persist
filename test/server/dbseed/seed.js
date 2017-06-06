@@ -459,14 +459,16 @@ const populateServer = (done) => {
           return new model(doc).save();
         });
       });
-    })).then(() => done());
+    })).then(() => {
+      // HACK Issues with done being called too soon.
+      setTimeout(done, 100);
+    });
 };
-
 
 module.exports = {
   users,
   colleges,
   schools,
   students,
-  populateServer
+  populateServer,
 };
