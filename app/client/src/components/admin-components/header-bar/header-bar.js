@@ -51,7 +51,7 @@ class HeaderBar extends Component {
                             <li className="dropdown user user-menu">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                                     <img src="/default-profile-pic.png" className="user-image" alt="User Image" />
-                                    <span className="hidden-xs">{`${firstName} ${lastName}`.trim()}</span>
+                                    <span className="hidden-xs">{`${firstName} ${lastName || ''}`.trim()}</span>
                                 </a>
                                 <ul className="dropdown-menu">
                                     {/* User image */}

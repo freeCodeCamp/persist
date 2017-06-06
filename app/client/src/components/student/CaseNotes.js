@@ -37,7 +37,7 @@ class CaseNotes extends Component {
                 needFollowUp,
                 issueResolved
             } = caseNote;
-            const fullName = `${firstName} ${lastName}`.trim();
+            const fullName = `${firstName} ${lastName || ''}`.trim();
             return (
                 <tr key={index}>
                     <td>{moment(date).format('ll')}</td>

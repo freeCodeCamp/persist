@@ -35,7 +35,7 @@ class NotifcationItem extends Component {
             read = true;
         }
         const time = moment(notifId.createdAt).fromNow();
-        const userName = `${notifId.user.profile.firstName} ${notifId.user.profile.lastName}`.trim();
+        const userName = `${notifId.user.profile.firstName} ${notifId.user.profile.lastName || ''}`.trim();
         let backgroundColor = '#f7f7f7';
         let title = 'Mark as Read';
         if (read) {

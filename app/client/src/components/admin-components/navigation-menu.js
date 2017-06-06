@@ -107,7 +107,7 @@ class NavigationMenu extends Component {
                         </div>
                         <div className="pull-left info">
                             <p>
-                                {`${firstName} ${lastName}`.trim()}
+                                {`${firstName} ${lastName || ''}`.trim()}
                             </p>
                             <a href="#"><i className="fa fa-circle text-success" /> Online</a>
                         </div>
