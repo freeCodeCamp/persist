@@ -42,10 +42,9 @@ module.exports = function(config) {
       'karma-mocha',
       'karma-sourcemap-loader',
       'karma-webpack',
-      'karma-coverage',
       'karma-mocha-reporter',
+      'karma-coverage',
       'karma-sinon',
-      'karma-coverage-istanbul-reporter'
     ],
     preprocessors: {
       'test/client/**/*_test.js': [
@@ -56,20 +55,14 @@ module.exports = function(config) {
       ]
     },
     reporters: [
-      'mocha', 'coverage-istanbul'
+      'mocha', 'coverage'
     ],
-    coverageIstanbulReporter: {
-      reports: [
-        'html', 'text-summary'
+    coverageReporter: {
+      reporters: [
+        { type: 'html', subdir: 'html'},
+        { type: 'text' }
       ],
-      dir: 'test/client/coverage',
-      fixWebpackSourcePaths: true,
-      skipFilesWithNoCoverage: true,
-      'report-config': {
-        html: {
-          subdir: 'html'
-        }
-      }
+      dir : 'test/client/coverage/'
     },
     singleRun: true,
     webpack: webpackConfig,
