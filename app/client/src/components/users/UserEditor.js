@@ -32,16 +32,17 @@ class UserEditor extends Component {
         const roles = [ROLE_COUNSELOR, ROLE_OWNER].map(option => <MenuItem value={option} key={option} primaryText={option} />);
         return (
             <form onSubmit={handleSubmit}>
-                <Field name="profile.firstName" component={TextField} hintText="First Name" floatingLabelText="First Name" />
-                <Field name="email" component={TextField} hintText="Email" floatingLabelText="Email" />
-                <Field name="access.role" component={SelectField} hintText="Role" floatingLabelText="Role">
+                <Field name='profile.firstName' component={TextField} hintText='First Name' floatingLabelText='First Name' />
+                <Field name='profile.lastName' component={TextField} hintText='Last Name' floatingLabelText='Last Name' />
+                <Field name='email' component={TextField} hintText='Email' floatingLabelText='Email' />
+                <Field name='access.role' component={SelectField} hintText='Role' floatingLabelText='Role'>
                     {roles}
                 </Field>
                 {roleValue === 'Counselor'
                     ? <Field
-                          name="access.school"
-                          hintText="School"
-                          floatingLabelText="School"
+                          name='access.school'
+                          hintText='School'
+                          floatingLabelText='School'
                           component={AutoComplete}
                           searchText={this.initValue(access ? access.school : '')}
                           input={{
