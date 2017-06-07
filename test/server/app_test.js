@@ -17,7 +17,7 @@ describe('Testing Setup', () => {
         ({opeid}) => typeof opeid === 'string',
       ];
 
-      verify(colleges, seed.colleges.length, validators, done);
+      verifySeed(colleges, seed.colleges.length, validators, done);
     });
   });
 
@@ -30,7 +30,7 @@ describe('Testing Setup', () => {
         ({gender}) => typeof gender === 'string',
       ];
 
-      verify(students, seed.students.length, validators, done);
+      verifySeed(students, seed.students.length, validators, done);
     });
   });
 
@@ -40,7 +40,7 @@ describe('Testing Setup', () => {
         ({name}) => typeof name === 'string',
       ];
 
-      verify(schools, seed.schools.length, validators, done);
+      verifySeed(schools, seed.schools.length, validators, done);
     });
   });
 
@@ -53,21 +53,17 @@ describe('Testing Setup', () => {
         ({enabled}) => typeof enabled === 'boolean',
       ];
 
-      verify(users, seed.users.length, validators, done);
+      verifySeed(users, seed.users.length, validators, done);
     });
   });
-});
 
-require('./test_models');
-require('./test_routes');
-
-function verify (collection, expectedCount, validators, done) {
-  try {
-    expect(collection.length).toBe(expectedCount);
-  } catch (err) {
-    return done(err);
-  }
-  Promise.all(collection.map(doc => validators.every(valid => valid(doc))))
+  function verifySeed(collection, expectedCount, validators, done) {
+    try {
+      expect(collection.length).toBe(expectedCount);
+    } catch (err) {
+      return done(err);
+    }
+    Promise.all(collection.map(doc => validators.every(valid => valid(doc))))
     .then(results => {
       try {
         expect(results.every(result => result === true)).toBe(true);
@@ -76,4 +72,8 @@ function verify (collection, expectedCount, validators, done) {
         done(err);
       }
     });
-}
+  }
+});
+
+require('./test_models');
+require('./test_routes');
