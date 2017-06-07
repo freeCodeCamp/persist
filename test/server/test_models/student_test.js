@@ -45,14 +45,4 @@ describe('student', () => {
                     .catch(err => done()))
       .catch(done);
   });
-
-  it.skip('should validate the descriptors field', () => {});
-
-  it.skip('should validate the studentSupportOrgName field', () => {});
-
-  it.skip('should validate the employmentStatus field', () => {});
-
-  it.skip('should validate the remediationStatus field', () => {});
-
-  it.skip('should validate the transferStatus field', () => {});
 });
