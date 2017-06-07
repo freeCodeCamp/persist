@@ -2,31 +2,145 @@ const expect = require('expect');
 const sinon = require('sinon');
 const path = require('path');
 const {ObjectID} = require('mongodb');
-const validator = require('../../../app/common/validator');
-const {map} = require('lodash');
+const {map, every} = require('lodash');
 const {testModel} = require('../testUtils');
 
+const validator = require('../../../app/common/validator');
+const {ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR} = require('../../../app/common/constants');
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 
 describe('user', () => {
-  it.skip('should require a unique email address', () => {
+  it('should require a unique email address', (done) => {
     const validUsers = [
-      { osis: 1 },            // Unused value
+      {
+        email: 'test@test.com',             // Unused value
+        password: 'pword',
+        profile: {firstName: 'Anonymous'},
+      },
     ];
     const invalidUsers = [
-      { osis: 1 },            // Duplicate value
+      {
+        email: 'test@test.com',             // Duplicate value
+        password: 'testing',
+        profile: {firstName: 'Anonymous'},
+      },
     ];
 
     testModel(dbModels.User, validUsers, invalidUsers, done);
   });
 
-  it.skip('should reject invalid email addresses', () => {});
+  it.skip('should reject invalid email addresses', (done) => {
+    const validUsers = [
+        {
+          email: 'test@test.com',             // Valid Email
+          password: 'pword',
+          profile: {firstName: 'Anonymous'},
+        },
+      ];
+      const invalidUsers = [
+        {
+          email: 'testtest.com',             // Invalid Email
+          password: 'testing',
+          profile: {firstName: 'Anonymous'},
+        },
+        {
+          email: 'test@test',               // Invalid Email
+          password: 'testing',
+          profile: {firstName: 'Anonymous'},
+        },
+        {
+          email: 'test',                    // Invalid Email
+          password: 'testing',
+          profile: {firstName: 'Anonymous'},
+        },
+      ];
 
-  it.skip('should require a password', () => {});
+      testModel(dbModels.User, validUsers, invalidUsers, done);
+  });
 
-  it.skip('should not include password in query responses', () => {});
+  it('should require a password', (done) => {
+    const validUsers = [
+      {
+        email: 'test@test.com',
+        password: 'pword',
+        profile: {firstName: 'Anonymous'},
+      },
+    ];
+    const invalidUsers = [
+      {
+        email: 'second@test.com',             // Missing password
+        profile: {firstName: 'Anonymous'},
+      },
+    ];
 
-  it.skip('should require a profile.firstName value', () => {});
+    testModel(dbModels.User, validUsers, invalidUsers, done);
+  });
 
-  it.skip('should validate the access value', () => {});
+  it('should not include password in query responses', (done) => {
+    dbModels.User.find({}).then((users) => {
+      const noPasswords = every(users, ({password}) => password === undefined);
+      expect(noPasswords).toBe(true);
+      done();
+    }).catch(done);
+  });
+
+  it('should require a profile.firstName value', (done) => {
+    const validUsers = [
+      {
+        email: 'test@test.com',
+        password: 'pword',
+        profile: {firstName: 'Anonymous'},
+      },
+    ];
+    const invalidUsers = [
+      {
+        email: 'second@test.com',         // Missing Profile
+        password: 'pword',
+      },
+    ];
+
+    testModel(dbModels.User, validUsers, invalidUsers, done);
+  });
+
+  it('should validate the access value', (done) => {
+    const validUsers = [
+      {
+        email: 'test@test.com',
+        password: 'pword',
+        profile: {firstName: 'Anonymous'},
+        access: {
+          role: ROLE_ADMIN
+        }
+      },
+      {
+        email: 'test2@test.com',
+        password: 'pword',
+        profile: {firstName: 'Anonymous'},
+        access: {
+          role: ROLE_COUNSELOR,
+          school: new ObjectID(),
+        }
+      },
+      {
+        email: 'test3@test.com',
+        password: 'pword',
+        profile: {firstName: 'Anonymous'},
+        access: {
+          role: ROLE_OWNER
+        }
+      },
+    ];
+    const invalidUsers = [
+      {
+        email: 'second@test.com',
+        password: 'pword',
+        profile: {firstName: 'Anonymous'},
+        access: {
+          role: ROLE_COUNSELOR,
+        }
+      },
+    ];
+
+    testModel(dbModels.User, validUsers, invalidUsers, done);
+  });
 });
