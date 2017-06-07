@@ -5,7 +5,7 @@ const path = require('path');
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 const seed = require('./dbseed/seed');
 const {populateServer} = require('./dbseed/seed');
-const {verifySeed} = require('./testUtils');
+const {testSeed} = require('./testUtils');
 
 const app = require('../../app/server/server.js')
 
@@ -18,7 +18,7 @@ describe('Testing Setup', () => {
         ({opeid}) => typeof opeid === 'string',
       ];
 
-      verifySeed(colleges, seed.colleges.length, validators, done);
+      testSeed(colleges, seed.colleges.length, validators, done);
     });
   });
 
@@ -31,7 +31,7 @@ describe('Testing Setup', () => {
         ({gender}) => typeof gender === 'string',
       ];
 
-      verifySeed(students, seed.students.length, validators, done);
+      testSeed(students, seed.students.length, validators, done);
     });
   });
 
@@ -41,7 +41,7 @@ describe('Testing Setup', () => {
         ({name}) => typeof name === 'string',
       ];
 
-      verifySeed(schools, seed.schools.length, validators, done);
+      testSeed(schools, seed.schools.length, validators, done);
     });
   });
 
@@ -54,7 +54,7 @@ describe('Testing Setup', () => {
         ({enabled}) => typeof enabled === 'boolean',
       ];
 
-      verifySeed(users, seed.users.length, validators, done);
+      testSeed(users, seed.users.length, validators, done);
     });
   });
 });
