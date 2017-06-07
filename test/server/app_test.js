@@ -4,7 +4,7 @@ const path = require('path');
 
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 const seed = require('./dbseed/seed');
-const {populateServer, clearServer} = require('./dbseed/seed');
+const {populateServer} = require('./dbseed/seed');
 
 const app = require('../../app/server/server.js')
 
