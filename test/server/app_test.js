@@ -5,6 +5,7 @@ const path = require('path');
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 const seed = require('./dbseed/seed');
 const {populateServer} = require('./dbseed/seed');
+const {verifySeed} = require('./testUtils');
 
 const app = require('../../app/server/server.js')
 
@@ -56,23 +57,6 @@ describe('Testing Setup', () => {
       verifySeed(users, seed.users.length, validators, done);
     });
   });
-
-  function verifySeed(collection, expectedCount, validators, done) {
-    try {
-      expect(collection.length).toBe(expectedCount);
-    } catch (err) {
-      return done(err);
-    }
-    Promise.all(collection.map(doc => validators.every(valid => valid(doc))))
-    .then(results => {
-      try {
-        expect(results.every(result => result === true)).toBe(true);
-        done();
-      } catch (err) {
-        done(err);
-      }
-    });
-  }
 });
 
 require('./test_models');
