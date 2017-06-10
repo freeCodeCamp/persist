@@ -20,29 +20,23 @@ export default () => {
                 // TODO Should probably be refactored for readability/maintability.
                 const user = cookie.load('user');
                 const caseNotes = [];
-                const q = async.queue(
-                    (student, callback) => {
-                        const osis = student.osis;
-                        const studentCaseNotes = student.caseNotes;
-                        if (studentCaseNotes.length > 0) {
-                            const filtered = studentCaseNotes.filter(caseNote => {
-                                if (caseNote.user === user._id && caseNote.needFollowUp && !caseNote.issueResolved) {
-                                    caseNote.osis = osis;
-                                    return true;
-                                }
-                                return false;
-                            });
-                            caseNotes.push(...filtered);
-                        }
-                        setTimeout(
-                            () => {
-                                callback();
-                            },
-                            0
-                        );
-                    },
-                    10
-                );
+                const q = async.queue((student, callback) => {
+                    const osis = student.osis;
+                    const studentCaseNotes = student.caseNotes;
+                    if (studentCaseNotes.length > 0) {
+                        const filtered = studentCaseNotes.filter(caseNote => {
+                            if (caseNote.user === user._id && caseNote.needFollowUp && !caseNote.issueResolved) {
+                                caseNote.osis = osis;
+                                return true;
+                            }
+                            return false;
+                        });
+                        caseNotes.push(...filtered);
+                    }
+                    setTimeout(() => {
+                        callback();
+                    }, 0);
+                }, 10);
                 q.push(response.data);
                 q.drain = () => {
                     dispatch({
@@ -60,10 +54,10 @@ export default () => {
                 // userAgent check SHOULD protect from this in production.
                 // There may be a better way of doing this that I haven't thought
                 // of yet.
-                if(/PhantomJS/.test(navigator.userAgent)) {
-                  return Promise.reject(err);
+                if (/PhantomJS/.test(navigator.userAgent)) {
+                    return Promise.reject(err);
                 } else {
-                  return err;
+                    return err;
                 }
             });
     };

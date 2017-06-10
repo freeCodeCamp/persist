@@ -9,9 +9,8 @@ import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
 import ScheduledJob from '../../scheduled-job';
 
-
 dotenv.config({ silent: true });
-const {MONGODB_URI, TEST_MONGODB_URI, NODE_ENV} = process.env;
+const { MONGODB_URI, TEST_MONGODB_URI, NODE_ENV } = process.env;
 
 function haltOnTimedout(req, res, next) {
     if (!req.timedout) next();

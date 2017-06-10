@@ -37,12 +37,9 @@ class Notifications extends React.Component {
         if (!this.wait && $(window).scrollTop() + $(window).height() > $(document).height() - 50) {
             this.populateNotifications();
             this.wait = true;
-            setTimeout(
-                () => {
-                    if (this.wait) this.wait = false;
-                },
-                this.throttle
-            );
+            setTimeout(() => {
+                if (this.wait) this.wait = false;
+            }, this.throttle);
         }
     }
 

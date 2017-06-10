@@ -36,15 +36,8 @@ const mapError = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...
               ...props
           };
 
-export default createComponent(DatePicker, ({
-    input: {
-        onBlur, // eslint-disable-line no-unused-vars
-        onChange,
-        value,
-        ...inputProps
-    },
-    ...props
-}) => ({
+export default createComponent(DatePicker, ({ input: { onBlur, onChange, value, ...inputProps }, ...props }) => ({
+    // eslint-disable-line no-unused-vars
     ...inputProps,
     ...mapError(props),
     value: (value && new Date(value)) || null,

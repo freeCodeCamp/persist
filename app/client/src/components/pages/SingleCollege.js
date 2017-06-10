@@ -22,12 +22,13 @@ class SingleCollege extends React.Component {
                           <SingleCollegeForm initialValues={collegeData} college={collegeData} />
                       </div>
                     : college.success && !collegeData
-                          ? <div>No Records Found</div>
-                          : <div>
-                                <p>
-                                    Loading
-                                </p><i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
-                            </div>}
+                      ? <div>No Records Found</div>
+                      : <div>
+                            <p>
+                                Loading
+                            </p>
+                            <i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
+                        </div>}
             </Content>
         );
     }

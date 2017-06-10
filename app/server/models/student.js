@@ -40,7 +40,8 @@ const setTermNames = record => {
             if (moment(enrolBegin).diff(moment([year, 7, 10]), 'days') > 0 && moment([year, 11, 31]).diff(moment(enrolEnd), 'days') > 0) {
                 term.name = 'Fall ' + year;
             } else if (
-                moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 && moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0
+                moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 &&
+                moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0
             ) {
                 term.name = 'Winter ' + year;
             } else if (
@@ -50,7 +51,8 @@ const setTermNames = record => {
             ) {
                 term.name = 'Spring ' + year;
             } else if (
-                moment(enrolBegin).diff(moment([year, 4, 1]), 'days') > 0 && moment([year, 7, 30]).diff(moment(enrolEnd), 'days') > 0
+                moment(enrolBegin).diff(moment([year, 4, 1]), 'days') > 0 &&
+                moment([year, 7, 30]).diff(moment(enrolEnd), 'days') > 0
             ) {
                 term.name = 'Summer ' + year;
             }

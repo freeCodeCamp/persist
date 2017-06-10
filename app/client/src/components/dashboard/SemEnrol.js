@@ -78,88 +78,82 @@ class SemEnrol extends Component {
             _.times(8, n => {
                 result[`Semester ${n + 1}`] = _.cloneDeep(defaultEnrollmentData);
             });
-            const q = async.queue(
-                (student, callback) => {
-                    const studentTerms = student.terms;
-                    const studentTermsObj = _.keyBy(studentTerms, 'name');
-                    const hsGradYear = student.hsGradYear;
-                    if (studentTerms.length > 0 && hsGradYear) {
-                        let difference = 2 * (maxTermYear - hsGradYear);
-                        if (maxTermSeason === 'Fall') {
-                            difference += 1;
-                        }
-                        const maxTerms = Math.min(8, difference);
-                        for (let i = 1; i <= maxTerms; i++) {
-                            const year = hsGradYear + Math.floor(i / 2);
-                            if ((i % 2 !== 0 && studentTermsObj['Fall ' + year]) || (i % 2 === 0 && studentTermsObj['Spring ' + year])) {
-                                const term = i % 2 === 0 ? studentTermsObj['Spring ' + year] : studentTermsObj['Fall ' + year];
-                                const { name, status, college } = term;
-                                switch (status) {
-                                    case 'F': {
-                                        if (collegeObj[college].durationType === '4 year') {
-                                            result['Semester ' + i][1].count += 1;
-                                            result['Semester ' + i][1].students.push(student.osis);
-                                        } else if (collegeObj[college].durationType === '2 year') {
-                                            result['Semester ' + i][3].count += 1;
-                                            result['Semester ' + i][3].students.push(student.osis);
-                                        }
-                                        break;
+            const q = async.queue((student, callback) => {
+                const studentTerms = student.terms;
+                const studentTermsObj = _.keyBy(studentTerms, 'name');
+                const hsGradYear = student.hsGradYear;
+                if (studentTerms.length > 0 && hsGradYear) {
+                    let difference = 2 * (maxTermYear - hsGradYear);
+                    if (maxTermSeason === 'Fall') {
+                        difference += 1;
+                    }
+                    const maxTerms = Math.min(8, difference);
+                    for (let i = 1; i <= maxTerms; i++) {
+                        const year = hsGradYear + Math.floor(i / 2);
+                        if ((i % 2 !== 0 && studentTermsObj['Fall ' + year]) || (i % 2 === 0 && studentTermsObj['Spring ' + year])) {
+                            const term = i % 2 === 0 ? studentTermsObj['Spring ' + year] : studentTermsObj['Fall ' + year];
+                            const { name, status, college } = term;
+                            switch (status) {
+                                case 'F': {
+                                    if (collegeObj[college].durationType === '4 year') {
+                                        result['Semester ' + i][1].count += 1;
+                                        result['Semester ' + i][1].students.push(student.osis);
+                                    } else if (collegeObj[college].durationType === '2 year') {
+                                        result['Semester ' + i][3].count += 1;
+                                        result['Semester ' + i][3].students.push(student.osis);
                                     }
-                                    case 'H':
-                                    case 'L':
-                                    case 'Q': {
-                                        if (collegeObj[college].durationType === '4 year') {
-                                            result['Semester ' + i][2].count += 1;
-                                            result['Semester ' + i][2].students.push(student.osis);
-                                        } else if (collegeObj[college].durationType === '2 year') {
-                                            result['Semester ' + i][4].count += 1;
-                                            result['Semester ' + i][4].students.push(student.osis);
-                                        }
-                                        break;
-                                    }
-                                    case 'Military': {
-                                        result['Semester ' + i][5].count += 1;
-                                        result['Semester ' + i][5].students.push(student.osis);
-                                        break;
-                                    }
-                                    case 'A':
-                                    case 'Not Enrolled': {
-                                        result['Semester ' + i][6].count += 1;
-                                        result['Semester ' + i][6].students.push(student.osis);
-                                        break;
-                                    }
-                                    case 'W':
-                                    case 'D': {
-                                        result['Semester ' + i][7].count += 1;
-                                        result['Semester ' + i][7].students.push(student.osis);
-                                        break;
-                                    }
-                                    case 'Graduated': {
-                                        result['Semester ' + i][8].count += 1;
-                                        result['Semester ' + i][8].students.push(student.osis);
-                                        break;
-                                    }
-                                    default: {
-                                        result['Semester ' + i][9].count += 1;
-                                        result['Semester ' + i][9].students.push(student.osis);
-                                        break;
-                                    }
+                                    break;
                                 }
-                            } else {
-                                result['Semester ' + i][9].count += 1;
-                                result['Semester ' + i][9].students.push(student.osis);
+                                case 'H':
+                                case 'L':
+                                case 'Q': {
+                                    if (collegeObj[college].durationType === '4 year') {
+                                        result['Semester ' + i][2].count += 1;
+                                        result['Semester ' + i][2].students.push(student.osis);
+                                    } else if (collegeObj[college].durationType === '2 year') {
+                                        result['Semester ' + i][4].count += 1;
+                                        result['Semester ' + i][4].students.push(student.osis);
+                                    }
+                                    break;
+                                }
+                                case 'Military': {
+                                    result['Semester ' + i][5].count += 1;
+                                    result['Semester ' + i][5].students.push(student.osis);
+                                    break;
+                                }
+                                case 'A':
+                                case 'Not Enrolled': {
+                                    result['Semester ' + i][6].count += 1;
+                                    result['Semester ' + i][6].students.push(student.osis);
+                                    break;
+                                }
+                                case 'W':
+                                case 'D': {
+                                    result['Semester ' + i][7].count += 1;
+                                    result['Semester ' + i][7].students.push(student.osis);
+                                    break;
+                                }
+                                case 'Graduated': {
+                                    result['Semester ' + i][8].count += 1;
+                                    result['Semester ' + i][8].students.push(student.osis);
+                                    break;
+                                }
+                                default: {
+                                    result['Semester ' + i][9].count += 1;
+                                    result['Semester ' + i][9].students.push(student.osis);
+                                    break;
+                                }
                             }
+                        } else {
+                            result['Semester ' + i][9].count += 1;
+                            result['Semester ' + i][9].students.push(student.osis);
                         }
                     }
-                    setTimeout(
-                        () => {
-                            callback();
-                        },
-                        0
-                    );
-                },
-                20
-            );
+                }
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }, 20);
             q.push(props.students);
             q.drain = () => {
                 resolve(result);

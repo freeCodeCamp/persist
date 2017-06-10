@@ -74,7 +74,7 @@ class ChartTabs extends Component {
         return (
             <div className="nav-tabs-custom">
                 {/* Tabs within a box */}
-                <ul className="nav nav-tabs pull-right ui-sortable-handle" ref={c => this.tabs = c}>
+                <ul className="nav nav-tabs pull-right ui-sortable-handle" ref={c => (this.tabs = c)}>
                     {this.renderTabs()}
                     <li className="pull-left header"><i className="fa fa-inbox" />Filters</li>
                 </ul>

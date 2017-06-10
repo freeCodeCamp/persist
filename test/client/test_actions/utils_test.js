@@ -6,13 +6,13 @@ import * as types from '../../../app/client/src/actions/types';
 import util from '../../../app/client/src/actions/utils';
 
 describe.skip('Utility Actions', () => {
-  beforeEach(() => {
-    moxios.install();
-  });
+    beforeEach(() => {
+        moxios.install();
+    });
 
-  afterEach(() => {
-    moxios.uninstall();
-  });
+    afterEach(() => {
+        moxios.uninstall();
+    });
 
-  describe('addReminder', () => {});
+    describe('addReminder', () => {});
 });

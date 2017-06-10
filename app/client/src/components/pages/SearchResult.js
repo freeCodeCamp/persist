@@ -50,7 +50,7 @@ class SearchResult extends Component {
 
     renderResults() {
         const { results } = this.state;
-        return results.map((result, i) => (
+        return results.map((result, i) =>
             <tr key={_.uniqueId(result.fullName)}>
                 <th>
                     {i + 1}
@@ -64,7 +64,7 @@ class SearchResult extends Component {
                     {result.model}
                 </th>
             </tr>
-        ));
+        );
     }
 
     render() {

@@ -4,9 +4,9 @@ const modelsDir = path.join(process.env.PWD, 'app/server/models/');
 const models = require(modelsDir);
 
 const commonDir = path.join(process.env.PWD, 'app/common/');
-const {ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR} = require(path.join(commonDir, 'constants'));
+const { ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR } = require(path.join(commonDir, 'constants'));
 
-const {ObjectID} = require('mongodb');
+const { ObjectID } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
 const SALT_FACTOR = 5; //should match value in models/user.js
@@ -19,44 +19,47 @@ const userTwoID = new ObjectID();
 const userThreeID = new ObjectID();
 
 const users = [
-  {
-    profile: {
-      firstName: 'Sachin',
-      lastName: 'Mour'
+    {
+        profile: {
+            firstName: 'Sachin',
+            lastName: 'Mour'
+        },
+        email: 'rtr.sachinmour@gmail.com',
+        password: bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'admin', pwdSalt),
+        access: {
+            role: 'Admin' // Why is this not ROLE_ADMIN?
+        },
+        enabled: true
     },
-    email: 'rtr.sachinmour@gmail.com',
-    password: bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'admin', pwdSalt),
-    access: {
-      role: 'Admin' // Why is this not ROLE_ADMIN?
+    {
+        _id: userOneID,
+        email: 'userone@test.com',
+        password: bcrypt.hashSync('userOnePass', pwdSalt),
+        profile: {
+            firstName: 'User',
+            lastName: 'One'
+        },
+        enabled: true,
+        access: {
+            role: ROLE_ADMIN,
+            school: schoolOneID
+        }
     },
-    enabled: true
-  }, {
-    _id: userOneID,
-    email: 'userone@test.com',
-    password: bcrypt.hashSync('userOnePass', pwdSalt),
-    profile: {
-      firstName: 'User',
-      lastName: 'One'
+    {
+        _id: userTwoID,
+        email: 'usertwo@test.com',
+        password: bcrypt.hashSync('userTwoPass', pwdSalt),
+        profile: {
+            firstName: 'User',
+            lastName: 'Two'
+        },
+        enabled: true,
+        access: {
+            role: ROLE_COUNSELOR,
+            school: schoolOneID
+        }
     },
-    enabled: true,
-    access: {
-      role: ROLE_ADMIN,
-      school: schoolOneID
-    }
-  }, {
-    _id: userTwoID,
-    email: 'usertwo@test.com',
-    password: bcrypt.hashSync('userTwoPass', pwdSalt),
-    profile: {
-      firstName: 'User',
-      lastName: 'Two'
-    },
-    enabled: true,
-    access: {
-      role: ROLE_COUNSELOR,
-      school: schoolOneID
-    }
-  }, {
+    {
     _id: userThreeID,
     email: 'userThree@test.com',
     password: bcrypt.hashSync('userThreePass', pwdSalt),

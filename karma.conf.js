@@ -30,9 +30,7 @@ module.exports = function(config) {
       ]
     },
     files: [
-      'node_modules/jquery/dist/jquery.min.js',
-      'node_modules/json2csv/dist/json2csv.js',
-      'test/client/**/*_test.js',
+      'node_modules/jquery/dist/jquery.min.js', 'node_modules/json2csv/dist/json2csv.js', 'test/client/**/*_test.js'
     ],
     frameworks: [
       'mocha', 'sinon'
@@ -44,25 +42,27 @@ module.exports = function(config) {
       'karma-webpack',
       'karma-mocha-reporter',
       'karma-coverage',
-      'karma-sinon',
+      'karma-sinon'
     ],
     preprocessors: {
       'test/client/**/*_test.js': [
-        'webpack', 'sourcemap',
+        'webpack', 'sourcemap'
       ],
-      'test/client/**/*_test.jsx': [
-        'webpack', 'sourcemap',
-      ]
+      'test/client/**/*_test.jsx': ['webpack', 'sourcemap']
     },
     reporters: [
       'mocha', 'coverage'
     ],
     coverageReporter: {
       reporters: [
-        { type: 'html', subdir: 'html'},
-        { type: 'text' }
+        {
+          type: 'html',
+          subdir: 'html'
+        }, {
+          type: 'text'
+        }
       ],
-      dir : 'test/client/coverage/'
+      dir: 'test/client/coverage/'
     },
     singleRun: true,
     webpack: webpackConfig,

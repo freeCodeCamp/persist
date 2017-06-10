@@ -45,7 +45,9 @@ class GradRate extends Component {
         const { collegeObj } = this.props;
         const terms = student.terms;
         const totalTerms = terms.length;
-        let factor = 1, transferred, graduated;
+        let factor = 1,
+            transferred,
+            graduated;
         switch (this.state.type) {
             case '2 year 150%':
                 factor = 1.5;
@@ -123,40 +125,34 @@ class GradRate extends Component {
                 total: 0
             };
             const result = {};
-            const q = async.queue(
-                (student, callback) => {
-                    const hsGradYear = student.hsGradYear;
-                    if (hsGradYear) {
-                        result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
-                        const hsGradDate = student.hsGradDate;
-                        let enrolDate;
-                        const terms = student.terms;
-                        if (terms.length > 0) {
-                            enrolDate = _.last(terms).enrolBegin;
-                        }
-                        if (enrolDate && hsGradDate && moment(enrolDate).diff(moment(hsGradDate), 'months') < 6) {
-                            const fields = this.yearEnrol(student);
-                            if (fields) {
-                                fields.map(field => {
-                                    if (_.isPlainObject(result[hsGradYear][field])) {
-                                        result[hsGradYear][field].count += 1;
-                                        result[hsGradYear][field].students.push(student.osis);
-                                    } else {
-                                        result[hsGradYear][field] += 1;
-                                    }
-                                });
-                            }
+            const q = async.queue((student, callback) => {
+                const hsGradYear = student.hsGradYear;
+                if (hsGradYear) {
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
+                    const hsGradDate = student.hsGradDate;
+                    let enrolDate;
+                    const terms = student.terms;
+                    if (terms.length > 0) {
+                        enrolDate = _.last(terms).enrolBegin;
+                    }
+                    if (enrolDate && hsGradDate && moment(enrolDate).diff(moment(hsGradDate), 'months') < 6) {
+                        const fields = this.yearEnrol(student);
+                        if (fields) {
+                            fields.map(field => {
+                                if (_.isPlainObject(result[hsGradYear][field])) {
+                                    result[hsGradYear][field].count += 1;
+                                    result[hsGradYear][field].students.push(student.osis);
+                                } else {
+                                    result[hsGradYear][field] += 1;
+                                }
+                            });
                         }
                     }
-                    setTimeout(
-                        () => {
-                            callback();
-                        },
-                        0
-                    );
-                },
-                100
-            );
+                }
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }, 100);
             q.push(props.students);
             q.drain = () => {
                 resolve(result);
@@ -203,10 +199,11 @@ class GradRate extends Component {
                 {
                     name: 'Did not Graduate',
                     data: values.map(key => ({
-                        y: key['Currently Enrolled'].count +
-                            key['No longer Enrolled'].count +
-                            key['transferred with degree'].count +
-                            key['transferred without degree'].count,
+                        y:
+                            key['Currently Enrolled'].count +
+                                key['No longer Enrolled'].count +
+                                key['transferred with degree'].count +
+                                key['transferred without degree'].count,
                         key: 'Did not Graduate'
                     }))
                 }
@@ -344,7 +341,8 @@ class GradRate extends Component {
                 <Divider style={{ height: 2 }} />
                 <Card>
                     <CardText>
-                        Students are only listed as having graduated once we have confirmed their graduation record. Frequently there are significant delays in getting graduation records from the National Student Clearinghouse.
+                        Students are only listed as having graduated once we have confirmed their graduation record. Frequently there are
+                        significant delays in getting graduation records from the National Student Clearinghouse.
                     </CardText>
                 </Card>
             </div>
