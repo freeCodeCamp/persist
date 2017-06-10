@@ -6,6 +6,7 @@ import { studentKeys } from '../../common/fieldKeys';
 import exportKeys from '../../common/exportKeys';
 import map from 'lodash/map';
 import moment from 'moment';
+const DELETE_TERM = 'set_undefined';
 const typeKeys = exportKeys(map(studentKeys, 'dbName'), studentKeys);
 
 export default function formatRecord(record, callback) {
@@ -29,14 +30,15 @@ export default function formatRecord(record, callback) {
         } else {
             if (typeof value === 'number') {
                 value = moment(value, 'YYYYMMDD').toDate();
+            } else if (value === DELETE_TERM) {
+                record[dateField] = value;
             } else {
                 value = value.toString().split(/[-\/]/).join(' ');
                 value = new Date(value);
             }
             if (value.toString() === 'Invalid Date') {
                 // console.log('invalid date, deleting...'.red, logObject);
-                // delete record[dateField];
-                record[dateField] = 'set undefined';
+                delete record[dateField];
             } else {
                 // console.log('successfully transformed'.green, logObject);
                 record[dateField] = value;
@@ -73,7 +75,6 @@ export default function formatRecord(record, callback) {
         [
             callback2 => {
                 if (!record.intendedCollege) {
-                    record.intendedCollege = 'set undefined';
                     return callback2(null);
                 }
                 // reference College

@@ -1,9 +1,10 @@
 import moment from 'moment';
 import json2csv from 'json2csv';
+import { map } from 'lodash';
 import { SPINNER_PAGE } from '../types';
 import { applicationKeys, collegeGraduationKeys, collegeKeys, termKeys, caseNotesKeys } from '../../../../common/fieldKeys';
 
-const exportArrays = (students, type) =>
+const exportArray = (students, type) =>
     dispatch => {
         dispatch({
             type: SPINNER_PAGE,
@@ -14,16 +15,16 @@ const exportArrays = (students, type) =>
         let fieldNames, fields;
         switch (type) {
             case 'applications':
-                fieldNames = _.map(applicationKeys, 'fieldName');
-                fields = _.map(applicationKeys, 'dbName');
+                fieldNames = map(applicationKeys, 'fieldName');
+                fields = map(applicationKeys, 'dbName');
                 break;
             case 'terms':
-                fieldNames = _.map(termKeys, 'fieldName');
-                fields = _.map(termKeys, 'dbName');
+                fieldNames = map(termKeys, 'fieldName');
+                fields = map(termKeys, 'dbName');
                 break;
             case 'caseNotes':
-                fieldNames = _.map(caseNotesKeys, 'fieldName');
-                fields = _.map(caseNotesKeys, 'dbName');
+                fieldNames = map(caseNotesKeys, 'fieldName');
+                fields = map(caseNotesKeys, 'dbName');
         }
         const csv = json2csv(
             {
@@ -38,9 +39,11 @@ const exportArrays = (students, type) =>
                     return console.log(err);
                 }
                 const a = document.createElement('a');
-                a.setAttribute('href', `data:attachment/csv;charset=utf-8,${encodeURI(csvFile)}`);
+                const csvData = new Blob([csvFile], { type: 'text/csv' });
+                a.setAttribute('href', URL.createObjectURL(csvData));
                 a.setAttribute('target', '_blank');
                 a.setAttribute('download', `${type}-${moment(new Date()).format('lll')}.csv`);
+                document.body.appendChild(a);
                 a.click();
                 dispatch({
                     type: SPINNER_PAGE,
@@ -50,4 +53,4 @@ const exportArrays = (students, type) =>
         );
     };
 
-export default exportArrays;
+export default exportArray;
