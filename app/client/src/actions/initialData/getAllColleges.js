@@ -24,10 +24,10 @@ export default () => {
                 // userAgent check SHOULD protect from this in production.
                 // There may be a better way of doing this that I haven't thought
                 // of yet.
-                if(/PhantomJS/.test(navigator.userAgent)) {
-                  return Promise.reject(err);
+                if (/PhantomJS/.test(navigator.userAgent)) {
+                    return Promise.reject(err);
                 } else {
-                  return err;
+                    return err;
                 }
             });
     };

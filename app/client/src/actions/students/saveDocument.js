@@ -33,47 +33,46 @@ const updateDocument = (doc, newDocument, updateId, osis, dispatch) => {
         });
 };
 
-const saveDocument = (oldDocument, newDocument, osis) =>
-    dispatch => {
-        const file = newDocument.document;
-        const oldKey = oldDocument.Key;
-        const params = {};
-        if (oldKey && oldDocument.name !== newDocument.name) {
-            params.oldKey = oldKey;
-        }
-        params.uploadedFileName = file ? file.name : oldKey;
-        params.file = !!file;
-        params.fileName = newDocument.name;
-        dispatch({
-            type: SPINNER_PAGE,
-            payload: true
-        });
-        return axios()
-            .get('/sign-s3', { params })
-            .then(res => {
-                return res.data;
-            })
-            .then(doc => {
-                if (file) {
-                    const signedUrl = doc.signedRequest;
-                    return oaxios
-                        .put(signedUrl, file)
-                        .then(() => {
-                            updateDocument(doc, newDocument, oldDocument._id, osis, dispatch);
-                        })
-                        .catch(err => {
-                            dispatch({
-                                type: SAVE_DOCUMENT_ERROR,
-                                payload: err
-                            });
-                            dispatch({
-                                type: SPINNER_PAGE,
-                                payload: false
-                            });
+const saveDocument = (oldDocument, newDocument, osis) => dispatch => {
+    const file = newDocument.document;
+    const oldKey = oldDocument.Key;
+    const params = {};
+    if (oldKey && oldDocument.name !== newDocument.name) {
+        params.oldKey = oldKey;
+    }
+    params.uploadedFileName = file ? file.name : oldKey;
+    params.file = !!file;
+    params.fileName = newDocument.name;
+    dispatch({
+        type: SPINNER_PAGE,
+        payload: true
+    });
+    return axios()
+        .get('/sign-s3', { params })
+        .then(res => {
+            return res.data;
+        })
+        .then(doc => {
+            if (file) {
+                const signedUrl = doc.signedRequest;
+                return oaxios
+                    .put(signedUrl, file)
+                    .then(() => {
+                        updateDocument(doc, newDocument, oldDocument._id, osis, dispatch);
+                    })
+                    .catch(err => {
+                        dispatch({
+                            type: SAVE_DOCUMENT_ERROR,
+                            payload: err
                         });
-                }
-                return updateDocument(doc, newDocument, oldDocument._id, osis, dispatch);
-            });
-    };
+                        dispatch({
+                            type: SPINNER_PAGE,
+                            payload: false
+                        });
+                    });
+            }
+            return updateDocument(doc, newDocument, oldDocument._id, osis, dispatch);
+        });
+};
 
 export default saveDocument;

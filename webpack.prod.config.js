@@ -4,9 +4,9 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
 
 const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
-  template: path.join(__dirname, '/app/client/public/index.html'),
-  filename: 'public/index.html',
-  inject: true
+    template: path.join(__dirname, '/app/client/public/index.html'),
+    filename: 'public/index.html',
+    inject: true
 });
 
 module.exports = {

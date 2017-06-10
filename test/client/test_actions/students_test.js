@@ -3,36 +3,35 @@ import sinon from 'sinon';
 import moxios from 'moxios';
 
 import * as types from '../../../app/client/src/actions/types';
-import {saveDocument, saveCaseNote, saveApplication, saveTerm, saveAlias} from '../../../app/client/src/actions/students';
-import {deleteDocument, deleteCaseNote, deleteApplication, deleteTerm, deleteAlias} from '../../../app/client/src/actions/students';
+import { saveDocument, saveCaseNote, saveApplication, saveTerm, saveAlias } from '../../../app/client/src/actions/students';
+import { deleteDocument, deleteCaseNote, deleteApplication, deleteTerm, deleteAlias } from '../../../app/client/src/actions/students';
 
 describe.skip('Socket Actions', () => {
-  beforeEach(() => {
-    moxios.install();
-  });
+    beforeEach(() => {
+        moxios.install();
+    });
 
-  afterEach(() => {
-    moxios.uninstall();
-  });
+    afterEach(() => {
+        moxios.uninstall();
+    });
 
-  describe('saveDocument', () => {});
+    describe('saveDocument', () => {});
 
-  describe('deleteDocument', () => {});
+    describe('deleteDocument', () => {});
 
-  describe('saveCaseNote', () => {});
+    describe('saveCaseNote', () => {});
 
-  describe('deleteCaseNote', () => {});
+    describe('deleteCaseNote', () => {});
 
-  describe('saveApplication', () => {});
+    describe('saveApplication', () => {});
 
-  describe('deleteApplication', () => {});
+    describe('deleteApplication', () => {});
 
-  describe('saveTerm', () => {});
+    describe('saveTerm', () => {});
 
-  describe('deleteTerm', () => {});
+    describe('deleteTerm', () => {});
 
-  describe('saveAlias', () => {});
+    describe('saveAlias', () => {});
 
-  describe('deleteAlias', () => {});
-
+    describe('deleteAlias', () => {});
 });

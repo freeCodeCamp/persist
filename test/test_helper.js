@@ -26,41 +26,40 @@ chaiJquery(chai, chai.util, $);
 
 //renders component with provider for store
 function renderComponent(ComponentClass, props = {}, state = {}) {
-  
-  //props and state required for connect component
-  //create store on provider
-  //add props to component
+    //props and state required for connect component
+    //create store on provider
+    //add props to component
 
-  const componentInstance =  TestUtils.renderIntoDocument(
-    <Provider store={createStore(reducers, state)}>
-      <MuiThemeProvider>
-        <ComponentClass {...props} />
-      </MuiThemeProvider>
-    </Provider>
-  );
+    const componentInstance = TestUtils.renderIntoDocument(
+        <Provider store={createStore(reducers, state)}>
+            <MuiThemeProvider>
+                <ComponentClass {...props} />
+            </MuiThemeProvider>
+        </Provider>
+    );
 
-  return $(ReactDOM.findDOMNode(componentInstance));
+    return $(ReactDOM.findDOMNode(componentInstance));
 }
 
 $.fn.simulate = function(eventName, value) {
-  if (value) {
-    this.val(value);
-  }
+    if (value) {
+        this.val(value);
+    }
 
-  //this uses react test utils from html from jquery
-  //simulate.event(node)
-  //this just gets first element in array in case of selecting multiople
-  TestUtils.Simulate[eventName](this[0]);
+    //this uses react test utils from html from jquery
+    //simulate.event(node)
+    //this just gets first element in array in case of selecting multiople
+    TestUtils.Simulate[eventName](this[0]);
 };
 
 // ignore css/sass files
 
 function donothing() {
-  return null;
+    return null;
 }
 
 require.extensions['.css'] = donothing;
 require.extensions['.less'] = donothing;
 require.extensions['.scss'] = donothing;
 
-export {renderComponent, expect};
+export { renderComponent, expect };

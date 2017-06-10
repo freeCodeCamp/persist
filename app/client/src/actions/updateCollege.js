@@ -12,14 +12,11 @@ export function updateCollege(collegeRecord) {
             .put('/api/college/' + collegeRecord.fullName, collegeRecord)
             .then(response => {
                 console.log(response);
-                setTimeout(
-                    function() {
-                        dispatch({
-                            type: UPDATE_COLLEGE_RESET
-                        });
-                    },
-                    5000
-                );
+                setTimeout(function() {
+                    dispatch({
+                        type: UPDATE_COLLEGE_RESET
+                    });
+                }, 5000);
                 if (response.data.err) {
                     dispatch({
                         type: UPDATE_COLLEGE_ERROR,
@@ -38,14 +35,11 @@ export function updateCollege(collegeRecord) {
                     type: UPDATE_COLLEGE_ERROR,
                     payload: err
                 });
-                setTimeout(
-                    function() {
-                        dispatch({
-                            type: UPDATE_COLLEGE_RESET
-                        });
-                    },
-                    5000
-                );
+                setTimeout(function() {
+                    dispatch({
+                        type: UPDATE_COLLEGE_RESET
+                    });
+                }, 5000);
             });
     };
 }

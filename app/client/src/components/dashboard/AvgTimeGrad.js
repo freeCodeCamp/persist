@@ -65,31 +65,25 @@ class AvgTimeGrad extends Component {
                 total: 0
             };
             const result = {};
-            const q = async.queue(
-                (student, callback) => {
-                    const hsGradYear = student.hsGradYear;
-                    if (hsGradYear) {
-                        result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
-                        const hsGradDate = student.hsGradDate;
-                        const terms = student.terms;
-                        if (hsGradDate) {
-                            const timeTaken = this.yearEnrol(terms, hsGradDate);
-                            if (timeTaken) {
-                                result[hsGradYear].count += timeTaken / 12;
-                                result[hsGradYear].students.push(student.osis);
-                                result[hsGradYear].total += 1;
-                            }
+            const q = async.queue((student, callback) => {
+                const hsGradYear = student.hsGradYear;
+                if (hsGradYear) {
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
+                    const hsGradDate = student.hsGradDate;
+                    const terms = student.terms;
+                    if (hsGradDate) {
+                        const timeTaken = this.yearEnrol(terms, hsGradDate);
+                        if (timeTaken) {
+                            result[hsGradYear].count += timeTaken / 12;
+                            result[hsGradYear].students.push(student.osis);
+                            result[hsGradYear].total += 1;
                         }
                     }
-                    setTimeout(
-                        () => {
-                            callback();
-                        },
-                        0
-                    );
-                },
-                100
-            );
+                }
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }, 100);
             q.push(props.students);
             q.drain = () => {
                 resolve(result);
@@ -132,8 +126,9 @@ class AvgTimeGrad extends Component {
             },
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
+                pointFormat:
+                    '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true

@@ -27,12 +27,7 @@ class Aliases extends Component {
     renderAliases() {
         const { initValue } = this.props;
         const aliasesHTML = initValue.map((alias, index) => {
-            const {
-                firstName,
-                middleName,
-                lastName,
-                suffix
-            } = alias;
+            const { firstName, middleName, lastName, suffix } = alias;
             return (
                 <tr key={index}>
                     <td>{firstName}</td>

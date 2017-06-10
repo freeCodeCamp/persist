@@ -111,23 +111,22 @@ export const register = (req, res, next) => {
 //= =======================================
 
 // Role authorization check
-export const roleAuthorization = requiredRole =>
-    (req, res, next) => {
-        const user = req.user;
-        User.findById(user._id, (err, foundUser) => {
-            if (err) {
-                res.status(422).json({ error: 'No user was found.' });
-                return next(err);
-            }
+export const roleAuthorization = requiredRole => (req, res, next) => {
+    const user = req.user;
+    User.findById(user._id, (err, foundUser) => {
+        if (err) {
+            res.status(422).json({ error: 'No user was found.' });
+            return next(err);
+        }
 
-            // If user is found, check role.
-            if (getRole(foundUser.access.role) >= getRole(requiredRole)) {
-                return next();
-            }
+        // If user is found, check role.
+        if (getRole(foundUser.access.role) >= getRole(requiredRole)) {
+            return next();
+        }
 
-            return res.status(401).json({ error: 'You are not authorized to view this content.' });
-        });
-    };
+        return res.status(401).json({ error: 'You are not authorized to view this content.' });
+    });
+};
 
 export const forgotPassword = (req, res, next) => {
     const email = req.body.email;
@@ -198,8 +197,9 @@ export const verifyToken = (req, res, next) => {
             // If password change saved successfully, alert user via email
             const message = {
                 subject: 'Password Changed',
-                text: 'You are receiving this email because you changed your password. \n\n' +
-                    'If you did not request this change, please contact us immediately.'
+                text:
+                    'You are receiving this email because you changed your password. \n\n' +
+                        'If you did not request this change, please contact us immediately.'
             };
 
             // Otherwise, send user email confirmation of password change via Mailgun

@@ -90,9 +90,13 @@ export const SAVE_APPLICATION_SUCCESS = 'save_application_success',
     SAVE_APPLICATION_ERROR = 'save_application_error',
     SAVE_APPLICATION_PENDING = 'save_application_pending';
 
-export const SAVE_TERM_SUCCESS = 'save_term_success', SAVE_TERM_ERROR = 'save_term_error', SAVE_TERM_PENDING = 'save_term_pending';
+export const SAVE_TERM_SUCCESS = 'save_term_success',
+    SAVE_TERM_ERROR = 'save_term_error',
+    SAVE_TERM_PENDING = 'save_term_pending';
 
-export const SAVE_ALIAS_SUCCESS = 'save_alias_success', SAVE_ALIAS_ERROR = 'save_alias_error', SAVE_ALIAS_PENDING = 'save_alias_pending';
+export const SAVE_ALIAS_SUCCESS = 'save_alias_success',
+    SAVE_ALIAS_ERROR = 'save_alias_error',
+    SAVE_ALIAS_PENDING = 'save_alias_pending';
 
 // delete document
 export const DELETE_DOCUMENT_SUCCESS = 'delete_document_success';
@@ -119,13 +123,19 @@ export const DELETE_ALIAS_SUCCESS = 'delete_alias_success',
     DELETE_ALIAS_PENDING = 'delete_alias_pending';
 
 // authentication
-export const LOGIN_SUCCESS = 'login_success', LOGIN_PENDING = 'login_pending', LOGOUT = 'logout';
+export const LOGIN_SUCCESS = 'login_success',
+    LOGIN_PENDING = 'login_pending',
+    LOGOUT = 'logout';
 
-export const FORGOT_PASSWORD_SUCCESS = 'forgot_password_success', FORGOT_PASSWORD_PENDING = 'forgot_password_pending';
+export const FORGOT_PASSWORD_SUCCESS = 'forgot_password_success',
+    FORGOT_PASSWORD_PENDING = 'forgot_password_pending';
 
-export const UPDATE_PASSWORD_SUCCESS = 'update_password_success', UPDATE_PASSWORD_PENDING = 'update_password_pending';
+export const UPDATE_PASSWORD_SUCCESS = 'update_password_success',
+    UPDATE_PASSWORD_PENDING = 'update_password_pending';
 
-export const GET_USERS_SUCCESS = 'get_users_success', GET_USERS_ERROR = 'get_users_error', GET_USERS_PENDING = 'get_users_pending';
+export const GET_USERS_SUCCESS = 'get_users_success',
+    GET_USERS_ERROR = 'get_users_error',
+    GET_USERS_PENDING = 'get_users_pending';
 
 export const UPDATE_USER_SUCCESS = 'update_user_success',
     UPDATE_USER_ERROR = 'update_user_error',
@@ -144,4 +154,6 @@ export const GET_NOTIFICATIONS = 'get_notifications';
 export const MARK_READ_NOTIFICATION = 'mark_read_notification';
 export const MARK_READ_ALL_NOTIFICATION = 'mark_read_all_notification';
 
-export const ALL_REMINDERS = 'all_reminders', ADD_REMINDER = 'ADD_REMINDER', REMOVE_REMINDER = 'REMOVE_REMINDER';
+export const ALL_REMINDERS = 'all_reminders',
+    ADD_REMINDER = 'ADD_REMINDER',
+    REMOVE_REMINDER = 'REMOVE_REMINDER';

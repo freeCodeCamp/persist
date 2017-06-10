@@ -76,7 +76,7 @@ class ExportCSV extends Component {
                         const aliases = student.aliases.map(alias => {
                             const aliasStudent = _.cloneDeep(student);
                             ['firstName', 'middleName', 'lastName', 'suffix'].map(
-                                aliasField => aliasStudent[aliasField] = alias[aliasField]
+                                aliasField => (aliasStudent[aliasField] = alias[aliasField])
                             );
                         });
                         aliases.unshift(student);
@@ -85,12 +85,9 @@ class ExportCSV extends Component {
                             callback(null, null);
                         });
                     } else {
-                        setTimeout(
-                            () => {
-                                callback(null, student);
-                            },
-                            0
-                        );
+                        setTimeout(() => {
+                            callback(null, student);
+                        }, 0);
                     }
                 },
                 (err, finalData) => {

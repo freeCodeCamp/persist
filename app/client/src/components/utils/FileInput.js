@@ -43,7 +43,7 @@ class FileInput extends Component {
                 </FloatingActionButton>
                 {this.state.inputFile}
                 <input
-                    ref={c => this.input = c}
+                    ref={c => (this.input = c)}
                     style={{ width: 0, height: 0 }}
                     id={name}
                     type="file"

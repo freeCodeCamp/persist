@@ -13,7 +13,8 @@ export default class StatTile extends Component {
     }
 
     render() {
-        var link = '', stats = <h3>{this.props.stats}</h3>;
+        var link = '',
+            stats = <h3>{this.props.stats}</h3>;
 
         if (this.props.link) {
             link = <a href={this.props.link} className="small-box-footer">More info <i className="fa fa-arrow-circle-right" /></a>;

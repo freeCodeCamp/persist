@@ -20,10 +20,6 @@
 // 		    moxios.uninstall();
 // 		  });
 
-		  
-		  
-		  
-
 // 		  it('should show SUCCESS correctly: fire SHOW_SPINNER while pending, remove spinner, then fire UPLOAD_FILE_SUCESS', () => {
 
 // 		  		// create mock

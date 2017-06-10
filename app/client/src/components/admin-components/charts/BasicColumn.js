@@ -49,7 +49,7 @@ class BasicColumn extends Component {
         };
         return (
             <div
-                ref={c => this.component = c}
+                ref={c => (this.component = c)}
                 className={classNames('chart tab-pane', { active: this.props.active })}
                 id={this.props.id}
                 style={style}

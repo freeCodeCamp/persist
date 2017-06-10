@@ -137,7 +137,8 @@ const validate = (values, props) => {
         if (moment(enrolBegin).diff(moment([year, 7, 10]), 'days') > 0 && moment([year, 11, 31]).diff(moment(enrolEnd), 'days') > 0) {
             props.dispatch(props.change('name', 'Fall ' + year));
         } else if (
-            moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 && moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0
+            moment(enrolBegin).diff(moment([year, 11, 1]), 'days') > 0 &&
+            moment([year + 1, 2, 1]).diff(moment(enrolEnd), 'days') > 0
         ) {
             props.dispatch(props.change('name', 'Winter ' + year));
         } else if (

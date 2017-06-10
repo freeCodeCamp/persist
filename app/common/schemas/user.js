@@ -22,7 +22,7 @@ const notificationSchema = Schema => ({
     }
 });
 
-const checkAccess = access => access.role === ROLE_COUNSELOR ? !!access.school : true;
+const checkAccess = access => (access.role === ROLE_COUNSELOR ? !!access.school : true);
 
 export default Schema => ({
     email: {

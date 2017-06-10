@@ -60,12 +60,9 @@ class Schools extends Component {
                             student[field] = dateString;
                         }
                     });
-                    setTimeout(
-                        () => {
-                            callback(null, student);
-                        },
-                        0
-                    );
+                    setTimeout(() => {
+                        callback(null, student);
+                    }, 0);
                 },
                 (err, finalData) => {
                     if (err) {
@@ -104,14 +101,14 @@ class Schools extends Component {
     render() {
         const { schools } = this.props;
         const schoolHTML = schools.map((school, i) => {
-            const exportButtonsHTML = school.hsGradYears.map(year => (
+            const exportButtonsHTML = school.hsGradYears.map(year =>
                 <RaisedButton
                     key={`${school}-${year}`}
                     style={{ marginLeft: 4, marginRight: 4 }}
                     label={year}
                     onClick={() => this.exportSchool(school.students, year)}
                 />
-            ));
+            );
             return (
                 <Panel header={school.name} eventKey={i} key={i}>
                     {exportButtonsHTML.length > 0 ? exportButtonsHTML : 'No students found'}
@@ -120,14 +117,14 @@ class Schools extends Component {
         });
         const allStudents = _.flatten(schools.map(school => school.students));
         const hsGradYears = _(allStudents).map('hsGradYear').uniq().map(Number).compact().sort().value();
-        const exportButtonHTML = hsGradYears.map(year => (
+        const exportButtonHTML = hsGradYears.map(year =>
             <RaisedButton
                 key={`Network-${year}`}
                 style={{ marginLeft: 4, marginRight: 4 }}
                 label={year}
                 onClick={() => this.exportSchool(allStudents, year)}
             />
-        ));
+        );
         const network = (
             <Panel header="Network" eventKey={schoolHTML.length} key={schoolHTML.length}>
                 {exportButtonHTML.length > 0 ? exportButtonHTML : 'No students found'}

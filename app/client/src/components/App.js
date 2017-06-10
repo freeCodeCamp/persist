@@ -71,15 +71,12 @@ class App extends Component {
 
     componentDidUpdate() {
         if (!this.state.load && this.state.initialLoad) {
-            setTimeout(
-                () => {
-                    this.setState({
-                        ...this.state,
-                        load: true
-                    });
-                },
-                500
-            );
+            setTimeout(() => {
+                this.setState({
+                    ...this.state,
+                    load: true
+                });
+            }, 500);
         } else if (this.state.load) {
             this.removeSpinner();
         }
