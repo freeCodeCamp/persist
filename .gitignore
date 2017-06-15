@@ -31,3 +31,4 @@ npm-debug.log
 /appDist
 coverage/
 karma.log
+.nyc_output

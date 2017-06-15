@@ -13,11 +13,6 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx?$/,
-                exclude: /(node_modules|test)/,
-                loader: 'istanbul-instrumenter-loader'
-            },
-            {
-                test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel',
                 query: {

@@ -80,6 +80,17 @@ const requireLogin = (req, res, next) => {
 };
 
 export default app => {
+
+    // TODO There's a lot of repeated code here in the /upload routes that can probably
+    // be refactored into a single reusable method after tests are done for these routes.
+    // Something like:
+    // function handleUpload(type) {
+    //    ... logic ...
+    //    return function (req, res) {
+    //      ...
+    //    }
+    // }
+
     app.post('/upload/studentData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, function(req, res) {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
@@ -180,26 +191,39 @@ export default app => {
                 },
                 (err, student) => {
                     if (err) {
-                        res.status(500).send(err);
+                      res.status(500).send(err);
+                      return;
+                    }
+
+                    if (student === null) {
+                      res.status(404).send();
+                      return;
                     }
                     res.status(200).json(student);
                 }
             );
         })
         .post((req, res) => {
+            // FIXME Should this be implemented?  If not, can it be removed?
             res.send('working on it');
         })
         .put((req, res) => {
             const student = omit(req.body, '_id');
             Student.findOne(
                 {
-                    osis: student.osis
+                    osis: req.params.osis
                 },
                 (err, oldStudent) => {
                     if (err) {
                         res.status(500).send(err);
                         return;
                     }
+
+                    if (oldStudent === null) {
+                      res.status(404).send();
+                      return;
+                    }
+
                     forOwn(student, (value, key) => {
                         oldStudent[key] = student[key];
                     });
@@ -214,6 +238,7 @@ export default app => {
             );
         })
         .delete((req, res) => {
+            // FIXME should this be implemented?  if not, can it be removed?
             res.send('working on it');
         });
 
