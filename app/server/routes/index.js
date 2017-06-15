@@ -205,13 +205,19 @@ export default app => {
             const student = omit(req.body, '_id');
             Student.findOne(
                 {
-                    osis: student.osis
+                    osis: req.params.osis
                 },
                 (err, oldStudent) => {
                     if (err) {
                         res.status(500).send(err);
                         return;
                     }
+
+                    if (oldStudent === null) {
+                      res.status(404).send();
+                      return;
+                    }
+
                     forOwn(student, (value, key) => {
                         oldStudent[key] = student[key];
                     });
