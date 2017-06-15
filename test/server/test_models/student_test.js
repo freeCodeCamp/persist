@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const path = require('path');
 const {ObjectID} = require('mongodb');
 const validator = require('../../../app/common/validator');
-const {map} = require('lodash');
+const {map, every} = require('lodash');
 const {testModel} = require('../testUtils');
 
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
@@ -34,4 +34,30 @@ describe('student', () => {
 
     testModel(dbModels.Student, validStudents, invalidStudents, done);
   });
+
+  it('should generate hsGradYear based on hsGradDate', (done) => {
+    const validStudents = [
+      { hsGradDate: new Date('2014-09-15T00:00:00.000Z'), osis: 1 },
+      { hsGradDate: new Date('2015-09-15T00:00:00.000Z'), osis: 2 },
+      { hsGradDate: new Date('2016-09-15T00:00:00.000Z'), osis: 3 },
+    ];
+
+    const saveStudent = (doc) => new dbModels.Student(doc).save().then(res => res).catch(done);
+    const verifyStudent = (doc) => {
+      expect(doc.hsGradYear).toExist();
+      expect(doc.hsGradYear).toEqual((new Date(doc.hsGradDate)).getFullYear());
+      return true;
+    }
+
+    Promise.all(validStudents.map(saveStudent))
+      .then((students) => Promise.all(students.map(verifyStudent))
+                    .then(results => {
+                      if (results.every(res => res)) {
+                        done();
+                      } else {
+                        done(new Error('Unknown Error'));
+                      }
+                    }).catch(done))
+      .catch(done);
+  })
 });
