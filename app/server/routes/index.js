@@ -191,7 +191,13 @@ export default app => {
                 },
                 (err, student) => {
                     if (err) {
-                        res.status(500).send(err);
+                      res.status(500).send(err);
+                      return;
+                    }
+
+                    if (student === null) {
+                      res.status(404).send();
+                      return;
                     }
                     res.status(200).json(student);
                 }

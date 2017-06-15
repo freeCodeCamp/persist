@@ -49,7 +49,7 @@ describe('/api/student/:osis', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return status 404 for a student that does not exist in the DB *FAILING TEST, CURRENTLY RETURNS STATUS 200*', (done) => {
+    it('should return status 404 for a student that does not exist in the DB', (done) => {
       const tests = [
         {
           request: {

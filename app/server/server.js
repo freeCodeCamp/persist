@@ -59,7 +59,9 @@ if (NODE_ENV !== 'production') {
 
     const morgan = require('morgan');
 
-    app.use(morgan('dev'));
+    if (NODE_ENV !== 'test')
+      app.use(morgan('dev'));
+
     app.use(
         webpackDevMiddleware(compiler, {
             noInfo: true,
