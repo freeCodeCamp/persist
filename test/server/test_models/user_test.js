@@ -29,7 +29,7 @@ describe('user', () => {
     testModel(dbModels.User, validUsers, invalidUsers, done);
   });
 
-  it.skip('should reject invalid email addresses', (done) => {
+  it('should reject invalid email addresses', (done) => {
     const validUsers = [
         {
           email: 'test@test.com',             // Valid Email
