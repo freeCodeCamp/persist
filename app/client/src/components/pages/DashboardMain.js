@@ -30,6 +30,7 @@ class DashboardMain extends React.Component {
         const arrayConditions = _(conditions).pickBy((value, key) => studentKeysObj[key].fieldType === 'Checkbox').value();
         conditions = _.omit(conditions, _.keys(arrayConditions));
         let filteredStudents = _(students).filter(conditions);
+        filteredStudents = filteredStudents.filter(student => student.hsDiplomaType !== 'HSE');
         filteredStudents = filteredStudents.filter(student => {
             let take = true;
             _.forOwn(arrayConditions, (value, key) => {
@@ -53,7 +54,6 @@ class DashboardMain extends React.Component {
                 return false;
             });
         }
-        console.log(filteredStudents.value().length);
         this.setState({
             filteredStudents: filteredStudents.value()
         });
