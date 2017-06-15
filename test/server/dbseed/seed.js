@@ -210,15 +210,14 @@ const schools = [
 const students = [
   {
     "_id": ObjectID("591477f37066b1747ff9e94a"),
-    "hsGradYear": 2015,
-    "expectedHSGrad": Date("2014-09-15T00:00:00.000Z"),
+    "expectedHSGrad": new Date("2014-09-15T00:00:00.000Z"),
     "hs": ObjectID("58d453aa97fb3c001846f4d5"),
     "osis": 200205492,
     "lastName": "Jonson",
     "firstName": "Jon",
-    "dob": Date("1996-07-06T00:00:00.000Z"),
+    "dob": new Date("1996-07-06T00:00:00.000Z"),
     "cohort": "P (2010)",
-    "hsGradDate": Date("2014-07-01T00:00:00.000Z"),
+    "hsGradDate": new Date("2014-07-01T00:00:00.000Z"),
     "ethnicity": 3,
     "hsDiplomaType": "REGENTS",
     "fullName": "Jon Jonson",
@@ -284,16 +283,16 @@ const students = [
       }, {
         "college": ObjectID("5912330b53b2a665af3d06a2"),
         "name": "Fall 2015",
-        "enrolBegin": Date("2015-08-27T00:00:00.000Z"),
-        "enrolEnd": Date("2015-11-09T00:00:00.000Z"),
+        "enrolBegin": new Date("2015-08-27T00:00:00.000Z"),
+        "enrolEnd": new Date("2015-11-09T00:00:00.000Z"),
         "_id": ObjectID("591ce136c74a7865d5f5d6bf"),
         "degreeTitle": [],
         "recordType": "NSC"
       }, {
         "college": ObjectID("5912330b53b2a665af3d06a2"),
         "name": "Spring 2015",
-        "enrolBegin": Date("2015-01-28T00:00:00.000Z"),
-        "enrolEnd": Date("2015-05-24T00:00:00.000Z"),
+        "enrolBegin": new Date("2015-01-28T00:00:00.000Z"),
+        "enrolEnd": new Date("2015-05-24T00:00:00.000Z"),
         "_id": ObjectID("591ce136c74a7865d5f5d6c0"),
         "degreeTitle": [],
         "recordType": "NSC"
@@ -327,7 +326,6 @@ const students = [
     "nscRecordFound": true,
     "alias": false,
     "aliases": [],
-    "__v": 20,
     "SAT": {
       "cr": 350,
       "math": 440
@@ -344,15 +342,14 @@ const students = [
   },
   {
     "_id" : ObjectID("591477f47066b1747ff9e9ae"),
-    "hsGradYear" : 2016,
-    "expectedHSGrad" : Date("2015-09-15T00:00:00.000Z"),
+    "expectedHSGrad" : new Date("2015-09-15T00:00:00.000Z"),
     "hs" : ObjectID("58d453aa97fb3c001846f4d1"),
     "osis" : 209287145,
     "lastName" : "Ymous",
     "firstName" : "Anon",
-    "dob" : Date("1997-02-20T00:00:00.000Z"),
+    "dob" : new Date("1997-02-20T00:00:00.000Z"),
     "cohort" : "Q (2011)",
-    "hsGradDate" : Date("2015-07-01T00:00:00.000Z"),
+    "hsGradDate" : new Date("2015-07-01T00:00:00.000Z"),
     "ethnicity" : 4,
     "hsDiplomaType" : "REGENTS",
     "fullName" : "Anon Ymous",
@@ -365,8 +362,8 @@ const students = [
     "terms" : [
         {
             "college" : ObjectID("5912332753b2a665af3d1784"),
-            "enrolBegin" : Date("2017-01-01T00:00:00.000Z"),
-            "enrolEnd" : Date("2017-05-12T00:00:00.000Z"),
+            "enrolBegin" : new Date("2017-01-01T00:00:00.000Z"),
+            "enrolEnd" : new Date("2017-05-12T00:00:00.000Z"),
             "_id" : ObjectID("591490557066b1747ffa28c4"),
             "degreeTitle" : [],
             "recordType" : "Counselor Added"
@@ -374,16 +371,16 @@ const students = [
         {
             "name" : "Fall 2016",
             "college" : ObjectID("5912332753b2a665af3d1784"),
-            "enrolBegin" : Date("2016-09-01T00:00:00.000Z"),
-            "enrolEnd" : Date("2016-12-15T00:00:00.000Z"),
+            "enrolBegin" : new Date("2016-09-01T00:00:00.000Z"),
+            "enrolEnd" : new Date("2016-12-15T00:00:00.000Z"),
             "_id" : ObjectID("591490557066b1747ffa28c3"),
             "degreeTitle" : [],
             "recordType" : "Counselor Added"
         },
         {
             "college" : ObjectID("5912332753b2a665af3d1784"),
-            "enrolBegin" : Date("2016-01-01T00:00:00.000Z"),
-            "enrolEnd" : Date("2016-05-14T00:00:00.000Z"),
+            "enrolBegin" : new Date("2016-01-01T00:00:00.000Z"),
+            "enrolEnd" : new Date("2016-05-14T00:00:00.000Z"),
             "_id" : ObjectID("591490557066b1747ffa28c5"),
             "degreeTitle" : [],
             "recordType" : "Counselor Added"
@@ -417,7 +414,6 @@ const students = [
     "nscRecordFound" : true,
     "alias" : false,
     "aliases" : [],
-    "__v" : 1,
     "firstCol" : ObjectID("5912332753b2a665af3d1784"),
     "mostRecentCol" : ObjectID("5912332753b2a665af3d1784"),
     "cellPhone" : "(555) 555-5555",
