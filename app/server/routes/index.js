@@ -238,6 +238,7 @@ export default app => {
             );
         })
         .delete((req, res) => {
+            // FIXME should this be implemented?  if not, can it be removed?
             res.send('working on it');
         });
 

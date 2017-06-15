@@ -179,5 +179,7 @@ describe('/api/student/:osis', () => {
     it.skip('should return status 500 on server error *UNSURE HOW TO FORCE SERVER ERROR WITH GET REQUEST*', (done) => {});
   });
 
-  describe('DELETE', () => {});
+  describe('DELETE', () => {
+    // Route is currently unimplemented
+  });
 });
