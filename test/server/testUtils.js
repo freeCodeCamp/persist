@@ -87,7 +87,8 @@ Object.resolve = function(path, obj) {
  *              test: {
  *                request: {
  *                  method: string,     // 'get', 'put', 'delete', etc.
- *                  url: string         // api route
+ *                  url: string,        // api route
+ *                  body: object        // body to be sent as json for 'post' or 'put' requests
  *                },
  *                response: {
  *                  'key': 'expected value',
@@ -108,7 +109,8 @@ function testRoute(app, tests, done) {
     };
 
     return request(app)
-      [test.request.method](test.request.url)
+      [test.request.method.toLowerCase().trim()](test.request.url)
+      .send(test.request.body)
       .then(checkResult);
   }
 

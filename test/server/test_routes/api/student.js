@@ -96,7 +96,87 @@ describe('/api/student/:osis', () => {
   });
 
   describe('PUT', () => {
+    it('should update an existing student with new values', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/200205492',
+            body: {
+              firstName: 'Joe',
+              fullName: 'Joe Jonson',
+              taxDocumentsSubmitted: true,
+            }
+          },
+          response: {
+            'status': 200,
+            'body.osis': 200205492,
+            'body.firstName': 'Joe',
+            'body.fullName': 'Joe Jonson',
+            'body.taxDocumentsSubmitted': true,
+          },
+        },
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/209287145',
+            body: {
+              photoReleaseForm: true,
+              needsFollowup: true,
+              taxDocumentsSubmitted: true,
+            }
+          },
+          response: {
+            'status': 200,
+            'body.osis': 209287145,
+            'body.firstName': 'Anon',
+            'body.fullName': 'Anon Ymous',
+            'body.photoReleaseForm': true,
+            'body.needsFollowup': true,
+            'body.taxDocumentsSubmitted': true,
+          },
+        },
+      ];
 
+      testRoute(app, tests, done);
+    });
+
+    it('should return status 404 for a student that does not exist in the DB', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/20020542',
+            body: {
+              firstName: 'Joe',
+              fullName: 'Joe Jonson',
+              taxDocumentsSubmitted: true,
+            }
+          },
+          response: {
+            'status': 404,
+          },
+        },
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/20928715',
+            body: {
+              photoReleaseForm: true,
+              needsFollowup: true,
+              taxDocumentsSubmitted: true,
+            }
+          },
+          response: {
+            'status': 404,
+          },
+        },
+      ];
+
+      testRoute(app, tests, done);
+    });
+
+    it.skip('should return status 500 on server error *UNSURE HOW TO FORCE SERVER ERROR WITH GET REQUEST*', (done) => {});
   });
 
   describe('DELETE', () => {});
