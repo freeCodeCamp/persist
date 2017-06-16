@@ -19,6 +19,12 @@ _.forOwn(studentCategoryObj, (value, key) => {
     studentCategoryObj[key] = studentCategoryObj[key].map(field => field.dbName);
 });
 
+const addFieldOSISToTheLeft = keys => {
+    let osisIndex = keys.indexOf('osis');
+    osisIndex > -1 ? keys.splice(osisIndex, 1) : undefined;
+    return ['osis', ...keys];
+};
+
 class ExportCSV extends Component {
     constructor(props) {
         super(props);
@@ -103,19 +109,16 @@ class ExportCSV extends Component {
 
     handleStudents() {
         this.props.setSpinnerPage(true);
-        const selectedKeys = _.reduce(
-            studentCategoryObj,
-            (result, value, key) => {
-                if (this.state[key]) {
-                    return result.concat(value);
-                }
-                return result;
-            },
-            []
+        const selectedKeys = addFieldOSISToTheLeft(
+            // Get all keys in the studentCategoryObj
+            Object.keys(studentCategoryObj)
+                // Filter out those keys which do not have a truthy value in component's state
+                .filter(key => !!this.state[key])
+                // Get the values corresponding to those keys in studentCategoryObj
+                .map(key => studentCategoryObj[key])
+                // Concat all values to get a list of fields
+                .reduce((a, b) => a.concat(b), [])
         );
-        if (!selectedKeys.includes('osis')) {
-            selectedKeys.unshift('osis');
-        }
         selectedKeys.push('aliases');
         const { students } = this.props;
         const picked = students.map(student => _.pick(student, selectedKeys)).filter(student => !_.isEmpty(student));

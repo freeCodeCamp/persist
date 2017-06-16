@@ -30,8 +30,6 @@ mongoose.connect(NODE_ENV === 'test' ? TEST_MONGODB_URI : MONGODB_URI, options);
 
 const app = express();
 app.use(timeout('240s'));
-app.use(express.static('app/client/public'));
-app.use(express.static('appDist/client'));
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(
     bodyParser.urlencoded({
@@ -49,7 +47,9 @@ const server = http.createServer(app);
 const io = socketIO(server);
 io.on('connection', handleSocket.bind(null, io));
 
-if (NODE_ENV !== 'production') {
+if (NODE_ENV === 'production') {
+    app.use(express.static('appDist/client'));
+} else {
     const webpackDevMiddleware = require('webpack-dev-middleware');
     const webpackHotMiddleware = require('webpack-hot-middleware');
     const webpack = require('webpack');
@@ -59,8 +59,7 @@ if (NODE_ENV !== 'production') {
 
     const morgan = require('morgan');
 
-    if (NODE_ENV !== 'test')
-      app.use(morgan('dev'));
+    if (NODE_ENV !== 'test') app.use(morgan('dev'));
 
     app.use(
         webpackDevMiddleware(compiler, {
@@ -71,6 +70,8 @@ if (NODE_ENV !== 'production') {
     app.use(webpackHotMiddleware(compiler));
     reload(server, app);
 }
+
+app.use(express.static('app/client/public'));
 
 serverRoutes(app);
 
