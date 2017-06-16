@@ -80,7 +80,6 @@ const requireLogin = (req, res, next) => {
 };
 
 export default app => {
-
     // TODO There's a lot of repeated code here in the /upload routes that can probably
     // be refactored into a single reusable method after tests are done for these routes.
     // Something like:
@@ -191,13 +190,13 @@ export default app => {
                 },
                 (err, student) => {
                     if (err) {
-                      res.status(500).send(err);
-                      return;
+                        res.status(500).send(err);
+                        return;
                     }
 
                     if (student === null) {
-                      res.status(404).send();
-                      return;
+                        res.status(404).send();
+                        return;
                     }
                     res.status(200).json(student);
                 }
@@ -220,8 +219,8 @@ export default app => {
                     }
 
                     if (oldStudent === null) {
-                      res.status(404).send();
-                      return;
+                        res.status(404).send();
+                        return;
                     }
 
                     forOwn(student, (value, key) => {
