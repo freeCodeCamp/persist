@@ -245,33 +245,49 @@ export default app => {
     app
         .route('/api/college/:fullName')
         .get((req, res) => {
-            College.find(
+          // NOTE The GET request on this route seems to be unusued anywhere in the codebase.
+          // I changed the query from find to findOne in order to be more consistent with
+          // other similar routes.  This obviously changes the returned JSON from an array
+          // with a single element to a single object.  As the route is unused this SHOULD
+          // not cause a problem.  This should be tested more thoroughly though before
+          // pushing to production.
+            College.findOne(
                 {
                     fullName: req.params.fullName
                 },
                 (err, college) => {
                     if (err) {
-                        res.status(500).send(err);
-                        return;
+                      return res.status(500).send(err);
                     }
+
+                    if (college === null) {
+                      return res.status(404).send();
+                    }
+
                     res.status(200).json(college);
                 }
             );
         })
         .post((req, res) => {
-            res.send('working on it');
+          // FIXME should this be implemented?  if not, can it be removed?
+          res.send('working on it');
         })
         .put((req, res) => {
             const college = omit(req.body, '_id');
             College.findOne(
                 {
-                    fullName: college.fullName
+                    fullName: req.params.fullName
                 },
                 (err, oldCollege) => {
                     if (err) {
                         res.status(500).send(err);
                         return;
                     }
+
+                    if (college === null) {
+                      return res.status(404).send();
+                    }
+
                     forOwn(college, (value, key) => {
                         oldCollege[key] = college[key];
                     });
@@ -286,7 +302,8 @@ export default app => {
             );
         })
         .delete((req, res) => {
-            res.send('working on it');
+          // FIXME should this be implemented?  if not, can it be removed?
+          res.send('working on it');
         });
 
     // main routes for queries to students db
