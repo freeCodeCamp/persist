@@ -29,21 +29,22 @@ describe('/api/students', () => {
       testRoute(app, tests, done);
     });
 
-    it.only('should return an array of students from the matching school when authenticated user has ROLE_COUNSELOR', (done) => {
+    it('should return an array of students from the matching school when authenticated user has ROLE_COUNSELOR', (done) => {
       const user = users.filter(user => user.access.role === ROLE_COUNSELOR)[0];
-      const token = jwt.sign(user, process.env.SECRET, {expiresIn: 100080});
-
-      console.log('JWT Token: ', token);
+      const authHeader = 'JWT ' + jwt.sign(user, process.env.SECRET, {expiresIn: 100080});
 
       const tests = [
         {
           request: {
             method: 'get',
             url: encodeURI('/api/students'),
-            token,
+            authHeader,
           },
           response: {
-            'status': 200
+            'status': 200,
+            'body.0.hs': students[0].hs.toString(),
+            'body.1.hs': students[1].hs.toString(),
+            'body.length': 2,
           }
         }
       ];
@@ -51,6 +52,27 @@ describe('/api/students', () => {
       testRoute(app, tests, done);
     });
 
-    it('should return an array of all students from the DB when authenticated user has ROLE_OWNER', () => {});
+    it('should return an array of all students from the DB when authenticated user has ROLE_OWNER', (done) => {
+      const user = users.filter(user => user.access.role === ROLE_OWNER)[0];
+      const authHeader = 'JWT ' + jwt.sign(user, process.env.SECRET, {expiresIn: 100080});
+
+      const tests = [
+        {
+          request: {
+            method: 'get',
+            url: encodeURI('/api/students'),
+            authHeader,
+          },
+          response: {
+            'status': 200,
+            'body.0.hs': students[0].hs.toString(),
+            'body.1.hs': students[1].hs.toString(),
+            'body.length': 2,
+          }
+        }
+      ];
+
+      testRoute(app, tests, done);
+    });
   });
 });

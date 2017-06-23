@@ -13,8 +13,12 @@ const SALT_FACTOR = 5; //should match value in models/user.js
 const pwdSalt = bcrypt.genSaltSync(SALT_FACTOR);
 
 const adminID = new ObjectID();
+
 const userOneID = new ObjectID();
 const schoolOneID = new ObjectID();
+const studentOneID = new ObjectID();
+const studentTwoID = new ObjectID();
+
 const userTwoID = new ObjectID();
 const userThreeID = new ObjectID();
 
@@ -209,9 +213,9 @@ const schools = [
 
 const students = [
   {
-    "_id": ObjectID("591477f37066b1747ff9e94a"),
+    "_id": studentOneID,
     "expectedHSGrad": new Date("2014-09-15T00:00:00.000Z"),
-    "hs": ObjectID("58d453aa97fb3c001846f4d5"),
+    "hs": schoolOneID,
     "osis": 200205492,
     "lastName": "Jonson",
     "firstName": "Jon",
@@ -341,9 +345,9 @@ const students = [
     "address": "86 Nowheresville, NA 75309"
   },
   {
-    "_id" : ObjectID("591477f47066b1747ff9e9ae"),
+    "_id" : studentTwoID,
     "expectedHSGrad" : new Date("2015-09-15T00:00:00.000Z"),
-    "hs" : ObjectID("58d453aa97fb3c001846f4d1"),
+    "hs" : schoolOneID,
     "osis" : 209287145,
     "lastName" : "Ymous",
     "firstName" : "Anon",

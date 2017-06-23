@@ -88,6 +88,7 @@ Object.resolve = function(path, obj) {
  *                request: {
  *                  method: string,     // 'get', 'put', 'delete', etc.
  *                  url: string,        // api route
+ *                  authHeader: string,  // Authorization header
  *                  body: object        // body to be sent as json for 'post' or 'put' requests
  *                },
  *                response: {
@@ -101,7 +102,18 @@ Object.resolve = function(path, obj) {
  * @param  {function} done  async done function to notify mocha when test is complete.
  */
 function testRoute(app, tests, done) {
-  const runTest = (test) => {
+  const runTest = (opts) => {
+    const defaults = {
+      request: {
+        authHeader: '',
+      },
+      response: {},
+    };
+
+    const test = {};
+    test.request = Object.assign({}, defaults.request, opts.request);
+    test.response = Object.assign({}, defaults.response, opts.response);
+
     const checkResult = (res) => {
       return map(test.response, (value, key) => {
         expect(Object.resolve(key, res)).toBe(value);
@@ -110,6 +122,7 @@ function testRoute(app, tests, done) {
 
     return request(app)
       [test.request.method.toLowerCase().trim()](test.request.url)
+      .set('Authorization', test.request.authHeader)
       .send(test.request.body)
       .then(checkResult);
   }
