@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import HeaderMessages from './header-messages/header-messages';
 import HeaderNotifications from './header-notifications/header-notifications';
+import HeaderUser from './header-user';
 
 class HeaderBar extends Component {
     pushMenu() {
@@ -48,27 +49,7 @@ class HeaderBar extends Component {
                             {/* Notifications: style can be found in dropdown.less */}
                             <HeaderNotifications />
                             {/* User Account: style can be found in dropdown.less */}
-                            <li className="dropdown user user-menu">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="/default-profile-pic.png" className="user-image" alt="User Image" />
-                                    <span className="hidden-xs">{`${firstName} ${lastName || ''}`.trim()}</span>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    {/* User image */}
-                                    <li className="user-header">
-                                        <img src="/default-profile-pic.png" className="img-circle" alt="User Image" />
-                                        <p>
-                                            {`${firstName} ${lastName || ''}`.trim()}
-                                        </p>
-                                    </li>
-                                    {/* Menu Footer */}
-                                    <li className="user-footer">
-                                        <div style={{ textAlign: 'center' }}>
-                                            <Link to="/logout" className="btn btn-default btn-flat">Sign out</Link>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            <HeaderUser />
                         </ul>
                     </div>
                 </nav>
