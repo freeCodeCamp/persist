@@ -10,5 +10,6 @@ describe('Server Routes', () => {
     require('./api/student');
     require('./api/college');
     require('./api/students');
+    require('./api/colleges');
   });
 });

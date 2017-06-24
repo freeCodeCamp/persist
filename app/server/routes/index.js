@@ -357,7 +357,6 @@ export default app => {
     });
 
     app.get('/api/schools', requireAuth, (req, res) => {
-        console.log(req);
         let query = School.find({});
         query.lean().exec((err, schools) => {
             if (err) {
