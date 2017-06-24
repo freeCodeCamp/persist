@@ -20,6 +20,7 @@ const userThreeID = new ObjectID();
 
 const schoolOneID = new ObjectID();
 const schoolTwoID = new ObjectID();
+const schoolThreeID = new ObjectID();
 
 const studentOneID = new ObjectID();
 const studentTwoID = new ObjectID();
@@ -194,17 +195,17 @@ const colleges = [
 
 const schools = [
   {
-    "_id": ObjectID("58d453aa97fb3c001846f4ce"),
+    "_id": schoolOneID,
     "name": "Baldwin",
     "users": [],
     "__v": 0
   }, {
-    "_id": ObjectID("58d453aa97fb3c001846f4cf"),
+    "_id": schoolTwoID,
     "name": "Brooklyn Collaborative",
     "users": [],
     "__v": 0
   }, {
-    "_id": ObjectID("58d453aa97fb3c001846f4d0"),
+    "_id": schoolThreeID,
     "name": "Channel View",
     "users": [],
     "__v": 0
