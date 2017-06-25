@@ -1,17 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router';
+import PropTypes from 'prop-types'
 import { OPEN_NAME_EDIT, CLOSE_NAME_EDIT } from '../../../actions/types';
 import { updateUserName } from '../../../actions';
 
+function trySubmission(firstName, lastName, props) {
+	let first = $('#first-name');
+	let newFirstName = first.val();
+	if (!newFirstName) {
+		first.prop('placeholder', 'cannot be empty');
+		return;
+	}
+	let newLastName = $('#last-name').val();
+	// don't trigger the server unnecessarily, lastname could be null not '' 
+	if (newFirstName == firstName && newLastName == (lastName? lastName: '')) {
+		props.closeNameEdit();
+		return;
+	}
+	props.submitNameChange(newFirstName, newLastName);
+}
+
 const HeaderUser = (props) => {
 	const { user: { firstName, lastName } } = props;
-	console.log(props.allProps)
 	return (
 		<li className="dropdown user user-menu">
-			<a href="#" 
+			<a 
 				className="dropdown-toggle"
-				onClick={() => $('.user-menu').toggleClass('open')}
+				onClick={(e) => {
+					$('.user-menu').toggleClass('open'); 
+					props.closeNameEdit();
+					e.stopPropagation();}
+				}
 			>
 				<img src="/default-profile-pic.png" className="user-image" alt="User Image" />
 				<span className="hidden-xs">{`${firstName} ${lastName || ''}`.trim()}</span>
@@ -20,19 +40,29 @@ const HeaderUser = (props) => {
 				{/* User image */}
 				<li className="user-header">
 					<img src="/default-profile-pic.png" className="img-circle" alt="User Image" />
+					{/* Dropdown for name display / edit */}
 					{props.editIsOpen? (
-						<div id='dropdown-user-name'>
-							<i 
-								className="fa fa-male" 
-								onClick={(ev) => {console.log(ev); ev.stopPropagation(); console.log('me'); props.closeNameEdit()}} 
-							/>
+						<div onKeyDown = { (e) => {
+							console.log(e.keyCode)
+							if (e.keyCode == 13) { trySubmission(firstName, lastName, props); }
+							else if (e.keyCode == 27) { props.closeNameEdit() }
+						}}>
+							<input type='text' defaultValue={firstName} placeholder={'First Name'} id='first-name'/>
+							<input type='text' defaultValue={lastName} placeholder={lastName? '': 'Last Name'} id='last-name' />
+							<div
+								className='btn btn-default'
+								onClick={props.closeNameEdit}
+							>Cancel</div>
+							<div 
+								className='btn btn-default'
+								onClick={() => trySubmission(firstName, lastName, props)}
+							>Update Name</div>
 						</div>
 					):(
-						<div id='dropdown-user-name'>
-							<i 
-								onClick={(ev) => {console.log(ev); ev.nativeEvent.stopImmediatePropagation(); ev.stopPropagation; console.log('you'); props.openNameEdit()}}
-								className="fa fa-pencil" 
-							/>
+						<div>
+							<div onClick={props.openNameEdit}>
+								<i className="fa fa-pencil" />
+							</div>
 							<p>{`${firstName} ${lastName || ''}`.trim()}</p>
 						</div>
 					)}
@@ -47,8 +77,14 @@ const HeaderUser = (props) => {
 		</li>
 	);
 }
-
-
+HeaderUser.PropTypes = {
+	firstName: PropTypes.string.isRequired,
+	lastName: PropTypes.string,
+	editIsOpen: PropTypes.bool.isRequired,
+	openNameEdit: PropTypes.func.isRequired,
+	closeNameEdit: PropTypes.func.isRequired,
+	submitNameChange: PropTypes.func.isRequired
+}
 
 const mapStateToProps = (state) => ({
 		user: state.auth.user,
@@ -62,7 +98,7 @@ const mapDispatchToProps = (dispatch) => ({
 		closeNameEdit: () => dispatch({
 				type: CLOSE_NAME_EDIT
 		}),
-		submitNameChange: (firstName, lastName) => updateUserName(firstName, lastName)
+		submitNameChange: (firstName, lastName) => dispatch(updateUserName(firstName, lastName))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderUser);

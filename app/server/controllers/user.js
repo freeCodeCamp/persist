@@ -78,8 +78,8 @@ export const updateUserName = (req, res, next) => {
             res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
             return next(err);
         }
-        existingUser.firstName = firstName;
-        existingUser.lastName = lastName;
+        existingUser.profile.firstName = firstName;
+        existingUser.profile.lastName = lastName;
         existingUser.save( err => {
             if (err) {
                 return next(err);

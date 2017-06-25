@@ -4,7 +4,8 @@ import {
     FORGOT_PASSWORD_PENDING,
     FORGOT_PASSWORD_SUCCESS,
     UPDATE_PASSWORD_PENDING,
-    UPDATE_PASSWORD_SUCCESS
+    UPDATE_PASSWORD_SUCCESS,
+    UPDATE_USER_NAME_SUCCESS
 } from '../actions/types';
 
 const defaultState = {
@@ -34,6 +35,14 @@ const authReducer = (state = defaultState, action) => {
                 ...state,
                 pending: false
             };
+        case UPDATE_USER_NAME_SUCCESS:
+            let user = Object.assign({}, state.user);
+            user.firstName = action.firstName;
+            user.lastName = action.lastName;
+            return {
+                ...state,
+                user: user
+            }
         default:
             return state;
     }
