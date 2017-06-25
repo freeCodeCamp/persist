@@ -185,23 +185,16 @@ export default app => {
     app
         .route('/api/student/:osis')
         .get((req, res) => {
-            Student.findOne(
-                {
-                    osis: req.params.osis
-                },
-                (err, student) => {
-                    if (err) {
-                      res.status(500).send(err);
-                      return;
-                    }
-
-                    if (student === null) {
-                      res.status(404).send();
-                      return;
-                    }
-                    res.status(200).json(student);
+            Student.findOne(  {osis: req.params.osis})
+              .then((student) => {
+                if (student === null) {
+                  res.status(404).send();
+                } else {
+                  res.status(200).json(student);
                 }
-            );
+              }).catch((err) => {
+                res.status(500).send(err);
+              });
         })
         .post((req, res) => {
             // FIXME Should this be implemented?  If not, can it be removed?
@@ -209,33 +202,29 @@ export default app => {
         })
         .put((req, res) => {
             const student = omit(req.body, '_id');
-            Student.findOne(
-                {
-                    osis: req.params.osis
-                },
-                (err, oldStudent) => {
-                    if (err) {
-                        res.status(500).send(err);
-                        return;
-                    }
-
+            Student.findOne({osis: req.params.osis})
+              .then((oldStudent) => {
                     if (oldStudent === null) {
-                      res.status(404).send();
-                      return;
+                      return res.status(404).send();
                     }
 
                     forOwn(student, (value, key) => {
                         oldStudent[key] = student[key];
                     });
-                    oldStudent.save((err, updatedStudent) => {
-                        if (err) {
-                            res.status(500).send(err);
-                            return;
-                        }
+                    oldStudent.save().then((updatedStudent) => {
                         res.status(200).send(updatedStudent);
+                    }).catch((err) => {
+                      if (err) {
+                        res.status(500).send(err);
+                        return;
+                      }
                     });
-                }
-            );
+                }).catch((err) => {
+                  if (err) {
+                    res.status(500).send(err);
+                    return;
+                  }
+                });
         })
         .delete((req, res) => {
             // FIXME should this be implemented?  if not, can it be removed?
@@ -251,22 +240,15 @@ export default app => {
           // with a single element to a single object.  As the route is unused this SHOULD
           // not cause a problem.  This should be tested more thoroughly though before
           // pushing to production.
-            College.findOne(
-                {
-                    fullName: req.params.fullName
-                },
-                (err, college) => {
-                    if (err) {
-                      return res.status(500).send(err);
-                    }
-
+            College.findOne({fullName: req.params.fullName})
+              .then((college) => {
                     if (college === null) {
                       return res.status(404).send();
                     }
-
                     res.status(200).json(college);
-                }
-            );
+                }).catch((err) => {
+                    res.status(500).send(err);
+                });
         })
         .post((req, res) => {
           // FIXME should this be implemented?  if not, can it be removed?
@@ -274,16 +256,8 @@ export default app => {
         })
         .put((req, res) => {
             const college = omit(req.body, '_id');
-            College.findOne(
-                {
-                    fullName: req.params.fullName
-                },
-                (err, oldCollege) => {
-                    if (err) {
-                        res.status(500).send(err);
-                        return;
-                    }
-
+            College.findOne({fullName: req.params.fullName})
+              .then((oldCollege) => {
                     if (college === null) {
                       return res.status(404).send();
                     }
@@ -293,13 +267,15 @@ export default app => {
                     });
                     oldCollege.save((err, updatedCollege) => {
                         if (err) {
-                            res.status(500).send(err);
-                            return;
+                            return res.status(500).send(err);
                         }
                         res.status(200).send(updatedCollege);
                     });
-                }
-            );
+                }).catch((err) => {
+                  if (err) {
+                    res.status(500).send(err);
+                  }
+                });
         })
         .delete((req, res) => {
           // FIXME should this be implemented?  if not, can it be removed?
