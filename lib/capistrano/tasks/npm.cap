@@ -8,7 +8,7 @@ namespace :npm do
 
   task :prestart do
     on roles(:app) do
-        execute "npm --prefix #{current_path} run prestart"
+        execute "npm --prefix #{current_path} run build"
     end
   end
 
