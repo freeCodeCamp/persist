@@ -116,7 +116,7 @@ function testRoute(app, tests, done) {
 
     const checkResult = (res) => {
       return map(test.response, (value, key) => {
-        expect(Object.resolve(key, res)).toBe(value);
+        expect(Object.resolve(key, res)).toEqual(value);
       });
     };
 

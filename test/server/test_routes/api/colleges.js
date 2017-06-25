@@ -42,8 +42,7 @@ describe('/api/colleges', () => {
           },
           response: {
             'status': 200,
-            'body.0._id': colleges[0]._id.toString(),
-            'body.length': 2,
+            'body.length': colleges.length,
           }
         }
       ];

@@ -29,13 +29,13 @@ const studentThreeID = new ObjectID();
 const users = [
   {
     profile: {
-      firstName: 'Sachin',
-      lastName: 'Mour'
+      firstName: 'J Edgar',
+      lastName: 'Hoover'
     },
-    email: 'rtr.sachinmour@gmail.com',
+    email: 'paranoiac@gmail.com',
     password: bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'admin', pwdSalt),
     access: {
-      role: 'Admin' // Why is this not ROLE_ADMIN?
+      role: ROLE_ADMIN,
     },
     enabled: true
   }, {
@@ -48,8 +48,8 @@ const users = [
     },
     enabled: true,
     access: {
-      role: ROLE_ADMIN,
-      school: schoolOneID
+      role: ROLE_COUNSELOR,
+      school: schoolOneID,
     }
   }, {
     _id: userTwoID,
@@ -62,7 +62,7 @@ const users = [
     enabled: true,
     access: {
       role: ROLE_COUNSELOR,
-      school: schoolOneID
+      school: schoolOneID,
     }
   }, {
     _id: userThreeID,
@@ -75,7 +75,19 @@ const users = [
     enabled: true,
     access: {
       role: ROLE_OWNER,
-      school: schoolOneID
+    }
+  }, {
+    _id: new ObjectID(),
+    email: 'userFour@test.com',
+    password: bcrypt.hashSync('userFourPass', pwdSalt),
+    profile: {
+      firstName: 'User',
+      lastName: 'Four'
+    },
+    enabled: true,
+    access: {
+      role: 'Student',
+      school: schoolThreeID,
     }
   }
 ];

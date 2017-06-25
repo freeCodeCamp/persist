@@ -331,6 +331,7 @@ export default app => {
             return res.status(200).json([]);
         } else if (getRole(req.user.access.role) === getRole(ROLE_COUNSELOR)) {
             query = User.find({
+                // FIXME Selection by school seems to be broken.  Will test further
                 $or: [{ access: { school: req.user.access.school } }, { access: { role: ROLE_OWNER } }, { access: { role: ROLE_ADMIN } }]
             });
         } else if (getRole(req.user.access.role) >= getRole(ROLE_OWNER)) {
