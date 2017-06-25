@@ -1,14 +1,24 @@
-const expect = require('expect');
-const request = require('supertest');
-const path = require('path');
 const _ = require('lodash');
-const {testRoute} = require('../../testUtils');
+const expect = require('expect');
+const path = require('path');
+const request = require('supertest');
+const sinon = require('sinon');
 
+const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
+
+const {testRoute} = require('../../testUtils');
 const {students} = require('../../dbseed/seed');
 
 import app from '../../../../app/server/server';
 
 describe('/api/student/:osis', () => {
+  var sandbox;
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
   describe('GET', () => {
     it('should return a JSON description of an existing student from the DB', (done) => {
       const tests = [
@@ -66,7 +76,7 @@ describe('/api/student/:osis', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return status 500 on server error *UNSURE HOW TO FORCE SERVER ERROR WITH GET REQUEST*', (done) => {
+    it('should return status 500 on server error', (done) => {
       const tests = [
         {
           request: {
@@ -78,6 +88,10 @@ describe('/api/student/:osis', () => {
           }
         }
       ];
+
+      sandbox.mock(dbModels.Student)
+        .expects('findOne')
+        .rejects(new Error());
 
       testRoute(app, tests, done);
     });
@@ -166,7 +180,79 @@ describe('/api/student/:osis', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return status 500 on server error *UNSURE HOW TO FORCE SERVER ERROR WITH PUT REQUEST*', (done) => {});
+    it('should return status 500 if the Mongoose querey throws an error', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/200205492',
+            body: {
+              firstName: 'Joe',
+              fullName: 'Joe Jonson',
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }, {
+          request: {
+            method: 'put',
+            url: '/api/student/209287145',
+            body: {
+              photoReleaseForm: true,
+              needsFollowup: true,
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }
+      ];
+      sandbox.mock(dbModels.Student)
+        .expects('findOne')
+        .rejects(new Error());
+
+      testRoute(app, tests, done);
+    });
+
+    it.skip('should return status 500 if saving the new version throws an error *UNSURE HOW TO MOCK save METHOD ON MONGOOSE INSTANCE*', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/200205492',
+            body: {
+              firstName: 'Joe',
+              fullName: 'Joe Jonson',
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }, {
+          request: {
+            method: 'put',
+            url: '/api/student/209287145',
+            body: {
+              photoReleaseForm: true,
+              needsFollowup: true,
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }
+      ];
+      sandbox.mock(dbModels.Student)
+        .expects('save')
+        .rejects(new Error());
+
+      testRoute(app, tests, done);
+    });
   });
 
   describe('DELETE', () => {
