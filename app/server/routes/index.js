@@ -379,6 +379,7 @@ export default app => {
     app.get('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.getUsers);
     app.post('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.inviteUser);
     app.patch('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.updateUser);
+    app.patch('/user_name', requireAuth, UserController.updateUserName);
     app.delete('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.deleteUser);
     app.post('/update-password/:token', AuthController.verifyToken);
     app.post('/invite/:token', AuthController.verifyToken);
