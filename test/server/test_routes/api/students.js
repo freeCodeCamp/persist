@@ -31,14 +31,13 @@ describe('/api/students', () => {
 
     it('should return an array of students from the matching school when authenticated user has ROLE_COUNSELOR', (done) => {
       const user = users.filter(user => user.access.role === ROLE_COUNSELOR)[0];
-      const authHeader = 'JWT ' + jwt.sign(user, process.env.SECRET, {expiresIn: 100080});
 
       const tests = [
         {
           request: {
             method: 'get',
             url: encodeURI('/api/students'),
-            authHeader,
+            authUser: users.filter(user => user.access.role === ROLE_COUNSELOR)[0],
           },
           response: {
             'status': 200,
@@ -53,15 +52,14 @@ describe('/api/students', () => {
     });
 
     it('should return an array of all students from the DB when authenticated user has ROLE_OWNER', (done) => {
-      const user = users.filter(user => user.access.role === ROLE_OWNER)[0];
-      const authHeader = 'JWT ' + jwt.sign(user, process.env.SECRET, {expiresIn: 100080});
+      const authUser = users.filter(user => user.access.role === ROLE_OWNER)[0];
 
       const tests = [
         {
           request: {
             method: 'get',
             url: encodeURI('/api/students'),
-            authHeader,
+            authUser,
           },
           response: {
             'status': 200,

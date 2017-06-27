@@ -30,15 +30,14 @@ describe('/api/colleges', () => {
     });
 
     it('should return an array of all colleges from the databse when user is authenticated', (done) => {
-      const user = users[1];
-      const authHeader = 'JWT ' + jwt.sign(user, process.env.SECRET, {expiresIn: 100080});
+      const authUser = users[1];
 
       const tests = [
         {
           request: {
             method: 'get',
             url: encodeURI('/api/colleges'),
-            authHeader,
+            authUser,
           },
           response: {
             'status': 200,

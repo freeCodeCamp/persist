@@ -1,5 +1,6 @@
 const expect = require('expect');
 const request = require('supertest');
+const jwt = require('jsonwebtoken');
 const {filter, isEmpty, map, forEach} = require('lodash');
 /**
  * testSeed - utility function for checking that MongoDB database has been seeded
@@ -119,6 +120,10 @@ function testRoute(app, tests, done) {
         expect(Object.resolve(key, res)).toEqual(value);
       });
     };
+
+    if(test.request.authUser) {
+      test.request.authHeader = 'JWT ' + jwt.sign(test.request.authUser, process.env.SECRET, {expiresIn: 100080});
+    }
 
     return request(app)
       [test.request.method.toLowerCase().trim()](test.request.url)
