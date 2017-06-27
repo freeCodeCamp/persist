@@ -58,56 +58,50 @@ class ColType extends Component {
                 defaultColTypeData[n + 1] = { count: 0, students: [] };
             });
             const result = {};
-            const q = async.queue(
-                (student, callback) => {
-                    const hsGradYear = student.hsGradYear;
-                    if (hsGradYear) {
-                        result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultColTypeData);
-                        let colType;
-                        student.terms = _.compact(student.terms);
-                        if (student.terms.length > 0) {
-                            const college = collegeObj[_.last(student.terms).college];
-                            if ((college.durationType && college.durationType === durationType) || durationType === 'all') {
-                                colType = college.collType;
-                                if (colType === 1) {
-                                    switch (college.durationType) {
-                                        case '2 year':
-                                            colType = 1;
-                                            break;
-                                        case '4 year':
-                                            colType = 7;
-                                            break;
-                                        default:
-                                            colType = undefined;
-                                    }
-                                } else if (colType === 2) {
-                                    switch (college.durationType) {
-                                        case '2 year':
-                                            colType = 2;
-                                            break;
-                                        case '4 year':
-                                            colType = 8;
-                                            break;
-                                        default:
-                                            colType = undefined;
-                                    }
+            const q = async.queue((student, callback) => {
+                const hsGradYear = student.hsGradYear;
+                if (hsGradYear) {
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultColTypeData);
+                    let colType;
+                    student.terms = _.compact(student.terms);
+                    if (student.terms.length > 0) {
+                        const college = collegeObj[_.last(student.terms).college];
+                        if ((college.durationType && college.durationType === durationType) || durationType === 'all') {
+                            colType = college.collType;
+                            if (colType === 1) {
+                                switch (college.durationType) {
+                                    case '2 year':
+                                        colType = 1;
+                                        break;
+                                    case '4 year':
+                                        colType = 7;
+                                        break;
+                                    default:
+                                        colType = undefined;
                                 }
-                                if (colType) {
-                                    result[hsGradYear][colType].count += 1;
-                                    result[hsGradYear][colType].students.push(student.osis);
+                            } else if (colType === 2) {
+                                switch (college.durationType) {
+                                    case '2 year':
+                                        colType = 2;
+                                        break;
+                                    case '4 year':
+                                        colType = 8;
+                                        break;
+                                    default:
+                                        colType = undefined;
                                 }
+                            }
+                            if (colType) {
+                                result[hsGradYear][colType].count += 1;
+                                result[hsGradYear][colType].students.push(student.osis);
                             }
                         }
                     }
-                    setTimeout(
-                        () => {
-                            callback();
-                        },
-                        0
-                    );
-                },
-                20
-            );
+                }
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }, 20);
             q.push(props.students);
             q.drain = () => {
                 resolve(result);

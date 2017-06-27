@@ -28,14 +28,7 @@ class Applications extends Component {
         const { initValue, collegeObj } = this.props;
         const applicationsHTML = initValue.map((application, index) => {
             const college = collegeObj[application.college];
-            const {
-                type,
-                result,
-                heop,
-                attending,
-                defer,
-                notes
-            } = application;
+            const { type, result, heop, attending, defer, notes } = application;
             return (
                 <tr key={index}>
                     <td>{college.fullName}</td>

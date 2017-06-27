@@ -59,7 +59,7 @@ class NotifcationItem extends Component {
                         {`${userName}`}
                         <small className="pull-right">
                             <i
-                                ref={c => this.readComp = c}
+                                ref={c => (this.readComp = c)}
                                 className={readClass}
                                 onClick={e => this.markRead(e, notifId._id)}
                                 style={{ fontSize: 10, cursor: 'default' }}

@@ -24,11 +24,11 @@ const renderDropzoneInput = field => {
             {files &&
                 Array.isArray(files) &&
                 <ul>
-                    {files.map((file, i) => (
+                    {files.map((file, i) =>
                         <li key={i}>
                             {file.name}
                         </li>
-                    ))}
+                    )}
                 </ul>}
         </div>
     );

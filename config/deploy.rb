@@ -3,7 +3,7 @@ lock "3.8.0"
 
 set :application, "nycoutwardbound"
 set :app_command, "nycoutwardbound"
-set :repo_url, "git@github.com:sachinmour/nyc_outward.git"
+set :repo_url, "git@github.com:freeCodeCamp/Persist.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -34,5 +34,5 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # set :keep_releases, 5
 
 after 'deploy:finished', 'npm:install'
-after 'npm:install', 'npm:prestart'
+# after 'npm:install', 'npm:prestart'
 after 'npm:prestart', 'pm2:restart'

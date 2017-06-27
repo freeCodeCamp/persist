@@ -1,2 +1,2 @@
-export {default as addReminder} from './addReminder';
-export {default as removeReminder} from './removeReminder';
+export { default as addReminder } from './addReminder';
+export { default as removeReminder } from './removeReminder';

@@ -6,7 +6,6 @@ export default (record, callback) => {
         return;
     }
     if (!record.college) {
-        record.college = 'set undefined';
         return callback(null);
     }
     //  reference college

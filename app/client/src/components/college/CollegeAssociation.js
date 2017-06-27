@@ -56,78 +56,72 @@ class CollegeAssociation extends Component {
             const network = {};
             const associated = [];
             if (students.length < 1) resolve({ network, associated });
-            const q = async.queue(
-                (student, callback) => {
-                    const hsGradYear = student.hsGradYear;
-                    const hsGradDate = student.hsGradDate;
-                    if (hsGradDate && hsGradYear) {
-                        network[hsGradYear] = network[hsGradYear] || [];
-                        student.terms = _.compact(student.terms);
-                        const termLength = student.terms.length;
-                        let enrolled = false;
-                        if (termLength > 0) {
-                            let breakOut = false;
-                            for (const term of student.terms) {
-                                if (term.college === collegeId) {
-                                    switch (term.status) {
-                                        case 'Graduated': {
-                                            enrolled = true;
-                                            associated.push(associatedStudent(student, 'Graduated'));
-                                            breakOut = true;
-                                            break;
-                                        }
-                                        case 'F': {
-                                            enrolled = true;
-                                            if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
-                                                associated.push(associatedStudent(student, 'Currently Enrolled Full-time'));
-                                            } else {
-                                                associated.push(associatedStudent(student, 'No longer Enrolled'));
-                                            }
-                                            if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
-                                                network[hsGradYear].push(student.osis);
-                                            }
-                                            breakOut = true;
-                                            break;
-                                        }
-                                        case 'H':
-                                        case 'L':
-                                        case 'Q': {
-                                            enrolled = true;
-                                            if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
-                                                associated.push(associatedStudent(student, 'Currently Enrolled Part-time'));
-                                            } else {
-                                                associated.push(associatedStudent(student, 'No longer Enrolled'));
-                                            }
-                                            if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
-                                                network[hsGradYear].push(student.osis);
-                                            }
-                                            breakOut = true;
-                                            break;
-                                        }
-                                        case 'W': {
-                                            enrolled = true;
+            const q = async.queue((student, callback) => {
+                const hsGradYear = student.hsGradYear;
+                const hsGradDate = student.hsGradDate;
+                if (hsGradDate && hsGradYear) {
+                    network[hsGradYear] = network[hsGradYear] || [];
+                    student.terms = _.compact(student.terms);
+                    const termLength = student.terms.length;
+                    let enrolled = false;
+                    if (termLength > 0) {
+                        let breakOut = false;
+                        for (const term of student.terms) {
+                            if (term.college === collegeId) {
+                                switch (term.status) {
+                                    case 'Graduated': {
+                                        enrolled = true;
+                                        associated.push(associatedStudent(student, 'Graduated'));
+                                        breakOut = true;
+                                        break;
+                                    }
+                                    case 'F': {
+                                        enrolled = true;
+                                        if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
+                                            associated.push(associatedStudent(student, 'Currently Enrolled Full-time'));
+                                        } else {
                                             associated.push(associatedStudent(student, 'No longer Enrolled'));
-                                            breakOut = true;
-                                            break;
                                         }
+                                        if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
+                                            network[hsGradYear].push(student.osis);
+                                        }
+                                        breakOut = true;
+                                        break;
+                                    }
+                                    case 'H':
+                                    case 'L':
+                                    case 'Q': {
+                                        enrolled = true;
+                                        if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
+                                            associated.push(associatedStudent(student, 'Currently Enrolled Part-time'));
+                                        } else {
+                                            associated.push(associatedStudent(student, 'No longer Enrolled'));
+                                        }
+                                        if (Math.abs(moment(term.enrolBegin).diff(moment(hsGradDate), 'months')) < 6) {
+                                            network[hsGradYear].push(student.osis);
+                                        }
+                                        breakOut = true;
+                                        break;
+                                    }
+                                    case 'W': {
+                                        enrolled = true;
+                                        associated.push(associatedStudent(student, 'No longer Enrolled'));
+                                        breakOut = true;
+                                        break;
                                     }
                                 }
-                                if (breakOut) break;
                             }
-                        }
-                        if (!enrolled && student.intendedCollege === collegeId) {
-                            associated.push(associatedStudent(student, 'Intended to Enroll'));
+                            if (breakOut) break;
                         }
                     }
-                    setTimeout(
-                        () => {
-                            callback();
-                        },
-                        0
-                    );
-                },
-                20
-            );
+                    if (!enrolled && student.intendedCollege === collegeId) {
+                        associated.push(associatedStudent(student, 'Intended to Enroll'));
+                    }
+                }
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }, 20);
             q.push(students);
             q.drain = () => {
                 resolve({ network, associated });

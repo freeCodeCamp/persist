@@ -1,19 +1,20 @@
 # Test Suite
 
-This suite of automated tests aims to proved high test coverage of the application code.  The test suite relies on the following tools:
+This suite of automated tests aims to provide high test coverage of the application code.  The test suite relies on the following tools:
 
 * [Mocha Test Framework](https://github.com/mochajs/mocha)
 * [Karma Test Runner](https://github.com/karma-runner/karma) for front-end tests
 * [PhantomJS](https://github.com/ariya/phantomjs) for front-end tests
 * [Expect Assertion Library](https://github.com/mjackson/expect)
 * [Sinon Mocking Library](http://sinonjs.org/releases/v2.3.2/)
+* [Supertest](https://github.com/visionmedia/supertest)
 * [Istanbul Test Coverage Reporter](https://github.com/gotwarlost/istanbul)
 
 as well as a handful of other libraries as needed in individual tests.
 
 The full test suite can be run via `$ npm test`.
 
-**Important**: Make sure `TEST_MONGODB_URI` is set and not equal to `MONGODB_URI`.
+**Important**: Make sure `TEST_MONGODB_URI` is set and *not* equal to `MONGODB_URI`.
 
 ## Front-End Tests
 

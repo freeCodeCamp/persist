@@ -29,13 +29,7 @@ class Terms extends Component {
         const { initValue, collegeObj } = this.props;
         const termsHTML = initValue.map((term, index) => {
             const college = collegeObj[term.college];
-            const {
-                name,
-                status,
-                creditEarned,
-                creditAttempted,
-                gpa
-            } = term;
+            const { name, status, creditEarned, creditAttempted, gpa } = term;
             return (
                 <tr key={index}>
                     <td>{college.fullName}</td>

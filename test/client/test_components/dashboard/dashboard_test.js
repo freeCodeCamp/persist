@@ -7,13 +7,10 @@
 
 // 	beforeEach(() => {
 
-		
 // 		const props = { currentPage: '<div className="example-page">Test</div>' };
 // 		component = renderComponent(Dashboard, props);
 // 	});
 
-
-	
 // 	it('has correct id', () => {
 // 		expect(component).to.have.id('dashboard');
 // 	});
@@ -41,6 +38,5 @@
 // 	it('shows a control menu', () => {
 // 		expect(component.find('.control-sidebar')).to.exist;
 // 	});
-	
 
 // });

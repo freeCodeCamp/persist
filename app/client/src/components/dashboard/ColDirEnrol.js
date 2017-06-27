@@ -58,44 +58,38 @@ class ColDirEnrol extends Component {
                 total: 0
             };
             const result = {};
-            const q = async.queue(
-                (student, callback) => {
-                    const hsGradYear = student.hsGradYear;
-                    if (hsGradYear) {
-                        result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
-                        const hsGradDate = student.hsGradDate;
-                        let enrolDate;
-                        student.terms = _.compact(student.terms);
-                        if (student.terms.length > 0) {
-                            enrolDate = _.last(student.terms).enrolBegin;
+            const q = async.queue((student, callback) => {
+                const hsGradYear = student.hsGradYear;
+                if (hsGradYear) {
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
+                    const hsGradDate = student.hsGradDate;
+                    let enrolDate;
+                    student.terms = _.compact(student.terms);
+                    if (student.terms.length > 0) {
+                        enrolDate = _.last(student.terms).enrolBegin;
+                    }
+                    if (enrolDate && hsGradDate) {
+                        if (this.diffMonths(enrolDate, hsGradDate, 6)) {
+                            result[hsGradYear]['6m'].count += 1;
+                            result[hsGradYear]['6m'].students.push(student.osis);
                         }
-                        if (enrolDate && hsGradDate) {
-                            if (this.diffMonths(enrolDate, hsGradDate, 6)) {
-                                result[hsGradYear]['6m'].count += 1;
-                                result[hsGradYear]['6m'].students.push(student.osis);
-                            }
-                            if (this.diffMonths(enrolDate, hsGradDate, 12)) {
-                                result[hsGradYear]['12m'].count += 1;
-                                result[hsGradYear]['12m'].students.push(student.osis);
-                            }
-                            if (this.diffMonths(enrolDate, hsGradDate, 18)) {
-                                result[hsGradYear]['18m'].count += 1;
-                                result[hsGradYear]['18m'].students.push(student.osis);
-                            }
+                        if (this.diffMonths(enrolDate, hsGradDate, 12)) {
+                            result[hsGradYear]['12m'].count += 1;
+                            result[hsGradYear]['12m'].students.push(student.osis);
                         }
-                        if (hsGradDate) {
-                            result[hsGradYear]['total'] += 1;
+                        if (this.diffMonths(enrolDate, hsGradDate, 18)) {
+                            result[hsGradYear]['18m'].count += 1;
+                            result[hsGradYear]['18m'].students.push(student.osis);
                         }
                     }
-                    setTimeout(
-                        () => {
-                            callback();
-                        },
-                        0
-                    );
-                },
-                100
-            );
+                    if (hsGradDate) {
+                        result[hsGradYear]['total'] += 1;
+                    }
+                }
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }, 100);
             q.push(props.students);
             q.drain = () => {
                 resolve(result);
@@ -207,7 +201,10 @@ class ColDirEnrol extends Component {
                 <Divider style={{ height: 2 }} />
                 <Card>
                     <CardText>
-                        College direct enrollment refers to the percentage of all graduates within a given year (January, June, or August) that enrolled in a college or approved vocational program within 6, 12, or 18 months of graduation. For January and June graduates, 6 month enrollment means students would be enrolled by the Fall after graduation, and for August graduates 6 month enrollment would include the following Spring.
+                        College direct enrollment refers to the percentage of all graduates within a given year (January, June, or August)
+                        that enrolled in a college or approved vocational program within 6, 12, or 18 months of graduation. For January and
+                        June graduates, 6 month enrollment means students would be enrolled by the Fall after graduation, and for August
+                        graduates 6 month enrollment would include the following Spring.
                     </CardText>
                 </Card>
             </div>

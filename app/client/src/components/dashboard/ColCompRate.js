@@ -42,29 +42,23 @@ class ColCompRate extends Component {
             const colleges = _.keyBy(props.colleges, '_id');
             const colCompletionRate = [];
             const result = {};
-            const q = async.queue(
-                (student, callback) => {
-                    const hsGradYear = student.hsGradYear;
-                    if (hsGradYear) {
-                        result[hsGradYear] = result[hsGradYear] || _.cloneDeep(colCompletionRate);
-                        const terms = student.terms;
-                        if (terms.length > 0) {
-                            const college = colleges[terms[0].college];
-                            const gradRate = college.gradRate;
-                            if (college && gradRate && gradRate.overall) {
-                                result[hsGradYear].push(gradRate.overall);
-                            }
+            const q = async.queue((student, callback) => {
+                const hsGradYear = student.hsGradYear;
+                if (hsGradYear) {
+                    result[hsGradYear] = result[hsGradYear] || _.cloneDeep(colCompletionRate);
+                    const terms = student.terms;
+                    if (terms.length > 0) {
+                        const college = colleges[terms[0].college];
+                        const gradRate = college.gradRate;
+                        if (college && gradRate && gradRate.overall) {
+                            result[hsGradYear].push(gradRate.overall);
                         }
                     }
-                    setTimeout(
-                        () => {
-                            callback();
-                        },
-                        0
-                    );
-                },
-                100
-            );
+                }
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }, 100);
             q.push(props.students);
             q.drain = () => {
                 resolve(result);
@@ -106,8 +100,9 @@ class ColCompRate extends Component {
             },
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
+                pointFormat:
+                    '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -153,7 +148,9 @@ class ColCompRate extends Component {
                 <Divider style={{ height: 2 }} />
                 <Card>
                     <CardText>
-                        This metric refers to the aggregated completion rate of institutions our graduates attended after high school. The institutional completion rate is the percentage of students who graduated in 150% of the time (so 3 years for a 2 year degree and 6 years for a 4 year degree). The average completion rate nationwide is about 41%.
+                        This metric refers to the aggregated completion rate of institutions our graduates attended after high school. The
+                        institutional completion rate is the percentage of students who graduated in 150% of the time (so 3 years for a 2
+                        year degree and 6 years for a 4 year degree). The average completion rate nationwide is about 41%.
                     </CardText>
                 </Card>
             </div>

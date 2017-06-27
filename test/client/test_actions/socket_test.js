@@ -3,16 +3,16 @@ import sinon from 'sinon';
 import moxios from 'moxios';
 
 import * as types from '../../../app/client/src/actions/types';
-import {updateNotification} from '../../../app/client/src/actions/socket';
+import { updateNotification } from '../../../app/client/src/actions/socket';
 
 describe.skip('Socket Actions', () => {
-  beforeEach(() => {
-    moxios.install();
-  });
+    beforeEach(() => {
+        moxios.install();
+    });
 
-  afterEach(() => {
-    moxios.uninstall();
-  });
+    afterEach(() => {
+        moxios.uninstall();
+    });
 
-  describe('updateNotification', () => {});
+    describe('updateNotification', () => {});
 });

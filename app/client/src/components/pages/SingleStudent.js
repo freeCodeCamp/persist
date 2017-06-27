@@ -22,12 +22,13 @@ class SingleStudent extends React.Component {
                           </div>
                       </Content>
                     : student.success && !student.data
-                          ? <div>No Records Found</div>
-                          : <div>
-                                <p>
-                                    Loading
-                                </p><i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
-                            </div>}
+                      ? <div>No Records Found</div>
+                      : <div>
+                            <p>
+                                Loading
+                            </p>
+                            <i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
+                        </div>}
             </div>
         );
     }

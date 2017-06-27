@@ -77,8 +77,12 @@ export default function(fileName) {
                             const collegeObject = oldCollege.toObject();
                             const newCollege = myMerge(collegeObject, newRecord);
                             forOwn(collegeObject, (value, key) => {
-                                if (key !== '_id' && newCollege[key]) {
-                                    oldCollege[key] = newCollege[key];
+                                if (key !== '_id') {
+                                    if (newCollege[key] === 'set undefined') {
+                                        oldCollege[key] = undefined;
+                                    } else if (newCollege[key]) {
+                                        oldCollege[key] = newCollege[key];
+                                    }
                                 }
                             });
                             oldCollege.save(err => {
