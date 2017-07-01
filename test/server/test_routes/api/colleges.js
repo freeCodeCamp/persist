@@ -2,7 +2,6 @@ const expect = require('expect');
 const request = require('supertest');
 const path = require('path');
 const _ = require('lodash');
-const jwt = require('jsonwebtoken');
 const {testRoute} = require('../../testUtils');
 
 const commonDir = path.join(process.env.PWD, 'app/common/');
