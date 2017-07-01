@@ -3,10 +3,10 @@ const expect = require('expect');
 const path = require('path');
 const request = require('supertest');
 const sinon = require('sinon');
-const {testRoute} = require('../../testUtils');
+const { testRoute } = require('../../testUtils');
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 
-const {colleges} = require('../../dbseed/seed');
+const { colleges } = require('../../dbseed/seed');
 
 import app from '../../../../app/server/server';
 
@@ -151,8 +151,8 @@ describe('/api/college/:fullName', () => {
       const tests = [
         {
           request: {
-            method: 'get',
-            url: encodeURI('/api/college/randomName'),
+            method: 'put',
+            url: encodeURI('/api/college/QAZWSXEDC'),
             body: {
               'percentPellGrant': 0.75,
             }
@@ -162,8 +162,8 @@ describe('/api/college/:fullName', () => {
           }
         }, {
           request: {
-            method: 'get',
-            url: encodeURI('/api/college/QAZWSXEDC'),
+            method: 'put',
+            url: encodeURI('/api/college/randomName'),
             body: {
               'percentPellGrant': 0.75,
             }
@@ -211,7 +211,7 @@ describe('/api/college/:fullName', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return status 500 if saving the new version throws an error *UNSURE HOW TO MOCK save METHOD ON MONGOOSE INSTANCE*', (done) => {
+    it('should return status 500 if saving the new version throws an error', (done) => {
       const tests = [
         {
           request: {
@@ -238,7 +238,7 @@ describe('/api/college/:fullName', () => {
         }
       ];
 
-      sandbox.mock(dbModels.College)
+      sandbox.mock(dbModels.College.prototype)
         .expects('save')
         .rejects(new Error());
 

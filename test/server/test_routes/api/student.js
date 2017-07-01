@@ -6,8 +6,8 @@ const sinon = require('sinon');
 
 const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 
-const {testRoute} = require('../../testUtils');
-const {students} = require('../../dbseed/seed');
+const { testRoute } = require('../../testUtils');
+const { students } = require('../../dbseed/seed');
 
 import app from '../../../../app/server/server';
 
@@ -28,7 +28,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/200205492'
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 200205492,
             'body.hsGradYear': 2014,
             'body.firstName': 'Jon',
@@ -40,7 +40,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/209287145'
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 209287145,
             'body.hsGradYear': 2015,
             'body.firstName': 'Anon',
@@ -60,7 +60,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/2002092'
           },
           response: {
-            'status': 404
+            status: 404
           }
         }, {
           request: {
@@ -68,7 +68,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/2092145'
           },
           response: {
-            'status': 404
+            status: 404
           }
         }
       ];
@@ -84,7 +84,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/200205492'
           },
           response: {
-            'status': 500
+            status: 500
           }
         }
       ];
@@ -115,7 +115,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 200205492,
             'body.firstName': 'Joe',
             'body.fullName': 'Joe Jonson',
@@ -132,7 +132,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 209287145,
             'body.firstName': 'Anon',
             'body.fullName': 'Anon Ymous',
@@ -159,7 +159,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 404
+            status: 404
           }
         }, {
           request: {
@@ -172,7 +172,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 404
+            status: 404
           }
         }
       ];
@@ -193,7 +193,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 500,
+            status: 500
           }
         }, {
           request: {
@@ -206,7 +206,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 500,
+            status: 500
           }
         }
       ];
@@ -217,7 +217,7 @@ describe('/api/student/:osis', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return status 500 if saving the new version throws an error *UNSURE HOW TO MOCK save METHOD ON MONGOOSE INSTANCE*', (done) => {
+    it('should return status 500 if saving the new version throws an error', (done) => {
       const tests = [
         {
           request: {
@@ -230,7 +230,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 500,
+            status: 500
           }
         }, {
           request: {
@@ -243,11 +243,11 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 500,
+            status: 500
           }
         }
       ];
-      sandbox.mock(dbModels.Student)
+      sandbox.mock(dbModels.Student.prototype)
         .expects('save')
         .rejects(new Error());
 
