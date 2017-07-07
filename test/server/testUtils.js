@@ -1,6 +1,7 @@
 const expect = require('expect');
 const request = require('supertest');
-const {filter, isEmpty, map, forEach} = require('lodash');
+const jwt = require('jsonwebtoken');
+const { filter, isEmpty, map, forEach } = require('lodash');
 /**
  * testSeed - utility function for checking that MongoDB database has been seeded
  *              correctly for testing purposes.
@@ -14,19 +15,21 @@ const {filter, isEmpty, map, forEach} = require('lodash');
  */
 function testSeed(collection, expectedCount, validators, done) {
   try {
-    expect(collection.length).toBe(expectedCount);
+    expect(collection.length)
+      .toBe(expectedCount);
   } catch (err) {
     return done(err);
   }
   Promise.all(collection.map(doc => validators.every(valid => valid(doc))))
-  .then(results => {
-    try {
-      expect(results.every(result => result === true)).toBe(true);
-      done();
-    } catch (err) {
-      done(err);
-    }
-  });
+    .then(results => {
+      try {
+        expect(results.every(result => result === true))
+          .toBe(true);
+        return done();
+      } catch (err) {
+        return done(err);
+      }
+    });
 }
 
 /**
@@ -47,22 +50,28 @@ function testSeed(collection, expectedCount, validators, done) {
  * @param  {Function} done             async done function to notify mocha when test is complete.
  */
 function testModel(Model, validInstances, invalidInstances, done) {
-  const saveValidDoc = (doc) => new Model(doc).save().then(res => res).catch(done);
-  const saveInvalidDoc = (doc) => new Model(doc).save().then(res => res).catch(err => err);
+  const saveValidDoc = (doc) => new Model(doc)
+    .save()
+    .then(res => res)
+    .catch(done);
+  const saveInvalidDoc = (doc) => new Model(doc)
+    .save()
+    .then(res => res)
+    .catch(err => err);
 
   Promise.all(validInstances.map(saveValidDoc))
     .then(() => Promise.all(invalidInstances.map(saveInvalidDoc))
-                  .then(results => {
-                    const passed = filter(results, res => !(res instanceof Error));
-                    if (isEmpty(passed)) {
-                      return done();
-                    } else {
-                      return done(new Error(`Model should not save ${passed}`))
-                    }
-                  }).catch(done))
+      .then(results => {
+        const passed = filter(results, res => !(res instanceof Error));
+        if (isEmpty(passed)) {
+          return done();
+        } else {
+          return done(new Error(`Model should not save ${passed}`));
+        }
+      })
+      .catch(done))
     .catch(done);
 }
-
 
 
 /**
@@ -74,10 +83,11 @@ function testModel(Model, validInstances, invalidInstances, done) {
  * @return {variable}      value of obj[path]
  */
 Object.resolve = function(path, obj) {
-  return path.split('.').reduce(function(prev, curr) {
-    return prev ? prev[curr] : undefined
-  }, obj || self);
-}
+  return path.split('.')
+    .reduce(function(prev, curr) {
+      return prev ? prev[curr] : undefined;
+    }, obj || self);
+};
 
 
 /**
@@ -88,6 +98,7 @@ Object.resolve = function(path, obj) {
  *                request: {
  *                  method: string,     // 'get', 'put', 'delete', etc.
  *                  url: string,        // api route
+ *                  authHeader: string,  // Authorization header
  *                  body: object        // body to be sent as json for 'post' or 'put' requests
  *                },
  *                response: {
@@ -101,26 +112,45 @@ Object.resolve = function(path, obj) {
  * @param  {function} done  async done function to notify mocha when test is complete.
  */
 function testRoute(app, tests, done) {
-  const runTest = (test) => {
+  const runTest = (opts) => {
+    const defaults = {
+      request: {
+        authHeader: '',
+        authUser: null
+      },
+      response: {}
+    };
+
+    const test = {};
+    test.request = Object.assign({}, defaults.request, opts.request);
+    test.response = Object.assign({}, defaults.response, opts.response);
+
     const checkResult = (res) => {
       return map(test.response, (value, key) => {
-        expect(Object.resolve(key, res)).toBe(value);
+        expect(Object.resolve(key, res))
+          .toEqual(value);
       });
     };
 
-    return request(app)
-      [test.request.method.toLowerCase().trim()](test.request.url)
+    if (test.request.authUser) {
+      test.request.authHeader = 'JWT ' + jwt.sign(test.request.authUser, process.env.SECRET, {
+        expiresIn: 100080
+      });
+    }
+
+    return request(app)[test.request.method.toLowerCase()
+        .trim()](test.request.url)
+      .set('Authorization', test.request.authHeader)
       .send(test.request.body)
       .then(checkResult);
-  }
-
+  };
   Promise.all(map(tests, runTest))
-  .then(() => done())
-  .catch(done);
+    .then(() => done())
+    .catch(done);
 }
 
 module.exports = {
   testSeed,
   testModel,
-  testRoute,
-}
+  testRoute
+};

@@ -9,5 +9,9 @@ describe('Server Routes', () => {
   describe('REST API', () => {
     require('./api/student');
     require('./api/college');
+    require('./api/students');
+    require('./api/users');
+    require('./api/colleges');
+    require('./api/schools');
   });
 });
