@@ -33,9 +33,11 @@ const exportStudents = (fields, students) => dispatch => {
                 return console.log(err);
             }
             const a = document.createElement('a');
-            a.setAttribute('href', `data:attachment/csv;charset=utf-8,${encodeURI(csvFile)}`);
+            const csvData = new Blob([csvFile], { type: 'text/csv' });
+            a.setAttribute('href', URL.createObjectURL(csvData));
             a.setAttribute('target', '_blank');
             a.setAttribute('download', `students-${moment(new Date()).format('lll')}.csv`);
+            document.body.appendChild(a);
             a.click();
             dispatch({
                 type: SPINNER_PAGE,
