@@ -154,6 +154,7 @@
     "node-sass": "^4.1.1",
     "nodemon": "^1.11.0",
     "per-env": "^1.0.2",
+    "prettier": "^1.5.2",
     "react-addons-test-utils": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.4",
     "redux-devtools-extension": "^1.0.0",
