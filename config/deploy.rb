@@ -35,4 +35,4 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 
 after 'deploy:finished', 'npm:install'
 # after 'npm:install', 'npm:prestart'
-after 'npm:prestart', 'pm2:restart'
+after 'npm:install', 'pm2:restart'

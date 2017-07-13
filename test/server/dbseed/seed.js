@@ -4,62 +4,67 @@ const modelsDir = path.join(process.env.PWD, 'app/server/models/');
 const models = require(modelsDir);
 
 const commonDir = path.join(process.env.PWD, 'app/common/');
-const { ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR } = require(path.join(commonDir, 'constants'));
+const {ROLE_ADMIN, ROLE_OWNER, ROLE_COUNSELOR} = require(path.join(commonDir, 'constants'));
 
-const { ObjectID } = require('mongodb');
+const {ObjectID} = require('mongodb');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
 const SALT_FACTOR = 5; //should match value in models/user.js
 const pwdSalt = bcrypt.genSaltSync(SALT_FACTOR);
 
 const adminID = new ObjectID();
+
 const userOneID = new ObjectID();
-const schoolOneID = new ObjectID();
 const userTwoID = new ObjectID();
 const userThreeID = new ObjectID();
 
+const schoolOneID = new ObjectID();
+const schoolTwoID = new ObjectID();
+const schoolThreeID = new ObjectID();
+
+const studentOneID = new ObjectID();
+const studentTwoID = new ObjectID();
+const studentThreeID = new ObjectID();
+
 const users = [
-    {
-        profile: {
-            firstName: 'Sachin',
-            lastName: 'Mour'
-        },
-        email: 'rtr.sachinmour@gmail.com',
-        password: bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'admin', pwdSalt),
-        access: {
-            role: 'Admin' // Why is this not ROLE_ADMIN?
-        },
-        enabled: true
+  {
+    profile: {
+      firstName: 'J Edgar',
+      lastName: 'Hoover'
     },
-    {
-        _id: userOneID,
-        email: 'userone@test.com',
-        password: bcrypt.hashSync('userOnePass', pwdSalt),
-        profile: {
-            firstName: 'User',
-            lastName: 'One'
-        },
-        enabled: true,
-        access: {
-            role: ROLE_ADMIN,
-            school: schoolOneID
-        }
+    email: 'paranoiac@gmail.com',
+    password: bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'admin', pwdSalt),
+    access: {
+      role: ROLE_ADMIN,
     },
-    {
-        _id: userTwoID,
-        email: 'usertwo@test.com',
-        password: bcrypt.hashSync('userTwoPass', pwdSalt),
-        profile: {
-            firstName: 'User',
-            lastName: 'Two'
-        },
-        enabled: true,
-        access: {
-            role: ROLE_COUNSELOR,
-            school: schoolOneID
-        }
+    enabled: true
+  }, {
+    _id: userOneID,
+    email: 'userone@test.com',
+    password: bcrypt.hashSync('userOnePass', pwdSalt),
+    profile: {
+      firstName: 'User',
+      lastName: 'One'
     },
-    {
+    enabled: true,
+    access: {
+      role: ROLE_COUNSELOR,
+      school: schoolOneID,
+    }
+  }, {
+    _id: userTwoID,
+    email: 'usertwo@test.com',
+    password: bcrypt.hashSync('userTwoPass', pwdSalt),
+    profile: {
+      firstName: 'User',
+      lastName: 'Two'
+    },
+    enabled: true,
+    access: {
+      role: ROLE_COUNSELOR,
+      school: schoolOneID,
+    }
+  }, {
     _id: userThreeID,
     email: 'userThree@test.com',
     password: bcrypt.hashSync('userThreePass', pwdSalt),
@@ -70,7 +75,19 @@ const users = [
     enabled: true,
     access: {
       role: ROLE_OWNER,
-      school: schoolOneID
+    }
+  }, {
+    _id: new ObjectID(),
+    email: 'userFour@test.com',
+    password: bcrypt.hashSync('userFourPass', pwdSalt),
+    profile: {
+      firstName: 'User',
+      lastName: 'Four'
+    },
+    enabled: true,
+    access: {
+      role: 'Student',
+      school: schoolThreeID,
     }
   }
 ];
@@ -190,17 +207,17 @@ const colleges = [
 
 const schools = [
   {
-    "_id": ObjectID("58d453aa97fb3c001846f4ce"),
+    "_id": schoolOneID,
     "name": "Baldwin",
     "users": [],
     "__v": 0
   }, {
-    "_id": ObjectID("58d453aa97fb3c001846f4cf"),
+    "_id": schoolTwoID,
     "name": "Brooklyn Collaborative",
     "users": [],
     "__v": 0
   }, {
-    "_id": ObjectID("58d453aa97fb3c001846f4d0"),
+    "_id": schoolThreeID,
     "name": "Channel View",
     "users": [],
     "__v": 0
@@ -209,9 +226,9 @@ const schools = [
 
 const students = [
   {
-    "_id": ObjectID("591477f37066b1747ff9e94a"),
+    "_id": studentOneID,
     "expectedHSGrad": new Date("2014-09-15T00:00:00.000Z"),
-    "hs": ObjectID("58d453aa97fb3c001846f4d5"),
+    "hs": schoolOneID,
     "osis": 200205492,
     "lastName": "Jonson",
     "firstName": "Jon",
@@ -339,93 +356,173 @@ const students = [
     "cellPhone": "(555) 555-5555",
     "gender": "M",
     "address": "86 Nowheresville, NA 75309"
-  },
-  {
-    "_id" : ObjectID("591477f47066b1747ff9e9ae"),
-    "expectedHSGrad" : new Date("2015-09-15T00:00:00.000Z"),
-    "hs" : ObjectID("58d453aa97fb3c001846f4d1"),
-    "osis" : 209287145,
-    "lastName" : "Ymous",
-    "firstName" : "Anon",
-    "dob" : new Date("1997-02-20T00:00:00.000Z"),
-    "cohort" : "Q (2011)",
-    "hsGradDate" : new Date("2015-07-01T00:00:00.000Z"),
-    "ethnicity" : 4,
-    "hsDiplomaType" : "REGENTS",
-    "fullName" : "Anon Ymous",
-    "photoReleaseForm" : false,
-    "needsFollowup" : false,
-    "applications" : [],
-    "caseNotes" : [],
-    "documents" : [],
-    "graduations" : [],
-    "terms" : [
-        {
-            "college" : ObjectID("5912332753b2a665af3d1784"),
-            "enrolBegin" : new Date("2017-01-01T00:00:00.000Z"),
-            "enrolEnd" : new Date("2017-05-12T00:00:00.000Z"),
-            "_id" : ObjectID("591490557066b1747ffa28c4"),
-            "degreeTitle" : [],
-            "recordType" : "Counselor Added"
-        },
-        {
-            "name" : "Fall 2016",
-            "college" : ObjectID("5912332753b2a665af3d1784"),
-            "enrolBegin" : new Date("2016-09-01T00:00:00.000Z"),
-            "enrolEnd" : new Date("2016-12-15T00:00:00.000Z"),
-            "_id" : ObjectID("591490557066b1747ffa28c3"),
-            "degreeTitle" : [],
-            "recordType" : "Counselor Added"
-        },
-        {
-            "college" : ObjectID("5912332753b2a665af3d1784"),
-            "enrolBegin" : new Date("2016-01-01T00:00:00.000Z"),
-            "enrolEnd" : new Date("2016-05-14T00:00:00.000Z"),
-            "_id" : ObjectID("591490557066b1747ffa28c5"),
-            "degreeTitle" : [],
-            "recordType" : "Counselor Added"
-        }
+  }, {
+    "_id": studentTwoID,
+    "expectedHSGrad": new Date("2015-09-15T00:00:00.000Z"),
+    "hs": schoolOneID,
+    "osis": 209287145,
+    "lastName": "Ymous",
+    "firstName": "Anon",
+    "dob": new Date("1997-02-20T00:00:00.000Z"),
+    "cohort": "Q (2011)",
+    "hsGradDate": new Date("2015-07-01T00:00:00.000Z"),
+    "ethnicity": 4,
+    "hsDiplomaType": "REGENTS",
+    "fullName": "Anon Ymous",
+    "photoReleaseForm": false,
+    "needsFollowup": false,
+    "applications": [],
+    "caseNotes": [],
+    "documents": [],
+    "graduations": [],
+    "terms": [
+      {
+        "college": ObjectID("5912332753b2a665af3d1784"),
+        "enrolBegin": new Date("2017-01-01T00:00:00.000Z"),
+        "enrolEnd": new Date("2017-05-12T00:00:00.000Z"),
+        "_id": ObjectID("591490557066b1747ffa28c4"),
+        "degreeTitle": [],
+        "recordType": "Counselor Added"
+      }, {
+        "name": "Fall 2016",
+        "college": ObjectID("5912332753b2a665af3d1784"),
+        "enrolBegin": new Date("2016-09-01T00:00:00.000Z"),
+        "enrolEnd": new Date("2016-12-15T00:00:00.000Z"),
+        "_id": ObjectID("591490557066b1747ffa28c3"),
+        "degreeTitle": [],
+        "recordType": "Counselor Added"
+      }, {
+        "college": ObjectID("5912332753b2a665af3d1784"),
+        "enrolBegin": new Date("2016-01-01T00:00:00.000Z"),
+        "enrolEnd": new Date("2016-05-14T00:00:00.000Z"),
+        "_id": ObjectID("591490557066b1747ffa28c5"),
+        "degreeTitle": [],
+        "recordType": "Counselor Added"
+      }
     ],
-    "taxDocumentsSubmitted" : false,
-    "studentAidReportReceived" : false,
-    "startedFafsa" : false,
-    "parentName" : [],
-    "parentContact" : [],
-    "opportunityProgramEligible" : false,
-    "lettersOfRecommendation" : false,
-    "eaEdApplications" : false,
-    "cssProfileCreated" : false,
-    "completedTap" : false,
-    "completedFafsa" : false,
-    "completedEssay" : false,
-    "awardLetterReceived" : false,
-    "attendingMeetupDay" : false,
-    "appliedToOtherSupportProgram" : false,
-    "transferStatus" : [],
-    "remediationStatus" : [],
-    "majorMinor" : [],
-    "employmentStatus" : [],
-    "studentSupportOrgName" : [],
-    "descriptors" : [],
-    "otherPhone" : [],
-    "needGap" : false,
-    "ferpa" : false,
-    "email" : [],
-    "nscRecordFound" : true,
-    "alias" : false,
-    "aliases" : [],
-    "firstCol" : ObjectID("5912332753b2a665af3d1784"),
-    "mostRecentCol" : ObjectID("5912332753b2a665af3d1784"),
-    "cellPhone" : "(555) 555-5555",
-    "gender" : "F",
-    "studentSupportOrgNameOther" : "No answer, emailed 8/16",
-    "SAT" : {
-        "math" : 370,
-        "cr" : 380
+    "taxDocumentsSubmitted": false,
+    "studentAidReportReceived": false,
+    "startedFafsa": false,
+    "parentName": [],
+    "parentContact": [],
+    "opportunityProgramEligible": false,
+    "lettersOfRecommendation": false,
+    "eaEdApplications": false,
+    "cssProfileCreated": false,
+    "completedTap": false,
+    "completedFafsa": false,
+    "completedEssay": false,
+    "awardLetterReceived": false,
+    "attendingMeetupDay": false,
+    "appliedToOtherSupportProgram": false,
+    "transferStatus": [],
+    "remediationStatus": [],
+    "majorMinor": [],
+    "employmentStatus": [],
+    "studentSupportOrgName": [],
+    "descriptors": [],
+    "otherPhone": [],
+    "needGap": false,
+    "ferpa": false,
+    "email": [],
+    "nscRecordFound": true,
+    "alias": false,
+    "aliases": [],
+    "firstCol": ObjectID("5912332753b2a665af3d1784"),
+    "mostRecentCol": ObjectID("5912332753b2a665af3d1784"),
+    "cellPhone": "(555) 555-5555",
+    "gender": "F",
+    "studentSupportOrgNameOther": "No answer, emailed 8/16",
+    "SAT": {
+      "math": 370,
+      "cr": 380
     },
-    "hsGPA" : 79.71,
-    "intendedCollege" : ObjectID("5912330b53b2a665af3d06a4")
-}
+    "hsGPA": 79.71,
+    "intendedCollege": ObjectID("5912330b53b2a665af3d06a4")
+  }, {
+    "_id": studentThreeID,
+    "expectedHSGrad": new Date("2015-09-15T00:00:00.000Z"),
+    "hs": schoolTwoID,
+    "osis": 20927145,
+    "lastName": "Ymous",
+    "firstName": "Anon",
+    "dob": new Date("1997-02-20T00:00:00.000Z"),
+    "cohort": "Q (2011)",
+    "hsGradDate": new Date("2015-07-01T00:00:00.000Z"),
+    "ethnicity": 4,
+    "hsDiplomaType": "REGENTS",
+    "fullName": "Anon Ymous",
+    "photoReleaseForm": false,
+    "needsFollowup": false,
+    "applications": [],
+    "caseNotes": [],
+    "documents": [],
+    "graduations": [],
+    "terms": [
+      {
+        "college": ObjectID("5912332753b2a665af3d1784"),
+        "enrolBegin": new Date("2017-01-01T00:00:00.000Z"),
+        "enrolEnd": new Date("2017-05-12T00:00:00.000Z"),
+        "_id": ObjectID("591490557066b1747ffa28c4"),
+        "degreeTitle": [],
+        "recordType": "Counselor Added"
+      }, {
+        "name": "Fall 2016",
+        "college": ObjectID("5912332753b2a665af3d1784"),
+        "enrolBegin": new Date("2016-09-01T00:00:00.000Z"),
+        "enrolEnd": new Date("2016-12-15T00:00:00.000Z"),
+        "_id": ObjectID("591490557066b1747ffa28c3"),
+        "degreeTitle": [],
+        "recordType": "Counselor Added"
+      }, {
+        "college": ObjectID("5912332753b2a665af3d1784"),
+        "enrolBegin": new Date("2016-01-01T00:00:00.000Z"),
+        "enrolEnd": new Date("2016-05-14T00:00:00.000Z"),
+        "_id": ObjectID("591490557066b1747ffa28c5"),
+        "degreeTitle": [],
+        "recordType": "Counselor Added"
+      }
+    ],
+    "taxDocumentsSubmitted": false,
+    "studentAidReportReceived": false,
+    "startedFafsa": false,
+    "parentName": [],
+    "parentContact": [],
+    "opportunityProgramEligible": false,
+    "lettersOfRecommendation": false,
+    "eaEdApplications": false,
+    "cssProfileCreated": false,
+    "completedTap": false,
+    "completedFafsa": false,
+    "completedEssay": false,
+    "awardLetterReceived": false,
+    "attendingMeetupDay": false,
+    "appliedToOtherSupportProgram": false,
+    "transferStatus": [],
+    "remediationStatus": [],
+    "majorMinor": [],
+    "employmentStatus": [],
+    "studentSupportOrgName": [],
+    "descriptors": [],
+    "otherPhone": [],
+    "needGap": false,
+    "ferpa": false,
+    "email": [],
+    "nscRecordFound": true,
+    "alias": false,
+    "aliases": [],
+    "firstCol": ObjectID("5912332753b2a665af3d1784"),
+    "mostRecentCol": ObjectID("5912332753b2a665af3d1784"),
+    "cellPhone": "(555) 555-5555",
+    "gender": "F",
+    "studentSupportOrgNameOther": "No answer, emailed 8/16",
+    "SAT": {
+      "math": 370,
+      "cr": 380
+    },
+    "hsGPA": 79.71,
+    "intendedCollege": ObjectID("5912330b53b2a665af3d06a4")
+  }
 ];
 
 const collections = [
@@ -453,15 +550,15 @@ const collections = [
  */
 const populateServer = (done) => {
   Promise.all(collections.map(({model, collection}) => {
-      return model.remove({}).then(() => {
-        return collection.map((doc) => {
-          return new model(doc).save();
-        });
+    return model.remove({}).then(() => {
+      return collection.map((doc) => {
+        return new model(doc).save();
       });
-    })).then(() => {
-      // HACK Issues with done being called too soon.
-      setTimeout(done, 100);
     });
+  })).then(() => {
+    // HACK Issues with done being called too soon.
+    setTimeout(done, 100);
+  });
 };
 
 module.exports = {
@@ -469,5 +566,5 @@ module.exports = {
   colleges,
   schools,
   students,
-  populateServer,
+  populateServer
 };
