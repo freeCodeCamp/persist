@@ -1,14 +1,23 @@
-const expect = require('expect');
-const request = require('supertest');
-const path = require('path');
 const _ = require('lodash');
-const {testRoute} = require('../../testUtils');
+const expect = require('expect');
+const path = require('path');
+const request = require('supertest');
+const sinon = require('sinon');
+const { testRoute } = require('../../testUtils');
+const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
 
-const {colleges} = require('../../dbseed/seed');
+const { colleges } = require('../../dbseed/seed');
 
 import app from '../../../../app/server/server';
 
 describe('/api/college/:fullName', () => {
+  var sandbox;
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
   describe('GET', () => {
     it('should return a JSON description of an existing college from the DB', (done) => {
       const tests = [
@@ -66,7 +75,33 @@ describe('/api/college/:fullName', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return 500 for a server error *UNSURE HOW TO FORCE SERVER ERROR WITH GET REQUEST*', () => {});
+    it('should return 500 for a server error', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'get',
+            url: encodeURI('/api/college/CUNY BERNARD M. BARUCH COLLEGE')
+          },
+          response: {
+            'status': 500,
+          }
+        }, {
+          request: {
+            method: 'get',
+            url: encodeURI('/api/college/CUNY LEHMAN COLLEGE')
+          },
+          response: {
+            'status': 500,
+          }
+        }
+      ];
+
+      sandbox.mock(dbModels.College)
+        .expects('findOne')
+        .rejects(new Error());
+
+      testRoute(app, tests, done);
+    });
   });
 
   describe('POST', () => {
@@ -116,8 +151,8 @@ describe('/api/college/:fullName', () => {
       const tests = [
         {
           request: {
-            method: 'get',
-            url: encodeURI('/api/college/randomName'),
+            method: 'put',
+            url: encodeURI('/api/college/QAZWSXEDC'),
             body: {
               'percentPellGrant': 0.75,
             }
@@ -127,8 +162,8 @@ describe('/api/college/:fullName', () => {
           }
         }, {
           request: {
-            method: 'get',
-            url: encodeURI('/api/college/QAZWSXEDC'),
+            method: 'put',
+            url: encodeURI('/api/college/randomName'),
             body: {
               'percentPellGrant': 0.75,
             }
@@ -142,7 +177,73 @@ describe('/api/college/:fullName', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return 500 for a server error *UNSURE HOW TO FORCE SERVER ERROR WITH PUT REQUEST*', () => {});
+    it('should return 500 for a server error', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: encodeURI('/api/college/CUNY BERNARD M. BARUCH COLLEGE'),
+            body: {
+              'percentPellGrant': 0.5,
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }, {
+          request: {
+            method: 'put',
+            url: encodeURI('/api/college/CUNY LEHMAN COLLEGE'),
+            body: {
+              'percentPellGrant': 0.75,
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }
+      ];
+
+      sandbox.mock(dbModels.College)
+        .expects('findOne')
+        .rejects(new Error());
+
+      testRoute(app, tests, done);
+    });
+
+    it('should return status 500 if saving the new version throws an error', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: encodeURI('/api/college/CUNY BERNARD M. BARUCH COLLEGE'),
+            body: {
+              'percentPellGrant': 0.5,
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }, {
+          request: {
+            method: 'put',
+            url: encodeURI('/api/college/CUNY LEHMAN COLLEGE'),
+            body: {
+              'percentPellGrant': 0.75,
+            }
+          },
+          response: {
+            'status': 500,
+          }
+        }
+      ];
+
+      sandbox.mock(dbModels.College.prototype)
+        .expects('save')
+        .rejects(new Error());
+
+      testRoute(app, tests, done);
+    });
   });
 
   describe('DELETE', () => {

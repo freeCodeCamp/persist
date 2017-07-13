@@ -1,14 +1,24 @@
-const expect = require('expect');
-const request = require('supertest');
-const path = require('path');
 const _ = require('lodash');
-const {testRoute} = require('../../testUtils');
+const expect = require('expect');
+const path = require('path');
+const request = require('supertest');
+const sinon = require('sinon');
 
-const {students} = require('../../dbseed/seed');
+const dbModels = require(path.join(process.env.PWD, 'app/server/models'));
+
+const { testRoute } = require('../../testUtils');
+const { students } = require('../../dbseed/seed');
 
 import app from '../../../../app/server/server';
 
 describe('/api/student/:osis', () => {
+  var sandbox;
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
   describe('GET', () => {
     it('should return a JSON description of an existing student from the DB', (done) => {
       const tests = [
@@ -18,7 +28,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/200205492'
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 200205492,
             'body.hsGradYear': 2014,
             'body.firstName': 'Jon',
@@ -30,7 +40,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/209287145'
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 209287145,
             'body.hsGradYear': 2015,
             'body.firstName': 'Anon',
@@ -50,7 +60,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/2002092'
           },
           response: {
-            'status': 404
+            status: 404
           }
         }, {
           request: {
@@ -58,7 +68,7 @@ describe('/api/student/:osis', () => {
             url: '/api/student/2092145'
           },
           response: {
-            'status': 404
+            status: 404
           }
         }
       ];
@@ -66,7 +76,7 @@ describe('/api/student/:osis', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return status 500 on server error *UNSURE HOW TO FORCE SERVER ERROR WITH GET REQUEST*', (done) => {
+    it('should return status 500 on server error', (done) => {
       const tests = [
         {
           request: {
@@ -74,10 +84,14 @@ describe('/api/student/:osis', () => {
             url: '/api/student/200205492'
           },
           response: {
-            'status': 500
+            status: 500
           }
         }
       ];
+
+      sandbox.mock(dbModels.Student)
+        .expects('findOne')
+        .rejects(new Error());
 
       testRoute(app, tests, done);
     });
@@ -101,7 +115,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 200205492,
             'body.firstName': 'Joe',
             'body.fullName': 'Joe Jonson',
@@ -118,7 +132,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 200,
+            status: 200,
             'body.osis': 209287145,
             'body.firstName': 'Anon',
             'body.fullName': 'Anon Ymous',
@@ -145,7 +159,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 404
+            status: 404
           }
         }, {
           request: {
@@ -158,7 +172,7 @@ describe('/api/student/:osis', () => {
             }
           },
           response: {
-            'status': 404
+            status: 404
           }
         }
       ];
@@ -166,7 +180,79 @@ describe('/api/student/:osis', () => {
       testRoute(app, tests, done);
     });
 
-    it.skip('should return status 500 on server error *UNSURE HOW TO FORCE SERVER ERROR WITH PUT REQUEST*', (done) => {});
+    it('should return status 500 if the Mongoose querey throws an error', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/200205492',
+            body: {
+              firstName: 'Joe',
+              fullName: 'Joe Jonson',
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            status: 500
+          }
+        }, {
+          request: {
+            method: 'put',
+            url: '/api/student/209287145',
+            body: {
+              photoReleaseForm: true,
+              needsFollowup: true,
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            status: 500
+          }
+        }
+      ];
+      sandbox.mock(dbModels.Student)
+        .expects('findOne')
+        .rejects(new Error());
+
+      testRoute(app, tests, done);
+    });
+
+    it('should return status 500 if saving the new version throws an error', (done) => {
+      const tests = [
+        {
+          request: {
+            method: 'put',
+            url: '/api/student/200205492',
+            body: {
+              firstName: 'Joe',
+              fullName: 'Joe Jonson',
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            status: 500
+          }
+        }, {
+          request: {
+            method: 'put',
+            url: '/api/student/209287145',
+            body: {
+              photoReleaseForm: true,
+              needsFollowup: true,
+              taxDocumentsSubmitted: true
+            }
+          },
+          response: {
+            status: 500
+          }
+        }
+      ];
+      sandbox.mock(dbModels.Student.prototype)
+        .expects('save')
+        .rejects(new Error());
+
+      testRoute(app, tests, done);
+    });
   });
 
   describe('DELETE', () => {
