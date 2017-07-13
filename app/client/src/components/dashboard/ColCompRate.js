@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import async from 'async';
 import { Card, CardText, Divider } from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
 import { BasicColumn } from '../admin-components/charts';
 
 class ColCompRate extends Component {
@@ -9,6 +10,7 @@ class ColCompRate extends Component {
         super(props);
         this.state = {
             loading: true,
+            type: 'all',
             year: '1c',
             data: []
         };
@@ -37,6 +39,7 @@ class ColCompRate extends Component {
     }
 
     normalizeData(props) {
+        const { type } = this.state;
         return new Promise(resolve => {
             if (props.colleges.length < 1 || props.students.length < 1) resolve({});
             const colleges = _.keyBy(props.colleges, '_id');
@@ -48,10 +51,12 @@ class ColCompRate extends Component {
                     result[hsGradYear] = result[hsGradYear] || _.cloneDeep(colCompletionRate);
                     const terms = student.terms;
                     if (terms.length > 0) {
-                        const college = colleges[terms[0].college];
-                        const gradRate = college.gradRate;
-                        if (college && gradRate && gradRate.overall) {
-                            result[hsGradYear].push(gradRate.overall);
+                        const college = colleges[terms[0].college];         // should we be checking all terms?
+                        if ( type == 'all' || type == college.durationType ) {  // allow filtering by duration type (2/4 year or both)
+                            const gradRate = college.gradRate;
+                            if (college && gradRate && gradRate.overall) {
+                                result[hsGradYear].push(gradRate.overall);
+                            }
                         }
                     }
                 }
@@ -137,6 +142,16 @@ class ColCompRate extends Component {
         );
     }
 
+    setType(type) {
+        this.setState(
+            {
+                loading: true,
+                type
+            },
+            this.updateGraph.bind(this, this.props)
+        )
+    }
+
     render() {
         const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
@@ -144,6 +159,25 @@ class ColCompRate extends Component {
                 {this.state.loading ? this.renderLoading() : null}
                 <div style={hidden}>
                     <BasicColumn {...this.props} config={this.chartConfig()} data={this.state.data} />
+                </div>
+                <div style={{ display: 'flex' }}>
+                    <RaisedButton 
+                        style={styles.raisedButton} 
+                        primary={true} 
+                        label="All" 
+                        onClick={() => this.setType('all')} />
+                    <RaisedButton
+                        style={styles.raisedButton}
+                        primary={true}
+                        label="2 Year Schools"
+                        onClick={() => this.setType('2 year')}
+                    />
+                    <RaisedButton
+                        style={styles.raisedButton}
+                        primary={true}
+                        label="4 Year Schools"
+                        onClick={() => this.setType('4 year')}
+                    />
                 </div>
                 <Divider style={{ height: 2 }} />
                 <Card>
