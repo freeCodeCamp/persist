@@ -433,7 +433,6 @@ export default app => {
     })
     .delete((req, res) => {
       AliasController.deleteAlias(req, res);
-    });
 
   app.post('/register', AuthController.register);
   app.post('/login', requireLogin, AuthController.login);
@@ -442,6 +441,7 @@ export default app => {
   app.post('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.inviteUser);
   app.patch('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.updateUser);
   app.delete('/users', requireAuth, AuthController.roleAuthorization('Owner'), UserController.deleteUser);
+  app.patch('/user_name', requireAuth, UserController.updateUserName);
   app.post('/update-password/:token', AuthController.verifyToken);
   app.post('/invite/:token', AuthController.verifyToken);
   app.post('/reset-password/:token', AuthController.verifyToken);

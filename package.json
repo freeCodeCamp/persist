@@ -86,6 +86,7 @@
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
+    "prop-types": "^15.5.10",
     "randomcolor": "^0.4.4",
     "react": "^15.3.1",
     "react-addons-transition-group": "^15.3.2",

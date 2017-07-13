@@ -94,7 +94,7 @@ class UploadHistory extends Component {
                         {moment(hist.when).fromNow()}
                     </td>
                     <td>
-                        {`${firstName} ${lastName}`.trim()}
+                        {`${firstName} ${lastName || ''}`.trim()}
                     </td>
                     <td>
                         {hist.success ? <ActionOfflinePin color="green" /> : <AlertError color="red" />}

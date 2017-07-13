@@ -75,8 +75,7 @@ label {
 
 .login-page {
   @extend .center;
-  background-color: #3c8dbc;
-  width: 100%;
+  width: 140%;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -85,8 +84,7 @@ label {
     width: 100%;
     padding: 20px;
     margin: 20px;
-    background-color: #ecf0f5;
-    &--logo img {
+    &--logo i40 {
       width: 100%;
     }
     &--actions {
@@ -122,4 +120,34 @@ label {
 
 .flex {
   display: flex;
+}
+
+// for header dropdown
+//  make it a little taller
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header {
+  height: 205px;
+  padding: 10px;
+  text-align: center;
+}
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  &>p, &>div>i {
+    z-index: 5;
+    color: #fff;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 17px;
+    margin: 5px;
+    margin-top: 10px;
+  }
+  &>input {
+    width: 60%;
+    margin: 1%;
+  }
+  &>div.btn {
+    margin: 1%;
+    width: 45%;
+  }
 }
