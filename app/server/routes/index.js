@@ -433,6 +433,7 @@ export default app => {
     })
     .delete((req, res) => {
       AliasController.deleteAlias(req, res);
+    });
 
   app.post('/register', AuthController.register);
   app.post('/login', requireLogin, AuthController.login);
