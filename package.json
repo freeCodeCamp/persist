@@ -22,7 +22,7 @@
     "build": "npm run build-server && npm run build-client",
     "start": "NODE_ENV=production node appDist/server/server.js --max-old-space-size=1000",
     "babel": "./node_modules/.bin/babel-node",
-    "format": "prettier --single-quote --tab-width 4 --print-width 140 --write './*.js'",
+    "format": "prettier --single-quote --tab-width 2 --print-width 140 --write './*.js'",
     "watch:test": "webpack-dev-server --progress",
     "import": "babel-node ./utils/import_data.js"
   },
@@ -154,6 +154,7 @@
     "node-sass": "^4.1.1",
     "nodemon": "^1.11.0",
     "per-env": "^1.0.2",
+    "prettier": "^1.5.2",
     "react-addons-test-utils": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.4",
     "redux-devtools-extension": "^1.0.0",
