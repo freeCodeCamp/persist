@@ -11,7 +11,6 @@ export const messages = {
 
 export const types = {
     descriptors: [
-        'SPED',
         'Free Lunch Eligible',
         'ELL',
         'Former ELL',
