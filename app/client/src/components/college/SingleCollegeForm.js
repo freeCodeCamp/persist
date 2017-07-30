@@ -81,7 +81,8 @@ class SingleCollegeForm extends React.Component {
                     >
                         <FormGroup
                             form={form}
-                            style={{ margin: '50px', textAlign: 'center' }}
+                            floatingLabelStyle={field.multiLineLabel? { top: '16px' }: {} }
+                            style={ {width: '384px'} }
                             initValue={initialValue}
                             key={i}
                             disabled={disabled}

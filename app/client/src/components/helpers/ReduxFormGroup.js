@@ -46,16 +46,26 @@ class ReduxFormGroup extends React.Component {
     }
 
     render() {
-        const { disabled, field, form, initValue, collegeSource, schoolSource } = this.props;
+        const { disabled, field, form, initValue, collegeSource, schoolSource, style={}, floatingLabelStyle={} } = this.props;
         const { fieldType, dbName, displayName } = field;
 
         switch (fieldType) {
             case 'TextField':
-                return <Field disabled={disabled} name={dbName.toString()} component={TextField} floatingLabelText={displayName} />;
+                return ( 
+                    <Field 
+                        disabled={disabled} 
+                        style={style}
+                        name={dbName.toString()} 
+                        component={TextField} 
+                        floatingLabelText={displayName} 
+                        floatingLabelStyle={floatingLabelStyle}
+                    />
+                );
             case 'TextBox':
                 return (
                     <Field
                         disabled={disabled}
+                        style={style}
                         name={dbName.toString()}
                         component={TextField}
                         floatingLabelText={displayName}
@@ -67,9 +77,11 @@ class ReduxFormGroup extends React.Component {
                 return (
                     <Field
                         disabled={disabled}
+                        style={style}
                         name={dbName}
                         hintText={displayName}
                         floatingLabelText={displayName}
+                        floatingLabelStyle={floatingLabelStyle}
                         container="inline"
                         locale="en-US"
                         component={DatePicker}
@@ -79,6 +91,8 @@ class ReduxFormGroup extends React.Component {
                 return (
                     <Field
                         disabled={disabled}
+                        style={style}
+                        floatingLabelStyle={floatingLabelStyle}
                         name={dbName}
                         form={form}
                         options={types[dbName] || []}
@@ -88,15 +102,25 @@ class ReduxFormGroup extends React.Component {
                     />
                 );
             case 'Checkbox_Add':
-                return <Field disabled={disabled} name={dbName} form={form} initValue={initValue} component={ChipsAdd} field={field} />;
+                return (
+                    <Field 
+                        disabled={disabled} 
+                        name={dbName} 
+                        form={form} 
+                        initValue={initValue} 
+                        component={ChipsAdd} 
+                        field={field} 
+                    />);
             case 'Toggle':
                 return (
                     <Field
                         disabled={disabled}
+                        style={style}
                         name={dbName.toString()}
                         component={SelectField}
                         hintText={displayName}
                         floatingLabelText={displayName}
+                        floatingLabelStyle={floatingLabelStyle}
                     >
                         <MenuItem value={true} key="true" primaryText="Yes" />
                         <MenuItem value={false} key="false" primaryText="No" />
@@ -117,6 +141,7 @@ class ReduxFormGroup extends React.Component {
                 return (
                     <Field
                         disabled={disabled}
+                        style={style}
                         name={dbName.toString()}
                         component={SelectField}
                         hintText={displayName}

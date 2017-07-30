@@ -378,7 +378,8 @@ export const reference = [
         dbName: 'appliedToOtherSupportProgram',
         fieldType: 'SelectField',
         editable: true,
-        category: 'Application Process'
+        category: 'Application Process',
+        multiLineLabel: true
     },
     {
         fieldName: 'Attending Meet-Up Day?',
@@ -410,7 +411,8 @@ export const reference = [
         dbName: 'completedEssay',
         fieldType: 'Toggle',
         editable: true,
-        category: 'Application Process'
+        category: 'Application Process',
+        multiLineLabel: true
     },
     {
         fieldName: 'Completed FAFSA?',

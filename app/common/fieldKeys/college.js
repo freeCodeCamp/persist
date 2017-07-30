@@ -295,21 +295,24 @@ export const reference = [
         displayName: 'Average net price for $30,001-$48,000 family income',
         dbName: 'netPrice30to48',
         fieldType: 'TextField',
-        editable: true
+        editable: true,
+        multiLineLabel: true
     },
     {
         fieldName: 'Average net price for $48,001-$75,000 family income',
         displayName: 'Average net price for $48,001-$75,000 family income',
         dbName: 'netPrice48to75',
         fieldType: 'TextField',
-        editable: true
+        editable: true,
+        multiLineLabel: true
     },
     {
         fieldName: 'Average net price for $75,001-$110,000 family income',
         displayName: 'Average net price for $75,001-$110,000 family income',
         dbName: 'netPrice75to110',
         fieldType: 'TextField',
-        editable: true
+        editable: true,
+        multiLineLabel: true
     },
     {
         fieldName: 'WOMENONLY',
@@ -330,14 +333,16 @@ export const reference = [
         displayName: 'Communications, Journalism, and Related Programs',
         dbName: 'percentDegrees2',
         fieldType: 'TextField',
-        editable: true
+        editable: true,
+        multiLineLabel: true
     },
     {
         fieldName: '% Degrees Communication Technologies, IT and Support Services',
         displayName: 'Communication Technologies, IT and Support Services',
         dbName: 'percentDegrees3',
         fieldType: 'TextField',
-        editable: true
+        editable: true,
+        multiLineLabel: true
     },
     {
         fieldName: '% Degrees Personal and Culinary Services',
@@ -365,7 +370,8 @@ export const reference = [
         displayName: 'Humanities (English, Philosophy, History, Foreign Language and Literature)',
         dbName: 'percentDegrees7',
         fieldType: 'TextField',
-        editable: true
+        editable: true,
+        multiLineLabel: true
     },
     {
         fieldName: '% Degrees Biology and Health Professions',
@@ -410,11 +416,12 @@ export const reference = [
         editable: true
     },
     {
-        fieldName: '% Degrees Architechture and Construction, Mechanic and Repair Technologies, & Transportation',
-        displayName: 'Architechture and Construction, Mechanic and Repair Technologies, & Transportation',
+        fieldName: '% Degrees Architecture and Construction, Mechanic and Repair Technologies, & Transportation',
+        displayName: 'Architecture and Construction, Mechanic and Repair Technologies, & Transportation',
         dbName: 'percentDegrees14',
         fieldType: 'TextField',
-        editable: true
+        editable: true,
+        multiLineLabel: true
     },
     {
         fieldName: '% Degrees Visual and Performing Arts',
