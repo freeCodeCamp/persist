@@ -5,6 +5,7 @@ import moment from 'moment';
 import async from 'async';
 import StudentList from './StudentList';
 import Network from './Network';
+import ExportFields from '../studentFilter/exportFields'
 
 const associatedStudent = (student, status) => ({
     osis: student.osis,
@@ -150,6 +151,7 @@ class CollegeAssociation extends Component {
 
     render() {
         const { data: { associated, network } } = this.state;
+        const { osisObj } = this.props
         const hidden = this.state.loading ? { visibility: 'hidden' } : {};
         return (
             <div style={{ position: 'relative' }}>
@@ -158,6 +160,7 @@ class CollegeAssociation extends Component {
                     <Network students={network} />
                     <div>
                         <h2 style={{ textAlign: 'center', marginBottom: 20 }}>Student List</h2>
+                        <ExportFields students={associated.map(student => osisObj[student.osis])} />
                         <StudentList students={associated} />
                     </div>
                 </div>
@@ -167,7 +170,8 @@ class CollegeAssociation extends Component {
 }
 
 const mapStateToProps = state => ({
-    students: state.students.value
+    students: state.students.value,
+    osisObj: state.students.osisObj
 });
 
 export default connect(mapStateToProps)(CollegeAssociation);

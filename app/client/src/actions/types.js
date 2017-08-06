@@ -149,6 +149,13 @@ export const INVITE_USER_SUCCESS = 'invite_user_success',
     INVITE_USER_ERROR = 'invite_user_error',
     INVITE_USER_PENDING = 'invite_user_pending';
 
+export const UPDATE_USER_NAME_SUCCESS = 'update_user_name_success',
+    UPDATE_USER_NAME_ERROR = 'update_user_name_error',
+    UPDATE_USER_NAME_PENDING = 'update_user_name_pending';
+
+export const OPEN_NAME_EDIT = 'open_name_edit',
+    CLOSE_NAME_EDIT = 'close_name_edit';
+
 export const UPDATE_NOTIFICATIONS = 'update_notifications';
 export const GET_NOTIFICATIONS = 'get_notifications';
 export const MARK_READ_NOTIFICATION = 'mark_read_notification';
