@@ -330,7 +330,8 @@ export const reference = [
         dbName: 'progressToGradAss',
         fieldType: 'SelectField',
         editable: true,
-        category: 'Post-Secondary Information'
+        category: 'Post-Secondary Information',
+        multiLineLabel: true
     },
     {
         fieldName: "Progress to Graduation (Bachelor's)",
@@ -338,7 +339,8 @@ export const reference = [
         dbName: 'progressToGradBa',
         fieldType: 'SelectField',
         editable: true,
-        category: 'Post-Secondary Information'
+        category: 'Post-Secondary Information',
+        multiLineLabel: true
     },
     {
         fieldName: 'Remediation Status',
