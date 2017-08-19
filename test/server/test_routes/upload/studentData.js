@@ -12,11 +12,8 @@ const mockModule = '../utils/save_csv';
 const proxyMethods = {};
 proxyMethods[mockModule] = { default: sinon.spy() };
 
-process.env.PORT = 3000;
-const routes = proxyquire(path.join(process.env.PWD, 'app/server/routes'), proxyMethods)
-  .default;
-const app = proxyquire('../../../../app/server/server', { './routes/index': routes })
-  .default;
+const routes = require(path.join(process.env.PWD, 'app/server/routes'));
+const app = require(path.join(process.env.PWD, 'app/server/server'));
 
 const { users } = require('../../dbseed/seed');
 const TEST_FILE = path.join(process.env.PWD, 'test/server/test_routes/upload/data/sD.csv');
@@ -49,6 +46,8 @@ describe('/upload/studentData', () => {
     });
 
     it.skip('should pass uploaded file to saveCSV function', (done) => {
+      // TODO: I have been unable to figure out how to mock saveCSV.
+      // I am tabling this test and similar tests for now until we figure out a way to do that.
       const authHeader = 'JWT ' + jwt.sign(users[3], process.env.SECRET, {
         expiresIn: 100080
       });
@@ -68,8 +67,42 @@ describe('/upload/studentData', () => {
         .catch(done);
     });
 
-    it.skip('should return a status 500 error if the studentData is invalid', () => {});
+    it('should return a status 500 error if the studentData is invalid', (done) => {
+      // TODO: Test other ways of having invalid data
+      const authHeader = 'JWT ' + jwt.sign(users[3], process.env.SECRET, {
+        expiresIn: 100080
+      });
 
-    it.skip('should return a status 500 error if no data is uploaded', () => {});
+      request(app)
+        .post('/upload/studentData')
+        .set('Authorization', authHeader)
+        .set('Content-Type', 'multipart/form-data')
+        .attach('file', null)
+        .then((res) => {
+          expect(res.status)
+            .toBe(500);
+          done();
+        })
+        .catch(done);
+
+    });
+
+    it('should return a status 500 error if no data is uploaded', (done) => {
+      const authHeader = 'JWT ' + jwt.sign(users[3], process.env.SECRET, {
+        expiresIn: 100080
+      });
+
+      request(app)
+        .post('/upload/studentData')
+        .set('Authorization', authHeader)
+        .set('Content-Type', 'multipart/form-data')
+        .then((res) => {
+          expect(res.status)
+            .toBe(500);
+          done();
+        })
+        .catch(done);
+
+    });
   });
 });
