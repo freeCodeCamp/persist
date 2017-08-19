@@ -3,18 +3,13 @@ const expect = require('expect');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-const proxyquire = require('proxyquire');
 const request = require('supertest');
 const sinon = require('sinon');
+
+const app = require(path.join(process.env.PWD, 'app/server/server'))
+  .default;
+
 const { testRoute } = require('../../testUtils');
-
-const mockModule = '../utils/save_csv';
-const proxyMethods = {};
-proxyMethods[mockModule] = { default: sinon.spy() };
-
-const routes = require(path.join(process.env.PWD, 'app/server/routes'));
-const app = require(path.join(process.env.PWD, 'app/server/server'));
-
 const { users } = require('../../dbseed/seed');
 const TEST_FILE = path.join(process.env.PWD, 'test/server/test_routes/upload/data/sD.csv');
 
