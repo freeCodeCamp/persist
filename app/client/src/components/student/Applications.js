@@ -5,9 +5,7 @@ import { submit } from 'redux-form';
 import { saveApplication, deleteApplication } from '../../actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
-import merge from 'lodash/merge';
-import cloneDeep from 'lodash/cloneDeep';
+import { get, isEmpty, merge, cloneDeep } from 'lodash';
 import ApplicationEditor from './ApplicationEditor';
 import { EditorModeEdit, ContentDeleteSweep, ContentAdd } from 'material-ui/svg-icons';
 
@@ -31,7 +29,7 @@ class Applications extends Component {
             const { type, result, heop, attending, defer, notes } = application;
             return (
                 <tr key={index}>
-                    <td>{college.fullName}</td>
+                    <td>{get(college, 'fullName')}</td>
                     <td>{type}</td>
                     <td>{result}</td>
                     <td>{heop}</td>

@@ -29,6 +29,13 @@ class NavigationMenu extends Component {
             this.setSuggestions([], 'none');
             return;
         }
+        const { students, colleges, osisObj } = this.props;
+        const osisStudent = osisObj[value];
+        if (osisStudent) {
+            const suggestion = {text: osisStudent.fullName, query: { fullName: osisStudent.fullName, model: 'student' }};
+            this.suggestionsObj = [suggestion];
+            return this.setSuggestions([suggestion], 'block');
+        }
         const sortingFunc = (s1, s2) => {
             if (!s1.text && s2.text) return 1;
             if (!s2.text && s1.text) return -1;
@@ -41,7 +48,6 @@ class NavigationMenu extends Component {
                 return o2.startsWith(value) ? 1 : o1.localeCompare(o2);
             }
         };
-        const { students, colleges } = this.props;
         const regex = new RegExp('.*' + value + '.*', 'i');
         const studentsObj = _(students)
             .filter(student => regex.test(student['fullName']))
@@ -73,6 +79,7 @@ class NavigationMenu extends Component {
             e.preventDefault();
         }
         const suggestion = this.suggestionsObj.find(suggestion => suggestion.text === this.state.searchName);
+
         if (suggestion) {
             this.props.push(`/search?${$.param(suggestion.query)}`);
         }
@@ -197,6 +204,7 @@ class NavigationMenu extends Component {
 const mapStateToProps = state => {
     return {
         students: state.students.value,
+        osisObj: state.students.osisObj,
         colleges: state.colleges.value,
         user: state.auth.user
     };

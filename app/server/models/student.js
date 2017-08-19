@@ -17,7 +17,7 @@ const setGraduationType = (record, done) => {
                 return College.findOne({ _id: term.college }, (err, college) => {
                     if (err) {
                         console.log(err);
-                    } else if (college) {
+                    } else if (college && !term.graduationType) {
                         term.graduationType = college.durationType;
                     }
                     callback(null);
@@ -71,6 +71,7 @@ Student.pre('save', true, function(next, done) {
     }
     done();
 });
+
 Student.pre('save', true, function(next, done) {
     next();
     const record = this;

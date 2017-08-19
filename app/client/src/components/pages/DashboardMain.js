@@ -78,7 +78,6 @@ class DashboardMain extends React.Component {
 
     componentDidMount() {
         const { students } = this.props;
-        console.log(students.length, 'did moutn');
         if (students.length > 0) {
             this.update = true;
             this.setState({

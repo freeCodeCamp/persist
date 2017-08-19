@@ -41,7 +41,7 @@ class ColPersist extends Component {
         });
     }
 
-    yearEnrol(terms, enrolDate, hsGradDate, hsGradYear, diff) {
+    yearEnrol(terms, enrolDate, hsGradDate, hsGradYear, diff, collegeGradDate) {
         const colDir = moment(enrolDate).diff(moment(hsGradDate), 'months') < diff;
         if (!colDir) return false;
         const totalTerms = terms.length;
@@ -68,6 +68,10 @@ class ColPersist extends Component {
             case '1r':
                 return termsObj[`Spring ${hsGradYear + 1}`] || termsObj[`Fall ${hsGradYear + 1}`];
             case '3r':
+                if (collegeGradDate && moment(enrolDate).diff(moment(collegeGradDate), 'months') < 27) {
+                    // they graduated after 2 years (3 month buffer)
+                    return true;
+                }
                 return (
                     (termsObj[`Spring ${hsGradYear + 1}`] || termsObj[`Fall ${hsGradYear + 1}`]) &&
                     (termsObj[`Spring ${hsGradYear + 2}`] || termsObj[`Fall ${hsGradYear + 2}`])
@@ -94,13 +98,14 @@ class ColPersist extends Component {
                 if (hsGradYear) {
                     result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
                     const hsGradDate = student.hsGradDate;
+                    const collegeGradDate = student.hasOwnProperty('gradDate')? student.gradDate: null;
                     let enrolDate;
                     const terms = student.terms;
                     if (terms.length > 0) {
                         enrolDate = _.last(terms).enrolBegin;
                     }
                     if (enrolDate && hsGradDate) {
-                        if (this.yearEnrol(terms, enrolDate, hsGradDate, hsGradYear, 6)) {
+                        if (this.yearEnrol(terms, enrolDate, hsGradDate, hsGradYear, 6, collegeGradDate)) {
                             result[hsGradYear].count += 1;
                             result[hsGradYear].students.push(student.osis);
                         }
@@ -272,7 +277,7 @@ class ColPersist extends Component {
                         <b>Yr 1 to Yr 3 Persistence</b>
                         {' '}
                         Of students who were enrolled in Fall after graduation, how many returned for at least one semester of year 2 and
-                        year 3. This metric counts students even if they take a semester off as long as they return for at least one
+                        year 3, or graduated after year 2. This metric counts students even if they take a semester off as long as they return for at least one
                         semester each year.
                     </CardText>
                 </Card>

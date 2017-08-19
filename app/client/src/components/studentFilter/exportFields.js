@@ -112,10 +112,8 @@ class ExportCSV extends Component {
                 return result;
             },
             []
-        );
-        if (!selectedKeys.includes('osis')) {
-            selectedKeys.unshift('osis');
-        }
+        ).filter(key => key !== 'osis');
+        selectedKeys.unshift('osis');
         selectedKeys.push('aliases');
         const { students } = this.props;
         const picked = students.map(student => _.pick(student, selectedKeys)).filter(student => !_.isEmpty(student));
