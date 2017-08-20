@@ -11,7 +11,7 @@ const app = require(path.join(process.env.PWD, 'app/server/server'))
 
 const { testRoute } = require('../../testUtils');
 const { users } = require('../../dbseed/seed');
-const TEST_FILE = path.join(process.env.PWD, 'test/server/test_routes/upload/data/sD.csv');
+const TEST_FILE = path.join(process.env.PWD, 'test/server/data/studentData.csv');
 
 describe('/upload/studentData', () => {
   var sandbox;
