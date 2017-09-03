@@ -29,7 +29,7 @@ class Terms extends Component {
         const { initValue, collegeObj } = this.props;
         const termsHTML = initValue.map((term, index) => {
             const college = collegeObj[term.college];
-            const { name, status, creditEarned, creditAttempted, gpa } = term;
+            const { name, status, creditEarned, creditAttempted, gpa, graduationType } = term;
             return (
                 <tr key={index}>
                     <td>{college.fullName}</td>
@@ -38,6 +38,7 @@ class Terms extends Component {
                     <td>{creditEarned}</td>
                     <td>{creditAttempted}</td>
                     <td>{gpa}</td>
+                    <td>{graduationType}</td>
                     <td>
                         <IconButton onClick={() => this.handleEdit(term)}>
                             <EditorModeEdit />
@@ -147,6 +148,7 @@ class Terms extends Component {
                     <th>Credits Earned</th>
                     <th>Credits Attempted</th>
                     <th>Term GPA</th>
+                    <th>Graduation Type</th>
                     <th>Actions</th>
                 </tr>
             </thead>
