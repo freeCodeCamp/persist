@@ -10,8 +10,6 @@ const exportArray = (students, type) => dispatch => {
         type: SPINNER_PAGE,
         payload: true
     });
-    const quotes = '';
-    const doubleQuotes = '"';
     let fieldNames, fields;
     switch (type) {
         case 'applications':
@@ -31,8 +29,8 @@ const exportArray = (students, type) => dispatch => {
             data: students,
             fields,
             fieldNames,
-            quotes,
-            doubleQuotes
+            quotes: '"',
+            doubleQuotes: '',
         },
         (err, csvFile) => {
             if (err) {
