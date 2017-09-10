@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { sortBy } from 'lodash';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import { Table } from 'react-bootstrap';
@@ -10,6 +11,7 @@ class StudentList extends React.Component {
         this.updating = false;
         this.length = 0;
         this.mounted = false;
+        this.sortType = 'asc';
         this.state = {
             students: [],
             offset: 0
@@ -64,6 +66,33 @@ class StudentList extends React.Component {
         );
     }
 
+    switchSort() {
+        if (this.sortType === 'asc') {
+            this.sortType = 'desc';
+        } else {
+            this.sortType = 'asc';
+        }
+    }
+
+    sortTable(columnName) {
+        const { schoolObj } = this.props;
+        const { students } = this.state;
+        const sortedStudents = sortBy(students, (student) => {
+            if (columnName === 'hs') {
+                return schoolObj[student.hs].name;
+            }
+            return student[columnName];
+        });
+        if (this.sortType === 'desc') {
+            sortedStudents.reverse();
+        }
+        this.switchSort();
+        this.setState({
+            students: sortedStudents
+        });
+    }
+
+
     renderLoading() {
         return (
             <div
@@ -116,11 +145,11 @@ class StudentList extends React.Component {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>HS Grad Year</th>
-                        <th>HS</th>
-                        <th>Status</th>
+                        <th onClick={() => this.sortTable('firstName')}>First Name</th>
+                        <th onClick={() => this.sortTable('lastName')}>Last Name</th>
+                        <th onClick={() => this.sortTable('hsGradYear')}>HS Grad Year</th>
+                        <th onClick={() => this.sortTable('hs')}>HS</th>
+                        <th onClick={() => this.sortTable('status')}>Status</th>
                     </tr>
                 </thead>
                 <tbody>

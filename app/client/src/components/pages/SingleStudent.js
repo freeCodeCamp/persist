@@ -16,7 +16,7 @@ class SingleStudent extends React.Component {
         return (
             <div>
                 {student.success && student.data
-                    ? <Content title={studentData.fullName}>
+                    ? <Content title={`${studentData.fullName} (${studentData.osis})`}>
                           <div>
                               <SingleStudentForm enableReinitialize={true} initialValues={studentData} student={studentData} />
                           </div>
