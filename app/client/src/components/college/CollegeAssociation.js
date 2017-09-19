@@ -5,7 +5,7 @@ import moment from 'moment';
 import async from 'async';
 import StudentList from './StudentList';
 import Network from './Network';
-import ExportFields from '../studentFilter/exportFields'
+import ExportFields from '../studentFilter/exportFields';
 
 const associatedStudent = (student, status) => ({
     osis: student.osis,
@@ -80,7 +80,7 @@ class CollegeAssociation extends Component {
                                         enrolled = true;
                                         if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 6) {
                                             associated.push(associatedStudent(student, 'Currently Enrolled Full-time'));
-                                        } else if(Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 12) {
+                                        } else if (Math.abs(moment(new Date()).diff(moment(term.enrolBegin), 'months')) < 12) {
                                             associated.push(associatedStudent(student, 'No current data'));
                                         } else {
                                             associated.push(associatedStudent(student, 'No longer Enrolled'));

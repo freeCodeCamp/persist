@@ -10,28 +10,30 @@ const localOptions = {
 
 // Setting up local login strategy
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
-    User.findOne({ email }).select('+password').exec((err, user) => {
-        if (err) {
-            return done(err);
-        }
-        if (!user) {
-            console.log('user not');
-            return done(null, false, { error: 'Your login details could not be verified. Please try again.' });
-        }
-        if (!user.enabled) {
-            return done(null, false, { error: 'Your account has been disabled. Please contact administrator.' });
-        }
-        user.comparePassword(password, (err, isMatch) => {
+    User.findOne({ email })
+        .select('+password')
+        .exec((err, user) => {
             if (err) {
                 return done(err);
             }
-            if (!isMatch) {
-                console.log('password not');
+            if (!user) {
+                console.log('user not');
                 return done(null, false, { error: 'Your login details could not be verified. Please try again.' });
             }
-            return done(null, user);
+            if (!user.enabled) {
+                return done(null, false, { error: 'Your account has been disabled. Please contact administrator.' });
+            }
+            user.comparePassword(password, (err, isMatch) => {
+                if (err) {
+                    return done(err);
+                }
+                if (!isMatch) {
+                    console.log('password not');
+                    return done(null, false, { error: 'Your login details could not be verified. Please try again.' });
+                }
+                return done(null, user);
+            });
         });
-    });
 });
 
 // Setting JWT strategy options

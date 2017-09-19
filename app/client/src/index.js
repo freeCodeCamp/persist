@@ -20,9 +20,7 @@ if (token) {
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={history}>
-            {routes}
-        </Router>
+        <Router history={history}>{routes}</Router>
     </Provider>,
     document.querySelector('#root')
 );

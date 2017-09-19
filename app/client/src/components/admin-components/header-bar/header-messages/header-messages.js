@@ -21,15 +21,11 @@ class HeaderMessages extends Component {
                     {reminders.length > 0 ? <span className="label label-success">{reminders.length}</span> : null}
                 </a>
                 <ul className="dropdown-menu">
-                    <li className="header">
-                        You have {reminders.length} follow ups
-                    </li>
+                    <li className="header">You have {reminders.length} follow ups</li>
                     <li>
                         {/* inner menu: contains the actual data */}
                         <div className="slimScrollDiv">
-                            <ul className="menu">
-                                {messageList}
-                            </ul>
+                            <ul className="menu">{messageList}</ul>
                             <div className="slimScrollBar" />
                             <div className="slimScrollRail" />
                         </div>

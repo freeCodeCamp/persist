@@ -162,12 +162,19 @@ class SemEnrol extends Component {
     }
 
     chartData(data) {
-        const sortedYears = _(data).keys().sort().value();
+        const sortedYears = _(data)
+            .keys()
+            .sort()
+            .value();
         const values = sortedYears.map(key => data[key]);
         const keys = _.keys(values[0]);
         return keys.map(key => ({
             name: mapping.semType[key],
-            data: _(values).map(key).map('count').map(y => ({ y, key })).value()
+            data: _(values)
+                .map(key)
+                .map('count')
+                .map(y => ({ y, key }))
+                .value()
         }));
     }
 
@@ -183,7 +190,10 @@ class SemEnrol extends Component {
                 text: 'Semester by Semester Enrollment'
             },
             xAxis: {
-                categories: _(data).keys().sort().value(),
+                categories: _(data)
+                    .keys()
+                    .sort()
+                    .value(),
                 crosshair: true
             },
             yAxis: {

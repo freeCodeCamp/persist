@@ -48,7 +48,7 @@ const usersReducer = (state = defaultState, action) => {
                 ...state,
                 pending: false,
                 success: true
-            }
+            };
         case UPDATE_USER_SUCCESS:
             user = action.payload;
             index = findIndex(state.value, u => u._id === user._id);
@@ -80,12 +80,12 @@ const usersReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 nameEditIsOpen: true
-            }
+            };
         case CLOSE_NAME_EDIT:
             return {
                 ...state,
                 nameEditIsOpen: false
-            }
+            };
         default:
             return state;
     }

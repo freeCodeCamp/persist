@@ -70,14 +70,14 @@ class Login extends Component {
                                 <RaisedButton type="submit" label="Submit" primary={true} />
                                 <Link to="/forgot-password">Forgot password?</Link>
                             </div>
-                            {errorMessage.length > 0
-                                ? <Snackbar
-                                      open={open}
-                                      message={errorMessage}
-                                      autoHideDuration={4000}
-                                      onRequestClose={() => this.closeSnackBar()}
-                                  />
-                                : null}
+                            {errorMessage.length > 0 ? (
+                                <Snackbar
+                                    open={open}
+                                    message={errorMessage}
+                                    autoHideDuration={4000}
+                                    onRequestClose={() => this.closeSnackBar()}
+                                />
+                            ) : null}
                         </form>
                     </div>
                 </MaterialUIWrapper>

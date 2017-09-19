@@ -6,9 +6,7 @@ import moment from 'moment';
 import { saveCaseNote, deleteCaseNote, addReminder, removeReminder } from '../../actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
-import merge from 'lodash/merge';
-import cloneDeep from 'lodash/cloneDeep';
+import { get, merge, cloneDeep, isEmpty } from 'lodash';
 import CaseNoteEditor from './CaseNoteEditor';
 import { EditorModeEdit, ContentDeleteSweep, ContentAdd } from 'material-ui/svg-icons';
 
@@ -51,11 +49,7 @@ class CaseNotes extends Component {
                 </tr>
             );
         });
-        return (
-            <tbody>
-                {caseNotesHTML}
-            </tbody>
-        );
+        return <tbody>{caseNotesHTML}</tbody>;
     }
 
     handleDelete(caseNote) {
@@ -165,12 +159,12 @@ class CaseNotes extends Component {
         return (
             <Accordion>
                 <Panel header="Case Notes" eventKey="1">
-                    {fields.length > 0
-                        ? <Table responsive condensed>
-                              {tableHead}
-                              {this.renderCaseNotes()}
-                          </Table>
-                        : null}
+                    {fields.length > 0 ? (
+                        <Table responsive condensed>
+                            {tableHead}
+                            {this.renderCaseNotes()}
+                        </Table>
+                    ) : null}
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                         <ContentAdd />
                     </FloatingActionButton>

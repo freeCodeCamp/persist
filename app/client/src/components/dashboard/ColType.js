@@ -110,12 +110,19 @@ class ColType extends Component {
     }
 
     chartData(data) {
-        const sortedYears = _(data).keys().sort().value();
+        const sortedYears = _(data)
+            .keys()
+            .sort()
+            .value();
         const values = sortedYears.map(key => data[key]);
         const keys = _.keys(values[0]);
         return keys.map(key => ({
             name: mapping.colType[key],
-            data: _(values).map(key).map('count').map(y => ({ y, key })).value()
+            data: _(values)
+                .map(key)
+                .map('count')
+                .map(y => ({ y, key }))
+                .value()
         }));
     }
 
@@ -132,7 +139,10 @@ class ColType extends Component {
                 text: 'College Type'
             },
             xAxis: {
-                categories: _(data).keys().sort().value(),
+                categories: _(data)
+                    .keys()
+                    .sort()
+                    .value(),
                 crosshair: true
             },
             yAxis: {

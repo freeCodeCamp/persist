@@ -2,12 +2,14 @@ import Student from '../models/student';
 
 export const deleteApplication = (req, res) => {
     const { osis, _id } = req.query;
-    Student.findOne({ osis }).update({ $pull: { applications: { _id } } }).exec((err, student) => {
-        if (err || !student) {
-            return res.status(500).send(err || 'student not found');
-        }
-        return res.status(200).json({ status: 'done' });
-    });
+    Student.findOne({ osis })
+        .update({ $pull: { applications: { _id } } })
+        .exec((err, student) => {
+            if (err || !student) {
+                return res.status(500).send(err || 'student not found');
+            }
+            return res.status(200).json({ status: 'done' });
+        });
 };
 
 export const updateApplication = (req, res) => {

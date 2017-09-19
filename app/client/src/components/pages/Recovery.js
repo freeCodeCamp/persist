@@ -42,11 +42,7 @@ class Recovery extends Component {
                 </tr>
             );
         });
-        return (
-            <tbody>
-                {backupsHTML}
-            </tbody>
-        );
+        return <tbody>{backupsHTML}</tbody>;
     }
 
     render() {
@@ -62,12 +58,12 @@ class Recovery extends Component {
         return (
             <Permission role="Owner">
                 <Content title="Recovery">
-                    {backups.length > 0
-                        ? <Table responsive condensed>
-                              {tableHead}
-                              {this.renderTableBody()}
-                          </Table>
-                        : null}
+                    {backups.length > 0 ? (
+                        <Table responsive condensed>
+                            {tableHead}
+                            {this.renderTableBody()}
+                        </Table>
+                    ) : null}
                 </Content>
             </Permission>
         );

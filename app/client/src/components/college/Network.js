@@ -18,9 +18,7 @@ class Network extends Component {
         const yearsHTML = years.map((year, i) => {
             return (
                 <tr key={i}>
-                    <td>
-                        {i + 1}
-                    </td>
+                    <td>{i + 1}</td>
                     <td>{year}</td>
                     <td onClick={() => this.loadFiltered(students[year])}>{students[year].length}</td>
                 </tr>
@@ -38,9 +36,7 @@ class Network extends Component {
                             <th>Students</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {yearsHTML}
-                    </tbody>
+                    <tbody>{yearsHTML}</tbody>
                 </Table>
             </div>
         );

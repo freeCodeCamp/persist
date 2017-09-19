@@ -107,9 +107,12 @@ class ColDirEnrol extends Component {
 
     getRatio(data, constant) {
         const yearlyData = [];
-        _(data).keys().sort().forEach(key => {
-            yearlyData.push(data[key][constant].count * 100 / data[key]['total']);
-        });
+        _(data)
+            .keys()
+            .sort()
+            .forEach(key => {
+                yearlyData.push(data[key][constant].count * 100 / data[key]['total']);
+            });
         return yearlyData;
     }
 
@@ -126,7 +129,10 @@ class ColDirEnrol extends Component {
                 text: 'College Direct Enrollment'
             },
             xAxis: {
-                categories: _(data).keys().sort().value(),
+                categories: _(data)
+                    .keys()
+                    .sort()
+                    .value(),
                 crosshair: true
             },
             yAxis: {

@@ -205,9 +205,7 @@ class ExportCSV extends Component {
             <Accordion>
                 <Panel header="Export" eventKey="1">
                     <form>
-                        <Row>
-                            {exportKeysHTML}
-                        </Row>
+                        <Row>{exportKeysHTML}</Row>
                         <Row>
                             <Col xs={12} sm={12} md={12} lg={12}>
                                 <RaisedButton style={styles.button} label="Students" primary={true} onClick={() => this.handleStudents()} />

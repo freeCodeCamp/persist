@@ -45,7 +45,13 @@ class FilterStudentForm extends React.Component {
         }
         const { students } = this.props;
         const regex = new RegExp('.*' + value + '.*', 'i');
-        const suggestions = _(students).filter(student => regex.test(student[columnName])).map(columnName).uniq().sortBy().take(5).value();
+        const suggestions = _(students)
+            .filter(student => regex.test(student[columnName]))
+            .map(columnName)
+            .uniq()
+            .sortBy()
+            .take(5)
+            .value();
         this.setSuggestions(columnName, suggestions);
     }
 

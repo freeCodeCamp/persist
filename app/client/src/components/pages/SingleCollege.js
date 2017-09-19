@@ -17,18 +17,18 @@ class SingleCollege extends React.Component {
         const collegeData = college.data;
         return (
             <Content title={collegeData.fullName}>
-                {college.success && collegeData
-                    ? <div>
-                          <SingleCollegeForm initialValues={collegeData} college={collegeData} />
-                      </div>
-                    : college.success && !collegeData
-                      ? <div>No Records Found</div>
-                      : <div>
-                            <p>
-                                Loading
-                            </p>
-                            <i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
-                        </div>}
+                {college.success && collegeData ? (
+                    <div>
+                        <SingleCollegeForm initialValues={collegeData} college={collegeData} />
+                    </div>
+                ) : college.success && !collegeData ? (
+                    <div>No Records Found</div>
+                ) : (
+                    <div>
+                        <p>Loading</p>
+                        <i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
+                    </div>
+                )}
             </Content>
         );
     }

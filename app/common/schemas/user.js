@@ -32,10 +32,10 @@ export default Schema => ({
         unique: true,
         required: true,
         validate: {
-          isAsync: false,
-          validator: isEmail,
-          message: 'Must provide a valid email address',
-        },
+            isAsync: false,
+            validator: isEmail,
+            message: 'Must provide a valid email address'
+        }
     },
     password: {
         type: String,

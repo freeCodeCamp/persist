@@ -96,11 +96,7 @@ class App extends Component {
                 <NavigationMenu />
                 <section className="content-wrapper">
                     <Spinner />
-                    {load
-                        ? <MaterialUIWrapper>
-                              {this.props.currentPage}
-                          </MaterialUIWrapper>
-                        : null}
+                    {load ? <MaterialUIWrapper>{this.props.currentPage}</MaterialUIWrapper> : null}
                 </section>
                 <Footer />
             </div>

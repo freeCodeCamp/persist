@@ -18,46 +18,22 @@ export default class CollegeSummary extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <td className="key">
-                                Most Recent College
-                            </td>
-                            <td className="value">
-                                {recentCollege}
-                            </td>
-                            <td className="key">
-                                Major/Minor
-                            </td>
-                            <td className="value">
-                                {majorMinor}
-                            </td>
+                            <td className="key">Most Recent College</td>
+                            <td className="value">{recentCollege}</td>
+                            <td className="key">Major/Minor</td>
+                            <td className="value">{majorMinor}</td>
                         </tr>
                         <tr>
-                            <td className="key">
-                                HS GPA
-                            </td>
-                            <td className="value">
-                                {hsGPA}
-                            </td>
-                            <td className="key">
-                                Remediation
-                            </td>
-                            <td className="value">
-                                {remediation}
-                            </td>
+                            <td className="key">HS GPA</td>
+                            <td className="value">{hsGPA}</td>
+                            <td className="key">Remediation</td>
+                            <td className="value">{remediation}</td>
                         </tr>
                         <tr>
-                            <td className="key">
-                                Student Support Program
-                            </td>
-                            <td className="value">
-                                {studentSupport}
-                            </td>
-                            <td className="key">
-                                Transfer Status
-                            </td>
-                            <td className="value">
-                                {transferStatus}
-                            </td>
+                            <td className="key">Student Support Program</td>
+                            <td className="value">{studentSupport}</td>
+                            <td className="key">Transfer Status</td>
+                            <td className="value">{transferStatus}</td>
                         </tr>
                     </tbody>
                 </Table>

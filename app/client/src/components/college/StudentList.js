@@ -77,7 +77,7 @@ class StudentList extends React.Component {
     sortTable(columnName) {
         const { schoolObj } = this.props;
         const { students } = this.state;
-        const sortedStudents = sortBy(students, (student) => {
+        const sortedStudents = sortBy(students, student => {
             if (columnName === 'hs') {
                 return schoolObj[student.hs].name;
             }
@@ -91,7 +91,6 @@ class StudentList extends React.Component {
             students: sortedStudents
         });
     }
-
 
     renderLoading() {
         return (
@@ -124,13 +123,9 @@ class StudentList extends React.Component {
         const studentsHTML = students.map((student, i) => {
             return (
                 <tr key={i}>
+                    <td>{i + 1}</td>
                     <td>
-                        {i + 1}
-                    </td>
-                    <td>
-                        <Link to={`/student/${student.osis}`}>
-                            {student.firstName}
-                        </Link>
+                        <Link to={`/student/${student.osis}`}>{student.firstName}</Link>
                     </td>
                     <td>{student.lastName}</td>
                     <td>{student.hsGradYear}</td>
@@ -152,9 +147,7 @@ class StudentList extends React.Component {
                         <th onClick={() => this.sortTable('status')}>Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {studentsHTML}
-                </tbody>
+                <tbody>{studentsHTML}</tbody>
             </Table>
         );
     }

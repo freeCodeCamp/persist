@@ -162,7 +162,10 @@ class GradRate extends Component {
 
     chartData(data) {
         const { type } = this.state;
-        const sortedYears = _(data).keys().sort().value();
+        const sortedYears = _(data)
+            .keys()
+            .sort()
+            .value();
         const values = sortedYears.map(key => data[key]);
         const graduated = {
             name: 'Graduated',
@@ -201,9 +204,9 @@ class GradRate extends Component {
                     data: values.map(key => ({
                         y:
                             key['Currently Enrolled'].count +
-                                key['No longer Enrolled'].count +
-                                key['transferred with degree'].count +
-                                key['transferred without degree'].count,
+                            key['No longer Enrolled'].count +
+                            key['transferred with degree'].count +
+                            key['transferred without degree'].count,
                         key: 'Did not Graduate'
                     }))
                 }
@@ -245,7 +248,10 @@ class GradRate extends Component {
                 text: 'Graduation Rate'
             },
             xAxis: {
-                categories: _(data).keys().sort().value(),
+                categories: _(data)
+                    .keys()
+                    .sort()
+                    .value(),
                 crosshair: true
             },
             yAxis: {

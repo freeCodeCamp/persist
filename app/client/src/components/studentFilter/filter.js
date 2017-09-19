@@ -37,7 +37,7 @@ const filterKeys = [
 ];
 
 const customTypes = {
-    'hsGradYear': 'Checkbox'
+    hsGradYear: 'Checkbox'
 };
 
 const extraFilters = {
@@ -62,13 +62,21 @@ class StudentFilter extends Component {
 
     filterStudents(values) {
         this.showStudentsTable = true;
-        let conditions = _(values).omitBy(_.isNil).cloneDeep();
+        let conditions = _(values)
+            .omitBy(_.isNil)
+            .cloneDeep();
         const { students } = this.props;
         const hsGPA = conditions.hsGPA;
         delete conditions.hsGPA;
         const extraConditions = _.pick(conditions, extraKeys);
-        const arrayConditions = _(conditions).omit(extraKeys).pickBy((value, key) => studentKeysObj[key].fieldType === 'Checkbox').value();
-        const multipleOrConditions = _(conditions).omit(extraKeys).pickBy((value, key) => _.get(customTypes, key) === 'Checkbox').value();
+        const arrayConditions = _(conditions)
+            .omit(extraKeys)
+            .pickBy((value, key) => studentKeysObj[key].fieldType === 'Checkbox')
+            .value();
+        const multipleOrConditions = _(conditions)
+            .omit(extraKeys)
+            .pickBy((value, key) => _.get(customTypes, key) === 'Checkbox')
+            .value();
         conditions = _.omit(conditions, [..._.keys(extraConditions), ..._.keys(arrayConditions), ..._.keys(multipleOrConditions)]);
         let filteredStudents = _(students).filter(conditions);
         filteredStudents = filteredStudents.filter(student => {
@@ -206,9 +214,7 @@ class StudentFilter extends Component {
         return (
             <Content title="Students">
                 <form onSubmit={handleSubmit(v => this.filterStudents(v))}>
-                    <Row>
-                        {filterKeysHTML(this)}
-                    </Row>
+                    <Row>{filterKeysHTML(this)}</Row>
                     <Row>
                         <Col xs={12} sm={12} md={12} lg={12}>
                             <RaisedButton type="submit" label="Filter" primary={true} />

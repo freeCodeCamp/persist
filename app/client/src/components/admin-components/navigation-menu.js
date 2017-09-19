@@ -32,7 +32,7 @@ class NavigationMenu extends Component {
         const { students, colleges, osisObj } = this.props;
         const osisStudent = osisObj[value];
         if (osisStudent) {
-            const suggestion = {text: osisStudent.fullName, query: { fullName: osisStudent.fullName, model: 'student' }};
+            const suggestion = { text: osisStudent.fullName, query: { fullName: osisStudent.fullName, model: 'student' } };
             this.suggestionsObj = [suggestion];
             return this.setSuggestions([suggestion], 'block');
         }
@@ -61,13 +61,18 @@ class NavigationMenu extends Component {
             .uniqBy('text')
             .sort(sortingFunc)
             .take(5);
-        const suggestionsObj = studentsObj.concat(collegesObj.value()).sort(sortingFunc).take(5);
+        const suggestionsObj = studentsObj
+            .concat(collegesObj.value())
+            .sort(sortingFunc)
+            .take(5);
         this.suggestionsObj = suggestionsObj.value();
         this.setSuggestions(suggestionsObj, 'block');
     }
 
     setSuggestions(suggestionsObj, display) {
-        const listItems = _(suggestionsObj).map('text').value();
+        const listItems = _(suggestionsObj)
+            .map('text')
+            .value();
         this.setState({
             listItems: listItems.length < 1 ? ['No results found'] : listItems,
             display
@@ -113,10 +118,10 @@ class NavigationMenu extends Component {
                             <img src="/default-profile-pic.png" className="img-circle" alt="User Image" />
                         </div>
                         <div className="pull-left info">
-                            <p>
-                                {`${firstName} ${lastName || ''}`.trim()}
-                            </p>
-                            <a href="#"><i className="fa fa-circle text-success" /> Online</a>
+                            <p>{`${firstName} ${lastName || ''}`.trim()}</p>
+                            <a href="#">
+                                <i className="fa fa-circle text-success" /> Online
+                            </a>
                         </div>
                     </div>
                     {/* search form */}
@@ -149,9 +154,7 @@ class NavigationMenu extends Component {
                     {/* /.search form */}
                     {/* sidebar menu: : style can be found in sidebar.less */}
                     <ul className="sidebar-menu">
-                        <li className="header">
-                            MAIN NAVIGATION
-                        </li>
+                        <li className="header">MAIN NAVIGATION</li>
                         <li className="active">
                             <Link to="/">
                                 <i className="fa fa-dashboard" /> <span>Dashboard</span>

@@ -81,7 +81,9 @@ Student.pre('save', true, function(next, done) {
     }
     record.terms = sortBy(record.terms, obj => {
         return obj.enrolBegin;
-    }).reverse().filter(term => term.enrolBegin || term.enrolEnd);
+    })
+        .reverse()
+        .filter(term => term.enrolBegin || term.enrolEnd);
     setTermNames(record);
     const recordTerms = cloneDeep(record.terms).reverse();
     record.mostRecentCol = record.terms[0].college;

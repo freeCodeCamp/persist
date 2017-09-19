@@ -47,11 +47,7 @@ class Applications extends Component {
                 </tr>
             );
         });
-        return (
-            <tbody>
-                {applicationsHTML}
-            </tbody>
-        );
+        return <tbody>{applicationsHTML}</tbody>;
     }
 
     handleDelete(application) {
@@ -152,12 +148,12 @@ class Applications extends Component {
         return (
             <Accordion>
                 <Panel header="Applications" eventKey="1">
-                    {fields.length > 0
-                        ? <Table responsive condensed>
-                              {tableHead}
-                              {this.renderApplications()}
-                          </Table>
-                        : null}
+                    {fields.length > 0 ? (
+                        <Table responsive condensed>
+                            {tableHead}
+                            {this.renderApplications()}
+                        </Table>
+                    ) : null}
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                         <ContentAdd />
                     </FloatingActionButton>
