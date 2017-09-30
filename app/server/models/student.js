@@ -1,10 +1,13 @@
-const mongoose = require('mongoose');
 import async from 'async';
 import moment from 'moment';
 import mongoosePaginate from 'mongoose-paginate';
 import { sortBy, uniq, map, cloneDeep } from 'lodash';
 import { College } from './';
 import { studentSchema } from '../../common/schemas';
+
+const mongoose = require('mongoose');
+const {ObjectID} = require('mongodb');
+
 const Schema = mongoose.Schema;
 export const Student = new Schema(studentSchema(Schema));
 Student.plugin(mongoosePaginate);
@@ -71,6 +74,17 @@ Student.pre('save', true, function(next, done) {
     }
     done();
 });
+
+Student.pre('validate', true, async function(next, done) {
+    // Bug in casting strings to ObjectIDs when uploading CSV files, 
+    // fixed here for safety.
+    const record = this;
+    const {mostRecentCol, firstCol} = record;
+    record.mostRecentCol = new ObjectID(mostRecentCol);
+    record.firstCol = new ObjectID(firstCol);
+    next();
+    done();
+  });
 
 Student.pre('save', true, function(next, done) {
     next();
@@ -185,4 +199,5 @@ Student.pre('save', true, function(next, done) {
         done();
     }
 });
+
 export default mongoose.model('Student', Student);
