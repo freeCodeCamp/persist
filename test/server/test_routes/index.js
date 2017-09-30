@@ -1,5 +1,6 @@
 describe('Server Routes', () => {
   describe('upload routes', () => {
+    require('./upload/studentData');
     require('./upload/applicationData');
     require('./upload/collegeData');
     require('./upload/schoolData');
