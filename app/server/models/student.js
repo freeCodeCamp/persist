@@ -75,13 +75,12 @@ Student.pre('save', true, function(next, done) {
     done();
 });
 
-Student.pre('validate', true, async function(next, done) {
+Student.pre('validate', true, function(next, done) {
     // Bug in casting strings to ObjectIDs when uploading CSV files, 
     // fixed here for safety.
-    const record = this;
-    const {mostRecentCol, firstCol} = record;
-    record.mostRecentCol = new ObjectID(mostRecentCol);
-    record.firstCol = new ObjectID(firstCol);
+    const {mostRecentCol, firstCol} = this;
+    this.mostRecentCol = new ObjectID(mostRecentCol);
+    this.firstCol = new ObjectID(firstCol);
     next();
     done();
   });
