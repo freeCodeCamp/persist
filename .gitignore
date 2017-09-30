@@ -32,3 +32,5 @@ npm-debug.log
 coverage/
 karma.log
 .nyc_output
+err.json
+test/server/data/.~lock.*
