@@ -67,9 +67,7 @@ class Notifications extends React.Component {
     render() {
         return (
             <Content title="Notifications">
-                <ul className="menu">
-                    {this.notificationList()}
-                </ul>
+                <ul className="menu">{this.notificationList()}</ul>
             </Content>
         );
     }

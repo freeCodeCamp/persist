@@ -97,7 +97,7 @@ class SingleStudentForm extends React.Component {
                             key={i}
                             disabled={disabled}
                             field={field}
-                            floatingLabelStyle={field.multiLineLabel? { top: '16px' }: {} }
+                            floatingLabelStyle={field.multiLineLabel ? { top: '16px' } : {}}
                         />
                     </Col>
                 );
@@ -204,9 +204,11 @@ class SingleStudentForm extends React.Component {
                 <Form className="single-student-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                     <Row className="text-right">
                         {editable ? <RaisedButton label="Submit" type="submit" primary={true} /> : null}
-                        {editable
-                            ? <RaisedButton label="Undo" secondary={true} onClick={reset} />
-                            : <RaisedButton label="Edit" primary={true} onClick={() => this.toggleEdit()} />}
+                        {editable ? (
+                            <RaisedButton label="Undo" secondary={true} onClick={reset} />
+                        ) : (
+                            <RaisedButton label="Edit" primary={true} onClick={() => this.toggleEdit()} />
+                        )}
                     </Row>
                     <Row>
                         <FieldArray
@@ -226,21 +228,13 @@ class SingleStudentForm extends React.Component {
                             initValue={initialValues['aliases']}
                         />
                         <h2>Basic Profile</h2>
-                        <Row>
-                            {renderFormGroups(this, basicProfile)}
-                        </Row>
+                        <Row>{renderFormGroups(this, basicProfile)}</Row>
                         <h2>Student Contact</h2>
-                        <Row>
-                            {renderFormGroups(this, contactInfo)}
-                        </Row>
+                        <Row>{renderFormGroups(this, contactInfo)}</Row>
                         <h2>Academic Information</h2>
-                        <Row>
-                            {renderFormGroups(this, academicInfo)}
-                        </Row>
+                        <Row>{renderFormGroups(this, academicInfo)}</Row>
                         <h2>Financial Profile</h2>
-                        <Row>
-                            {renderFormGroups(this, financialInfo)}
-                        </Row>
+                        <Row>{renderFormGroups(this, financialInfo)}</Row>
                         {hasGradDate ? <h2>College Applications</h2> : <h2>Historical Information</h2>}
                         <Row>
                             {renderFormGroups(this, colApplications)}
@@ -260,15 +254,15 @@ class SingleStudentForm extends React.Component {
                             component={renderCaseNotes}
                             initValue={initialValues['caseNotes']}
                         />
-                        {hasGradDate
-                            ? <FieldArray
-                                  name="terms"
-                                  osis={initialValues.osis}
-                                  form={this}
-                                  component={renderTerms}
-                                  initValue={initialValues['terms']}
-                              />
-                            : null}
+                        {hasGradDate ? (
+                            <FieldArray
+                                name="terms"
+                                osis={initialValues.osis}
+                                form={this}
+                                component={renderTerms}
+                                initValue={initialValues['terms']}
+                            />
+                        ) : null}
                     </Row>
                     <Snackbar
                         bodyStyle={{ backgroundColor: 'red' }}

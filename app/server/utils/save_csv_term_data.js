@@ -83,9 +83,10 @@ export default fileName => {
                                             } else if (moment(elem.enrolEnd).diff(moment(termRecord.enrolBegin), 'days') >= 0) {
                                                 overlapStart = termRecord.enrolBegin;
                                             }
-                                            overlapEnd = moment(termRecord.enrolEnd).diff(moment(elem.enrolEnd), 'days') >= 0
-                                                ? elem.enrolEnd
-                                                : termRecord.enrolEnd;
+                                            overlapEnd =
+                                                moment(termRecord.enrolEnd).diff(moment(elem.enrolEnd), 'days') >= 0
+                                                    ? elem.enrolEnd
+                                                    : termRecord.enrolEnd;
                                             if (overlapStart && overlapEnd) {
                                                 const overlappingDays = moment(overlapEnd).diff(moment(overlapStart), 'days');
                                                 const elemDays = moment(elem.enrolEnd).diff(moment(elem.enrolBegin), 'days');
@@ -134,6 +135,9 @@ export default fileName => {
             );
         });
 
-        fs.createReadStream(fileName).pipe(parser).pipe(transformer);
+        fs
+            .createReadStream(fileName)
+            .pipe(parser)
+            .pipe(transformer);
     });
 };

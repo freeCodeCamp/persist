@@ -61,7 +61,7 @@ class ReduxFormGroup extends React.Component {
     }
 
     idToText(id) {
-        const {field: {fieldType, type}} = this.props;
+        const { field: { fieldType, type } } = this.props;
         if (fieldType === 'AutoComplete') {
             if (type === 'school') {
                 this.initSchool(id);
@@ -77,17 +77,17 @@ class ReduxFormGroup extends React.Component {
 
     render() {
         const { searchText } = this.state;
-        const { disabled, field, form, initValue, collegeSource, schoolSource, style={}, floatingLabelStyle={} } = this.props;
+        const { disabled, field, form, initValue, collegeSource, schoolSource, style = {}, floatingLabelStyle = {} } = this.props;
         const { fieldType, dbName, displayName } = field;
         switch (fieldType) {
             case 'TextField':
-                return ( 
-                    <Field 
-                        disabled={disabled} 
+                return (
+                    <Field
+                        disabled={disabled}
                         style={style}
-                        name={dbName.toString()} 
-                        component={TextField} 
-                        floatingLabelText={displayName} 
+                        name={dbName.toString()}
+                        component={TextField}
+                        floatingLabelText={displayName}
                         floatingLabelStyle={floatingLabelStyle}
                     />
                 );
@@ -132,15 +132,7 @@ class ReduxFormGroup extends React.Component {
                     />
                 );
             case 'Checkbox_Add':
-                return (
-                    <Field 
-                        disabled={disabled} 
-                        name={dbName} 
-                        form={form} 
-                        initValue={initValue} 
-                        component={ChipsAdd} 
-                        field={field} 
-                    />);
+                return <Field disabled={disabled} name={dbName} form={form} initValue={initValue} component={ChipsAdd} field={field} />;
             case 'Toggle':
                 return (
                     <Field

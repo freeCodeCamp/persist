@@ -46,9 +46,7 @@ class HeaderNotifications extends Component {
                     <li>
                         {/* inner menu: contains the actual data */}
                         <div className="slimScrollDiv">
-                            <ul className="menu">
-                                {notificationList}
-                            </ul>
+                            <ul className="menu">{notificationList}</ul>
                             <div className="slimScrollBar" />
                             <div className="slimScrollRail" />
                         </div>

@@ -1,6 +1,4 @@
-const _ = require('lodash');
 const expect = require('expect');
-const express = require('express');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const request = require('supertest');
@@ -8,9 +6,9 @@ const sinon = require('sinon');
 
 const app = require(path.join(process.env.PWD, 'app/server/server'))
   .default;
-
 const { testRoute } = require('../../testUtils');
 const { users } = require('../../dbseed/seed');
+
 const TEST_FILE = path.join(process.env.PWD, 'test/server/data/studentData.csv');
 
 describe.only('/upload/studentData', () => {
@@ -75,7 +73,6 @@ describe.only('/upload/studentData', () => {
           done();
         })
         .catch(done);
-
     });
 
     it('should return a status 500 error if no data is uploaded', (done) => {
@@ -93,7 +90,6 @@ describe.only('/upload/studentData', () => {
           done();
         })
         .catch(done);
-
     });
   });
 });

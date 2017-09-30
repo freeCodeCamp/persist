@@ -44,13 +44,13 @@ class Users extends Component {
                     <td>{user.profile.lastName}</td>
                     <td>{user.email}</td>
                     <td>{user.access.role}</td>
+                    <td>{school && schoolObj[school] ? schoolObj[school].name : '--'}</td>
                     <td>
-                        {school && schoolObj[school] ? schoolObj[school].name : '--'}
-                    </td>
-                    <td>
-                        {enabled
-                            ? <RaisedButton onClick={() => this.disableUser(user)} label='disable' primary={true} />
-                            : <RaisedButton onClick={() => this.enableUser(user)} label='enable' secondary={true} />}
+                        {enabled ? (
+                            <RaisedButton onClick={() => this.disableUser(user)} label="disable" primary={true} />
+                        ) : (
+                            <RaisedButton onClick={() => this.enableUser(user)} label="enable" secondary={true} />
+                        )}
                         <IconButton onClick={() => this.handleDelete(user)}>
                             <ContentDeleteSweep />
                         </IconButton>
@@ -58,11 +58,7 @@ class Users extends Component {
                 </tr>
             );
         });
-        return (
-            <tbody>
-                {usersHTML}
-            </tbody>
-        );
+        return <tbody>{usersHTML}</tbody>;
     }
 
     handleDelete(user) {
@@ -110,8 +106,8 @@ class Users extends Component {
         const { spinner } = this.props;
         const open = this.state.open.delete;
         const actions = [
-            <FlatButton label='Cancel' disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleClose()} />,
-            <FlatButton label='Delete' disabled={spinner} primary={true} onTouchTap={() => this.deleteUser()} />
+            <FlatButton label="Cancel" disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleClose()} />,
+            <FlatButton label="Delete" disabled={spinner} primary={true} onTouchTap={() => this.deleteUser()} />
         ];
         return (
             <Dialog actions={actions} open={open}>
@@ -125,11 +121,11 @@ class Users extends Component {
         const user = this.user;
         const open = this.state.open.edit;
         const actions = [
-            <FlatButton label='Cancel' disabled={spinner} primary={true} onTouchTap={() => this.handleClose()} />,
-            <FlatButton label='Save' disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleInvite()} />
+            <FlatButton label="Cancel" disabled={spinner} primary={true} onTouchTap={() => this.handleClose()} />,
+            <FlatButton label="Save" disabled={spinner} primary={true} keyboardFocused={true} onTouchTap={() => this.handleInvite()} />
         ];
         return (
-            <Dialog actions={actions} open={open} title='Invite User'>
+            <Dialog actions={actions} open={open} title="Invite User">
                 <UserEditor initialValues={user} onSubmit={this.inviteUser.bind(this)} />
             </Dialog>
         );
@@ -139,7 +135,7 @@ class Users extends Component {
         const { users, loading } = this.props;
         if (loading) {
             return (
-                <RefreshIndicator size={40} left={10} top={0} status='loading' style={{ display: 'inline-block', position: 'relative' }} />
+                <RefreshIndicator size={40} left={10} top={0} status="loading" style={{ display: 'inline-block', position: 'relative' }} />
             );
         }
         const tableHead = (
@@ -156,12 +152,12 @@ class Users extends Component {
         );
         return (
             <div>
-                {users.length > 0
-                    ? <Table responsive={true} condensed={true}>
-                          {tableHead}
-                          {this.renderUsers()}
-                      </Table>
-                    : null}
+                {users.length > 0 ? (
+                    <Table responsive={true} condensed={true}>
+                        {tableHead}
+                        {this.renderUsers()}
+                    </Table>
+                ) : null}
                 <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                     <ContentAdd />
                 </FloatingActionButton>

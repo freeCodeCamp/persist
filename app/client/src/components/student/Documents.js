@@ -44,11 +44,7 @@ class Documents extends Component {
                 </tr>
             );
         });
-        return (
-            <tbody>
-                {documentsHTML}
-            </tbody>
-        );
+        return <tbody>{documentsHTML}</tbody>;
     }
 
     handleDelete(document) {
@@ -138,12 +134,12 @@ class Documents extends Component {
         return (
             <Accordion>
                 <Panel header="Documents" eventKey="1">
-                    {fields.length > 0
-                        ? <Table responsive condensed>
-                              {tableHead}
-                              {this.renderDocuments()}
-                          </Table>
-                        : null}
+                    {fields.length > 0 ? (
+                        <Table responsive condensed>
+                            {tableHead}
+                            {this.renderDocuments()}
+                        </Table>
+                    ) : null}
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                         <ContentAdd />
                     </FloatingActionButton>

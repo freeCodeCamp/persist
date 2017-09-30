@@ -93,14 +93,14 @@ class UpdatePassword extends Component {
                                 label="update password"
                                 primary={true}
                             />
-                            {message.length > 0
-                                ? <Snackbar
-                                      open={open}
-                                      message={message}
-                                      autoHideDuration={6000}
-                                      onRequestClose={() => this.closeSnackBar()}
-                                  />
-                                : null}
+                            {message.length > 0 ? (
+                                <Snackbar
+                                    open={open}
+                                    message={message}
+                                    autoHideDuration={6000}
+                                    onRequestClose={() => this.closeSnackBar()}
+                                />
+                            ) : null}
                         </form>
                     </div>
                 </MaterialUIWrapper>

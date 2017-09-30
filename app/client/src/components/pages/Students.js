@@ -21,7 +21,10 @@ class Students extends Component {
         if (_.isEmpty(filter)) {
             return;
         }
-        const students = _(this.props.students).filter(filter).take(20).value();
+        const students = _(this.props.students)
+            .filter(filter)
+            .take(20)
+            .value();
         this.setState({
             students
         });

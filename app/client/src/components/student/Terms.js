@@ -50,11 +50,7 @@ class Terms extends Component {
                 </tr>
             );
         });
-        return (
-            <tbody>
-                {termsHTML}
-            </tbody>
-        );
+        return <tbody>{termsHTML}</tbody>;
     }
 
     handleDelete(term) {
@@ -156,12 +152,12 @@ class Terms extends Component {
         return (
             <Accordion>
                 <Panel header="Terms" eventKey="1">
-                    {fields.length > 0
-                        ? <Table responsive condensed>
-                              {tableHead}
-                              {this.renderTerms()}
-                          </Table>
-                        : null}
+                    {fields.length > 0 ? (
+                        <Table responsive condensed>
+                            {tableHead}
+                            {this.renderTerms()}
+                        </Table>
+                    ) : null}
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                         <ContentAdd />
                     </FloatingActionButton>

@@ -51,8 +51,9 @@ class ColCompRate extends Component {
                     result[hsGradYear] = result[hsGradYear] || _.cloneDeep(colCompletionRate);
                     const terms = student.terms;
                     if (terms.length > 0) {
-                        const college = colleges[terms[0].college];         // should we be checking all terms?
-                        if ( type == 'all' || type == college.durationType ) {  // allow filtering by duration type (2/4 year or both)
+                        const college = colleges[terms[0].college]; // should we be checking all terms?
+                        if (type == 'all' || type == college.durationType) {
+                            // allow filtering by duration type (2/4 year or both)
                             const gradRate = college.gradRate;
                             if (college && gradRate && gradRate.overall) {
                                 result[hsGradYear].push(gradRate.overall);
@@ -77,9 +78,12 @@ class ColCompRate extends Component {
 
     getRatio(data) {
         const yearlyData = [];
-        _(data).keys().sort().forEach(key => {
-            yearlyData.push(_.mean(data[key]) * 100);
-        });
+        _(data)
+            .keys()
+            .sort()
+            .forEach(key => {
+                yearlyData.push(_.mean(data[key]) * 100);
+            });
         return yearlyData;
     }
 
@@ -94,7 +98,10 @@ class ColCompRate extends Component {
                 text: 'Average College Completion Rate of Institutions Attended'
             },
             xAxis: {
-                categories: _(data).keys().sort().value(),
+                categories: _(data)
+                    .keys()
+                    .sort()
+                    .value(),
                 crosshair: true
             },
             yAxis: {
@@ -107,7 +114,7 @@ class ColCompRate extends Component {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat:
                     '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -149,7 +156,7 @@ class ColCompRate extends Component {
                 type
             },
             this.updateGraph.bind(this, this.props)
-        )
+        );
     }
 
     render() {
@@ -161,11 +168,7 @@ class ColCompRate extends Component {
                     <BasicColumn {...this.props} config={this.chartConfig()} data={this.state.data} />
                 </div>
                 <div style={{ display: 'flex' }}>
-                    <RaisedButton 
-                        style={styles.raisedButton} 
-                        primary={true} 
-                        label="All" 
-                        onClick={() => this.setType('all')} />
+                    <RaisedButton style={styles.raisedButton} primary={true} label="All" onClick={() => this.setType('all')} />
                     <RaisedButton
                         style={styles.raisedButton}
                         primary={true}

@@ -15,20 +15,20 @@ class SingleStudent extends React.Component {
         const studentData = student.data;
         return (
             <div>
-                {student.success && student.data
-                    ? <Content title={studentData.fullName}>
-                          <div>
-                              <SingleStudentForm enableReinitialize={true} initialValues={studentData} student={studentData} />
-                          </div>
-                      </Content>
-                    : student.success && !student.data
-                      ? <div>No Records Found</div>
-                      : <div>
-                            <p>
-                                Loading
-                            </p>
-                            <i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
-                        </div>}
+                {student.success && student.data ? (
+                    <Content title={`${studentData.fullName} (${studentData.osis})`}>
+                        <div>
+                            <SingleStudentForm enableReinitialize={true} initialValues={studentData} student={studentData} />
+                        </div>
+                    </Content>
+                ) : student.success && !student.data ? (
+                    <div>No Records Found</div>
+                ) : (
+                    <div>
+                        <p>Loading</p>
+                        <i style={{ fontSize: '50px', textAlign: 'center' }} className="fa fa-spinner fa-spin fa-3x fa-fw" />
+                    </div>
+                )}
             </div>
         );
     }

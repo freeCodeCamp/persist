@@ -69,7 +69,7 @@ export const inviteUser = (req, res, next) => {
 export const updateUserName = (req, res, next) => {
     if (!req.user) {
         res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
-        return next()
+        return next();
     }
     const { firstName, lastName } = req.body;
     User.findById(req.user._id, (err, existingUser) => {
@@ -80,14 +80,14 @@ export const updateUserName = (req, res, next) => {
         }
         existingUser.profile.firstName = firstName;
         existingUser.profile.lastName = lastName;
-        existingUser.save( err => {
+        existingUser.save(err => {
             if (err) {
                 return next(err);
             }
             return res.status(200).json({ message: `Name update successful` });
-        })  
-    })
-}
+        });
+    });
+};
 
 //= =======================================
 // Update User

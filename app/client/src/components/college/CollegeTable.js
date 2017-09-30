@@ -13,17 +13,11 @@ class CollegeTable extends React.Component {
         const collegesHTML = colleges.map((college, i) => {
             return (
                 <tr key={uniqueId(college._id)}>
+                    <td>{i + 1}</td>
                     <td>
-                        {i + 1}
+                        <Link to={`/college/${college._id}`}>{college.fullName}</Link>
                     </td>
-                    <td>
-                        <Link to={`/college/${college._id}`}>
-                            {college.fullName}
-                        </Link>
-                    </td>
-                    <td>
-                        {college.navianceName}
-                    </td>
+                    <td>{college.navianceName}</td>
                 </tr>
             );
         });
@@ -34,20 +28,12 @@ class CollegeTable extends React.Component {
             <Table striped bordered hover className="college-table">
                 <thead>
                     <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            Full Name
-                        </th>
-                        <th>
-                            Naviance Name
-                        </th>
+                        <th>#</th>
+                        <th>Full Name</th>
+                        <th>Naviance Name</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {collegesHTML}
-                </tbody>
+                <tbody>{collegesHTML}</tbody>
             </Table>
         );
     }

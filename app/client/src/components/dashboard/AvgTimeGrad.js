@@ -97,9 +97,12 @@ class AvgTimeGrad extends Component {
 
     getRatio(data) {
         const yearlyData = [];
-        _(data).keys().sort().forEach(key => {
-            yearlyData.push(data[key]['count'] / data[key]['total']);
-        });
+        _(data)
+            .keys()
+            .sort()
+            .forEach(key => {
+                yearlyData.push(data[key]['count'] / data[key]['total']);
+            });
         return yearlyData;
     }
 
@@ -115,7 +118,10 @@ class AvgTimeGrad extends Component {
                 text: 'Average Time to Graduation'
             },
             xAxis: {
-                categories: _(data).keys().sort().value(),
+                categories: _(data)
+                    .keys()
+                    .sort()
+                    .value(),
                 crosshair: true
             },
             yAxis: {
@@ -128,7 +134,7 @@ class AvgTimeGrad extends Component {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat:
                     '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.3f} %</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true

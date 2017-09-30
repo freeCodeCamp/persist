@@ -8,7 +8,7 @@ import { SelectField, MenuItem, Card, CardHeader, CardText } from 'material-ui';
 
 const note = (
     <Card>
-        <CardHeader title='Note' actAsExpander={true} showExpandableButton={true} />
+        <CardHeader title="Note" actAsExpander={true} showExpandableButton={true} />
         <CardText expandable={true}>
             Refresh the page after each time you upload a file so you can assure changes have been processed to the server
         </CardText>
@@ -65,11 +65,9 @@ class Upload extends React.Component {
         });
 
         return (
-            <Permission role='Owner'>
-                <Content title='Upload'>
-                    <p>
-                        Which data would you like to upload?
-                    </p>
+            <Permission role="Owner">
+                <Content title="Upload">
+                    <p>Which data would you like to upload?</p>
                     <div>
                         <SelectField onChange={this.chooseData.bind(this)} hintText="Select Data" value={this.state.url}>
                             {optionsHTML}
