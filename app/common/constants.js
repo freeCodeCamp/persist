@@ -7,9 +7,8 @@ export const validateArray = (inputArray, optionsArray) => {
     if (inputArray.constructor !== Array) {
         return false;
     }
-    console.log(optionsArray);
     for (const option of inputArray) {
-        if (!optionsArray.includes(option)) return false;
+        if (!optionsArray.includes(option)) {return false;}
     }
     return true;
 };

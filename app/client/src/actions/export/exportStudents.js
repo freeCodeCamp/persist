@@ -18,15 +18,13 @@ const exportStudents = (fields, students) => dispatch => {
             return 'delete';
         })
         .filter(field => field !== 'delete');
-    const quotes = '';
-    const doubleQuotes = '"';
     const csv = json2csv(
         {
             data: students,
             fields,
             fieldNames,
-            quotes,
-            doubleQuotes
+            quotes: '"',
+            doubleQuotes: ''
         },
         (err, csvFile) => {
             if (err) {
