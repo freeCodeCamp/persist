@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import moxios from 'moxios';
 
 import * as types from '../../../app/client/src/actions/types';
-import { registerUser, getForgotPasswordToken, updatePassword } from '../../../app/client/src/actions/authentication';
+import { loginUser, getForgotPasswordToken, updatePassword } from '../../../app/client/src/actions/authentication';
 
 describe('Authentication Actions', () => {
     beforeEach(() => {
@@ -165,13 +165,13 @@ describe('Authentication Actions', () => {
         });
     });
 
-    describe('register', () => {
+    describe('login', () => {
         it('should dispatch LOGIN_PENDING', done => {
             const dispatch = sinon.spy();
             const email = 'test@test.com';
             const password = 'test_password';
 
-            const thunk = registerUser({ email, password });
+            const thunk = loginUser({ email, password });
             expect(thunk).toBeA('function');
 
             moxios.wait(() => {
@@ -198,7 +198,7 @@ describe('Authentication Actions', () => {
             const password = 'test_password';
             const user = 'user';
 
-            const thunk = registerUser({ email, password });
+            const thunk = loginUser({ email, password });
             expect(thunk).toBeA('function');
 
             moxios.wait(() => {
@@ -229,7 +229,7 @@ describe('Authentication Actions', () => {
             const password = 'test_password';
             const user = 'user';
 
-            const thunk = registerUser({ email, password });
+            const thunk = loginUser({ email, password });
             expect(thunk).toBeA('function');
 
             moxios.wait(() => {

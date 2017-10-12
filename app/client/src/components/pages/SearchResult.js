@@ -50,21 +50,15 @@ class SearchResult extends Component {
 
     renderResults() {
         const { results } = this.state;
-        return results.map((result, i) =>
+        return results.map((result, i) => (
             <tr key={_.uniqueId(result.fullName)}>
+                <th>{i + 1}</th>
                 <th>
-                    {i + 1}
+                    <Link to={result.link}>{result.fullName}</Link>
                 </th>
-                <th>
-                    <Link to={result.link}>
-                        {result.fullName}
-                    </Link>
-                </th>
-                <th>
-                    {result.model}
-                </th>
+                <th>{result.model}</th>
             </tr>
-        );
+        ));
     }
 
     render() {
@@ -77,20 +71,12 @@ class SearchResult extends Component {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                Full Name
-                            </th>
-                            <th>
-                                Type
-                            </th>
+                            <th>#</th>
+                            <th>Full Name</th>
+                            <th>Type</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {this.renderResults()}
-                    </tbody>
+                    <tbody>{this.renderResults()}</tbody>
                 </Table>
             </Content>
         );

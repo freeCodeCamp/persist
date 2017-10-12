@@ -1,10 +1,13 @@
-const mongoose = require('mongoose');
 import async from 'async';
 import moment from 'moment';
 import mongoosePaginate from 'mongoose-paginate';
 import { sortBy, uniq, map, cloneDeep } from 'lodash';
 import { College } from './';
 import { studentSchema } from '../../common/schemas';
+
+const mongoose = require('mongoose');
+const {ObjectID} = require('mongodb');
+
 const Schema = mongoose.Schema;
 export const Student = new Schema(studentSchema(Schema));
 Student.plugin(mongoosePaginate);
@@ -17,7 +20,7 @@ const setGraduationType = (record, done) => {
                 return College.findOne({ _id: term.college }, (err, college) => {
                     if (err) {
                         console.log(err);
-                    } else if (college) {
+                    } else if (college && !term.graduationType) {
                         term.graduationType = college.durationType;
                     }
                     callback(null);
@@ -71,6 +74,17 @@ Student.pre('save', true, function(next, done) {
     }
     done();
 });
+
+Student.pre('validate', true, function(next, done) {
+    // Bug in casting strings to ObjectIDs when uploading CSV files, 
+    // fixed here for safety.
+    const {mostRecentCol, firstCol} = this;
+    this.mostRecentCol = new ObjectID(mostRecentCol);
+    this.firstCol = new ObjectID(firstCol);
+    next();
+    done();
+  });
+
 Student.pre('save', true, function(next, done) {
     next();
     const record = this;
@@ -80,7 +94,9 @@ Student.pre('save', true, function(next, done) {
     }
     record.terms = sortBy(record.terms, obj => {
         return obj.enrolBegin;
-    }).reverse();
+    })
+        .reverse()
+        .filter(term => term.enrolBegin || term.enrolEnd);
     setTermNames(record);
     const recordTerms = cloneDeep(record.terms).reverse();
     record.mostRecentCol = record.terms[0].college;
@@ -113,6 +129,7 @@ Student.pre('save', true, function(next, done) {
         return setGraduationType(record, done);
     }
 });
+
 Student.pre('save', true, function(next, done) {
     next();
     const record = this;
@@ -183,4 +200,5 @@ Student.pre('save', true, function(next, done) {
         done();
     }
 });
+
 export default mongoose.model('Student', Student);

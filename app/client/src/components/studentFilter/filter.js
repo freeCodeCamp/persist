@@ -35,6 +35,11 @@ const filterKeys = [
     'completedFafsa',
     'completedTap'
 ];
+
+const customTypes = {
+    hsGradYear: 'Checkbox'
+};
+
 const extraFilters = {
     enrolLast6: 'Current Student',
     fallNotSpring: 'Enrolled in fall of most recent year but not in following spring',
@@ -57,18 +62,37 @@ class StudentFilter extends Component {
 
     filterStudents(values) {
         this.showStudentsTable = true;
-        let conditions = _(values).omitBy(_.isNil).cloneDeep();
+        let conditions = _(values)
+            .omitBy(_.isNil)
+            .cloneDeep();
         const { students } = this.props;
         const hsGPA = conditions.hsGPA;
         delete conditions.hsGPA;
         const extraConditions = _.pick(conditions, extraKeys);
-        const arrayConditions = _(conditions).omit(extraKeys).pickBy((value, key) => studentKeysObj[key].fieldType === 'Checkbox').value();
-        conditions = _.omit(conditions, [..._.keys(extraConditions), ..._.keys(arrayConditions)]);
+        const arrayConditions = _(conditions)
+            .omit(extraKeys)
+            .pickBy((value, key) => studentKeysObj[key].fieldType === 'Checkbox')
+            .value();
+        const multipleOrConditions = _(conditions)
+            .omit(extraKeys)
+            .pickBy((value, key) => _.get(customTypes, key) === 'Checkbox')
+            .value();
+        conditions = _.omit(conditions, [..._.keys(extraConditions), ..._.keys(arrayConditions), ..._.keys(multipleOrConditions)]);
         let filteredStudents = _(students).filter(conditions);
         filteredStudents = filteredStudents.filter(student => {
             let take = true;
             _.forOwn(arrayConditions, (value, key) => {
                 if (!validateArray(value, student[key])) {
+                    take = false;
+                    return false;
+                }
+            });
+            return take;
+        });
+        filteredStudents = filteredStudents.filter(student => {
+            let take = true;
+            _.forOwn(multipleOrConditions, (value, key) => {
+                if (!value.includes(student[key])) {
                     take = false;
                     return false;
                 }
@@ -138,7 +162,11 @@ class StudentFilter extends Component {
         const filterKeysHTML = form => {
             const fieldsHTML = [];
             filterKeys.map((filterKey, i) => {
-                const field = studentKeysObj[filterKey];
+                const field = _.cloneDeep(studentKeysObj[filterKey]);
+                field.editable = true;
+                if (customTypes[filterKey]) {
+                    field.fieldType = customTypes[filterKey];
+                }
                 fieldsHTML.push(
                     <Col
                         key={field.dbName}
@@ -186,9 +214,7 @@ class StudentFilter extends Component {
         return (
             <Content title="Students">
                 <form onSubmit={handleSubmit(v => this.filterStudents(v))}>
-                    <Row>
-                        {filterKeysHTML(this)}
-                    </Row>
+                    <Row>{filterKeysHTML(this)}</Row>
                     <Row>
                         <Col xs={12} sm={12} md={12} lg={12}>
                             <RaisedButton type="submit" label="Filter" primary={true} />

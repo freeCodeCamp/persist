@@ -45,11 +45,7 @@ class Aliases extends Component {
                 </tr>
             );
         });
-        return (
-            <tbody>
-                {aliasesHTML}
-            </tbody>
-        );
+        return <tbody>{aliasesHTML}</tbody>;
     }
 
     handleDelete(alias) {
@@ -147,12 +143,12 @@ class Aliases extends Component {
         return (
             <Accordion>
                 <Panel header="Aliases" eventKey="1">
-                    {fields.length > 0
-                        ? <Table responsive condensed>
-                              {tableHead}
-                              {this.renderAliases()}
-                          </Table>
-                        : null}
+                    {fields.length > 0 ? (
+                        <Table responsive condensed>
+                            {tableHead}
+                            {this.renderAliases()}
+                        </Table>
+                    ) : null}
                     <FloatingActionButton mini={true} onClick={() => this.handleEdit({})}>
                         <ContentAdd />
                     </FloatingActionButton>

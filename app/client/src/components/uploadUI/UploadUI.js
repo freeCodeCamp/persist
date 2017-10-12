@@ -24,26 +24,14 @@ class UploadUI extends Component {
         return (
             <div>
                 <h1>Upload {this.props.type}</h1>
-                <p>
-                    {JSON.stringify(this.props.url)}
-                </p>
+                <p>{JSON.stringify(this.props.url)}</p>
                 <InputGroup>
                     <Input className="btn" type="file" name="photo" onChange={this.addFile.bind(this)} />
                 </InputGroup>
-                <Button onClick={this.addItem.bind(this)}>
-                    Submit
-                </Button>
+                <Button onClick={this.addItem.bind(this)}>Submit</Button>
                 <Spinner />
-                {this.props.upload.error
-                    ? <p>
-                          Error Found
-                      </p>
-                    : null}
-                {this.props.upload.success
-                    ? <p>
-                          {this.props.upload.message}
-                      </p>
-                    : null}
+                {this.props.upload.error ? <p>Error Found</p> : null}
+                {this.props.upload.success ? <p>{this.props.upload.message}</p> : null}
             </div>
         );
     }

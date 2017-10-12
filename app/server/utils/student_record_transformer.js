@@ -33,7 +33,10 @@ export default function formatRecord(record, callback) {
             } else if (value === DELETE_TERM) {
                 record[dateField] = value;
             } else {
-                value = value.toString().split(/[-\/]/).join(' ');
+                value = value
+                    .toString()
+                    .split(/[-\/]/)
+                    .join(' ');
                 value = new Date(value);
             }
             if (value.toString() === 'Invalid Date') {

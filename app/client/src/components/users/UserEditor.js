@@ -31,27 +31,31 @@ class UserEditor extends Component {
         const access = initialValues.access;
         const roles = [ROLE_COUNSELOR, ROLE_OWNER].map(option => <MenuItem value={option} key={option} primaryText={option} />);
         return (
-            <form onSubmit={handleSubmit} style={{display: 'flex', flexWrap: 'wrap'}}>
-                <Field name='profile.firstName' component={TextField} hintText='First Name' floatingLabelText='First Name' /><br />
-                <Field name='profile.lastName' component={TextField} hintText='Last Name' floatingLabelText='Last Name' /><br />
-                <Field name='email' component={TextField} hintText='Email' floatingLabelText='Email' /><br />
-                <Field name='access.role' component={SelectField} hintText='Role' floatingLabelText='Role'>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Field name="profile.firstName" component={TextField} hintText="First Name" floatingLabelText="First Name" />
+                <br />
+                <Field name="profile.lastName" component={TextField} hintText="Last Name" floatingLabelText="Last Name" />
+                <br />
+                <Field name="email" component={TextField} hintText="Email" floatingLabelText="Email" />
+                <br />
+                <Field name="access.role" component={SelectField} hintText="Role" floatingLabelText="Role">
                     {roles}
-                </Field><br />
-                {roleValue === 'Counselor'
-                    ? <Field
-                          name='access.school'
-                          hintText='School'
-                          floatingLabelText='School'
-                          component={AutoComplete}
-                          searchText={this.initValue(access ? access.school : '')}
-                          input={{
-                              onChange: this.updateInput.bind(this, 'access.school', this)
-                          }}
-                          dataSource={schoolSource}
-                          maxSearchResults={5}
-                      />
-                    : null}
+                </Field>
+                <br />
+                {roleValue === 'Counselor' ? (
+                    <Field
+                        name="access.school"
+                        hintText="School"
+                        floatingLabelText="School"
+                        component={AutoComplete}
+                        searchText={this.initValue(access ? access.school : '')}
+                        input={{
+                            onChange: this.updateInput.bind(this, 'access.school', this)
+                        }}
+                        dataSource={schoolSource}
+                        maxSearchResults={5}
+                    />
+                ) : null}
             </form>
         );
     }

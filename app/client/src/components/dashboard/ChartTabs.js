@@ -20,7 +20,9 @@ class ChartTabs extends Component {
     }
 
     componentDidMount() {
-        const ele = $(this.tabs).find('li').first();
+        const ele = $(this.tabs)
+            .find('li')
+            .first();
         ele.addClass('active');
         const id = ele.data('id');
         this.setState({
@@ -53,7 +55,9 @@ class ChartTabs extends Component {
     }
 
     handleClicked(e) {
-        const id = $(e.target).closest('li').data('id');
+        const id = $(e.target)
+            .closest('li')
+            .data('id');
         this.setState({
             activeId: id
         });
@@ -76,7 +80,9 @@ class ChartTabs extends Component {
                 {/* Tabs within a box */}
                 <ul className="nav nav-tabs pull-right ui-sortable-handle" ref={c => (this.tabs = c)}>
                     {this.renderTabs()}
-                    <li className="pull-left header"><i className="fa fa-inbox" />Filters</li>
+                    <li className="pull-left header">
+                        <i className="fa fa-inbox" />Filters
+                    </li>
                 </ul>
                 <div className="tab-content no-padding">
                     {/* Charts */}

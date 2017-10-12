@@ -38,18 +38,20 @@ class UploadHistory extends Component {
         const { page, history, pages } = this.state;
         if (this.updating || page > pages) return;
         this.updating = true;
-        axios().get(`/getUploadHistory/${page}`).then(res => {
-            _this.setState(
-                {
-                    page: page + 1,
-                    history: [...history, ...res.data.docs],
-                    pages: res.data.pages
-                },
-                () => {
-                    _this.updating = false;
-                }
-            );
-        });
+        axios()
+            .get(`/getUploadHistory/${page}`)
+            .then(res => {
+                _this.setState(
+                    {
+                        page: page + 1,
+                        history: [...history, ...res.data.docs],
+                        pages: res.data.pages
+                    },
+                    () => {
+                        _this.updating = false;
+                    }
+                );
+            });
     }
 
     renderLoading() {
@@ -84,27 +86,13 @@ class UploadHistory extends Component {
             const { firstName, lastName } = counselors[hist.user].profile;
             return (
                 <tr key={i}>
-                    <td>
-                        {i + 1}
-                    </td>
-                    <td>
-                        {hist.type}
-                    </td>
-                    <td>
-                        {moment(hist.when).fromNow()}
-                    </td>
-                    <td>
-                        {`${firstName} ${lastName || ''}`.trim()}
-                    </td>
-                    <td>
-                        {hist.source}
-                    </td>
-                    <td>
-                        {hist.comments}
-                    </td>
-                    <td>
-                        {hist.success ? <ActionOfflinePin color="green" /> : <AlertError color="red" />}
-                    </td>
+                    <td>{i + 1}</td>
+                    <td>{hist.type}</td>
+                    <td>{moment(hist.when).fromNow()}</td>
+                    <td>{`${firstName} ${lastName || ''}`.trim()}</td>
+                    <td>{hist.source}</td>
+                    <td>{hist.comments}</td>
+                    <td>{hist.success ? <ActionOfflinePin color="green" /> : <AlertError color="red" />}</td>
                 </tr>
             );
         });
@@ -113,32 +101,16 @@ class UploadHistory extends Component {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            Type
-                        </th>
-                        <th>
-                            When
-                        </th>
-                        <th>
-                            User
-                        </th>
-                        <th>
-                            Upload Source
-                        </th>
-                        <th>
-                            Upload Comments
-                        </th>
-                        <th>
-                            Status
-                        </th>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>When</th>
+                        <th>User</th>
+                        <th>Upload Source</th>
+                        <th>Upload Comments</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {historyHTML}
-                </tbody>
+                <tbody>{historyHTML}</tbody>
             </Table>
         );
     }

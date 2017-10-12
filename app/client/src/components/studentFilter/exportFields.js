@@ -112,10 +112,8 @@ class ExportCSV extends Component {
                 return result;
             },
             []
-        );
-        if (!selectedKeys.includes('osis')) {
-            selectedKeys.unshift('osis');
-        }
+        ).filter(key => key !== 'osis');
+        selectedKeys.unshift('osis');
         selectedKeys.push('aliases');
         const { students } = this.props;
         const picked = students.map(student => _.pick(student, selectedKeys)).filter(student => !_.isEmpty(student));
@@ -207,9 +205,7 @@ class ExportCSV extends Component {
             <Accordion>
                 <Panel header="Export" eventKey="1">
                     <form>
-                        <Row>
-                            {exportKeysHTML}
-                        </Row>
+                        <Row>{exportKeysHTML}</Row>
                         <Row>
                             <Col xs={12} sm={12} md={12} lg={12}>
                                 <RaisedButton style={styles.button} label="Students" primary={true} onClick={() => this.handleStudents()} />

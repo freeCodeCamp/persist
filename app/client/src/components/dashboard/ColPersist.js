@@ -98,7 +98,7 @@ class ColPersist extends Component {
                 if (hsGradYear) {
                     result[hsGradYear] = result[hsGradYear] || _.cloneDeep(defaultEnrollmentData);
                     const hsGradDate = student.hsGradDate;
-                    const collegeGradDate = student.hasOwnProperty('gradDate')? student.gradDate: null;
+                    const collegeGradDate = student.hasOwnProperty('gradDate') ? student.gradDate : null;
                     let enrolDate;
                     const terms = student.terms;
                     if (terms.length > 0) {
@@ -131,9 +131,12 @@ class ColPersist extends Component {
 
     getRatio(data) {
         const yearlyData = [];
-        _(data).keys().sort().forEach(key => {
-            yearlyData.push(data[key]['count'] * 100 / data[key]['total']);
-        });
+        _(data)
+            .keys()
+            .sort()
+            .forEach(key => {
+                yearlyData.push(data[key]['count'] * 100 / data[key]['total']);
+            });
         return yearlyData;
     }
 
@@ -149,7 +152,10 @@ class ColPersist extends Component {
                 text: 'College Persistence'
             },
             xAxis: {
-                categories: _(data).keys().sort().value(),
+                categories: _(data)
+                    .keys()
+                    .sort()
+                    .value(),
                 crosshair: true
             },
             yAxis: {
@@ -255,30 +261,22 @@ class ColPersist extends Component {
                         graduating high school.
                     </CardText>
                     <CardText>
-                        <b>Yr 1 Continuous Enrollment</b>
-                        {' '}
-                        calculates- of the students enrolled in the Fall after graduation, what percentage of them is also enrolled in the
-                        spring of that year.
+                        <b>Yr 1 Continuous Enrollment</b> calculates- of the students enrolled in the Fall after graduation, what percentage
+                        of them is also enrolled in the spring of that year.
                     </CardText>
                     <CardText>
-                        <b>Yr1-2 Continuous Enrollment</b>
-                        {' '}
-                        calculates- of the students who are enrolled the Fall after graduation, what percentage of them are also enrolled in
-                        the spring of year 1 and the Fall and Spring semesters of their second year.
+                        <b>Yr1-2 Continuous Enrollment</b> calculates- of the students who are enrolled the Fall after graduation, what
+                        percentage of them are also enrolled in the spring of year 1 and the Fall and Spring semesters of their second year.
                     </CardText>
                     <CardText>
-                        <b>Yr1 to Yr 2 Persistence</b>
-                        {' '}
-                        Of students who were enrolled in Fall after graduation, how many returned for at least one semester of year 2. This
-                        metric counts students even if they take a semester off as long as they return for either the fall of the spring of
-                        year 2. It is analogous to Freshman Retention rate.
+                        <b>Yr1 to Yr 2 Persistence</b> Of students who were enrolled in Fall after graduation, how many returned for at
+                        least one semester of year 2. This metric counts students even if they take a semester off as long as they return
+                        for either the fall of the spring of year 2. It is analogous to Freshman Retention rate.
                     </CardText>
                     <CardText>
-                        <b>Yr 1 to Yr 3 Persistence</b>
-                        {' '}
-                        Of students who were enrolled in Fall after graduation, how many returned for at least one semester of year 2 and
-                        year 3, or graduated after year 2. This metric counts students even if they take a semester off as long as they return for at least one
-                        semester each year.
+                        <b>Yr 1 to Yr 3 Persistence</b> Of students who were enrolled in Fall after graduation, how many returned for at
+                        least one semester of year 2 and year 3, or graduated after year 2. This metric counts students even if they take a
+                        semester off as long as they return for at least one semester each year.
                     </CardText>
                 </Card>
             </div>

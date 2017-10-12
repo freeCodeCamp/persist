@@ -75,18 +75,17 @@ export default class Chips extends React.Component {
 
     handleChange(event, index, value) {
         const { form } = this.props;
-        var _this = this;
         let options = this.state.options;
         options.splice(options.indexOf(value), 1);
 
         let chipData = this.state.chipData;
 
-        if (value.length > 1) {
+        if (value.toString().length > 1) {
             chipData.push({
-                key: _this.key,
+                key: this.key,
                 label: value
             });
-            _this.key += 1;
+            this.key += 1;
         }
 
         let chips = Array.from(chipData, data => data.label);

@@ -16,20 +16,10 @@ const renderDropzoneInput = field => {
     return (
         <div>
             <Dropzone name={field.name} onDrop={(filesToUpload, e) => field.input.onChange(filesToUpload)}>
-                <div>
-                    Drop the file here or click to select the file to upload
-                </div>
+                <div>Drop the file here or click to select the file to upload</div>
             </Dropzone>
             {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
-            {files &&
-                Array.isArray(files) &&
-                <ul>
-                    {files.map((file, i) =>
-                        <li key={i}>
-                            {file.name}
-                        </li>
-                    )}
-                </ul>}
+            {files && Array.isArray(files) && <ul>{files.map((file, i) => <li key={i}>{file.name}</li>)}</ul>}
         </div>
     );
 };
@@ -53,9 +43,7 @@ class DropzoneUpload extends Component {
             <div>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                     <div>
-                        <label htmlFor={FILE_FIELD_NAME}>
-                            Files
-                        </label>
+                        <label htmlFor={FILE_FIELD_NAME}>Files</label>
                         <Field name={FILE_FIELD_NAME} component={renderDropzoneInput} />
                     </div>
                     <Field name='source' component={(field) => (

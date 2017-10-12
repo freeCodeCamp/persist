@@ -108,7 +108,10 @@ export default function(fileName) {
             );
         });
 
-        fs.createReadStream(fileName).pipe(parser).pipe(transformer);
+        fs
+            .createReadStream(fileName)
+            .pipe(parser)
+            .pipe(transformer);
     });
 }
 

@@ -18,9 +18,7 @@ export default class ShowList extends Component {
         });
         return (
             <MuiThemeProvider>
-                <List>
-                    {listItems}
-                </List>
+                <List>{listItems}</List>
             </MuiThemeProvider>
         );
     }

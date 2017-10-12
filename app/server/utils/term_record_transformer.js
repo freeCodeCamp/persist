@@ -21,7 +21,10 @@ export default (record, callback) => {
             if (typeof value === 'number') {
                 value = moment(value, 'YYYYMMDD').toDate();
             } else {
-                value = value.toString().split(/[-\/]/).join(' ');
+                value = value
+                    .toString()
+                    .split(/[-\/]/)
+                    .join(' ');
                 value = new Date(value);
             }
             if (value.toString() === 'Invalid Date') {

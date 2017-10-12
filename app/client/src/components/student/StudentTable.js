@@ -94,17 +94,11 @@ class StudentTable extends React.Component {
         const studentsHTML = students.map((student, i) => {
             return (
                 <tr key={i}>
+                    <td>{i + 1}</td>
                     <td>
-                        {i + 1}
+                        <Link to={`/student/${student.osis}`}>{student.firstName}</Link>
                     </td>
-                    <td>
-                        <Link to={`/student/${student.osis}`}>
-                            {student.firstName}
-                        </Link>
-                    </td>
-                    <td>
-                        {student.lastName}
-                    </td>
+                    <td>{student.lastName}</td>
                 </tr>
             );
         });
@@ -113,20 +107,12 @@ class StudentTable extends React.Component {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            First Name
-                        </th>
-                        <th>
-                            Last Name
-                        </th>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {studentsHTML}
-                </tbody>
+                <tbody>{studentsHTML}</tbody>
             </Table>
         );
     }

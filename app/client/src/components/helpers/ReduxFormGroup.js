@@ -13,12 +13,16 @@ import { types } from '../../../../common/validator';
 class ReduxFormGroup extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            searchText: ''
+        };
     }
 
     updateInput(value, columnName) {
         const { form } = this.props;
         if (value) {
             form.props.change.bind(form, columnName, value)();
+            this.idToText(value);
         }
     }
 
@@ -27,37 +31,63 @@ class ReduxFormGroup extends React.Component {
             const { form } = this.props;
             form.props.change.bind(form, columnName, null)();
         }
+        this.setState({
+            searchText: value
+        });
     }
 
     initCollege(colId) {
         const { collegeObj } = this.props;
         if (colId && collegeObj[colId]) {
-            return collegeObj[colId].fullName || '';
+            return this.setState({
+                searchText: collegeObj[colId].fullName || ''
+            });
         }
-        return '';
+        return this.setState({
+            searchText: ''
+        });
     }
 
     initSchool(school) {
         const { schoolObj } = this.props;
         if (school && schoolObj[school]) {
-            return schoolObj[school].name || '';
+            return this.setState({
+                searchText: schoolObj[school].name || ''
+            });
         }
-        return '';
+        return this.setState({
+            searchText: ''
+        });
+    }
+
+    idToText(id) {
+        const { field: { fieldType, type } } = this.props;
+        if (fieldType === 'AutoComplete') {
+            if (type === 'school') {
+                this.initSchool(id);
+            } else if (type === 'college') {
+                this.initCollege(id);
+            }
+        }
+    }
+
+    componentDidMount() {
+        this.idToText(this.props.initValue);
     }
 
     render() {
-        const { disabled, field, form, initValue, collegeSource, schoolSource, style={}, floatingLabelStyle={} } = this.props;
+        const { searchText } = this.state;
+        const { disabled, field, form, initValue, collegeSource, schoolSource, style = {}, floatingLabelStyle = {} } = this.props;
         const { fieldType, dbName, displayName } = field;
-
         switch (fieldType) {
             case 'TextField':
-                return ( 
-                    <Field 
-                        disabled={disabled} 
+                return (
+                    <Field
+                        disabled={disabled}
                         style={style}
-                        name={dbName.toString()} 
-                        component={TextField} 
-                        floatingLabelText={displayName} 
+                        name={dbName.toString()}
+                        component={TextField}
+                        floatingLabelText={displayName}
                         floatingLabelStyle={floatingLabelStyle}
                     />
                 );
@@ -102,15 +132,7 @@ class ReduxFormGroup extends React.Component {
                     />
                 );
             case 'Checkbox_Add':
-                return (
-                    <Field 
-                        disabled={disabled} 
-                        name={dbName} 
-                        form={form} 
-                        initValue={initValue} 
-                        component={ChipsAdd} 
-                        field={field} 
-                    />);
+                return <Field disabled={disabled} name={dbName} form={form} initValue={initValue} component={ChipsAdd} field={field} />;
             case 'Toggle':
                 return (
                     <Field
@@ -153,8 +175,7 @@ class ReduxFormGroup extends React.Component {
             // case 'RadioButtonGroup':
 
             case 'AutoComplete':
-                const { nullAllowed } = this.props;
-
+                const { nullAllowed = true } = this.props;
                 switch (field.type) {
                     case 'college':
                         return (
@@ -163,7 +184,7 @@ class ReduxFormGroup extends React.Component {
                                 disabled={disabled}
                                 filter={MUIAutoComplete.caseInsensitiveFilter}
                                 name={dbName.toString()}
-                                searchText={this.initCollege(initValue)}
+                                searchText={searchText}
                                 onUpdateInput={v => this.checkEmpty(v, dbName.toString(), true)}
                                 onNewRequest={v => this.updateInput(v.value, dbName.toString())}
                                 dataSource={collegeSource}
@@ -178,7 +199,7 @@ class ReduxFormGroup extends React.Component {
                                 floatingLabelText={displayName}
                                 filter={MUIAutoComplete.caseInsensitiveFilter}
                                 disabled={disabled}
-                                searchText={this.initSchool(initValue)}
+                                searchText={searchText}
                                 onUpdateInput={v => this.checkEmpty(v, dbName.toString(), nullAllowed)}
                                 onNewRequest={v => this.updateInput(v.value, dbName.toString())}
                                 dataSource={schoolSource}

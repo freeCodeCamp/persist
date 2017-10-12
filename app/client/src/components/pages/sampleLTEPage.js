@@ -21,12 +21,8 @@ class samplePage extends React.Component {
                             </button>
                         </div>
                     </div>
-                    <div className="box-body">
-                        Start creating your amazing application!
-                    </div>
-                    <div className="box-footer">
-                        Footer
-                    </div>
+                    <div className="box-body">Start creating your amazing application!</div>
+                    <div className="box-footer">Footer</div>
                 </div>
             </Content>
         );

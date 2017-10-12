@@ -199,7 +199,7 @@ export const verifyToken = (req, res, next) => {
                 subject: 'Password Changed',
                 text:
                     'You are receiving this email because you changed your password. \n\n' +
-                        'If you did not request this change, please contact us immediately.'
+                    'If you did not request this change, please contact us immediately.'
             };
 
             // Otherwise, send user email confirmation of password change via Mailgun

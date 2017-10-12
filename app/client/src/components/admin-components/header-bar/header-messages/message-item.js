@@ -22,7 +22,9 @@ class MessageItem extends Component {
                 <a style={{ cursor: 'pointer' }} onClick={e => this.handleClick(e, osis)}>
                     <h4 style={{ margin: 0 }}>
                         {fullName}
-                        <small><i className="fa fa-clock-o" /> {moment(time).fromNow()}</small>
+                        <small>
+                            <i className="fa fa-clock-o" /> {moment(time).fromNow()}
+                        </small>
                     </h4>
                     <p style={{ margin: 0 }}>{description}</p>
                 </a>

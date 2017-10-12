@@ -81,8 +81,8 @@ class SingleCollegeForm extends React.Component {
                     >
                         <FormGroup
                             form={form}
-                            floatingLabelStyle={field.multiLineLabel? { top: '16px' }: {} }
-                            style={ {width: '384px'} }
+                            floatingLabelStyle={field.multiLineLabel ? { top: '16px' } : {}}
+                            style={{ width: '384px' }}
                             initValue={initialValue}
                             key={i}
                             disabled={disabled}
@@ -161,30 +161,22 @@ class SingleCollegeForm extends React.Component {
                 <Form className="single-student-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                     <Row className="text-right">
                         {editable ? <RaisedButton label="Submit" type="submit" primary={true} /> : null}
-                        {editable
-                            ? <RaisedButton label="Undo" secondary={true} onClick={reset} />
-                            : <RaisedButton label="Edit" primary={true} onClick={() => this.toggleEdit()} />}
+                        {editable ? (
+                            <RaisedButton label="Undo" secondary={true} onClick={reset} />
+                        ) : (
+                            <RaisedButton label="Edit" primary={true} onClick={() => this.toggleEdit()} />
+                        )}
                     </Row>
                     <h2>Basic College Information</h2>
-                    <Row>
-                        {renderFormGroups(this, basicCollegeInfo)}
-                    </Row>
+                    <Row>{renderFormGroups(this, basicCollegeInfo)}</Row>
                     <h2>Academic Profile</h2>
-                    <Row>
-                        {renderFormGroups(this, academicProfile)}
-                    </Row>
+                    <Row>{renderFormGroups(this, academicProfile)}</Row>
                     <h2>Percentage of Degrees Earned in the Following Fields</h2>
-                    <Row>
-                        {renderFormGroups(this, percentDegrees)}
-                    </Row>
+                    <Row>{renderFormGroups(this, percentDegrees)}</Row>
                     <h2>Financial Profile</h2>
-                    <Row>
-                        {renderFormGroups(this, financialProfile)}
-                    </Row>
+                    <Row>{renderFormGroups(this, financialProfile)}</Row>
                     <h2>Student Body</h2>
-                    <Row>
-                        {renderFormGroups(this, studentBody)}
-                    </Row>
+                    <Row>{renderFormGroups(this, studentBody)}</Row>
                     <Snackbar
                         bodyStyle={{ backgroundColor: 'red' }}
                         open={this.state.notification.error}

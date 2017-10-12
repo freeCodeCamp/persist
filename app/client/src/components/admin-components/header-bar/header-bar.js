@@ -33,8 +33,14 @@ class HeaderBar extends Component {
             <header className="main-header">
                 {/* Logo */}
                 <Link to="/" className="logo">
-                    {/* mini logo for sidebar mini 50x50 pixels */} <span className="logo-mini"><b>N</b>YC</span>
-                    {/* logo for regular state and mobile devices */} <span className="logo-lg"><b>NYC</b> Outward Bound</span>
+                    {/* mini logo for sidebar mini 50x50 pixels */}{' '}
+                    <span className="logo-mini">
+                        <b>N</b>YC
+                    </span>
+                    {/* logo for regular state and mobile devices */}{' '}
+                    <span className="logo-lg">
+                        <b>NYC</b> Outward Bound
+                    </span>
                 </Link>
                 {/* Header Navbar: style can be found in header.less */}
                 <nav className="navbar navbar-static-top" role="navigation">
