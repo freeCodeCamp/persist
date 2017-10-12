@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { FloatingActionButton } from 'material-ui';
+import { FloatingActionButton, TextField } from 'material-ui';
 
 import { connect } from 'react-redux';
 import * as uploadFile from '../../actions/uploadFile';
@@ -41,7 +41,9 @@ class DropzoneUpload extends Component {
 
     onSubmit(data) {
         this.props.reset();
-        this.props.uploadFile(this.props.url, data.files[0]);
+        var source = data.hasOwnProperty(source) ? data.source : '';
+        var comments = data.hasOwnProperty(comments) ? data.comments : '';
+        this.props.uploadFile(this.props.url, data.files[0], source, comments);
     }
 
     render() {
@@ -56,6 +58,12 @@ class DropzoneUpload extends Component {
                         </label>
                         <Field name={FILE_FIELD_NAME} component={renderDropzoneInput} />
                     </div>
+                    <Field name='source' component={(field) => (
+                        <TextField hintText='Source' {...field.input} />
+                    )}/>
+                    <Field name='comments' component={(field) => (
+                        <TextField hintText='Comments' {...field.input} />
+                    )}/>
                     <div>
                         <FloatingActionButton type="submit" iconClassName="fa fa-upload" mini={true} />
                         <FloatingActionButton onClick={reset} iconClassName="fa fa-undo" mini={true} />
