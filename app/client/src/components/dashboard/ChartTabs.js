@@ -81,7 +81,8 @@ class ChartTabs extends Component {
                 <ul className="nav nav-tabs pull-right ui-sortable-handle" ref={c => (this.tabs = c)}>
                     {this.renderTabs()}
                     <li className="pull-left header">
-                        <i className="fa fa-inbox" />Filters
+                        <i className="fa fa-inbox" />
+                        {this.props.heading}
                     </li>
                 </ul>
                 <div className="tab-content no-padding">

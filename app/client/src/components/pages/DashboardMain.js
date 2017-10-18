@@ -23,7 +23,6 @@ class DashboardMain extends React.Component {
         let conditions = _(values)
             .omitBy(_.isNil)
             .cloneDeep();
-        console.log(conditions);
         const { students } = this.props;
         const hsGPA = conditions.hsGPA;
         const gradYear4 = conditions.gradYear4;
@@ -94,7 +93,9 @@ class DashboardMain extends React.Component {
         return (
             <Content title="PERS+ST">
                 <ChartFilter handleFormSubmit={values => this.handleSubmit(values)} />
-                <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges} />
+                <ChartTabs students={this.state.filteredStudents} colleges={this.props.colleges} heading={'Filters'} />
+
+                <ChartTabs students={this.props.students} colleges={this.props.colleges} heading={'Static'} />
             </Content>
         );
     }

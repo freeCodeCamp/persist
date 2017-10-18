@@ -6,7 +6,7 @@ import { College } from './';
 import { studentSchema } from '../../common/schemas';
 
 const mongoose = require('mongoose');
-const {ObjectID} = require('mongodb');
+const { ObjectID } = require('mongodb');
 
 const Schema = mongoose.Schema;
 export const Student = new Schema(studentSchema(Schema));
@@ -76,14 +76,14 @@ Student.pre('save', true, function(next, done) {
 });
 
 Student.pre('validate', true, function(next, done) {
-    // Bug in casting strings to ObjectIDs when uploading CSV files, 
+    // Bug in casting strings to ObjectIDs when uploading CSV files,
     // fixed here for safety.
-    const {mostRecentCol, firstCol} = this;
+    const { mostRecentCol, firstCol } = this;
     this.mostRecentCol = new ObjectID(mostRecentCol);
     this.firstCol = new ObjectID(firstCol);
     next();
     done();
-  });
+});
 
 Student.pre('save', true, function(next, done) {
     next();

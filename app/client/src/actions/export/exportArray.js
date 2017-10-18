@@ -30,7 +30,7 @@ const exportArray = (students, type) => dispatch => {
             fields,
             fieldNames,
             quotes: '"',
-            doubleQuotes: '',
+            doubleQuotes: ''
         },
         (err, csvFile) => {
             if (err) {
