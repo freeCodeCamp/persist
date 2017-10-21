@@ -113,6 +113,14 @@ class TermEditor extends Component {
                         {this.graduationTypeOptions}
                     </Field>
                 </Col>
+                <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
+                    <Field name="recordType" component={SelectField} hintText="Record Type" floatingLabelText="Record Type">
+                        {types['terms.recordType'].map((option, i) => (
+                            <MenuItem value={option} key={`${option}-${i}`} primaryText={option} />
+                        ))}
+                    </Field>
+                </Col>
             </form>
         );
     }
@@ -122,6 +130,9 @@ const validate = (values, props) => {
     const errors = {};
     const enrolBegin = values.enrolBegin;
     const enrolEnd = values.enrolEnd;
+    if (!values.recordType || !(values.recordType.length > 0)) {
+        props.dispatch(props.change('recordType', 'Counselor Added'));
+    }
     if (!values.college || values.college.length < 1) {
         errors.college = 'Required';
         return errors;

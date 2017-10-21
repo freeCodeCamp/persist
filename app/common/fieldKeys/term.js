@@ -61,7 +61,7 @@ export default [
         displayName: 'Record Type',
         dbName: 'recordType',
         fieldType: 'TextField',
-        editable: false
+        editable: true
     },
     {
         fieldName: 'Term GPA',

@@ -36,18 +36,24 @@ class ApplicationEditor extends Component {
                 </Col>
                 <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field name="type" component={SelectField} hintText="Type" floatingLabelText="Type">
-                        {types['applications.type'].map((option, i) => <MenuItem value={option} key={i} primaryText={option} />)}
+                        {types['applications.type'].map((option, i) => (
+                            <MenuItem value={option} key={`${option}-${i}`} primaryText={option} />
+                        ))}
                     </Field>
                 </Col>
                 <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />
                 <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field name="result" component={SelectField} hintText="Result" floatingLabelText="Result">
-                        {types['applications.result'].map((option, i) => <MenuItem value={option} key={i} primaryText={option} />)}
+                        {types['applications.result'].map((option, i) => (
+                            <MenuItem value={option} key={`${option}-${i}`} primaryText={option} />
+                        ))}
                     </Field>
                 </Col>
                 <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
                     <Field name="heop" component={SelectField} hintText="HEOP/EOP" floatingLabelText="HEOP/EOP">
-                        {types['applications.heop'].map((option, i) => <MenuItem value={option} key={i} primaryText={option} />)}
+                        {types['applications.heop'].map((option, i) => (
+                            <MenuItem value={option} key={`${option}-${i}`} primaryText={option} />
+                        ))}
                     </Field>
                 </Col>
                 <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />

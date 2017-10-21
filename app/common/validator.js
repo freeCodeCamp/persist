@@ -155,6 +155,7 @@ export const types = {
         },
         []
     ),
+    'terms.recordType': ['Counselor Added', 'NSC'],
     'caseNotes.communicationType': ['In person', 'Text', 'Facebook', 'Phone call', 'Email', 'Other'],
     'applications.result': [
         'Accepted',

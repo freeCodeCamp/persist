@@ -29,15 +29,14 @@ class Terms extends Component {
         const { initValue, collegeObj } = this.props;
         const termsHTML = initValue.map((term, index) => {
             const college = collegeObj[term.college];
-            const { name, status, creditEarned, creditAttempted, gpa, graduationType } = term;
+            const { name, status, recordType, gpa, graduationType } = term;
             return (
                 <tr key={index}>
                     <td>{college.fullName}</td>
                     <td>{name}</td>
                     <td>{mapping.termStatus[status] || 'Unknown if Full or Part-time'}</td>
-                    <td>{creditEarned}</td>
-                    <td>{creditAttempted}</td>
                     <td>{gpa}</td>
+                    <td>{recordType}</td>
                     <td>{graduationType}</td>
                     <td>
                         <IconButton onClick={() => this.handleEdit(term)}>
@@ -141,9 +140,8 @@ class Terms extends Component {
                     <th>College</th>
                     <th>Name</th>
                     <th>Status</th>
-                    <th>Credits Earned</th>
-                    <th>Credits Attempted</th>
                     <th>Term GPA</th>
+                    <th>Record Type</th>
                     <th>Graduation Type</th>
                     <th>Actions</th>
                 </tr>
