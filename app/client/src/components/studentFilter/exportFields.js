@@ -211,6 +211,15 @@ class ExportCSV extends Component {
                                 <RaisedButton style={styles.button} label="Students" primary={true} onClick={() => this.handleStudents()} />
                                 <RaisedButton
                                     style={styles.button}
+                                    label="Students + Terms"
+                                    primary={true}
+                                    onClick={() => {
+                                        this.handleStudents();
+                                        this.handleTerms();
+                                    }}
+                                />
+                                <RaisedButton
+                                    style={styles.button}
                                     label="Applications"
                                     primary={true}
                                     onClick={() => this.handleApplications()}
