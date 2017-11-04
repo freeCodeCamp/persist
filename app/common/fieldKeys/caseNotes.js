@@ -40,5 +40,12 @@ export const reference = [
         dbName: 'issueResolved',
         fieldType: 'Toggle',
         editable: true
+    },
+    {
+        fieldName: 'Comment',
+        displayName: 'Comment',
+        dbName: 'comment',
+        fieldType: 'TextBox',
+        editable: true
     }
 ];

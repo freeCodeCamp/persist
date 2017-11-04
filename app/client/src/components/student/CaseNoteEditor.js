@@ -46,6 +46,9 @@ class CaseNoteEditor extends Component {
                     <Field name="issueResolved" component={Toggle} label="Issue Resolved" />
                 </Col>
                 <Clearfix visibleSmBlock visibleMdBlock visibleLgBlock />
+                <Col style={{ minHeight: 100 }} xs={12} sm={6} md={6} lg={6}>
+                    <Field name="comment" component={TextField} floatingLabelText="Comment" multiLine={true} rows={2} />
+                </Col>
             </form>
         );
     }

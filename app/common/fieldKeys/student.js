@@ -31,7 +31,7 @@ export const reference = [
         dbName: 'hsGradDate',
         hidden: true,
         fieldType: 'DatePicker',
-        editable: false,
+        editable: true,
         category: 'Student HS Information'
     },
     {

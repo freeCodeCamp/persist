@@ -38,8 +38,8 @@ class HeaderBar extends Component {
                         <b>N</b>YC
                     </span>
                     {/* logo for regular state and mobile devices */}{' '}
-                    <span className="logo-lg">
-                        <b>NYC</b> Outward Bound
+                    <span className="logo-lg" style={{fontSize: 15}}>
+                        <b>NYC</b> Outward Bound Schools
                     </span>
                 </Link>
                 {/* Header Navbar: style can be found in header.less */}

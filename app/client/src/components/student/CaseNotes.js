@@ -28,16 +28,17 @@ class CaseNotes extends Component {
         const caseNotesHTML = initValue.map((caseNote, index) => {
             const firstName = get(usersObj[caseNote.user], 'profile.firstName', '');
             const lastName = get(usersObj[caseNote.user], 'profile.lastName', '');
-            const { date, description, communicationType, needFollowUp, issueResolved } = caseNote;
+            const { date, description='', communicationType, needFollowUp, issueResolved, comment='' } = caseNote;
             const fullName = `${firstName} ${lastName}`.trim();
             return (
                 <tr key={index}>
                     <td>{moment(date).format('ll')}</td>
-                    <td>{description.substring(0, 100)}</td>
+                    <td>{description.substring(0, 50)}</td>
                     <td>{communicationType}</td>
                     <td>{fullName.length > 0 ? fullName : 'User Deleted'}</td>
                     <td>{needFollowUp ? 'Yes' : 'No'}</td>
                     <td>{issueResolved ? 'Yes' : ''}</td>
+                    <td>{comment.substring(0, 50)}</td>
                     <td>
                         <IconButton onClick={() => this.handleEdit(caseNote)}>
                             <EditorModeEdit />
@@ -152,6 +153,7 @@ class CaseNotes extends Component {
                     <th>Counselor</th>
                     <th>Needs Follow Up</th>
                     <th>Issue Resolved</th>
+                    <th>Comment</th>
                     <th>Actions</th>
                 </tr>
             </thead>
