@@ -90,6 +90,8 @@ class UploadHistory extends Component {
                     <td>{hist.type}</td>
                     <td>{moment(hist.when).fromNow()}</td>
                     <td>{`${firstName} ${lastName || ''}`.trim()}</td>
+                    <td>{hist.source}</td>
+                    <td>{hist.comments}</td>
                     <td>{hist.success ? <ActionOfflinePin color="green" /> : <AlertError color="red" />}</td>
                 </tr>
             );
@@ -103,6 +105,8 @@ class UploadHistory extends Component {
                         <th>Type</th>
                         <th>When</th>
                         <th>User</th>
+                        <th>Upload Source</th>
+                        <th>Upload Comments</th>
                         <th>Status</th>
                     </tr>
                 </thead>

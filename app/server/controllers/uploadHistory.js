@@ -1,10 +1,12 @@
 import UploadHistory from '../models/uploadHistory';
 
-export const createHistory = (type, user, success) => {
+export const createHistory = (type, user, source='', comments='', success) => {
     UploadHistory.create(
         {
             type,
             user,
+            source,
+            comments,
             when: new Date(),
             success
         },
