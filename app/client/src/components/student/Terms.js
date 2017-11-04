@@ -7,7 +7,6 @@ import { mapping } from '../../../../common/constants';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import TermEditor from './TermEditor';
 import { EditorModeEdit, ContentDeleteSweep, ContentAdd } from 'material-ui/svg-icons';

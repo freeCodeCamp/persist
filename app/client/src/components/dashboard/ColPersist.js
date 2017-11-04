@@ -126,7 +126,7 @@ class ColPersist extends Component {
     }
 
     chartData(data) {
-        return [{ name: '6 months', data: this.getRatio(data) }];
+        return [{ name: 'College persistence', data: this.getRatio(data) }];
     }
 
     getRatio(data) {

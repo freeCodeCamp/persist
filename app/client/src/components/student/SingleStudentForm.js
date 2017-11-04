@@ -1,7 +1,7 @@
 import React from 'react';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { Button, Form, Row, Alert, Col, Clearfix } from 'react-bootstrap';
+import { Accordion, Panel, Form, Row, Col, Clearfix } from 'react-bootstrap';
 import { socket } from '../utils';
 import { RaisedButton, Snackbar } from 'material-ui';
 import FormGroup from '../helpers/ReduxFormGroup';
@@ -262,7 +262,13 @@ class SingleStudentForm extends React.Component {
                                 component={renderTerms}
                                 initValue={initialValues['terms']}
                             />
-                        ) : null}
+                        ) : (
+                            <Accordion>
+                                <Panel header="Terms" eventKey="1">
+                                    Sorry! Terms cannot be shown as the student doesn't have a high school graduation date
+                                </Panel>
+                            </Accordion>
+                        )}
                     </Row>
                     <Snackbar
                         bodyStyle={{ backgroundColor: 'red' }}
