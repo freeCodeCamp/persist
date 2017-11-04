@@ -1,7 +1,7 @@
 import { UPLOAD_FILE_SUCCESS, UPLOAD_FILE_ERROR, UPLOAD_FILE_PENDING, UPLOAD_FILE_RESET, SPINNER_PAGE } from './types';
 import { axios } from './utils';
 
-export function uploadFile(url, file, source='', comments='') {
+export function uploadFile(url, file, source = '', comment = '') {
     return function(dispatch) {
         // load SPINNER_PAGE
         dispatch({
@@ -10,10 +10,10 @@ export function uploadFile(url, file, source='', comments='') {
         });
 
         // compose formdata
-        var data = new FormData();
+        const data = new FormData();
         data.append('file', file);
         data.append('source', source);
-        data.append('comments', comments);
+        data.append('comment', comment);
 
         return axios()
             .post(url, data)

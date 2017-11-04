@@ -2,7 +2,7 @@ export default Schema => ({
     type: String,
     when: Date,
     source: String,
-    comments: String,
+    comment: String,
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'

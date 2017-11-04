@@ -96,16 +96,16 @@ export default app => {
     app.post('/upload/studentData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, function(req, res) {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
-
+        const { body: { source, comment }, user: { _id } } = req;
         saveCSV(filePath)
             .then(data => {
-                UploadHistoryController.createHistory('Student Data', req.user._id, req.body.source, req.body.comments, true);
+                UploadHistoryController.createHistory('Student Data', _id, source, comment, true);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(200).send(data);
             })
             .catch(err => {
                 console.log(err);
-                UploadHistoryController.createHistory('Student Data', req.user._id,req.body.source, req.body.comments, false);
+                UploadHistoryController.createHistory('Student Data', _id, source, comment, false);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(500).send(err);
             });
@@ -114,6 +114,7 @@ export default app => {
     app.post('/upload/collegeData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
+        const { body: { source, comment }, user: { _id } } = req;
 
         saveCollegeData(filePath)
             .then(data => {
@@ -123,7 +124,7 @@ export default app => {
             })
             .catch(err => {
                 console.log(err);
-                UploadHistoryController.createHistory('College Data', req.user._id, req.body.source, req.body.comments, false);
+                UploadHistoryController.createHistory('College Data', _id, source, comment, false);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(500).send(err);
             });
@@ -132,16 +133,16 @@ export default app => {
     app.post('/upload/schoolData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
-
+        const { body: { source, comment }, user: { _id } } = req;
         saveSchoolData(filePath)
             .then(data => {
-                UploadHistoryController.createHistory('School Data', req.user._id, req.body.source, req.body.comments, true);
+                UploadHistoryController.createHistory('School Data', _id, source, comment, true);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(200).send(data);
             })
             .catch(err => {
                 console.log(err);
-                UploadHistoryController.createHistory('School Data', req.user._id, req.body.source, req.body.comments, false);
+                UploadHistoryController.createHistory('School Data', _id, source, comment, false);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(500).send(err);
             });
@@ -150,16 +151,16 @@ export default app => {
     app.post('/upload/termData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
-
+        const { body: { source, comment }, user: { _id } } = req;
         saveTermData(filePath)
             .then(data => {
-                UploadHistoryController.createHistory('Term Data', req.user._id, req.body.source, req.body.comments, true);
+                UploadHistoryController.createHistory('Term Data', _id, source, comment, true);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(200).send(data);
             })
             .catch(err => {
                 console.log(err);
-                UploadHistoryController.createHistory('Term Data', req.user._id, req.body.source, req.body.comments, false);
+                UploadHistoryController.createHistory('Term Data', _id, source, comment, false);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(500).send(err);
             });
@@ -168,16 +169,16 @@ export default app => {
     app.post('/upload/applicationData', requireAuth, AuthController.roleAuthorization('Owner'), fileUpload, (req, res) => {
         const fileData = req.files.file[0];
         const filePath = path.join(fileData.destination, fileData.filename);
-
+        const { body: { source, comment }, user: { _id } } = req;
         saveApplicationData(filePath)
             .then(data => {
-                UploadHistoryController.createHistory('Application Data', req.user._id, req.body.source, req.body.comments, true);
+                UploadHistoryController.createHistory('Application Data', _id, source, comment, true);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(200).send(data);
             })
             .catch(err => {
                 console.log(err);
-                UploadHistoryController.createHistory('Application Data', req.user._id, req.body.source, req.body.comments, false);
+                UploadHistoryController.createHistory('Application Data', _id, source, comment, false);
                 rimraf('uploads/*', () => console.log('cleared'));
                 res.status(500).send(err);
             });

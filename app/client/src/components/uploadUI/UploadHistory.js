@@ -4,7 +4,6 @@ import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { ActionOfflinePin, AlertError } from 'material-ui/svg-icons';
-import { bindActionCreators } from 'redux';
 
 class UploadHistory extends Component {
     constructor(props) {
@@ -91,7 +90,7 @@ class UploadHistory extends Component {
                     <td>{moment(hist.when).fromNow()}</td>
                     <td>{`${firstName} ${lastName || ''}`.trim()}</td>
                     <td>{hist.source}</td>
-                    <td>{hist.comments}</td>
+                    <td>{hist.comment}</td>
                     <td>{hist.success ? <ActionOfflinePin color="green" /> : <AlertError color="red" />}</td>
                 </tr>
             );
@@ -105,8 +104,8 @@ class UploadHistory extends Component {
                         <th>Type</th>
                         <th>When</th>
                         <th>User</th>
-                        <th>Upload Source</th>
-                        <th>Upload Comments</th>
+                        <th>Source</th>
+                        <th>Comment</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -119,7 +118,5 @@ class UploadHistory extends Component {
 const mapStateToProps = state => ({
     counselors: state.counselors.idObj
 });
-
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default connect(mapStateToProps)(UploadHistory);

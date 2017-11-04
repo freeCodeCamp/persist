@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { FloatingActionButton, TextField } from 'material-ui';
-
+import { FloatingActionButton } from 'material-ui';
+import { TextField } from 'redux-form-material-ui';
 import { connect } from 'react-redux';
 import * as uploadFile from '../../actions/uploadFile';
 import Dropzone from 'react-dropzone';
@@ -9,7 +9,7 @@ import Dropzone from 'react-dropzone';
 const FILE_FIELD_NAME = 'files';
 
 const renderDropzoneInput = field => {
-    var files = field.input.value;
+    let files = field.input.value;
     if (files) {
         files = files.slice(0, 1);
     }
@@ -31,9 +31,7 @@ class DropzoneUpload extends Component {
 
     onSubmit(data) {
         this.props.reset();
-        var source = data.hasOwnProperty(source) ? data.source : '';
-        var comments = data.hasOwnProperty(comments) ? data.comments : '';
-        this.props.uploadFile(this.props.url, data.files[0], source, comments);
+        this.props.uploadFile(this.props.url, data.files[0], data.source, data.comment);
     }
 
     render() {
@@ -46,12 +44,8 @@ class DropzoneUpload extends Component {
                         <label htmlFor={FILE_FIELD_NAME}>Files</label>
                         <Field name={FILE_FIELD_NAME} component={renderDropzoneInput} />
                     </div>
-                    <Field name='source' component={(field) => (
-                        <TextField hintText='Source' {...field.input} />
-                    )}/>
-                    <Field name='comments' component={(field) => (
-                        <TextField hintText='Comments' {...field.input} />
-                    )}/>
+                    <Field name="source" component={TextField} floatingLabelText="Source" />
+                    <Field name="comment" component={TextField} floatingLabelText="Comment" />
                     <div>
                         <FloatingActionButton type="submit" iconClassName="fa fa-upload" mini={true} />
                         <FloatingActionButton onClick={reset} iconClassName="fa fa-undo" mini={true} />
