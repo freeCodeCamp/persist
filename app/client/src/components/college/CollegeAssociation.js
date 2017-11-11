@@ -64,10 +64,11 @@ class CollegeAssociation extends Component {
                     network[hsGradYear] = network[hsGradYear] || [];
                     student.terms = _.compact(student.terms);
                     const termLength = student.terms.length;
+                    const reversedTerms = _.cloneDeep(student.terms).reverse();
                     let enrolled = false;
                     if (termLength > 0) {
                         let breakOut = false;
-                        for (const term of student.terms) {
+                        for (const term of reversedTerms) {
                             if (term.college === collegeId) {
                                 switch (term.status) {
                                     case 'Graduated': {
