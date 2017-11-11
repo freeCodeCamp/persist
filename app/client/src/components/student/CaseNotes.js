@@ -28,7 +28,7 @@ class CaseNotes extends Component {
         const caseNotesHTML = initValue.map((caseNote, index) => {
             const firstName = get(usersObj[caseNote.user], 'profile.firstName', '');
             const lastName = get(usersObj[caseNote.user], 'profile.lastName', '');
-            const { date, description='', communicationType, needFollowUp, issueResolved, comment='' } = caseNote;
+            const { date, description = '', communicationType, needFollowUp, issueResolved, comment = '' } = caseNote;
             const fullName = `${firstName} ${lastName}`.trim();
             return (
                 <tr key={index}>

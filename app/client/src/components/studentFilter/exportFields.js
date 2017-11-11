@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Accordion, Panel, Col, Row, Clearfix } from 'react-bootstrap';
-import { reduxForm, Field } from 'redux-form';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

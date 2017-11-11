@@ -58,7 +58,7 @@ const caseNotesSchema = Schema =>
             type: Boolean,
             default: false
         },
-        comment: String,
+        comment: String
     });
 
 const applicationsSchema = Schema =>

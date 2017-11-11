@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import moment from 'moment';
 import json2csv from 'json2csv';
 import { map } from 'lodash';
