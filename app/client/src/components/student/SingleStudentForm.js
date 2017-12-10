@@ -195,7 +195,7 @@ class SingleStudentForm extends React.Component {
                 'studentSupportOrgNameOther',
                 'ferpa'
             ];
-            historicalInfo = [];
+            historicalInfo = ['hsGPA', 'SAT.math', 'SAT.cr', 'actEquiv', 'crewAdvisor', 'hsGradDate', 'cohort', 'hsDiplomaType'];
             hasGradDate = false;
         }
 
@@ -235,11 +235,10 @@ class SingleStudentForm extends React.Component {
                         <Row>{renderFormGroups(this, academicInfo)}</Row>
                         <h2>Financial Profile</h2>
                         <Row>{renderFormGroups(this, financialInfo)}</Row>
-                        {hasGradDate ? <h2>College Applications</h2> : <h2>Historical Information</h2>}
-                        <Row>
-                            {renderFormGroups(this, colApplications)}
-                            {renderFormGroups(this, historicalInfo)}
-                        </Row>
+                        <h2>College Applications</h2>
+                        <Row>{renderFormGroups(this, colApplications)}</Row>
+                        <h2>Historical Information</h2>
+                        <Row>{renderFormGroups(this, historicalInfo)}</Row>
                         <FieldArray
                             name="applications"
                             osis={initialValues.osis}
@@ -295,8 +294,7 @@ class SingleStudentForm extends React.Component {
 }
 
 SingleStudentForm = reduxForm({
-    form: 'SingleStudent',
-    asyncValidate
+    form: 'SingleStudent'
 })(SingleStudentForm);
 
 function mapStateToProps(state) {
